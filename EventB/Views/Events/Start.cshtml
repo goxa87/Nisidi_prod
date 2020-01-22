@@ -1,0 +1,30 @@
+﻿
+@using EventB.Models;
+@{
+    ViewData["Title"] = "Start";
+
+
+}
+@model RepositoryEventList
+
+<a asp-controller="Events" asp-action="Add"><div class="nav-button">Добавить новввую запись</div></a>
+<h1>Start</h1>
+
+<div class="central-container">
+    @{
+        foreach (var e in Model.Events)
+        {
+        <div class="event-container">
+            <h3>@e.Title</h3>
+            <p>@e.Tegs</p>
+            <p>@e.Body</p>
+        </div>
+            }
+        }
+
+    <div class="event-container">
+        <h3></h3>
+    </div>
+</div>
+
+
