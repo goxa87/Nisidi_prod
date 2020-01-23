@@ -28,7 +28,6 @@ namespace EventB.Controllers
         {
             var ev2 = new Event() { Body = ev.Body, Title = ev.Title };
             list.Add(ev2);
-            //return $"title: {ev2.Title} body: {ev2.Body}";
             return RedirectToAction("Start", "Events");
         }
     }

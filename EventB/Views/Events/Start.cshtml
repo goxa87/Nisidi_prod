@@ -8,23 +8,29 @@
 @model RepositoryEventList
 
 <a asp-controller="Events" asp-action="Add"><div class="nav-button">Добавить новввую запись</div></a>
-<h1>Start</h1>
 
-<div class="central-container">
-    @{
-        foreach (var e in Model.Events)
-        {
-        <div class="event-container">
-            <h3>@e.Title</h3>
-            <p>@e.Tegs</p>
-            <p>@e.Body</p>
+@{
+    foreach (var e in Model.Events)
+    {
+        <div class="item-container">
+
+            <img class="item-img" src="img/img.jpg">
+            <h2 class="item-title">@e.Title</h2>
+            <h3>@e.Date.ToString("dd.MM.yy HH-mm")</h3>
+            <h4>@e.Sity</h4>
+            <h4>@e.Place</h4>
+            <p>
+                @e.Body
+            </p>
+            <div class="item-inner-separator"></div>
+            <div calss="statistic">
+                <div class="statistic-item-views">@e.Views</div>
+                <div class="statistic-item-likes">@e.Likes</div>
+                <div class="statistic-item-shares">@e.Shares</div>
+                <div class="author">выложил: @e.AuthorID</div>
+            </div>
         </div>
-            }
-        }
-
-    <div class="event-container">
-        <h3></h3>
-    </div>
-</div>
+    }
+}
 
 
