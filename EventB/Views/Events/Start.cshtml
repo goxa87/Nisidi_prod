@@ -1,36 +1,42 @@
 ﻿
-@using EventB.Models;
+@using EventB.Models
+@model IEnumerable<Event>
 @{
     ViewData["Title"] = "Start";
-
-
 }
-@model RepositoryEventList
 
-<a asp-controller="Events" asp-action="Add"><div class="nav-button">Добавить новввую запись</div></a>
+    <div id="AddNewEvent"> 
+        <a asp-controller="Events" asp-action="Add" ><div class="StartAdd-AddNew">Добавить новую запись</div></a>
+    </div>
+@{ 
+    foreach (var e in Model)
+    { 
+    <div class="item-container">
 
-@{
-    foreach (var e in Model.Events)
-    {
-        <div class="item-container">
-
-            <img class="item-img" src="img/img.jpg">
-            <h2 class="item-title">@e.Title</h2>
-            <h3>@e.Date.ToString("dd.MM.yy HH-mm")</h3>
-            <h4>@e.Sity</h4>
-            <h4>@e.Place</h4>
-            <p>
-                @e.Body
-            </p>
-            <div class="item-inner-separator"></div>
-            <div calss="statistic">
-                <div class="statistic-item-views">@e.Views</div>
-                <div class="statistic-item-likes">@e.Likes</div>
-                <div class="statistic-item-shares">@e.Shares</div>
-                <div class="author">выложил: @e.AuthorID</div>
-            </div>
+        <img class="item-img" src="img/img.jpg">
+        <h2 class="item-title">@e.Title</h2>
+        <h3>@e.Date</h3>
+        <h4>@e.Sity</h4>
+        <h4>@e.Place </h4><br>
+        <h4>@e.Tegs</h4>
+        <p>@e.Body</p>
+        <div class="item-inner-separator"></div>
+        <button>Пойду</button>
+        <button>Поделиться</button>
+        <button>еще что-то</button>
+        <div class="item-inner-separator"></div>
+        <div calss="statistic">
+            <div class="statistic-item-views">@e.Views</div>
+            <div class="statistic-item-likes">@e.Likes</div>
+            <div class="statistic-item-shares">@e.Shares</div>
+            <div class="author">Автор: @e.PersonCreator.Name</div>
         </div>
+    </div>
     }
+
 }
+
+
+
 
 

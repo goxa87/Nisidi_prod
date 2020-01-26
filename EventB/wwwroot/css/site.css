@@ -1,87 +1,10 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
-/*
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
-}
-a {
-  color: #0366d6;
-}
-
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
-
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
-}
-
-/* Sticky footer styles
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-  margin-bottom: 60px;
-}
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; 
-}
-
-.central-container {
-    width: 960px;
-    margin: 0 auto;
-}
-
-.nav-button {
-    width:250px;
-    background-color:brown;
-    padding: 20px;
-    color:antiquewhite;
-}
-    */
-
 body {
     margin: 0;
     padding: 0;
     font-family: sans-serif;
-    background-color: #262626;
+    background-color: #f1ead8;
 }
 
 #main-menu-li {
@@ -103,7 +26,7 @@ body {
             width: 185px;
             height: 40px;
             display: block;
-            color: tomato;
+            color: #1b5972;
             line-height: 40px;
             text-align: center;
             text-decoration: none;
@@ -116,22 +39,22 @@ ul li a span {
     position: absolute;
     width: 25%;
     height: 100%;
-    background-color: tomato;
+    background-color: #1b5972;
     z-index: -1;
     transform-origin: top;
     transform: scaleY(0);
     transition: transform .5s;
 }
 
-ul li a:hover {
-    color: #fff;
+#main-menu-li li a:hover {
+    color: #ffcd00;
     text-decoration: none;
 }
 
-    ul li a:hover span {
-        transform-origin: bottom;
-        transform: scaleY(1);
-    }
+ul li a:hover span {
+    transform-origin: bottom;
+    transform: scaleY(1);
+}
 
 ul li a span:nth-child(1) {
     left: 0;
@@ -158,9 +81,12 @@ ul li a span:nth-child(4) {
     margin: 0 auto 0 auto;
 }
 
+.main-menu-container {
+}
+
 #title-container {
     padding: 20px;
-    color: tomato;
+    color: #1b5972;
     font-size: 20px;
 }
 
@@ -168,24 +94,20 @@ ul li a span:nth-child(4) {
         text-align: center;
     }
 
-
 .item-container {
-    background-color: #404040;
+    background-color: #e4dcc5;
     padding: 20px;
-    margin: 20px;
+    margin: 20px 0;
     border-radius: 8px;
+    border: 1px solid #1b5972;
 }
 
-.item-img {
-    margin: 0 auto;
-    display: block;
-}
     .item-container h2 {
         text-align: center;
         font-size: 24px;
         margin: 5px 0;
         font-weight: bold;
-        color: tomato;
+        color: #1b5972;
         text-transform: uppercase;
     }
 
@@ -194,7 +116,7 @@ ul li a span:nth-child(4) {
         font-size: 20px;
         margin: 5px 0;
         font-weight: bold;
-        color: tomato;
+        color: #1b5972;
         text-transform: uppercase;
     }
 
@@ -204,7 +126,7 @@ ul li a span:nth-child(4) {
         margin: 5px 0;
         font-size: 20px;
         font-weight: bold;
-        color: tomato;
+        color: #1b5972;
         text-transform: uppercase;
         display: inline-flex;
         padding-right: 30px;
@@ -217,7 +139,7 @@ ul li a span:nth-child(4) {
         color: #bb6347;
         padding: 10px 0;
         margin: 0;
-        color: #bbbbbb;
+        color: #1b5972;
     }
 
     .item-container hr {
@@ -232,11 +154,9 @@ ul li a span:nth-child(4) {
 
 .statistic-item-views {
     display: inline-block;
-    background-image: url(../resourses/eye.png);
+    background-image: url('../resourses/eye.png');
     background-repeat: no-repeat;
     padding: 0 0 0 20px;
-    font-size: 14px;
-    color: white;
 }
 
 .statistic-item-likes {
@@ -244,8 +164,6 @@ ul li a span:nth-child(4) {
     background-image: url('../resourses/like.png');
     background-repeat: no-repeat;
     padding: 0 0 0 20px;
-    font-size: 14px;
-    color: white;
 }
 
 .statistic-item-shares {
@@ -253,12 +171,80 @@ ul li a span:nth-child(4) {
     background-image: url('../resourses/share.png');
     background-repeat: no-repeat;
     padding: 0 0 0 20px;
-    font-size: 14px;
-    color: white;
 }
 
 .author {
     float: right;
-    color: white;
-    font-size: 14px;
 }
+
+.item-img {
+    margin: 0 auto;
+    display: block;
+}
+
+.StartAdd-label {
+    color: #1b5972;
+    padding: 5px;
+}
+
+.StartAdd-Entry-title {
+    background-color: white;
+    color: #1b5972;
+    padding: 5px;
+    overflow-wrap: break-word;
+    width: 80%;
+    margin: 5px;
+    border: 1px solid #ccc;
+    box-shadow: inset 0 1px 3px #ddd;
+    border-radius: 5px;
+}
+
+.StartAdd-Entry-body {
+    background-color: white;
+    color: #1b5972;
+    padding: 5px;
+    overflow-wrap: break-word;
+    width: 80%;
+    height: 300px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    box-shadow: inset 0 1px 3px #ddd;
+    border-radius: 5px;
+    resize: none;
+}
+
+.StartAdd-Date {
+    background-color: white;
+    color: #1b5972;
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    box-shadow: inset 0 1px 3px #ddd;
+    border-radius: 5px;
+}
+
+.StartAdd-submit {
+    padding: 5px 40px;
+    margin: 5px;
+    border-radius: 5px;
+    border: 0px;
+    background-color: #1b5972;
+    color: #ffcd00;
+}
+
+.StartAdd-AddNew {
+    text-decoration:none;
+    padding:20px;
+    background-color:#1b5972;
+    color:#ffcd00;
+    border-radius:5px;
+    display:inline;
+}
+
+#AddNewEvent {
+    margin:20px 0;
+    text-decoration:none;
+    color:#ffcd00;
+
+}
+

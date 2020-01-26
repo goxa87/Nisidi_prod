@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EventB
+namespace EventB.Models
 {
-    public class Event : IEvent
+    /// <summary>
+    /// Событие - основная сущность приложения
+    /// </summary>
+    public class Event
     {
         /// <summary>
         /// идентификатор записи события
@@ -14,15 +18,22 @@ namespace EventB
         /// <summary>
         /// ID автора события
         /// </summary>
-        public int AuthorID { get; set; }
+        [Required]
+        public int Creator { get; set; }
         /// <summary>
         /// заголовок
         /// </summary>
+        [Required]
+        [StringLength(300), Display(Name ="Заголовок")]
         public string Title { get; set; }
         /// <summary>
         /// ключи для поиска
         /// </summary>
         public string Tegs { get; set; }
+        /// <summary>
+        /// адрес картинки
+        /// </summary>
+        public string Image { get; set; }
         /// <summary>
         /// описание события
         /// </summary>
@@ -38,7 +49,15 @@ namespace EventB
         /// <summary>
         /// дата начала события 
         /// </summary>
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yy hh.mm}", ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }
+        /// <summary>
+        /// Дата публикации события
+        /// </summary>
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString ="{0:dd.MM.yy}", ApplyFormatInEditMode =true)]
+        public DateTime CreationDate { get; set; }
         /// <summary>
         /// количество оценок нравится
         /// </summary>
@@ -51,5 +70,39 @@ namespace EventB
         /// количество отметок поделиться
         /// </summary>
         public int Shares { get; set; }
+
+        /// <summary>
+        /// список пользователей с отметкой пойду
+        /// </summary>
+        public List<Vizitors> Vizitors { get; set; }
+
+        /// <summary>
+        /// пользователь автор публикации
+        /// </summary>
+        public Person PersonCreator 
+        {
+            get
+            {
+                //  логика нахожения автора публикации
+                return new Person();
+            }               
+        }
+
+        /// <summary>
+        /// id чата привязанного к событию
+        /// </summary>
+        public int? ChatId{ get; set; }
+
+        /// <summary>
+        /// возвращает теги события в виде List<string>
+        /// </summary>
+        public List<string> TegsList 
+        {
+            get
+            {
+                // логика разбиения строки тегов на список
+                return new List<string>();
+            }
+        }
     }
 }

@@ -2,9 +2,17 @@
 
 <h2>Add</h2>
 <form action="Add" method="post">
-    <label>Заголовок</label><br>
-    <input type="text" name="ev.Title"/><br>
-    <label>тело</label><br>
-    <input type="text" name="ev.Body"/><br>
-    <input type="submit" value="add"/>
+    <label class="StartAdd-label">Заголовок</label><br>
+    <input class="StartAdd-Entry-title" type="text" name="Title" /><br>
+    <label class="StartAdd-label">Описание</label><br>
+    <textarea class="StartAdd-Entry-body" type="text" name="Body"></textarea><br>
+    <label class="StartAdd-label">Теги</label><br>
+    <input class="StartAdd-Entry-title" type="text" name="Tegs" /><br>
+    <label class="StartAdd-label">Город</label><br>
+    <input class="StartAdd-Entry-title" type="text" name="Sity" /><br>
+    <label class="StartAdd-label">Мето проведения</label><br>
+    <input class="StartAdd-Entry-title" type="text" name="Place" /><br>
+    <label class="StartAdd-label">Дата события</label><br>
+    <input class="StartAdd-Date" type="datetime-local" name="Date" /><br>
+    <input class="StartAdd-submit" type="submit" value="Сохранить" />
 </form>

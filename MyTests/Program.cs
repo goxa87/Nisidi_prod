@@ -8,17 +8,18 @@ namespace MyTests
     {
         static void RepList_AddRemove()
         {
-            RepositoryEventList rs = new RepositoryEventList();
+            //RepositoryEventList rs = new RepositoryEventList();
 
-            WriteLine("Add - " + rs.Add(new Event()));
-            WriteLine("rem - " + rs.RemoveEvent(5));
+            //WriteLine("Add - " + rs.Add(new Event()));
+            //WriteLine("rem - " + rs.RemoveEvent(5));
         }
 
         static void Main(string[] args)
-        {
-            RepList_AddRemove();
+        { 
+        //{
+        //    RepList_AddRemove();
 
-            ReadKey();
+        //    ReadKey();
 
 
         }

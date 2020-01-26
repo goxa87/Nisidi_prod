@@ -3,19 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using EventB.Models;
+using EventB.DataContext;
+using Microsoft.EntityFrameworkCore;
 
 namespace EventB.Controllers
 {
     public class EventsController : Controller
     {
-        RepositoryEventList list { get; set; } = new RepositoryEventList();
+        private Context _context { get; }
 
-        public IActionResult Start()
-        {           
-            return View(list);
+        public EventsController(Context c)
+        {
+            _context = c;
         }
 
-
+        public async Task<IActionResult> Start()
+        {
+            return View(await _context.Events.ToListAsync());
+            //return View(list);
+        }
 
         [HttpGet]
         public IActionResult Add()
@@ -24,11 +31,26 @@ namespace EventB.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(Event ev)
+        public async Task<IActionResult> Add(string Title,string Body, string Tegs, string Sity, string Place, DateTime Date)
         {
-            var ev2 = new Event() { Body = ev.Body, Title = ev.Title };
-            list.Add(ev2);
-            return RedirectToAction("Start", "Events");
+            _context.Events.Add(
+                new Event() { 
+                            Title=Title,
+                            Body=Body,
+                            Tegs=Tegs,
+                            Sity= Sity,
+                            Place= Place,
+                            Date=Date,
+                            Creator=0,
+                            Image="/img/img.jpg",
+                            CreationDate = DateTime.Now,
+                            Likes=0,
+                            Views=0,
+                            Shares=0
+                            }
+                );
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Start");
         }
     }
 }
