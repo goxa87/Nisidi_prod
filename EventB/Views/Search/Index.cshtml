@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Поиск</h2>
+<div>
+    <p class="common-text">Здесь вы можете задать параметры поиска событий.</p>
+</div>
+<hr class="item-inner-separator">
+
+<form action="input" method="post">
+    <label class="StartAdd-label">Название:</label><br>
+    <input class="StartAdd-Entry-title" type="text" name="a"><br>
+
+    <label class="StartAdd-label">Теги:</label><br>
+    <input class="StartAdd-Entry-title" type="text" name="a"><br>
+
+    <label class="StartAdd-label">Дата начала С:</label><br>
+    <input class="StartAdd-Date" type="datetime-local" name="a"><br>
+
+    <label class="StartAdd-label">Дата начала ПО:</label><br>
+    <input class="StartAdd-Date" type="datetime-local" name="a"><br>
+
+    <label class="StartAdd-label">Город:</label><br>
+    <input class="StartAdd-Entry-title" type="text" name="a"><br>
+
+    <label class="StartAdd-label">Место проведения:</label><br>
+    <input class="StartAdd-Entry-title" type="text" name="a"><br><br>
+
+    <input class="StartAdd-submit" type="submit" name="f" value="Найти"><br>
+
+
+
+</form>
+

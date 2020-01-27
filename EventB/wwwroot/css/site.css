@@ -148,7 +148,7 @@ ul li a span:nth-child(4) {
 
 .item-inner-separator {
     height: 2px;
-    background-color: tomato;
+    background-color: #71a5df;
     margin: 0 0 10px 0;
 }
 
@@ -185,6 +185,7 @@ ul li a span:nth-child(4) {
 .StartAdd-label {
     color: #1b5972;
     padding: 5px;
+    margin-bottom:0;
 }
 
 .StartAdd-Entry-title {
@@ -193,7 +194,6 @@ ul li a span:nth-child(4) {
     padding: 5px;
     overflow-wrap: break-word;
     width: 80%;
-    margin: 5px;
     border: 1px solid #ccc;
     box-shadow: inset 0 1px 3px #ddd;
     border-radius: 5px;
@@ -206,7 +206,6 @@ ul li a span:nth-child(4) {
     overflow-wrap: break-word;
     width: 80%;
     height: 300px;
-    margin: 5px;
     border: 1px solid #ccc;
     box-shadow: inset 0 1px 3px #ddd;
     border-radius: 5px;
@@ -217,7 +216,6 @@ ul li a span:nth-child(4) {
     background-color: white;
     color: #1b5972;
     padding: 5px;
-    margin: 5px;
     border: 1px solid #ccc;
     box-shadow: inset 0 1px 3px #ddd;
     border-radius: 5px;
@@ -225,7 +223,7 @@ ul li a span:nth-child(4) {
 
 .StartAdd-submit {
     padding: 5px 40px;
-    margin: 5px;
+    margin: 5px 0;
     border-radius: 5px;
     border: 0px;
     background-color: #1b5972;
@@ -233,18 +231,24 @@ ul li a span:nth-child(4) {
 }
 
 .StartAdd-AddNew {
-    text-decoration:none;
-    padding:20px;
-    background-color:#1b5972;
-    color:#ffcd00;
-    border-radius:5px;
-    display:inline;
+    text-decoration: none;
+    padding: 20px;
+    background-color: #1b5972;
+    color: #ffcd00;
+    border-radius: 5px;
+    display: inline;
 }
 
 #AddNewEvent {
-    margin:20px 0;
-    text-decoration:none;
-    color:#ffcd00;
+    margin: 20px 0;
+    text-decoration: none;
+    color: #ffcd00;
+}
 
+.common-text {
+    font-size: 14px;
+    margin: 0;
+    color: #1b5972;
+    margin: 10px 5px;
 }
 
