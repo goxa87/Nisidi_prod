@@ -94,6 +94,15 @@ ul li a span:nth-child(4) {
         text-align: center;
     }
 
+.menu-bottom-line {
+    background-color: #1b5972;
+    height:10px;
+    width:100%;
+    margin:0;
+    padding:0;
+    
+}
+
 .item-container {
     background-color: #e4dcc5;
     padding: 20px;
