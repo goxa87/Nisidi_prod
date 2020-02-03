@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 namespace EventB.Models
 {
     /// <summary>
+    /// платное публичное, частное по приглашению , специальное(от администрации сайта)
+    /// </summary>
+    public enum EventType {Global, Private, Special};
+
+    /// <summary>
     /// Событие - основная сущность приложения
     /// </summary>
     public class Event
@@ -15,6 +20,11 @@ namespace EventB.Models
         /// идентификатор записи события
         /// </summary>
         public int EventId { get; set; }
+
+        /// <summary>
+        /// тип события из EventType (платное публичное, частное по приглашению , специальное)
+        /// </summary>
+        public EventType Type { get; set; }
         /// <summary>
         /// ID автора события
         /// </summary>
@@ -70,6 +80,11 @@ namespace EventB.Models
         /// количество отметок поделиться
         /// </summary>
         public int Shares { get; set; }
+
+        /// <summary>
+        /// количество отметок пойду
+        /// </summary>
+        public int WillGo { get; set; }
 
         /// <summary>
         /// список пользователей с отметкой пойду

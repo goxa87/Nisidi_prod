@@ -4,7 +4,7 @@ using System.Text;
 
 namespace EventLib.ArgsClasses
 {
-    class CostomSelectionArgs
+    public class CostomSelectionArgs
     {
         /// <summary>
         /// поиск по содержимому тегов или заголовков
