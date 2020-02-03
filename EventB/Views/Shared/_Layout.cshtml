@@ -12,6 +12,21 @@
         <div class="container">
             <div id="title-container">
                 <article>СОБЫТИЯ В ТВОЕМ ГОРОДЕ</article>
+                <div class="shared-login">
+                    @{if (User.Identity.IsAuthenticated)
+                        { 
+                            <h5>вход выполнен как @User.Identity.Name </h5>
+                            <a asp-action="Exit" asp-controller="Account">Выйти</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Login" asp-controller="Account">Войти</a>
+                            <a asp-action="Register" asp-controller="Account">Регистрация</a>
+                        }
+
+
+                     }
+                </div>
             </div>
             <div class="main-menu-container">
 

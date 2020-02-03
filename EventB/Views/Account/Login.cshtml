@@ -1,0 +1,24 @@
+﻿@model EventB.Auth.UserLogin
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Login</h1>
+
+<div class="identity-cintainer">
+    <form asp-action="Login" asp-antiforgery="true" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="ReturnUrl" />
+
+        <label class="StartAdd-label">Логин</label><br>
+        <input class="input-style input-size-30precent" type="text" asp-for="LoginProp"><br>
+        <label class="StartAdd-label">Пароль</label><br>
+        <input class="input-style input-size-30precent" type="password" asp-for="Password"><br>
+        <input class="button-style input-size-30precent" type="submit" value="ВОЙТИ"><br>
+        <a href="#"><h5>Забыли пароль</h5></a>
+
+        <a asp-action="Register"><h5>Регистрация</h5></a>
+    </form>
+</div>
+

@@ -1,0 +1,33 @@
+﻿@model EventB.Auth.UserRegistration
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Регистрация</h1>
+<div class="identity-cintainer">
+    <form asp-action="Register" asp-antiforgery="true" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <label class="StartAdd-label">Адрес эдектронной почты</label><br>
+        <input class="input-style input-size-30precent" type="text" asp-for="Email"><br>
+
+        <label class="StartAdd-label">Придумайте пароль(не менее 6 символов)</label><br>
+        <input class="input-style input-size-30precent" type="password" asp-for="Password"><br>
+
+        <label class="StartAdd-label">Повторите пароль</label><br>
+        <input class="input-style input-size-30precent" type="password" asp-for="confirmPassword"><br>
+
+        <label class="StartAdd-label">Введите имя(будет видно другим пользователям)</label><br>
+        <input class="input-style input-size-30precent" type="text" asp-for="Name"><br>
+
+        <label class="StartAdd-label">Введите город (отображение событий в этом городе)</label><br>
+        <input class="input-style input-size-30precent" type="text" asp-for="Sity"><br>
+
+        <label class="StartAdd-label">Ваши интересы в тезисах</label><br>
+        <input class="input-style input-size-30precent" type="text" asp-for="Tegs"><br>
+        
+        <input class="button-style input-size-30precent" type="submit" value="Регистрация"><br>
+        <a href="#"><h5>Забыли пароль</h5></a>
+    </form>
+</div>

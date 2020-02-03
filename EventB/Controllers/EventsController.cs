@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using EventB.Models;
 using EventB.DataContext;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EventB.Controllers
 {
@@ -20,10 +21,11 @@ namespace EventB.Controllers
 
         public async Task<IActionResult> Start()
         {
+
             return View(await _context.Events.ToListAsync());
             //return View(list);
         }
-
+        [Authorize]
         [HttpGet]
         public IActionResult Add()
         {

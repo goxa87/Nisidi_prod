@@ -4,14 +4,16 @@ using EventB.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EventB.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200131023923_EventBuilder_2_Auth_3")]
+    partial class EventBuilder_2_Auth_3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
