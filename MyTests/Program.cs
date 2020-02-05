@@ -35,6 +35,11 @@ namespace MyTests
             //TegSplitter_display t3 = new TegSplitter_display(test3);
             //WriteLine(t3.GetSplitTegs());
             #endregion
+            #region начальная выборка выводит 4 подходящих результата
+            GetStartEvent_LocalDB_select2injectedEvent O = new GetStartEvent_LocalDB_select2injectedEvent();
+            WriteLine("End of generation...");
+            WriteLine(O.GetRezult());
+            #endregion
             ReadKey();
         }
     }

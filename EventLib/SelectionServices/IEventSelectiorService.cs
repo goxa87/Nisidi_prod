@@ -4,6 +4,7 @@ using System.Text;
 using EventB.Models;
 using EventLib.ArgsClasses;
 using EventB.DataContext;
+using EventB.Data;
 
 namespace EventLib.SelectionServices
 {
@@ -18,7 +19,7 @@ namespace EventLib.SelectionServices
         /// <param name="p">пользователь для которого будет осуществлятся поиск</param>
         /// <param name="context">сонтекст данных</param>
         /// <returns>список событий удовлетворяющий условиям</returns>
-        public IEnumerable<Event> GetStartEventList(Person p, Context context);
+        public IEnumerable<Event> GetStartEventList(Person p, IDataProvider context);
 
         /// <summary>
         /// Метод возвращающий результат настраиваемого поиска событий

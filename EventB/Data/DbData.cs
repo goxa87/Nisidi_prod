@@ -11,7 +11,7 @@ namespace EventB.Data
     public class DbData : IDataProvider
     {
         //экземпляр контекста
-        Context context { get; set; }
+        public Context context { get; set; }
 
         public DbData(Context c) => context = c;
         /// <summary>

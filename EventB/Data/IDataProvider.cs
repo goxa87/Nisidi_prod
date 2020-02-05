@@ -8,6 +8,8 @@ namespace EventB.Data
 {
     public interface IDataProvider
     {
+        DataContext.Context context { get; set; }
+
         public IEnumerable<Event> GetEvents();
         public IEnumerable<Person> GetPersons();
         public IEnumerable<Chat> GetChat();

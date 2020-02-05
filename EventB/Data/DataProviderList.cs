@@ -1,4 +1,5 @@
-﻿using EventB.Models;
+﻿using EventB.DataContext;
+using EventB.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,12 @@ namespace EventB.Data
 
     public class DataProviderList : IDataProvider
     {
+        
+
         public List<Event> Events { get; set; }
         public List<Person> Persons { get; set; }
         public List<Vizitors> Vizitors { get; set; }
+        public Context context { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         private char[] separators = { ' ', '_', '-', '+', '/', ',', '.', '|', '\\', ':', ';' };
         private string[] tegs = { "концерт", "туса", "выставка", "собрание", "встреча", "митинг", "шествие", "опера", "балет" };
@@ -104,7 +108,7 @@ namespace EventB.Data
 
         public IEnumerable<Event> GetEvents()
         {
-            throw new NotImplementedException();
+            return Events;
         }
 
         public IEnumerable<Message> GetMessage()
