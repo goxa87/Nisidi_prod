@@ -264,3 +264,8 @@ ul li a span:nth-child(4) {
     margin: 10px 5px;
 }
 
+.validation-failed {
+    color:red;
+    font-size:12px; 
+
+}

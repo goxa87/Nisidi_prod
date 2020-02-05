@@ -107,7 +107,7 @@ namespace EventB.Services
             return rezult;
 
             //// проверитть производительность!!! 
-
+            //объединить в 1
         }
     }
 }

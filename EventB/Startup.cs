@@ -34,7 +34,16 @@ namespace EventB
             services.AddDbContext<DataContext.Context>();
             services.AddScoped<IDataProvider, DbData>();
 
-            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<Context>().AddDefaultTokenProviders();
+            services.AddIdentity<User, IdentityRole>(
+                opt =>
+                {
+                    opt.Password.RequireUppercase = false;
+                    opt.Password.RequireLowercase = false;
+                    opt.Password.RequireNonAlphanumeric = false;
+                    opt.Password.RequireDigit = false;
+                    
+                }
+                ).AddEntityFrameworkStores<Context>().AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>
             {

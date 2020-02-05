@@ -31,7 +31,7 @@ namespace EventB.Controllers
         {
             if (ModelState.IsValid)
             {
-                var loginResult = await signInManager.PasswordSignInAsync(model.LoginProp, model.Password,false,false);
+                var loginResult = await signInManager.PasswordSignInAsync(model.LoginProp, model.Password, false, false);
 
                 if (loginResult.Succeeded)
                 {
@@ -41,7 +41,9 @@ namespace EventB.Controllers
                     }
                     return RedirectToAction("Start", "Events");
                 }
+                
             }
+            
             ModelState.AddModelError("", "User not found");
             return View(model);
         }
@@ -65,9 +67,6 @@ namespace EventB.Controllers
                     Role = "user"
                 };
                 var user = new User() { Email = model.Email, UserName = model.Email, Person = person };
-
-
-
 
                 var createResult = await userManager.CreateAsync(user, model.Password);
 

@@ -9,22 +9,27 @@
     <form asp-action="Register" asp-antiforgery="true" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-        <label class="StartAdd-label">Адрес эдектронной почты</label><br>
+        <label class="StartAdd-label" asp-for="Email"></label><br>
         <input class="input-style input-size-30precent" type="text" asp-for="Email"><br>
+        <span  asp-validation-for="Email"></span><br>
 
-        <label class="StartAdd-label">Придумайте пароль(не менее 6 символов)</label><br>
+        <label class="StartAdd-label" asp-for="Password"></label><br>
         <input class="input-style input-size-30precent" type="password" asp-for="Password"><br>
+        <span  asp-validation-for="Password"></span><br>
 
-        <label class="StartAdd-label">Повторите пароль</label><br>
+        <label asp-for="confirmPassword" class="StartAdd-label"></label><br>
         <input class="input-style input-size-30precent" type="password" asp-for="confirmPassword"><br>
+        <span asp-validation-for="confirmPassword"></span><br>
 
-        <label class="StartAdd-label">Введите имя(будет видно другим пользователям)</label><br>
+        <label class="StartAdd-label" asp-for="Name"></label><br>
         <input class="input-style input-size-30precent" type="text" asp-for="Name"><br>
+        <span asp-validation-for="Name"></span><br>
 
-        <label class="StartAdd-label">Введите город (отображение событий в этом городе)</label><br>
+        <label class="StartAdd-label" asp-for="Sity"></label><br>
         <input class="input-style input-size-30precent" type="text" asp-for="Sity"><br>
 
-        <label class="StartAdd-label">Ваши интересы в тезисах</label><br>
+
+        <label class="StartAdd-label" asp-for="Tegs"></label><br>
         <input class="input-style input-size-30precent" type="text" asp-for="Tegs"><br>
         
         <input class="button-style input-size-30precent" type="submit" value="Регистрация"><br>
