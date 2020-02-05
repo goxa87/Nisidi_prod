@@ -12,7 +12,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using EventB.DataContext;
-using EventLib.SelectionServices;
 
 namespace EventB
 {
@@ -51,8 +50,6 @@ namespace EventB
                     options.SlidingExpiration = true;
                 });
             });
-
-            services.AddTransient<IEventSelectorService, EventSelectorService>();
 
         }
 
