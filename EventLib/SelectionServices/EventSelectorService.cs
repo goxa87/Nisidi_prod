@@ -36,7 +36,7 @@ namespace EventLib.SelectionServices
         /// <param name="personTegs">список интересов пользователя</param>
         /// <param name="context">контекст данных</param>
         /// <param name="personId">id пользователя</param>
-        /// <returns></returns>
+        /// <returns>bool (true если удовлетворяет начальным условиям заполнения)</returns>
         bool SelectionLogic(Event e, IEnumerable<string> personTegs, Context context, Person p)
         {        
             // если приглашен взять из таблицы связи посетителей события
@@ -70,7 +70,7 @@ namespace EventLib.SelectionServices
         {
             var personTegs = TegSplitter.GetEnumerable(p.Interest);          
                        
-            return context.Events.Where( e => SelectionLogic(e,personTegs,context, p));            
+            return context.Events.Where( e => SelectionLogic(e, personTegs, context, p));            
 
             //return null;
 

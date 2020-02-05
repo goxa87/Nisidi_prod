@@ -16,7 +16,26 @@ namespace MyTests
 
         static void Main(string[] args)
         {
+            #region проверка фэйк репозитория
             //var repo = new CheckFakeRepo(3, 10, 0);
+            #endregion
+            #region проверка тег сплиттера 
+            //string test1 = "чтото норм, rfrjtnjrf;dsds\\ds,dsd,/,1235fd";
+            //WriteLine(test1);
+            //TegSplitter_display t1 = new TegSplitter_display(test1);
+            //WriteLine(t1.GetSplitTegs());
+
+            //string test2 = "какоето длинное слово";
+            //WriteLine(test2);
+            //TegSplitter_display t2 = new TegSplitter_display(test2);
+            //WriteLine(t2.GetSplitTegs());
+
+            //string test3 = ",,,,,,,,,";
+            //WriteLine(test3);
+            //TegSplitter_display t3 = new TegSplitter_display(test3);
+            //WriteLine(t3.GetSplitTegs());
+            #endregion
+            ReadKey();
         }
     }
 }

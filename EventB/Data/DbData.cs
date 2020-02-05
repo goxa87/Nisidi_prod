@@ -1,4 +1,5 @@
-﻿using EventB.Models;
+﻿using EventB.DataContext;
+using EventB.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,51 +10,49 @@ namespace EventB.Data
 
     public class DbData : IDataProvider
     {
+        //экземпляр контекста
+        Context context { get; set; }
 
-
-        public void AddEvent(Event e)
+        public DbData(Context c) => context = c;
+        /// <summary>
+        /// добавить Событие асинхронно
+        /// </summary>
+        /// <param name="e">экземпляр события</param>
+        public async void AddEvent(Event e)
         {
-            throw new NotImplementedException();
+            context.Events.Add(e);
+            await context.SaveChangesAsync();
+        }
+        /// <summary>
+        /// добавить в БД Person асинхрнонно
+        /// </summary>
+        /// <param name="p">Пользователь</param>
+        public async void AddPerson(Person p)
+        {
+            context.Persons.Add(p);
+            await context.SaveChangesAsync();
         }
 
-        public void AddPerson(Person p)
+        /// <summary>
+        /// Добавляет информацию о посещении события пользователем
+        /// </summary>
+        /// <param name="v">экземпляр Vizitors который связывает событтия и пользователей</param>
+        public async void AddVizitor(Vizitors v)
         {
-            throw new NotImplementedException();
+            context.Vizitors.Add(v);
+            await context.SaveChangesAsync();
         }
 
-        public void AddVizitor(Vizitors v)
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerable<Chat> GetChat() => context.Chats;
 
-        public IEnumerable<Chat> GetChat()
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerable<Event> GetEvents() => context.Events;
 
-        public IEnumerable<Event> GetEvents()
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerable<Message> GetMessage() => context.Messages;
 
-        public IEnumerable<Message> GetMessage()
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerable<Person> GetPersons() => context.Persons;
 
-        public IEnumerable<Person> GetPersons()
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerable<UserChat> GetUserChat() =>context.UserChats;
 
-        public IEnumerable<UserChat> GetUserChat()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Vizitors> GetVizitors()
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerable<Vizitors> GetVizitors() => context.Vizitors;
     }
 }
