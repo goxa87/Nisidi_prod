@@ -95,7 +95,6 @@ ul li a span:nth-child(4) {
     }
 
 .shared-login {
-    float:right;
 }
 
 .menu-bottom-line {
@@ -262,10 +261,4 @@ ul li a span:nth-child(4) {
     margin: 0;
     color: #1b5972;
     margin: 10px 5px;
-}
-
-.validation-failed {
-    color:red;
-    font-size:12px; 
-
 }

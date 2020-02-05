@@ -28,6 +28,6 @@ namespace EventB.Services
         /// <param name="p">пользователь для которого осуществляется потиск</param>
         /// <param name="context">сонтекст данных</param>
         /// <returns>список событий удовлетворяющий условиям</returns>
-        public IEnumerable<Event> GetCustomEventList(CostomSelectionArgs args, Person p, Context context);
+        public IEnumerable<Event> GetCustomEventList(CostomSelectionArgs args, IDataProvider db);
     }
 }

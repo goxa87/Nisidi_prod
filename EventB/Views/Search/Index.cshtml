@@ -1,4 +1,4 @@
-﻿
+﻿@model EventB.ViewModels.EventSearchViewModel
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -10,28 +10,29 @@
 </div>
 <hr class="item-inner-separator">
 
-<form action="input" method="post">
+<form asp-action="Search" asp-antiforgery="true"  method="post">
     <label class="StartAdd-label">Название:</label><br>
-    <input class="StartAdd-Entry-title" type="text" name="a"><br>
+    <input class="StartAdd-Entry-title" type="text" asp-for="Title"><br>
 
     <label class="StartAdd-label">Теги:</label><br>
-    <input class="StartAdd-Entry-title" type="text" name="a"><br>
+    <input class="StartAdd-Entry-title" type="text" asp-for="Tegs"><br>
 
     <label class="StartAdd-label">Дата начала С:</label><br>
-    <input class="StartAdd-Date" type="datetime-local" name="a"><br>
+    <input class="StartAdd-Date" type="datetime-local" asp-for="DateStart"><br>
 
     <label class="StartAdd-label">Дата начала ПО:</label><br>
-    <input class="StartAdd-Date" type="datetime-local" name="a"><br>
+    <input class="StartAdd-Date" type="datetime-local" asp-for="DateEnd"><br>
 
     <label class="StartAdd-label">Город:</label><br>
-    <input class="StartAdd-Entry-title" type="text" name="a"><br>
+    <input class="StartAdd-Entry-title" type="text" asp-for="Sity"><br>
 
     <label class="StartAdd-label">Место проведения:</label><br>
-    <input class="StartAdd-Entry-title" type="text" name="a"><br><br>
+    <input class="StartAdd-Entry-title" type="text" asp-for="Place"><br>
+
+    <label class="StartAdd-label">Только события друзей</label>
+    <input type="checkbox" asp-for="FriendsOnly" /><br><br>
 
     <input class="StartAdd-submit" type="submit" name="f" value="Найти"><br>
-
-
 
 </form>
 

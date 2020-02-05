@@ -1,0 +1,21 @@
+﻿@model IEnumerable<EventB.Models.Event>
+
+@{
+    ViewData["Title"] = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Результат поиска</h1>
+@{
+    if (Model.Count() < 1)
+    { <h5>Ничего не найдено</h5>}
+    else
+    {
+        foreach (var e in Model)
+        { 
+            <h5>@e.Title</h5>
+        }
+    }
+ }
+
+

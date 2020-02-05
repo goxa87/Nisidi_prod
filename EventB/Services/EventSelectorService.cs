@@ -18,11 +18,15 @@ namespace EventB.Services
         /// </summary>
         /// <param name="args">Аргументы расширенного поиска</param>
         /// <param name="p">пользователь для которого осуществляется потиск</param>
-        /// <param name="context">сонтекст данных</param>
+        /// <param name="db">контекст данных</param>
         /// <returns>список событий удовлетворяющий условиям</returns>
-        public IEnumerable<Event> GetCustomEventList(CostomSelectionArgs args, Person p, Context context)
+        public IEnumerable<Event> GetCustomEventList(CostomSelectionArgs args, IDataProvider db)
         {
-            return null;
+            var temp = new List<Event>()
+            { new Event() {Title="*"}, new Event() {Title="*"} };
+
+
+            return temp;
         }
 
         /// <summary>
@@ -66,7 +70,7 @@ namespace EventB.Services
         /// Метод возвращает результат поиска по-умолчанию для текущего пользователя
         /// </summary>
         /// <param name="p">пользователь для которого будет осуществлятся поиск</param>
-        /// <param name="context">сонтекст данных</param>
+        /// <param name="c">контекст данных</param>
         /// <returns>список событий удовлетворяющий условиям</returns>
         public IEnumerable<Event> GetStartEventList(Person p, IDataProvider c)
         {
