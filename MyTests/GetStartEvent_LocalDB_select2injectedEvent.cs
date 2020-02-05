@@ -1,6 +1,5 @@
 ﻿using EventB.Data;
 using EventB.Models;
-using EventLib.SelectionServices;
 using System;
 using System.Collections.Generic;
 using System.Text;

@@ -7,12 +7,14 @@ using EventB.Models;
 using EventB.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+//using EventB.Services;
 
 namespace EventB.Controllers
 {
     public class EventsController : Controller
     {
         private Context _context { get; }
+        //private EventSelectorSevice 
 
         public EventsController(Context c)
         {

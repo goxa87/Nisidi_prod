@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EventB\EventB.csproj" />
-    <ProjectReference Include="..\EventLib\EventLib.csproj" />
   </ItemGroup>
 
 </Project>
