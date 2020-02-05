@@ -41,7 +41,7 @@ namespace EventLib.SelectionServices
         {        
             // если приглашен взять из таблицы связи посетителей события
             if (context.Vizitors.Where(y => y.EventId == e.EventId && y.PersonId == p.PersonId).Count() > 0) return true;
-
+            var x = context.Vizitors;
             // если специальный тип сразу в список
 
             if (e.Type == EventType.Special) return true;

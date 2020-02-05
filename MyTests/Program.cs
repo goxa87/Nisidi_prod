@@ -15,13 +15,8 @@ namespace MyTests
         }
 
         static void Main(string[] args)
-        { 
-        //{
-        //    RepList_AddRemove();
-
-        //    ReadKey();
-
-
+        {
+            //var repo = new CheckFakeRepo(3, 10, 0);
         }
     }
 }
