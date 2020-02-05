@@ -12,7 +12,7 @@ namespace EventB.Auth
     public class UserRegistration
     {
 
-        [Required(ErrorMessage ="не введен адрес"), DataType(DataType.EmailAddress)]
+        [Required(ErrorMessage ="не введен адрес"), DataType(DataType.EmailAddress)]        
         public string Email { get; set; }
 
         [Required(ErrorMessage ="Не введен пароль.")]

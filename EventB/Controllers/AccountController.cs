@@ -72,13 +72,7 @@ namespace EventB.Controllers
                 var createResult = await userManager.CreateAsync(user, model.Password);
 
                 if (createResult.Succeeded)
-                {
-                    //добавление аккаунта к пользователю
-                    //var person = new Person() { Name = model.Name, Email = model.Email, Sity = model.Sity, Interest = model.Tegs };
-                    //var user2 = await userManager.FindByEmailAsync(model.Email);
-                    //user2.Person = person;
-                    // userManager.UpdateAsync(user2);
-
+                {                  
                     // надо както его прилепить к пользователю
                     await signInManager.SignInAsync(user, false);
                     return RedirectToAction("Start", "Events");

@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using EventB.DataContext;
 using EventB.Services;
+using EventB.Data;
 
 namespace EventB
 {
@@ -29,7 +30,9 @@ namespace EventB
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
             services.AddDbContext<DataContext.Context>();
+            services.AddScoped<IDataProvider, DbData>();
 
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<Context>().AddDefaultTokenProviders();
 
