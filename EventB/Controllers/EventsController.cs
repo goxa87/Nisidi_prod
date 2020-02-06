@@ -11,6 +11,9 @@ using EventB.Services;
 using Microsoft.AspNetCore.Identity;
 using EventB.Auth;
 using EventB.Data;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace EventB.Controllers
 {
@@ -20,13 +23,15 @@ namespace EventB.Controllers
         private IEventSelectorService selectorService { get; set; }
         private readonly SignInManager<User> userManager;
         private readonly IDataProvider data;
+        IWebHostEnvironment environment;
 
-        public EventsController(Context c, IEventSelectorService ss , SignInManager<User> UM, IDataProvider db)
+        public EventsController(Context c, IEventSelectorService ss , SignInManager<User> UM, IDataProvider db, IWebHostEnvironment env)
         {
             _context = c;
             selectorService = ss;
             userManager = UM;
             data = db;
+            environment = env;
         }
 
         public async Task<IActionResult> Start()
@@ -49,8 +54,23 @@ namespace EventB.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Add(string Title,string Body, string Tegs, string Sity, string Place, DateTime Date)
+        public async Task<IActionResult> Add(string Title, string Body, string Tegs, string Sity, string Place, DateTime Date, IFormFile file)
         {
+            Person creator = _context.Persons.Where(e => e.Email == User.Identity.Name).SingleOrDefaultAsync().Result;
+
+            string src = "/images/defaultimg.jpg";
+            if (file != null)
+            {
+                
+                string fileName = String.Concat(DateTime.Now.ToString("dd-MM-yy_hh-mm"), "_", creator.PersonId.ToString(),"_",file.FileName);
+                src = String.Concat("/images/EventImages/",fileName);
+
+                using (var FS = new FileStream(environment.WebRootPath + src, FileMode.Create))
+                {
+                    await file.CopyToAsync(FS);
+                }
+            }
+
             _context.Events.Add(
                 new Event() { 
                             Title=Title,
@@ -59,8 +79,8 @@ namespace EventB.Controllers
                             Sity= Sity,
                             Place= Place,
                             Date=Date,
-                            Creator=_context.Persons.Where(e=>e.Email==User.Identity.Name).SingleOrDefaultAsync().Result.PersonId,
-                            Image="/img/img.jpg",
+                            Creator=creator.PersonId,
+                            Image=src,
                             CreationDate = DateTime.Now,
                             Likes=0,
                             Views=0,

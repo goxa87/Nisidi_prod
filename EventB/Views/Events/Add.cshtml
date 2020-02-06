@@ -1,7 +1,7 @@
 ﻿
 
 <h2>Add</h2>
-<form action="Add" method="post">
+<form action="Add" method="post" enctype="multipart/form-data">
     <label class="StartAdd-label">Заголовок</label><br>
     <input class="StartAdd-Entry-title" type="text" name="Title" /><br>
     <label class="StartAdd-label">Описание</label><br>
@@ -14,5 +14,9 @@
     <input class="StartAdd-Entry-title" type="text" name="Place" /><br>
     <label class="StartAdd-label">Дата события</label><br>
     <input class="StartAdd-Date" type="datetime-local" name="Date" /><br>
+
+    <label class="StartAdd-label">Изображение</label><br>
+    <input class="StartAdd-Date" type="file" name="file" /><br>
+
     <input class="StartAdd-submit" type="submit" value="Сохранить" />
 </form>
