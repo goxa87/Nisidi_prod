@@ -13,7 +13,27 @@
     {
         foreach (var e in Model)
         { 
-            <h5>@e.Title</h5>
+            <div class="item-container">
+
+            <img class="item-img" src="@e.Image" alt="@e.Title">
+            <h2 class="item-title">@e.Title</h2>
+            <h3>@e.Date</h3>
+            <h4>@e.Sity</h4>
+            <h4>@e.Place </h4><br>
+            <h4>@e.Tegs</h4>
+            <p>@e.Body</p>
+            <div class="item-inner-separator"></div>
+            <button>Пойду</button>
+            <button>Поделиться</button>
+            <button>еще что-то</button>
+            <div class="item-inner-separator"></div>
+                <div calss="statistic">
+                    <div class="statistic-item-views">@e.Views</div>
+                    <div class="statistic-item-likes">@e.Likes</div>
+                    <div class="statistic-item-shares">@e.Shares</div>
+                    <div class="author">Автор: @e.PersonCreator.Name</div>
+                </div>
+            </div>
         }
     }
  }

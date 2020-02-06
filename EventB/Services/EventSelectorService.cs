@@ -21,12 +21,43 @@ namespace EventB.Services
         /// <param name="db">контекст данных</param>
         /// <returns>список событий удовлетворяющий условиям</returns>
         public IEnumerable<Event> GetCustomEventList(CostomSelectionArgs args, IDataProvider db)
-        {
-            var temp = new List<Event>()
-            { new Event() {Title="*"}, new Event() {Title="*"} };
+        {            
+            //IQueryable<Event> selection = db.GetEvents().Where(e => e.Sity.ToLower() == args.Sity.ToLower());
 
 
-            return temp;
+            // события друзей
+            //if (args.FriendsOnly)
+            //{
+            //    var friendsId = args.Requester.Friends.Split(',', '.');
+            //        IEnumerable<Event> selection = db.GetEvents().
+            //            Where(e => e.Sity.ToLower() == (!string.IsNullOrWhiteSpace(args.Sity) ? args.Sity.ToLower() : (args.Requester.Sity.ToLower())));
+            //}
+
+            //город
+            IEnumerable<Event> selection = db.GetEvents().
+            Where(e => e.Sity.ToLower() ==
+            (!string.IsNullOrWhiteSpace(args.Sity) ?
+                args.Sity.ToLower() :
+                ((args.Requester != null ? args.Requester.Sity.ToLower() : "москва"))));
+            //IEnumerable<Event> selection = db.GetEvents().
+            //    Where(e => e.Sity.ToLower() == "ставрополь");
+
+            // дата с
+            if (args.DateSince > new DateTime(01,01,02)) selection = selection.Where(e => e.Date > args.DateSince);
+            else selection = selection.Where(e => e.Date > DateTime.Now);
+            // дата по (если не ууказано время будет 00 и нао добавить 1 день)
+            if (args.DateDue > new DateTime(01, 01, 02)) selection = selection.Where(e => e.Date < args.DateDue.AddDays(1));
+            else selection = selection.Where(e => e.Date > DateTime.Now.AddDays(7));
+            //название 
+            if (!string.IsNullOrWhiteSpace(args.Title)) selection = selection.Where(e => e.Title.Contains(args.Title));
+            //место
+            if (!string.IsNullOrWhiteSpace(args.Place)) selection = selection.Where(e => e.Place.Contains(args.Place));
+            // теги
+            if (!string.IsNullOrWhiteSpace(args.Tegs)) 
+                selection = selection.Where(e => TegSplitter.GetEnumerable(e.Tegs).Intersect(TegSplitter.GetEnumerable(args.Tegs)).Count() > 0);
+
+            
+            return selection;
         }
 
         /// <summary>

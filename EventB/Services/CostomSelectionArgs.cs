@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EventB.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,8 +40,14 @@ namespace EventB.Services
         /// часть имени создателя события
         /// </summary>
         public int Creator { get; set; }
+        /// <summary>
+        /// Только события друзей
+        /// </summary>
+        public bool FriendsOnly { get; set; }
+        
+        public Person Requester { get; set; }
 
-        public CostomSelectionArgs(DateTime DS, DateTime DE, string title = "", string sity = "ставрополь", string place = "", string tegs = "", int creator = -1)
+        public CostomSelectionArgs(DateTime DS, DateTime DE, string title = "", string sity = "ставрополь", string place = "", string tegs = "", int creator = -1, bool friends=false, Person req=null)
         {
             Title = title;
             Sity = sity;
@@ -49,6 +56,9 @@ namespace EventB.Services
             Creator = creator;
             DateSince = DS;
             DateDue = DE;
+            FriendsOnly = friends;
+            Requester = req;
+
         }
     }
 }
