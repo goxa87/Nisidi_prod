@@ -11,27 +11,50 @@
 @{ 
     foreach (var e in Model)
     { 
-    <div class="item-container">
+        <div class="top-line"></div>
+        <div class="eventlist-container">
+            <div class="eventlist-img">
+                <a asp-controller="Events" asp-action="Details" asp-route-id="@e.EventId"><img src="@e.Image"></a>
+            </div>
+            <div class="eventlist-info">
+                <a asp-controller="Events" asp-action="Details" asp-route-id="@e.EventId"><h3>@e.Title</h3></a>
+                    <label class="eventlist-label">Город:</label>
+                    <h4>@e.Sity</h4><br>
+                    <label class="eventlist-label">Место:</label>
+                    <h4>@e.Place</h4><br>
+                    <label class="eventlist-label">дата-время:</label>
+                    <h4>@e.Date.ToString("dd.MM.yyyy hh.mm")</h4><br>
+                    <label class="eventlist-label">Билеты:</label>
+                    <h4>билеты</h4><br>
+                    <label class="eventlist-label">Теги:</label>
+                    <h4>
+                        @e.Tegs
+                </h4><BR>
+                <div class="eventlist-stats">
+                    <span>имя создателя вставить в класс</span><BR>
+                    <span>Опубликовано: @e.CreationDate.ToString("dd.MM.yyyy")</span>
+                </div>
+</div>
 
-        <img class="item-img" src="@e.Image" alt="@e.Title">
-        <h2 class="item-title">@e.Title</h2>
-        <h3>@e.Date</h3>
-        <h4>@e.Sity</h4>
-        <h4>@e.Place </h4><br>
-        <h4>@e.Tegs</h4>
-        <p>@e.Body</p>
-        <div class="item-inner-separator"></div>
-        <button>Пойду</button>
-        <button>Поделиться</button>
-        <button>еще что-то</button>
-        <div class="item-inner-separator"></div>
-        <div calss="statistic">
-            <div class="statistic-item-views">@e.Views</div>
-            <div class="statistic-item-likes">@e.Likes</div>
-            <div class="statistic-item-shares">@e.Shares</div>
-            <div class="author">Автор: @e.PersonCreator.Name</div>
         </div>
-    </div>
+        <div class="eventlist-bottom-menu">
+            <div class="will-go">
+                <div class="eventlist-btn-come">Я ПОЙДУ!</div>
+                <div class="will-go-img">
+                    <img src="~/resourses/check-yellow.png" />
+                </div>
+            </div>
+            <div class="eventlist-btn-come-right-col">
+                <img class="info-img" title="просмотров" src="~/resourses/eye.png" />
+                <span class="info-num">@e.Views.ToString()</span>
+                <img class="info-img" title="отметок нравится" src="~/resourses/like.png" />
+                <span class="info-num">@e.Likes.ToString()</span>
+                <img class="info-img" title="отметок Пойду" src="~/resourses/share.png" />
+                <span class="info-num">xxx</span>
+
+            </div>
+        </div>
+
     }
 
 }

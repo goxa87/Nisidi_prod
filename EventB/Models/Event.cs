@@ -80,7 +80,6 @@ namespace EventB.Models
         /// количество отметок поделиться
         /// </summary>
         public int Shares { get; set; }
-
         /// <summary>
         /// количество отметок пойду
         /// </summary>

@@ -90,5 +90,24 @@ namespace EventB.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Start");
         }
+
+        /// <summary>
+        /// вызов деталей event по id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult Details(int? id)
+        {
+            if (id != null)
+            {
+                var item = data.GetEvents().Where(e => e.EventId == id).FirstOrDefault();
+                string author = data.GetPersons().Where(e => e.PersonId == item.Creator).FirstOrDefault().Name;
+                ViewBag.Author = author;
+                return View(item);
+            }
+
+            return NotFound();
+
+        }
     }
 }

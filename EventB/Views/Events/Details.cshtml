@@ -1,0 +1,24 @@
+﻿@model EventB.Models.Event
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="item-container">
+
+        <img class="item-img" src="@Model.Image">
+        <h2 class="item-title">@Model.Title</h2>
+        <h3>@Model.Date.ToString("dd-MM-yyyy hh.mm")</h3>
+        <h4>@Model.Sity</h4>
+        <h4>@Model.Place </h4>
+        <p>@Model.Tegs
+        </p>
+        <div class="item-inner-separator"></div>
+        <div calss="statistic">
+            <div class="statistic-item-views">@Model.Views.ToString()</div>
+            <div class="statistic-item-likes">@Model.Likes.ToString()</div>
+            <div class="statistic-item-shares">@Model.WillGo.ToString()</div>
+            <div class="author">выложил: @ViewBag.Author</div>
+        </div>
+    </div>
+
