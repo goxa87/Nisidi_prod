@@ -1,24 +1,75 @@
-﻿@model EventB.Models.Event
+﻿@model EventB.ViewModels.EventDetailsViewModel
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-    <div class="item-container">
+<div class="top-line"></div>
+<div class="item-container">
+    <div class="item-container-img">
+        <img class="item-img" src="@Model.Event.Image">
+    </div>
+    <h2 class="item-title">@Model.Event.Title</h2>
+    <h3>Когда: @Model.Event.Date.ToString("dd-MM-yyyy hh.mm")</h3>
+    <h4>Город: @Model.Event.Sity</h4>
+    <h4>Где: @Model.Event.Place </h4>
+    <p>@Model.Event.Body</p>
+    <p>ТЕГИ: @Model.Event.Tegs</p>
+    <div class="item-inner-separator"></div>
 
-        <img class="item-img" src="@Model.Image">
-        <h2 class="item-title">@Model.Title</h2>
-        <h3>@Model.Date.ToString("dd-MM-yyyy hh.mm")</h3>
-        <h4>@Model.Sity</h4>
-        <h4>@Model.Place </h4>
-        <p>@Model.Tegs
-        </p>
-        <div class="item-inner-separator"></div>
-        <div calss="statistic">
-            <div class="statistic-item-views">@Model.Views.ToString()</div>
-            <div class="statistic-item-likes">@Model.Likes.ToString()</div>
-            <div class="statistic-item-shares">@Model.WillGo.ToString()</div>
-            <div class="author">выложил: @ViewBag.Author</div>
+    <div class="author">выложил: @Model.CreatorName</div>
+
+    <div class="item-inner-separator"></div>
+</div>
+
+<div class="eventlist-bottom-menu">
+    <div class="will-go">
+        <div class="eventlist-btn-come">Я ПОЙДУ!</div>
+        <div class="will-go-img">
+            <img src="~/resourses/check-yellow.png" />
+        </div>
+    </div>
+    <div class="eventlist-btn-come-right-col">
+        <img class="info-img" title="просмотров" src="~/resourses/eye.png" />
+        <span class="info-num">@Model.Event.Views.ToString()</span>
+        <img class="info-img" title="отметок нравится" src="~/resourses/like.png" />
+        <span class="info-num">@Model.Event.Likes.ToString()</span>
+        <img class="info-img" title="отметок Пойду" src="~/resourses/willgo2.png" />
+        <span class="info-num">@Model.Event.WillGo.ToString()</span>
+    </div>
+</div>
+
+<!--  Список посетителей  -->
+<div class="eventitem-vizitors-list">
+    <div class="eventitem-vizitors-list-header">
+        <div>
+            <img class="eventitem-vizitors-list-arrow" src="~/resourses/yellowarrowright.png">
+        </div>
+        <span>Отметились пойдут(@Model.Event.WillGo.ToString()):</span>
+    </div>
+    <div class="eventitem-vizitors-list-body">
+        <div class="eventitem-vizitors-list-body-flex">
+            <div class="eventitem-vizitors-list-body-element">
+                имя какогото чувака васи
+            </div>
+            <div class="eventitem-vizitors-list-body-element">
+                имя какогото чувака васи
+            </div>
+            <div class="eventitem-vizitors-list-body-element">
+                имя какогото чувака васи
+            </div>
+            <div class="eventitem-vizitors-list-body-element">
+                имя какогото чувака васи
+            </div>
+            <div class="eventitem-vizitors-list-body-element">
+                имя какогото чувака васи
+            </div>
+            <div class="eventitem-vizitors-list-body-element">
+                имя какогото чувака васи
+            </div>
         </div>
     </div>
 
+</div>
+
+<!--  comments  -->
