@@ -49,24 +49,12 @@
     </div>
     <div class="eventitem-vizitors-list-body">
         <div class="eventitem-vizitors-list-body-flex">
-            <div class="eventitem-vizitors-list-body-element">
-                имя какогото чувака васи
-            </div>
-            <div class="eventitem-vizitors-list-body-element">
-                имя какогото чувака васи
-            </div>
-            <div class="eventitem-vizitors-list-body-element">
-                имя какогото чувака васи
-            </div>
-            <div class="eventitem-vizitors-list-body-element">
-                имя какогото чувака васи
-            </div>
-            <div class="eventitem-vizitors-list-body-element">
-                имя какогото чувака васи
-            </div>
-            <div class="eventitem-vizitors-list-body-element">
-                имя какогото чувака васи
-            </div>
+            @foreach (var e in Model.Vizitors)
+            { 
+                <div class="eventitem-vizitors-list-body-element">
+                    @e.Value
+                </div>
+            }
         </div>
     </div>
 

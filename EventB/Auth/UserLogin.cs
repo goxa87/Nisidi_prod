@@ -8,10 +8,13 @@ namespace EventB.Auth
 {
     public class UserLogin
     {
-        [Required]
+        [Required(ErrorMessage ="Не заполнено поле \"Логин\"")]
+        [Display(Name ="Адрес электронной почты:")]
         public string LoginProp { get; set; }
 
-        [DataType(DataType.Password),Required]
+        [DataType(DataType.Password)]
+        [Required(ErrorMessage = "Не заполнено поле \"Пароль\"")]
+        [Display(Name = "Пароль:")]
         public string Password { get; set; }
 
         public string ReturnUrl { get; set; }

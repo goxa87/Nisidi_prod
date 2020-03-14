@@ -7,14 +7,55 @@ body {
     background-color: #f1ead8;
     box-sizing: border-box;
 }
+
+a {
+    color:#1b5972;
+    text-decoration: none;
+}
+
+    a:hover {
+        color:#000000;
+        
+    }
+
+main {
+}
+/*ВАЛИДАЦИЯ *****************************************/
+.field-validation-error {
+    color: orangered;
+    display: block;
+    padding:5px;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid orangered;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: orangered;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
 /*>********************************** главное меню _Layout*/
 #main-menu-li {
-    position: relative;
     top: 0px;
     left: 0%;
     margin: 0;
     padding: 0;
     display: flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
 }
 
     #main-menu-li li {
@@ -88,15 +129,27 @@ ul li a span:nth-child(4) {
 #title-container {
     padding: 20px;
     color: #1b5972;
+    background-color: #1b5972;
     font-size: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
 }
 
-    #title-container article {
-        text-align: center;
-    }
-
-.shared-login {
+#title-container article {
+    text-align: center;
+    color: #ffcd00;
 }
+
+.shared-login h5, .shared-login a {
+    color: #e4dcc5;
+}
+
+.shared-login a:hover{
+    color: #ffcd00;
+}
+
+
 
 .menu-bottom-line {
     background-color: #1b5972;
@@ -104,6 +157,38 @@ ul li a span:nth-child(4) {
     width: 100%;
     margin: 0;
     padding: 0;
+}
+/* ******************** формы*/
+
+.small-container {   
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    flex-basis:400px;
+}
+
+.identity-cintainer {
+    width:400px;
+    
+}
+
+input[type="submit"] {
+    border-radius:5px;
+    border: 1px solid #1b5972;
+    background-color: #1b5972;
+    color:#ffcd00;
+    padding:4px 24px;
+}
+
+input[type="text"], input[type="password"] {
+    width:100%;
+    border-radius:5px;
+    background-color:#f1ead8;
+    color:#1b5972;
+    border: 1px solid #1b5972;
+    padding:4px;
 }
 
 /* >****************** добавление записи Event - Add  */

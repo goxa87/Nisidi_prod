@@ -18,7 +18,7 @@
                 <div class="shared-login">
                     @{if (User.Identity.IsAuthenticated)
                         { 
-                            <h5>вход выполнен как @User.Identity.Name </h5>
+                            <h5>ВЫ: @User.Identity.Name </h5>
                             <a asp-action="Exit" asp-controller="Account">Выйти</a>
                         }
                         else

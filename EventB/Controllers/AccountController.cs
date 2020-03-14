@@ -40,11 +40,10 @@ namespace EventB.Controllers
                         return Redirect(model.ReturnUrl);
                     }
                     return RedirectToAction("Start", "Events");
-                }
-                
+                }                
             }
             
-            ModelState.AddModelError("", "User not found");
+            ModelState.AddModelError("", "Пользователь не найден или неверный пароль");
             return View(model);
         }
 
@@ -53,6 +52,7 @@ namespace EventB.Controllers
         {
             return View();
         }
+
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(UserRegistration model)
         {

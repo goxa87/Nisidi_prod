@@ -24,14 +24,21 @@ namespace EventB.Controllers
         private readonly SignInManager<User> userManager;
         private readonly IDataProvider data;
         IWebHostEnvironment environment;
+        IViewModelFactory _VMFactory;
 
-        public EventsController(Context c, IEventSelectorService ss , SignInManager<User> UM, IDataProvider db, IWebHostEnvironment env)
+        public EventsController(Context c, 
+            IEventSelectorService ss , 
+            SignInManager<User> UM, 
+            IDataProvider db, 
+            IWebHostEnvironment env,
+            IViewModelFactory vmFactory)
         {
             _context = c;
             selectorService = ss;
             userManager = UM;
             data = db;
             environment = env;
+            _VMFactory = vmFactory;
         }
 
         public async Task<IActionResult> Start()
@@ -42,7 +49,7 @@ namespace EventB.Controllers
                 return View(selectorService.GetStartEventList(person, data).ToList());
             }
 
-            return View( _context.Events.Where(e=>e.Sity.ToLower()=="москва").Take(30));
+            return View( _context.Events.Where(e=>e.Sity.ToLower()=="ставрополь").Take(30));
             //return View(list);
         }
         [Authorize]
@@ -100,9 +107,7 @@ namespace EventB.Controllers
         {
             if (id != null)
             {
-                var item = data.GetEvents().Where(e => e.EventId == id).FirstOrDefault();
-                string author = data.GetPersons().Where(e => e.PersonId == item.Creator).FirstOrDefault().Name;
-                ViewBag.Author = author;
+                var item = _VMFactory.GetEventDetailsViewModel(userManager, id.Value, data);
                 return View(item);
             }
 

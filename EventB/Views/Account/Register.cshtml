@@ -4,35 +4,39 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Регистрация</h1>
-<div class="identity-cintainer">
-    <form asp-action="Register" asp-antiforgery="true" method="post">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="small-container">
+        <h3>Регистрация</h3>
+        <div class="identity-cintainer">
+            <form asp-action="Register" asp-antiforgery="true" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-        <label class="StartAdd-label" asp-for="Email"></label><br>
-        <input class="input-style input-size-30precent" type="text" asp-for="Email"><br>
-        <span  asp-validation-for="Email"></span><br>
-
-        <label class="StartAdd-label" asp-for="Password"></label><br>
-        <input class="input-style input-size-30precent" type="password" asp-for="Password"><br>
-        <span  asp-validation-for="Password"></span><br>
-
-        <label asp-for="confirmPassword" class="StartAdd-label"></label><br>
-        <input class="input-style input-size-30precent" type="password" asp-for="confirmPassword"><br>
-        <span asp-validation-for="confirmPassword"></span><br>
-
-        <label class="StartAdd-label" asp-for="Name"></label><br>
-        <input class="input-style input-size-30precent" type="text" asp-for="Name"><br>
-        <span asp-validation-for="Name"></span><br>
-
-        <label class="StartAdd-label" asp-for="Sity"></label><br>
-        <input class="input-style input-size-30precent" type="text" asp-for="Sity"><br>
+                <label class="StartAdd-label" asp-for="Email"></label><br>
+                <span asp-validation-for="Email"></span>
+                <input class="input-style input-size-30precent" type="text" asp-for="Email"><br>
 
 
-        <label class="StartAdd-label" asp-for="Tegs"></label><br>
-        <input class="input-style input-size-30precent" type="text" asp-for="Tegs"><br>
-        
-        <input class="button-style input-size-30precent" type="submit" value="Регистрация"><br>
-        <a href="#"><h5>Забыли пароль</h5></a>
-    </form>
-</div>
+                <label class="StartAdd-label" asp-for="Password"></label><br>
+                <span asp-validation-for="Password"></span><br>
+                <input class="input-style input-size-30precent" type="password" asp-for="Password"><br>
+
+                <label asp-for="СonfirmPassword" class="StartAdd-label"></label><br>
+                <span asp-validation-for="СonfirmPassword"></span><br>
+                <input class="input-style input-size-30precent" type="password" asp-for="СonfirmPassword"><br>
+
+                <label class="StartAdd-label" asp-for="Name"></label><br>
+                <span asp-validation-for="Name"></span><br>
+                <input class="input-style input-size-30precent" type="text" asp-for="Name"><br>
+
+                <label class="StartAdd-label" asp-for="Sity"></label><br>
+                <span asp-validation-for="Sity"></span>
+                <input class="input-style input-size-30precent" type="text" asp-for="Sity"><br>
+
+                <label class="StartAdd-label" asp-for="Tegs"></label><br>
+                <input class="input-style input-size-30precent" type="text" asp-for="Tegs"><br>
+
+                <input class="button-style input-size-30precent" type="submit" value="Регистрация"><br>
+            </form>
+        </div>
+    </div>
+
+@{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
