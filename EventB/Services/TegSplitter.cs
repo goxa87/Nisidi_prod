@@ -8,9 +8,9 @@ namespace EventB.Services
     /// <summary>
     /// Разбивает строку тегов на список
     /// </summary>
-    public class TegSplitter
+    public class TegSplitter:ITegSplitter
     {
-        public static IEnumerable<string> GetEnumerable(string input)
+        public IEnumerable<string> GetEnumerable(string input)
         {
             return input.Split(' ', ',', '.', '/', ':', '*', '+', '-', '@').Where(e => !string.IsNullOrEmpty(e));
         }

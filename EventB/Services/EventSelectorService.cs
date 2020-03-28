@@ -1,4 +1,4 @@
-﻿using EventB.Data;
+﻿
 using EventB.DataContext;
 using EventB.Models;
 using System;
@@ -11,7 +11,7 @@ namespace EventB.Services
     /// <summary>
     /// представляет методы для выбора событий из контекста данных по условиям
     /// </summary>
-    public class EventSelectorService : IEventSelectorService
+    public class EventSelectorService 
     {
         /// <summary>
         /// Метод возвращающий результат настраиваемого поиска событий
@@ -20,8 +20,8 @@ namespace EventB.Services
         /// <param name="p">пользователь для которого осуществляется потиск</param>
         /// <param name="db">контекст данных</param>
         /// <returns>список событий удовлетворяющий условиям</returns>
-        public IEnumerable<Event> GetCustomEventList(CostomSelectionArgs args, IDataProvider db)
-        {            
+        //public IEnumerable<Event> GetCustomEventList(CostomSelectionArgs args)
+        //{            
             //IQueryable<Event> selection = db.GetEvents().Where(e => e.Sity.ToLower() == args.Sity.ToLower());
 
 
@@ -34,31 +34,31 @@ namespace EventB.Services
             //}
 
             //город
-            IEnumerable<Event> selection = db.GetEvents().
-            Where(e => e.Sity.ToLower() ==
-            (!string.IsNullOrWhiteSpace(args.Sity) ?
-                args.Sity.ToLower() :
-                ((args.Requester != null ? args.Requester.Sity.ToLower() : "москва"))));
             //IEnumerable<Event> selection = db.GetEvents().
-            //    Where(e => e.Sity.ToLower() == "ставрополь");
+            //Where(e => e.Sity.ToLower() ==
+            //(!string.IsNullOrWhiteSpace(args.Sity) ?
+            //    args.Sity.ToLower() :
+            //    ((args.Requester != null ? args.Requester.Sity.ToLower() : "москва"))));
+            ////IEnumerable<Event> selection = db.GetEvents().
+            ////    Where(e => e.Sity.ToLower() == "ставрополь");
 
-            // дата с
-            if (args.DateSince > new DateTime(01,01,02)) selection = selection.Where(e => e.Date > args.DateSince);
-            else selection = selection.Where(e => e.Date > DateTime.Now);
-            // дата по (если не ууказано время будет 00 и нао добавить 1 день)
-            if (args.DateDue > new DateTime(01, 01, 02)) selection = selection.Where(e => e.Date < args.DateDue.AddDays(1));
-            else selection = selection.Where(e => e.Date > DateTime.Now.AddDays(7));
-            //название 
-            if (!string.IsNullOrWhiteSpace(args.Title)) selection = selection.Where(e => e.Title.Contains(args.Title));
-            //место
-            if (!string.IsNullOrWhiteSpace(args.Place)) selection = selection.Where(e => e.Place.Contains(args.Place));
-            // теги
-            if (!string.IsNullOrWhiteSpace(args.Tegs)) 
-                selection = selection.Where(e => TegSplitter.GetEnumerable(e.Tegs).Intersect(TegSplitter.GetEnumerable(args.Tegs)).Count() > 0);
+            //// дата с
+            //if (args.DateSince > new DateTime(01,01,02)) selection = selection.Where(e => e.Date > args.DateSince);
+            //else selection = selection.Where(e => e.Date > DateTime.Now);
+            //// дата по (если не ууказано время будет 00 и нао добавить 1 день)
+            //if (args.DateDue > new DateTime(01, 01, 02)) selection = selection.Where(e => e.Date < args.DateDue.AddDays(1));
+            //else selection = selection.Where(e => e.Date > DateTime.Now.AddDays(7));
+            ////название 
+            //if (!string.IsNullOrWhiteSpace(args.Title)) selection = selection.Where(e => e.Title.Contains(args.Title));
+            ////место
+            //if (!string.IsNullOrWhiteSpace(args.Place)) selection = selection.Where(e => e.Place.Contains(args.Place));
+            //// теги
+            //if (!string.IsNullOrWhiteSpace(args.Tegs)) 
+            //    selection = selection.Where(e => TegSplitter.GetEnumerable(e.Tegs).Intersect(TegSplitter.GetEnumerable(args.Tegs)).Count() > 0);
 
             
-            return selection;
-        }
+        //    return null;
+        //}
 
         /// <summary>
         /// предикат для поиска событий в бд(для начальног поиска по умолчанию)
@@ -69,33 +69,33 @@ namespace EventB.Services
         /// <param name="context">контекст данных</param>
         /// <param name="personId">id пользователя</param>
         /// <returns>bool (true если удовлетворяет начальным условиям заполнения)</returns>
-        bool CommonSelectionLogic(Event e, IEnumerable<string> personTegs, Context context, Person p)
-        {
-            // сокращение за счет отброса не подходящх городов
-            //по идее эта штука должна сократить время выполнения запроса
-            if (e.Sity.ToLower() == p.Sity.ToLower()) return false;
+        //bool CommonSelectionLogic(Event e, IEnumerable<string> personTegs, Context context, User p);
+        //{
+        //    // сокращение за счет отброса не подходящх городов
+        //    //по идее эта штука должна сократить время выполнения запроса
+        //    if (e.City.ToLower() == p.City.ToLower()) return false;
 
-            // если приглашен взять из таблицы связи посетителей события
-            //if (context.Vizitors.Where(y => y.EventId == e.EventId && y.PersonId == p.PersonId).Count() > 0) return true;
-            //var x = context.Vizitors;
-            // если специальный тип сразу в список
+        //    // если приглашен взять из таблицы связи посетителей события
+        //    //if (context.Vizitors.Where(y => y.EventId == e.EventId && y.PersonId == p.PersonId).Count() > 0) return true;
+        //    //var x = context.Vizitors;
+        //    // если специальный тип сразу в список
 
-            if (e.Type == EventType.Special) return true;
+        //    if (e.Type == EventType.Special) return true;
 
-            // если платное
-            // если город
-            // если дата
-            // если теги
-            if (e.Sity.ToLower() == p.Sity.ToLower() &&
-                e.Type == EventType.Global &&
-                e.Date > DateTime.Now &&
-                TegSplitter.GetEnumerable(e.Tegs).Intersect(personTegs).Count() > 0)
-            {
-                return true;
-            }
+        //    // если платное
+        //    // если город
+        //    // если дата
+        //    // если теги
+        //    if (e.City.ToLower() == p.City.ToLower() &&
+        //        e.Type == EventType.Global &&
+        //        e.Date > DateTime.Now &&
+        //        TegSplitter.GetEnumerable(e.Tegs).Intersect(personTegs).Count() > 0)
+        //    {
+        //        return true;
+        //    }
 
-            else return false;
-        }
+        //    else return false;
+        //}
 
         /// <summary>
         /// Метод возвращает результат поиска по-умолчанию для текущего пользователя
@@ -103,8 +103,8 @@ namespace EventB.Services
         /// <param name="p">пользователь для которого будет осуществлятся поиск</param>
         /// <param name="c">контекст данных</param>
         /// <returns>список событий удовлетворяющий условиям</returns>
-        public IEnumerable<Event> GetStartEventList(Person p, IDataProvider c)
-        {
+        //public IEnumerable<Event> GetStartEventList(User p)
+        //{
             // чтобне выполнять этого в каждой итерации
             //var personTegs = TegSplitter.GetEnumerable(p.Interest);          
 
@@ -115,34 +115,36 @@ namespace EventB.Services
 
             // вариант 2 комбинация Enumerable & Queryable
             // data
-            var personTegs = TegSplitter.GetEnumerable(p.Interest);
-            string sity = p.Sity.ToLower();
-            DateTime DTNow = DateTime.Now;
-            int personId = p.PersonId;
-            // выбор тех в которые пользователь создал сам 
-            //созданные этим пользователем
-            //IEnumerable<Event> evOwn = c.context.Events.Where(e => e.Creator == personId && e.Date > DTNow);
-            IEnumerable<Event> evOwn = c.GetEvents().Where(e => e.Creator == personId && e.Date > DTNow);
+            //var personTegs = TegSplitter.GetEnumerable(p.Interest);
+            //string sity = p.City.ToLower();
+            //DateTime DTNow = DateTime.Now;
+            //string personName = p.Name;
+            //// выбор тех в которые пользователь создал сам 
+            ////созданные этим пользователем
+            ////IEnumerable<Event> evOwn = c.context.Events.Where(e => e.Creator == personId && e.Date > DTNow);
+            //IEnumerable<Event> evOwn = c.GetEvents().Where(e => e.Creator == personName && e.Date > DTNow);
 
-            //события от организации для города пользователя
-            //IEnumerable<Event> evGlobals = c.context.Events.Where(e => e.Type == EventType.Special && e.Date > DTNow && e.Sity.ToLower() == sity);
-            IEnumerable<Event> evGlobals = c.GetEvents().Where(e => e.Type == EventType.Special && e.Date > DTNow && e.Sity.ToLower() == sity);
-            //остальные это для города пользователя
-            //IQueryable<Event> evSelect = c.context.Events.Where(e => e.Sity.ToLower() == sity);
-            IEnumerable<Event> evSelect = c.GetEvents().Where(e => e.Sity.ToLower() == sity);
-            // дата предстоящшие
-            evSelect = evSelect.Where(e => e.Date > DTNow);
-            // тип платные
-            evSelect = evSelect.Where(e => e.Type == EventType.Global);
-            // теги которые совпадают с тегами пользователя
-            evSelect = evSelect.Where(e => TegSplitter.GetEnumerable(e.Tegs).Intersect(personTegs).Count() > 0);
+            ////события от организации для города пользователя
+            ////IEnumerable<Event> evGlobals = c.context.Events.Where(e => e.Type == EventType.Special && e.Date > DTNow && e.Sity.ToLower() == sity);
+            //IEnumerable<Event> evGlobals = c.GetEvents().Where(e => e.Type == EventType.Special && e.Date > DTNow && e.Sity.ToLower() == sity);
+            ////остальные это для города пользователя
+            ////IQueryable<Event> evSelect = c.context.Events.Where(e => e.Sity.ToLower() == sity);
+            //IEnumerable<Event> evSelect = c.GetEvents().Where(e => e.Sity.ToLower() == sity);
+            //// дата предстоящшие
+            //evSelect = evSelect.Where(e => e.Date > DTNow);
+            //// тип платные
+            //evSelect = evSelect.Where(e => e.Type == EventType.Global);
+            //// теги которые совпадают с тегами пользователя
+            //evSelect = evSelect.Where(e => TegSplitter.GetEnumerable(e.Tegs).Intersect(personTegs).Count() > 0);
 
-            var rezult = evOwn.Union(evGlobals).Union(evSelect).OrderBy(e => e.Date).ToList();
+            //var rezult = evOwn.Union(evGlobals).Union(evSelect).OrderBy(e => e.Date).ToList();
 
-            return rezult;
+            //return rezult;
 
             //// проверитть производительность!!! 
             //объединить в 1
-        }
+
+        //    return null;
+        //}
     }
 }

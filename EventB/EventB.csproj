@@ -17,6 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Auth\" />
+    <Folder Include="Data\" />
     <Folder Include="wwwroot\images\EventImages\" />
     <Folder Include="wwwroot\images\Profileimages\" />
   </ItemGroup>

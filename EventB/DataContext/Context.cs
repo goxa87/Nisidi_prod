@@ -1,4 +1,4 @@
-﻿using EventB.Auth;
+﻿
 using EventB.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -12,35 +12,42 @@ namespace EventB.DataContext
 {
     public class Context : IdentityDbContext<User>
     {
-        //public Context(DbContextOptions opt) : base(opt) { }
         /// <summary>
-        /// Чаты
-        /// </summary>
-        public DbSet<Chat> Chats { get; set; }
-        /// <summary>
-        /// События
+        /// События.
         /// </summary>
         public DbSet<Event> Events { get; set; }
+
         /// <summary>
-        /// Сообщение
+        /// Связка пользователей и событий.
+        /// </summary>
+        public DbSet<Vizit> Vizits { get; set; }
+
+        /// <summary>
+        /// Связка чатов с пользователями.
+        /// </summary>
+        public DbSet<UserChat> UserChats { get; set; }
+
+        /// <summary>
+        /// Чаты.
+        /// </summary>
+        public DbSet<Chat> Chats { get; set; }
+        
+        /// <summary>
+        /// Сообщение.
         /// </summary>
         public DbSet<Message> Messages { get; set; }
         /// <summary>
-        /// профиль пользователя
+        /// Строковые представления интересов пользователя.
         /// </summary>
-        public DbSet<Person> Persons { get; set; }
+        public DbSet<Interes> Intereses { get; set; }
         /// <summary>
-        /// связка чатов с пользователями
+        /// Список друзей для пользователей.
         /// </summary>
-        public DbSet<UserChat> UserChats { get; set; }
-        /// <summary>
-        /// связка пользователей и событий
-        /// </summary>
-        public DbSet<Vizitors> Vizitors { get; set; }
+        public DbSet<Friend> Friends { get; set; }
 
+        #region FluentApi Commented
         //protected override void OnModelCreating(ModelBuilder builder)
         //{
-
         //    //создание таблиц
         //    builder.Entity<Chat>().ToTable("Chat");
         //    builder.Entity<Event>().ToTable("Event");
@@ -51,21 +58,23 @@ namespace EventB.DataContext
 
         //    builder.Entity<UserChat>().HasOne(e => e.Person).WithMany(e => e.UserChat)
         //        .HasForeignKey(e => e.PersonId).OnDelete(DeleteBehavior.Cascade);
-
         //    builder.Entity<UserChat>().HasOne(e => e.Chat).WithMany(e => e.UserChat)
         //        .HasForeignKey(e => e.ChatId).OnDelete(DeleteBehavior.Cascade);
-
         //    builder.Entity<Vizitors>().HasOne(e => e.Person).WithMany(e => e.Vizitors)
         //        .HasForeignKey(e => e.PersonId).OnDelete(DeleteBehavior.ClientSetNull);
-
         //    builder.Entity<Vizitors>().HasOne(e => e.Event).WithMany(e => e.Vizitors)
         //        .HasForeignKey(e => e.EventId).OnDelete(DeleteBehavior.ClientSetNull);
         //}
-
+        #endregion
+        
+        /// <summary>
+        /// Конфигурация поставщика данных.
+        /// </summary>
+        /// <param name="builder"></param>
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
             builder.UseSqlServer(
-                @"Server=georgiy-пк\sqlexpress;DataBase=EventBuilder1;Trusted_Connection=True;"
+                @"Server=georgiy-пк\sqlexpress;DataBase=EventBuilder2;Trusted_Connection=True;"
                 );
         }
 

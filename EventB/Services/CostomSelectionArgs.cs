@@ -45,9 +45,9 @@ namespace EventB.Services
         /// </summary>
         public bool FriendsOnly { get; set; }
         
-        public Person Requester { get; set; }
+        public User Requester { get; set; }
 
-        public CostomSelectionArgs(DateTime DS, DateTime DE, string title = "", string sity = "ставрополь", string place = "", string tegs = "", int creator = -1, bool friends=false, Person req=null)
+        public CostomSelectionArgs(DateTime DS, DateTime DE, string title = "", string sity = "ставрополь", string place = "", string tegs = "", int creator = -1, bool friends=false, User req=null)
         {
             Title = title;
             Sity = sity;
@@ -58,7 +58,6 @@ namespace EventB.Services
             DateDue = DE;
             FriendsOnly = friends;
             Requester = req;
-
         }
     }
 }

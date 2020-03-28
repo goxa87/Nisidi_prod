@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EventB.Auth;
 using EventB.DataContext;
 using EventB.Models;
+using EventB.Services;
+using EventB.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,11 +15,21 @@ namespace EventB.Controllers
     {
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
+        private readonly Context context;
 
-        public AccountController(UserManager<User> UM, SignInManager<User> SIM)
+        private readonly ITegSplitter tegSplitter;
+
+
+        public AccountController(UserManager<User> UM,
+            SignInManager<User> SIM,
+            ITegSplitter TS,
+            Context Context
+            )
         {
             userManager = UM;
             signInManager = SIM;
+            tegSplitter = TS;
+            context = Context;
         }
 
         public  IActionResult Login(string returnUrl)
@@ -58,20 +69,22 @@ namespace EventB.Controllers
         {
             if (ModelState.IsValid)
             {
-                var person = new Person()
-                {
-                    Name = model.Name,
-                    Email = model.Email,
-                    Sity = model.Sity,
-                    Interest = model.Tegs,
-                    Role = "user"
-                };
-                var user = new User() { Email = model.Email, UserName = model.Email, Person = person };
+                var user = new User() { Email = model.Email, UserName = model.Email,  Name = model.Name, City = model.City };            
 
                 var createResult = await userManager.CreateAsync(user, model.Password);
 
                 if (createResult.Succeeded)
-                {                  
+                {
+                    var interests = new List<Interes>();
+                    var splitted = tegSplitter.GetEnumerable(model.Tegs);
+                    foreach (var inter in splitted)
+                    {
+                        interests.Add(new Interes { Value = inter });
+                    }
+
+                    user.Intereses.AddRange(interests);
+                    context.Users.Update(user);
+                    await context.SaveChangesAsync();
                     // надо както его прилепить к пользователю
                     await signInManager.SignInAsync(user, false);
                     return RedirectToAction("Start", "Events");

@@ -7,116 +7,100 @@ using System.Threading.Tasks;
 namespace EventB.Models
 {
     /// <summary>
-    /// платное публичное, частное по приглашению , специальное(от администрации сайта)
+    /// Платное публичное, частное по приглашению , специальное(от администрации сайта).
     /// </summary>
     public enum EventType {Global, Private, Special};
 
     /// <summary>
-    /// Событие - основная сущность приложения
+    /// Событие - основная сущность приложения.
     /// </summary>
     public class Event
     {
         /// <summary>
-        /// идентификатор записи события
+        /// Идентификатор записи события.
         /// </summary>
         public int EventId { get; set; }
 
         /// <summary>
-        /// тип события из EventType (платное публичное, частное по приглашению , специальное)
+        /// Тип события из EventType (платное публичное, частное по приглашению , специальное).
         /// </summary>
         public EventType Type { get; set; }
         /// <summary>
-        /// ID автора события
+        /// ID автора события.
         /// </summary>
         [Required]
-        public int Creator { get; set; }
+        public string UserId { get; set; }
+
         /// <summary>
-        /// заголовок
+        /// Свойство связзи с создателем сообщения.
+        /// </summary>
+        public User Creator { get; set; }
+        /// <summary>
+        /// Заголовок.
         /// </summary>
         [Required]
         [StringLength(300), Display(Name ="Заголовок")]
         public string Title { get; set; }
         /// <summary>
-        /// ключи для поиска
+        /// Ключи для поиска.
         /// </summary>
         public string Tegs { get; set; }
         /// <summary>
-        /// адрес картинки
+        /// Адрес картинки.
         /// </summary>
         public string Image { get; set; }
         /// <summary>
-        /// описание события
+        /// Описание события.
         /// </summary>
         public string Body { get; set; }
         /// <summary>
-        /// город проведения
+        /// Город проведения.
         /// </summary>
-        public string Sity { get; set; }
+        public string City { get; set; }
         /// <summary>
-        /// Мето проведения
+        /// Мето проведения.
         /// </summary>
         public string Place { get; set; }
         /// <summary>
-        /// дата начала события 
+        /// Дата начала события .
         /// </summary>
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd.MM.yy hh.mm}", ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }
         /// <summary>
-        /// Дата публикации события
+        /// Дата публикации события.
         /// </summary>
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString ="{0:dd.MM.yy}", ApplyFormatInEditMode =true)]
         public DateTime CreationDate { get; set; }
         /// <summary>
-        /// количество оценок нравится
+        /// Количество оценок нравится.
         /// </summary>
         public int Likes { get; set; }
         /// <summary>
-        /// количество просмотров
+        /// Количество просмотров.
         /// </summary>
         public int Views { get; set; }
         /// <summary>
-        /// количество отметок поделиться
+        /// Количество отметок поделиться.
         /// </summary>
         public int Shares { get; set; }
         /// <summary>
-        /// количество отметок пойду
+        /// Количество отметок пойду.
         /// </summary>
         public int WillGo { get; set; }
 
         /// <summary>
-        /// список пользователей с отметкой пойду
+        /// Список пользователей с отметкой пойду.
         /// </summary>
-        public List<Vizitors> Vizitors { get; set; }
-
-        /// <summary>
-        /// пользователь автор публикации
-        /// </summary>
-        public Person PersonCreator 
-        {
-            get
-            {
-                //  логика нахожения автора публикации
-                return new Person();
-            }               
-        }
-
+        public List<Vizit> Vizits { get; set; }
         /// <summary>
         /// id чата привязанного к событию
         /// </summary>
         public int? ChatId{ get; set; }
-
         /// <summary>
-        /// возвращает теги события в виде List<string>
+        /// Свойство связи для чата события.
         /// </summary>
-        public List<string> TegsList 
-        {
-            get
-            {
-                // логика разбиения строки тегов на список
-                return new List<string>();
-            }
-        }
+        public Chat Chat { get; set; }        
     }
 }

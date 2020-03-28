@@ -14,8 +14,7 @@ a {
 }
 
     a:hover {
-        color:#000000;
-        
+        text-decoration:none;
     }
 
 main {
@@ -240,27 +239,29 @@ input[type="text"], input[type="password"] {
     color: #ffcd00;
 }
 
-.StartAdd-AddNew {
-    text-decoration: none;
-    padding: 20px;
+.page-top-menu {
+    display:flex;
+    justify-content:space-around;
+    padding: 8px;
     background-color: #1b5972;
-    color: #ffcd00;
-    border-radius: 5px;
-    display: inline;
+    margin-bottom:16px;
 }
 
-#AddNewEvent {
-    margin: 20px 0;
-    text-decoration: none;
-    color: #ffcd00;
-}
+    .page-top-menu a {
+         color: #e4dcc5;  
+         margin:  0 24px;
+    }
 
-.common-text {
-    font-size: 14px;
-    margin: 0;
-    color: #1b5972;
-    margin: 10px 5px;
-}
+    .page-top-menu a:hover {
+        color:#ffcd00;        
+    }
+
+    .common-text {
+        font-size: 14px;
+        margin: 0;
+        color: #1b5972;
+        margin: 10px 5px;
+    }
 
 /*>******************************* список событий Event - start*/
 .top-line {
@@ -278,6 +279,8 @@ input[type="text"], input[type="password"] {
 
 .eventlist-img {
     flex: 1;
+    margin:8px;
+    background-color: grey;
 }
 
     .eventlist-img img {

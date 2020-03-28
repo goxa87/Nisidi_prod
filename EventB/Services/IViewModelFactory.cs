@@ -1,5 +1,5 @@
-﻿using EventB.Auth;
-using EventB.Data;
+﻿
+
 using EventB.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -11,6 +11,6 @@ namespace EventB.Services
 {
     public interface IViewModelFactory
     {
-        public EventDetailsViewModel GetEventDetailsViewModel(SignInManager<User> user, int eventId, IDataProvider db);
+        //public EventDetailsViewModel GetEventDetailsViewModel(SignInManager<User> user, int eventId, IDataProvider db);
     }
 }

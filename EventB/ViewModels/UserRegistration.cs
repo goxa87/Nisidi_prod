@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EventB.Auth
+namespace EventB.ViewModels
 {
     /// <summary>
     /// модель для регистрации пользователя
@@ -37,7 +37,7 @@ namespace EventB.Auth
         /// </summary>
         [Required, MaxLength(128,ErrorMessage ="Максимальная длина 128 символов")]
         [Display(Name ="Ваш город(поиск и уведомления будут для этого города , будьте внимательны)")]
-        public string Sity { get; set; }
+        public string City { get; set; }
         /// <summary>
         /// интересы
         /// </summary>

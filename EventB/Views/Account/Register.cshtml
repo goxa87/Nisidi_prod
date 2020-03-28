@@ -1,4 +1,4 @@
-﻿@model EventB.Auth.UserRegistration
+﻿@model EventB.ViewModels.UserRegistration
 @{
     ViewData["Title"] = "Register";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -16,20 +16,20 @@
 
 
                 <label class="StartAdd-label" asp-for="Password"></label><br>
-                <span asp-validation-for="Password"></span><br>
+                <span asp-validation-for="Password"></span>
                 <input class="input-style input-size-30precent" type="password" asp-for="Password"><br>
 
                 <label asp-for="СonfirmPassword" class="StartAdd-label"></label><br>
-                <span asp-validation-for="СonfirmPassword"></span><br>
+                <span asp-validation-for="СonfirmPassword"></span>
                 <input class="input-style input-size-30precent" type="password" asp-for="СonfirmPassword"><br>
 
                 <label class="StartAdd-label" asp-for="Name"></label><br>
-                <span asp-validation-for="Name"></span><br>
+                <span asp-validation-for="Name"></span>
                 <input class="input-style input-size-30precent" type="text" asp-for="Name"><br>
 
-                <label class="StartAdd-label" asp-for="Sity"></label><br>
-                <span asp-validation-for="Sity"></span>
-                <input class="input-style input-size-30precent" type="text" asp-for="Sity"><br>
+                <label class="StartAdd-label" asp-for="City"></label><br>
+                <span asp-validation-for="City"></span>
+                <input class="input-style input-size-30precent" type="text" asp-for="City"><br>
 
                 <label class="StartAdd-label" asp-for="Tegs"></label><br>
                 <input class="input-style input-size-30precent" type="text" asp-for="Tegs"><br>

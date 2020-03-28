@@ -17,7 +17,7 @@ namespace EventB.Models
         /// <summary>
         /// id пользователя
         /// </summary>
-        public int PersonId { get; set; }
+        public string UserId { get; set; }
         /// <summary>
         /// id чата
         /// </summary>
@@ -25,7 +25,7 @@ namespace EventB.Models
         /// <summary>
         /// Пользователь
         /// </summary>
-        public Person Person { get; set; }
+        public User User { get; set; }
         /// <summary>
         /// Чат
         /// </summary>

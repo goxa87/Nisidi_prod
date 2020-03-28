@@ -26,14 +26,22 @@ namespace EventB.Models
         [Required]
         public int PersonId { get; set; }
         /// <summary>
+        /// Имя пользователя для быстрого доступа.
+        /// </summary>
+        public string SenderName { get; set; }
+        /// <summary>
         /// текст сообщения
         /// </summary>
-        public string Body { get; set; }
+        public string Text { get; set; }
         /// <summary>
         /// дата публикации сообщения
         /// </summary>
         [Required]
         [DataType(DataType.DateTime), DisplayFormat(DataFormatString ="{0:dd.MM.yy hh.mm}",ApplyFormatInEditMode =true)]
         public DateTime PostDate { get; set; }
+        /// <summary>
+        /// Cимвол прочитанности.
+        /// </summary>
+        public bool Read { get; set; }
     }
 }

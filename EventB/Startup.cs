@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EventB.Auth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using EventB.DataContext;
 using EventB.Services;
-using EventB.Data;
+using EventB.Models;
 
 namespace EventB
 {
@@ -32,7 +31,7 @@ namespace EventB
             services.AddControllersWithViews();
 
             services.AddDbContext<DataContext.Context>();
-            services.AddScoped<IDataProvider, DbData>();
+            //services.AddScoped<IDataProvider, DbData>();
 
             services.AddIdentity<User, IdentityRole>(
                 opt =>
@@ -64,8 +63,9 @@ namespace EventB
                 });
             });
 
-            services.AddTransient<IEventSelectorService, EventSelectorService>();
-            services.AddScoped<IViewModelFactory,ViewModelFactory>();
+            services.AddTransient<ITegSplitter, TegSplitter>();
+            //services.AddTransient<IEventSelectorService, EventSelectorService>();
+            //services.AddScoped<IViewModelFactory,ViewModelFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

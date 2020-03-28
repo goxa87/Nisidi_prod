@@ -5,8 +5,10 @@
     ViewData["Title"] = "Start";
 }
 
-    <div id="AddNewEvent"> 
-        <a asp-controller="Events" asp-action="Add" ><div class="StartAdd-AddNew">Добавить новую запись</div></a>
+    <div class="page-top-menu">
+        <a asp-controller="Events" asp-action="Add">ДОБАВИТЬ СОБЫТИЕ</a>
+        <a href="#">МОИ СОБЫТИЯ</a>
+        <a href="#">СОБЫТИЯ ДРУЗЕЙ</a>
     </div>
 @{ 
     foreach (var e in Model)
@@ -19,7 +21,7 @@
             <div class="eventlist-info">
                 <a asp-controller="Events" asp-action="Details" asp-route-id="@e.EventId"><h3>@e.Title</h3></a>
                     <label class="eventlist-label">Город:</label>
-                    <h4>@e.Sity</h4><br>
+                    <h4>@e.City</h4><br>
                     <label class="eventlist-label">Место:</label>
                     <h4>@e.Place</h4><br>
                     <label class="eventlist-label">дата-время:</label>
@@ -31,7 +33,7 @@
                         @e.Tegs
                 </h4><BR>
                 <div class="eventlist-stats">
-                    <span>имя создателя вставить в класс</span><BR>
+                    <span>Автор: @e.Creator</span><BR>
                     <span>Опубликовано: @e.CreationDate.ToString("dd.MM.yyyy")</span>
                 </div>
             </div>

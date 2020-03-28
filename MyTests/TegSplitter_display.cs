@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using EventLib;
 
 namespace MyTests
 {
@@ -19,16 +18,16 @@ namespace MyTests
 
         public string GetSplitTegs()
         {
-            var arr = EventLib.StringSrevices.TegSplitter.GetEnumerable(originText);
-            StringBuilder SB = new StringBuilder();
-            foreach (var e in arr)
-            {
-                SB.Append(e);
-                SB.Append('\n');
-            }
+            ////var arr = EventLib.StringSrevices.TegSplitter.GetEnumerable(originText);
+            //StringBuilder SB = new StringBuilder();
+            //foreach (var e in arr)
+            //{
+            //    SB.Append(e);
+            //    SB.Append('\n');
+            //}
 
 
-            return SB.ToString();
+            return "SB.ToString()";
         }
     }
 }
