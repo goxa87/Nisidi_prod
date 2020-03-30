@@ -81,8 +81,7 @@ namespace EventB.Controllers
                     {
                         interests.Add(new Interes { Value = inter });
                     }
-
-                    user.Intereses.AddRange(interests);
+                    user.Intereses = interests;
                     context.Users.Update(user);
                     await context.SaveChangesAsync();
                     // надо както его прилепить к пользователю

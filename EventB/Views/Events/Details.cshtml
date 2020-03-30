@@ -1,4 +1,4 @@
-﻿@model EventB.ViewModels.EventDetailsViewModel
+﻿@model EventB.Models.Event
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,17 +7,17 @@
 <div class="top-line"></div>
 <div class="item-container">
     <div class="item-container-img">
-        <img class="item-img" src="@Model.Event.Image">
+        <img class="item-img" src="@Model.Image">
     </div>
-    <h2 class="item-title">@Model.Event.Title</h2>
-    <h3>Когда: @Model.Event.Date.ToString("dd-MM-yyyy hh.mm")</h3>
-    <h4>Город: @Model.Event.City</h4>
-    <h4>Где: @Model.Event.Place </h4>
-    <p>@Model.Event.Body</p>
-    <p>ТЕГИ: @Model.Event.Tegs</p>
+    <h2 class="item-title">@Model.Title</h2>
+    <h3>Когда: @Model.Date.ToString("dd-MM-yyyy hh.mm")</h3>
+    <h4>Город: @Model.City</h4>
+    <h4>Где: @Model.Place </h4>
+    <p>@Model.Body</p>
+    <p>ТЕГИ: @Model.Tegs</p>
     <div class="item-inner-separator"></div>
 
-    <div class="author">выложил: @Model.CreatorName</div>
+    <div class="author">выложил: @Model.Creator.Name</div>
 
     <div class="item-inner-separator"></div>
 </div>
@@ -31,11 +31,11 @@
     </div>
     <div class="eventlist-btn-come-right-col">
         <img class="info-img" title="просмотров" src="~/resourses/eye.png" />
-        <span class="info-num">@Model.Event.Views.ToString()</span>
+        <span class="info-num">@Model.Views.ToString()</span>
         <img class="info-img" title="отметок нравится" src="~/resourses/like.png" />
-        <span class="info-num">@Model.Event.Likes.ToString()</span>
+        <span class="info-num">@Model.Likes.ToString()</span>
         <img class="info-img" title="отметок Пойду" src="~/resourses/willgo2.png" />
-        <span class="info-num">@Model.Event.WillGo.ToString()</span>
+        <span class="info-num">@Model.WillGo.ToString()</span>
     </div>
 </div>
 
@@ -45,14 +45,15 @@
         <div>
             <img class="eventitem-vizitors-list-arrow" src="~/resourses/yellowarrowright.png">
         </div>
-        <span>Отметились пойдут(@Model.Event.WillGo.ToString()):</span>
+        <span>Отметились пойдут(@Model.WillGo.ToString()):</span>
     </div>
     <div class="eventitem-vizitors-list-body">
         <div class="eventitem-vizitors-list-body-flex">
-            @foreach (var e in Model.Vizitors)
+            @foreach (var e in Model.Vizits)
             { 
                 <div class="eventitem-vizitors-list-body-element">
-                    @e.Value
+                    <div>@e.VizitorName</div>
+                    <div style="{width:40px;height:40px;}"><img src="@e.VizitirPhoto" /></div>
                 </div>
             }
         </div>

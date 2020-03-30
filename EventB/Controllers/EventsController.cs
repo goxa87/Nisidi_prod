@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using EventB.ViewModels;
 
 namespace EventB.Controllers
 {
@@ -20,30 +21,28 @@ namespace EventB.Controllers
         private Context context { get; }
         private readonly SignInManager<User> userManager;
         IWebHostEnvironment environment;
-        IViewModelFactory _VMFactory;
 
         public EventsController(Context c, 
             SignInManager<User> UM, 
-            IWebHostEnvironment env,
-            IViewModelFactory vmFactory)
+            IWebHostEnvironment env)
         {
             context = c;
             userManager = UM;
             environment = env;
-            _VMFactory = vmFactory;
         }
 
         public async Task<IActionResult> Start()
         {
             if (User.Identity.IsAuthenticated)
             {
-                //var person = context.Persons.Where(e => e.Email == User.Identity.Name).First();
-                return View();
+
+                return View( await context.Events.Where(e => e.City.ToLower() == "ставрополь").Take(30).ToListAsync());
             }
 
-            return View( context.Events.Where(e=>e.City.ToLower()=="ставрополь").Take(30));
+            return View(await context.Events.Where(e=>e.City.ToLower()=="ставрополь").Take(30).ToListAsync());
             //return View(list);
         }
+
         [Authorize]
         [HttpGet]
         public IActionResult Add()
@@ -53,41 +52,66 @@ namespace EventB.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Add(string Title, string Body, string Tegs, string Sity, string Place, DateTime Date, IFormFile file)
+        public async Task<IActionResult> Add(AddEventViewModel model)
         {
-            //Person creator = _context.Persons.Where(e => e.Email == User.Identity.Name).SingleOrDefaultAsync().Result;
-
-            //string src = "/images/defaultimg.jpg";
-            //if (file != null)
-            //{
+            if (ModelState.IsValid)
+            {
+                // Значение картинки если ее нет.
+                string src = "/images/defaultimg.jpg";
+                if (model.MainPicture != null)
+                {
+                    // Формирование строки имени картинки.
+                    string fileName = String.Concat(DateTime.Now.ToString("dd-MM-yy_hh-mm"), "_", model.MainPicture.FileName);
+                    src = String.Concat("/images/EventImages/", fileName);
+                    // Запись на диск.
+                    using (var FS = new FileStream(environment.WebRootPath + src, FileMode.Create))
+                    {
+                        await model.MainPicture.CopyToAsync(FS);
+                    }
+                }
+                // Пользователь который выложил.
+                var creator = await context.Users.FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
+                // Добавляем в посетителей автора.
+                var vizit = new Vizit
+                {
+                    User = creator,
+                    EventTitle = model.Title,
+                    EventPhoto = src,
+                    VizitorName = creator.Name,
+                    VizitirPhoto = "/images/defaultimg.jpg"
+                };
                 
-            //    string fileName = String.Concat(DateTime.Now.ToString("dd-MM-yy_hh-mm"), "_", creator.PersonId.ToString(),"_",file.FileName);
-            //    src = String.Concat("/images/EventImages/",fileName);
+                var vizits = new List<Vizit> { vizit };
+                // Итоговое формирование события.
+                var eve = new Event
+                {
+                    Title = model.Title,
+                    Body = model.Body,
+                    Tegs = model.Tegs,
+                    City = model.City,
+                    Place = model.Place,
+                    Date = model.Date,
+                    Type = EventType.Private,
+                    Likes = 0,
+                    Views = 0,
+                    Shares = 0,
+                    WillGo = 1,
+                    Creator = creator,
+                    Image = src,
+                    CreationDate = DateTime.Now,
 
-            //    using (var FS = new FileStream(environment.WebRootPath + src, FileMode.Create))
-            //    {
-            //        await file.CopyToAsync(FS);
-            //    }
-            //}
+                    Vizits = vizits
+                };
 
-            //_context.Events.Add(
-            //    new Event() { 
-            //                Title=Title,
-            //                Body=Body,
-            //                Tegs=Tegs,
-            //                City= Sity,
-            //                Place= Place,
-            //                Date=Date,
-            //                Creator=creator.Name,
-            //                Image=src,
-            //                CreationDate = DateTime.Now,
-            //                Likes=0,
-            //                Views=0,
-            //                Shares=0
-            //                }
-            //    );
-            //await _context.SaveChangesAsync();
-            return RedirectToAction("Start");
+                await context.Events.AddAsync(eve);
+                await context.SaveChangesAsync();
+                return RedirectToAction("Start");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Неверные данные");
+                return View(model);
+            }            
         }
 
         /// <summary>
@@ -95,16 +119,18 @@ namespace EventB.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult Details(int? id)
+        public async Task<ActionResult> Details(int? id)
         {
             if (id != null)
             {
-                //var item = _VMFactory.GetEventDetailsViewModel(userManager, id.Value, data);
-                return View();
+                var eve = await context.Events.
+                    Include(e=>e.Creator).
+                    Include(e=>e.Vizits).
+                    FirstOrDefaultAsync(e => e.EventId == id);
+                return View(eve);
             }
 
             return NotFound();
-
         }
     }
 }

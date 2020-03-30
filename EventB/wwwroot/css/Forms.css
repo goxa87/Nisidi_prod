@@ -1,0 +1,56 @@
+﻿.form-label {
+    color: #1b5972;
+    padding: 5px;
+    margin-bottom: 0;
+}
+
+.form-Entry-title {
+    background-color: #ffffff22;
+    color: #1b5972;
+    padding: 5px;
+    overflow-wrap: break-word;
+    width: 100%;
+    border: 1px solid #1b5972;
+    box-shadow: inset 0 1px 3px #ddd;
+    border-radius: 5px;
+}
+
+.form-Entry-body {
+    background-color: #ffffff22;
+    color: #1b5972;
+    padding: 5px;
+    overflow-wrap: break-word;
+    width: 100%;
+    height: 300px;
+    border: 1px solid #1b5972;
+    box-shadow: inset 0 1px 3px #ddd;
+    border-radius: 5px;
+    resize: none;
+}
+
+.form-Date {
+    background-color: #ffffff22;
+    color: #1b5972;
+    padding: 5px;
+    border: 1px solid #1b5972;
+    box-shadow: inset 0 1px 3px #ddd;
+    border-radius: 5px;
+}
+
+.form-submit {
+    padding: 5px 40px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 0px;
+    background-color: #1b597255;
+    color: #1b5972;
+    border: 2px solid #1b5972;
+    box-sizing: border-box;
+    font-weight: 600;
+}
+
+    .form-submit:hover {
+        background-color: #1b5972;
+        color: #ffcd00;
+        
+    }

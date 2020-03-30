@@ -1,6 +1,7 @@
-﻿
+﻿@model EventB.Models.User
 @{
     ViewData["Title"] = "Index";
+    ViewData["Style"] = "MyPage.css";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,40 +11,75 @@
     </div>
     <div class="mypage-right-column">
         <div class="mypage-redact">
-            <h3>Имя пользователя</h3>
+            <h3>@Model.Name</h3>
             <a id="btn-redact">редактировать</a>
         </div>
         <h3>Ccылка на страницу:</h3>
         <p>ссылка ..............</p>
         <h3>в городе:</h3>
-        <p>сгород ..............</p>
+        <p>@Model.City</p>
         <h3>Мои теги:</h3>
         <div>
             <p>
-                интерес интерес интерес интерес интерес интерес интерес интерес интерес
-                интерес интерес интерес интерес интерес интерес интерес интерес интерес интерес интерес интерес интерес интерес интерес интерес
-                интерес интерес интерес интерес интерес интерес интересинтерес интерес интерес интерес интерес интерес интерес интерес интерес
-                интерес интерес интерес интерес интерес интерес интересинтерес интерес интерес интерес интерес интерес интерес интерес интерес
-                интерес интерес интерес интерес интерес интерес интерес
-            </p>
+                @if (Model.Intereses != null)
+                {
+                    @foreach (var e in Model.Intereses)
+                    {
+                        <span>@e.Value </span>
+                    }
+                }
+               </p>
         </div>
     </div>
 </div>
 <div class="mypage-details-header">
-    <a href="#">
-        <div class="mypage-details-header-item mypage-details-header-selected">
-            Мои события
+    <span>Мои события</span>
+    <span>Я пойду</span>
+    <span>Подписки</span>
+</div>
+<div>
+        <div class="">
+            @if (Model.MyEvents==null || Model.MyEvents.Count == 0)
+            {
+                <div>Моих событий пока нет.</div>
+            }
+            else
+            @foreach (var e in Model.MyEvents)                
+            {
+                <div>
+                    <div>Название: @e.Title</div>
+                </div>
+            }
         </div>
-    </a>
-    <a href="#">
-        <div class="mypage-details-header-item">
-            Посещенные события
+
+        <div class="">
+            @if (Model.Vizits==null || Model.Vizits.Count == 0)
+            {
+                <div>Отметок пойду пока нет.</div>
+            }
+            else
+            @foreach (var e in Model.Vizits)
+            {
+                <div>
+                    <div>Photo: @e.VizitirPhoto</div>
+                    <div>Название: @e.EventTitle</div>
+                </div>
+            }
         </div>
-    </a>
-    <a href="#">
-        <div class="mypage-details-header-item">
-            Подписки
+
+        <div class="">
+            @if (Model.Friends==null || Model.Friends.Count == 0)
+            {
+                <div>Подписок пока нет.</div>
+            }
+            else
+            @foreach (var e in Model.Friends)
+            {
+                <div>
+                    <div>Photo: @e.UserPhoto</div>
+                    <div>Название: @e.UserName</div>
+                </div>
+            }
         </div>
-    </a>
 </div>
 

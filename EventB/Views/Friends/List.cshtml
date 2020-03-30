@@ -1,0 +1,26 @@
+﻿@model IEnumerable<EventB.Models.Friend>
+@{
+    ViewData["Title"] = "List";
+    ViewData["Style"] = "Friends.css";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Пользователи</h1>
+
+<form asp-action="SearchFriend" method="post">
+    <input name="search"/>
+    <input type="submit">
+</form>
+@foreach (var item in Model)
+{ 
+    <div>
+        <div>@item.UserName</div>
+        <div>@item.UserPhoto</div>
+        <hr>
+    </div>
+}
+
+
+
+
+

@@ -19,6 +19,10 @@ namespace EventB.Models
         /// Город привязки пользователя. 
         /// </summary>
         public string City { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Photo { get; set; }
 
         public List<Event> MyEvents { get; set; }
 

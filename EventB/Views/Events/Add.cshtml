@@ -1,22 +1,42 @@
-﻿
+﻿@model EventB.ViewModels.AddEventViewModel
+@{
+    ViewData["Style"] = "Forms.css";
+    ViewData["Title"] = "Добавить";
 
-<h2>Add</h2>
-<form action="Add" method="post" enctype="multipart/form-data">
-    <label class="StartAdd-label">Заголовок</label><br>
-    <input class="StartAdd-Entry-title" type="text" name="Title" /><br>
-    <label class="StartAdd-label">Описание</label><br>
-    <textarea class="StartAdd-Entry-body" type="text" name="Body"></textarea><br>
-    <label class="StartAdd-label">Теги</label><br>
-    <input class="StartAdd-Entry-title" type="text" name="Tegs" /><br>
-    <label class="StartAdd-label">Город</label><br>
-    <input class="StartAdd-Entry-title" type="text" name="Sity" /><br>
-    <label class="StartAdd-label">Мето проведения</label><br>
-    <input class="StartAdd-Entry-title" type="text" name="Place" /><br>
-    <label class="StartAdd-label">Дата события</label><br>
-    <input class="StartAdd-Date" type="datetime-local" name="Date" /><br>
+}
+<h2>Добавление события</h2>
+<form asp-action="Add" asp-antiforgery="true" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="form-summary"></div>
 
-    <label class="StartAdd-label">Изображение</label><br>
-    <input class="StartAdd-Date" type="file" name="file" /><br>
+    <label class="form-label" asp-for="Title"></label>
+    <span asp-validation-for="Title"></span><br>
+    <input class="form-Entry-title" type="text" asp-for="Title" /><br>
 
-    <input class="StartAdd-submit" type="submit" value="Сохранить" />
+    <label class="form-label" asp-for="Body"></label>
+    <span asp-validation-for="Body"></span><br>
+    <textarea class="form-Entry-body" type="text" asp-for="Body"></textarea><br>
+
+    <label class="form-label" asp-for="Tegs"></label>
+    <span asp-validation-for="Tegs"></span><br>
+    <input class="form-Entry-title" type="text" asp-for="Tegs" /><br>
+
+    <label class="form-label" asp-for="City"></label>
+    <span asp-validation-for="City"></span><br>
+    <input class="form-Entry-title" type="text" asp-for="City" /><br>
+
+    <label class="form-label" asp-for="Place"></label>
+    <span asp-validation-for="Place"></span><br>
+    <input class="form-Entry-title" type="text" asp-for="Place" /><br>
+
+    <label class="form-label" asp-for="Date"></label>
+    <span asp-validation-for="Date"></span><br>
+    <input class="form-Date" type="datetime-local" value="2020-05-01T12:00" asp-for="Date" /><br>
+
+    <label class="form-label" asp-for="MainPicture"></label>
+    <span asp-validation-for="Date"></span><br>
+    <input class="form-Date" type="file" asp-for="MainPicture" /><br>
+
+    <input class="form-submit" type="submit" value="Сохранить" />
 </form>
+
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

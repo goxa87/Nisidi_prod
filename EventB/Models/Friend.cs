@@ -12,9 +12,13 @@ namespace EventB.Models
         /// </summary>
         public int FriendId { get; set; }
         /// <summary>
-        /// Идентификатор пользователя, который является другом.
+        /// Свойство связи с пользователем для которого друзья.
         /// </summary>
         public string  UserId { get; set; }
+        /// <summary>
+        /// Id пользователя , который является другом.
+        /// </summary>
+        public string PersonFriendId { get; set; }
         /// <summary>
         /// Имя Пользователя для представления в списках.
         /// </summary>

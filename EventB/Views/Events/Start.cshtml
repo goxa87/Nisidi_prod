@@ -10,13 +10,15 @@
         <a href="#">МОИ СОБЫТИЯ</a>
         <a href="#">СОБЫТИЯ ДРУЗЕЙ</a>
     </div>
-@{ 
-    foreach (var e in Model)
-    { 
+
+    @if (Model.Any())
+    {
+        foreach (var e in Model)
+        {
         <div class="top-line"></div>
         <div class="eventlist-container">
             <div class="eventlist-img">
-                <a asp-controller="Events" asp-action="Details" asp-route-id="@e.EventId"><img src="@e.Image"></a>
+                <a asp-controller="Events" asp-action="Details" asp-route-id="@e.EventId"><img src="@e.Image" alt="@e.Title"></a>
             </div>
             <div class="eventlist-info">
                 <a asp-controller="Events" asp-action="Details" asp-route-id="@e.EventId"><h3>@e.Title</h3></a>
@@ -31,7 +33,7 @@
                     <label class="eventlist-label">Теги:</label>
                     <h4>
                         @e.Tegs
-                </h4><BR>
+                    </h4><BR>
                 <div class="eventlist-stats">
                     <span>Автор: @e.Creator</span><BR>
                     <span>Опубликовано: @e.CreationDate.ToString("dd.MM.yyyy")</span>
@@ -57,9 +59,12 @@
             </div>
         </div>
 
+        }
     }
-
-}
+    else
+    { 
+        <div>Нет ни одного элемента</div>
+    }
 
 
 
