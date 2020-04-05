@@ -20,7 +20,6 @@
     <Folder Include="Auth\" />
     <Folder Include="Data\" />
     <Folder Include="wwwroot\images\EventImages\" />
-    <Folder Include="wwwroot\images\Profileimages\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

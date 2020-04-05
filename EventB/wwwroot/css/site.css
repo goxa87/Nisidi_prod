@@ -177,22 +177,98 @@ ul li a span:nth-child(4) {
     width:400px;    
 }
 
+.form-label {
+    color: #1b5972;
+    padding: 5px;
+    margin-bottom: 0;
+}
 
+.form-entry-title {
+    background-color: #ffffff22;
+    color: #1b5972;
+    padding: 5px;
+    overflow-wrap: break-word;
+    width: 100%;
+    border: 1px solid #1b5972;
+    box-shadow: inset 0 1px 3px #ddd;
+    border-radius: 5px;
+}
+
+.form-entry-body {
+    background-color: #ffffff22;
+    color: #1b5972;
+    padding: 5px;
+    overflow-wrap: break-word;
+    width: 100%;
+    height: 300px;
+    border: 1px solid #1b5972;
+    box-shadow: inset 0 1px 3px #ddd;
+    border-radius: 5px;
+    resize: none;
+}
+
+.form-date {
+    background-color: #ffffff22;
+    color: #1b5972;
+    padding: 5px;
+    border: 1px solid #1b5972;
+    box-shadow: inset 0 1px 3px #ddd;
+    border-radius: 5px;
+}
+
+.form-checkbox{
+    width:15px;
+    height:15px;
+}
+
+.form-submit {
+    padding: 5px 40px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 0px;
+    background-color: #1b5972;
+    color: #e4dcc5;
+    border: 2px solid #1b5972;
+    box-sizing: border-box;
+    font-weight: 600;
+}
+
+    .form-submit:hover {
+        color: #ffcd00;
+    }
+
+    .form-submit{
+       outline:none;
+    }
+
+.search-submit{
+    height: 30px;
+    background-color:#1b5972;
+    color:#ffcd00;
+    border-radius:15px 0 0 15px;
+    border:none;
+    padding:0 24px;
+}
+.search-entry {
+    box-sizing: border-box;
+    height: 30px;
+    background-color: #f1ead8;
+    color: #1b5972;
+    border-radius: 0 15px 15px 0;
+    border: 1px solid #1b5972;
+    width: 500px;
+}
+
+.search-submit, .search-entry, .form-submit, .form-date, .form-entry-body, .form-entry-title:focus{
+    outline: none;
+}
 /* >****************** добавление записи Event - Add  */
-
-
-
-
-
-
-
-
 .page-top-menu {
-    display:flex;
-    justify-content:space-around;
+    display: flex;
+    justify-content: space-around;
     padding: 8px;
     background-color: #1b5972;
-    margin-bottom:16px;
+    margin-bottom: 16px;
 }
 
     .page-top-menu a {

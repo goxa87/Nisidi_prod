@@ -11,15 +11,15 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ReturnUrl" />
         
-            <label class="StartAdd-label" asp-for="LoginProp"></label><br>
+            <label class="form-label" asp-for="LoginProp"></label><br>
             <span asp-validation-for="LoginProp"></span>
-            <input class="input-style input-size-30precent" type="text" asp-for="LoginProp"><br>
+            <input class="form-entry-title" type="text" asp-for="LoginProp"><br>
 
-            <label class="StartAdd-label" asp-for="Password"></label><br>
+            <label class="form-label" asp-for="Password"></label><br>
             <span asp-validation-for="Password"></span>
-            <input class="input-style input-size-30precent" type="password" asp-for="Password"><br><br>
+            <input class="form-entry-title" type="password" asp-for="Password"><br><br>
 
-            <input class="button-style input-size-30precent" type="submit" value="ВОЙТИ"><br>
+            <input class="form-submit" type="submit" value="ВОЙТИ"><br>
             <a href="#"><h5>Забыли пароль</h5></a>
 
             <a asp-action="Register"><h5>Регистрация</h5></a>

@@ -2,22 +2,36 @@
 @{
     ViewData["Title"] = "List";
     ViewData["Style"] = "Friends.css";
+    ViewData["Script"] = "Friends.js";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Пользователи</h1>
+<h4>Ваши подписки</h4>
 
 <form asp-action="SearchFriend" method="post">
-    <input name="search"/>
-    <input type="submit">
+    <input type="submit" class="search-submit" value="Поиск"/>
+    <input name="search" class="search-entry"/>
 </form>
 @foreach (var item in Model)
 { 
-    <div>
-        <div>@item.UserName</div>
-        <div>@item.UserPhoto</div>
-        <hr>
+<div class="friend-list-container">
+    <div class="left-column-container">
+        <img src="@item.UserPhoto" class="friend-list-img"/>
+        <div>
+            <h3>@item.UserName</h3>
+            <div>Add statistics</div>
+            <div>Add statistics</div>
+            <div>Add statistics</div>
+        </div>
     </div>
+    
+    <div class="right-column-container">
+        <input type="hidden" name="friendId" value="@item.PersonFriendId" />
+        <button class="form-submit btn-submit">Подписаться</button>
+        <button class="form-submit" asp-controller="Messages" asp-action="Index" >Сообщение</button>
+        <button class="form-submit" asp-action="BlockUser" >Заблокировать</button>
+    </div>
+</div>
 }
 
 

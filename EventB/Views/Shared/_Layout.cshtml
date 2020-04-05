@@ -8,8 +8,8 @@
 
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/@ViewData["Style"]" />
-    <script src="~/js/jquery-3.4.1.min.js"></script>
-    <script src="~/js/site.js"></script>
+    
+
 </head>
 <body>
     <header>
@@ -18,7 +18,7 @@
                 <article>СОБЫТИЯ В ТВОЕМ ГОРОДЕ</article>
                 <div class="shared-login">
                     @{if (User.Identity.IsAuthenticated)
-                        { 
+                        {
                             <h5>ВЫ: @User.Identity.Name </h5>
                             <a asp-action="Exit" asp-controller="Account">Выйти</a>
                         }
@@ -29,7 +29,7 @@
                         }
 
 
-                     }
+                    }
                 </div>
             </div>
             <div class="main-menu-container">
@@ -94,7 +94,7 @@
             </div>
             <div class="menu-bottom-line"> </div>
         </div>
-        
+
     </header>
     <div class="container">
         <main role="main" class="pb-3">
@@ -109,6 +109,9 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/jquery-3.4.1.min.js"></script>
+    <script src="~/js/site.js"></script>
+    <script src="~/js/@ViewData["Script"]"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
