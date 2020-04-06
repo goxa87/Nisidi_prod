@@ -18,8 +18,11 @@
 
   <ItemGroup>
     <Folder Include="Auth\" />
-    <Folder Include="Data\" />
     <Folder Include="wwwroot\images\EventImages\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EventBLib\EventBLib.csproj" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

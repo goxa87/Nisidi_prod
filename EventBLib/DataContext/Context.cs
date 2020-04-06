@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
  
-namespace EventBlib.DataContext
+namespace EventBLib.DataContext
 {
     public class Context : IdentityDbContext<User>
     {

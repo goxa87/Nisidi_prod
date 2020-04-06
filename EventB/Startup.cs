@@ -10,9 +10,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using EventB.DataContext;
+using EventBLib.DataContext;
 using EventB.Services;
-using EventB.Models;
+using EventBLib.Models;
 
 namespace EventB
 {

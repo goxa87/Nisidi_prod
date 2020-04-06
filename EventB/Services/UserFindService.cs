@@ -1,5 +1,5 @@
-﻿using EventB.DataContext;
-using EventB.Models;
+﻿using EventBLib.DataContext;
+using EventBLib.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

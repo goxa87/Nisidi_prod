@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EventB.Models;
+using EventBLib.Models;
 using EventB.Services;
 using EventB.ViewModels;
 using Microsoft.AspNetCore.Authorization;

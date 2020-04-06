@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EventB.DataContext;
-using EventB.Models;
-using EventB.Services;
+using EventBLib.DataContext;
+using EventBLib.Models;
 using EventB.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
