@@ -24,6 +24,7 @@ namespace EventB.Controllers
                 Include(e=>e.Intereses).
                 Include(e=>e.MyEvents).
                 Include(e=>e.Vizits).
+                Include(e=>e.Friends).
                 FirstOrDefault(e => e.UserName == User.Identity.Name);
 
             return View(user);

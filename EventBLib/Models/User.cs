@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using EventB.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EventB.Models
+namespace EventBLib.Models
 {
     public class User : IdentityUser
     {

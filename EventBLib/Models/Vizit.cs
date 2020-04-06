@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EventB.Models
+namespace EventBLib.Models
 {
     public class Vizit
     {
@@ -40,10 +40,9 @@ namespace EventB.Models
         /// </summary>
         public string VizitorName { get; set; }
         /// <summary>
-        /// 
+        /// Фото посетителя.
         /// </summary>
-        public string VizitirPhoto { get; set; }
+        public string VizitirPhoto { get; set; }        
 
-        
     }
 }

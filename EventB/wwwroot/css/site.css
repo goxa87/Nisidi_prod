@@ -3,9 +3,11 @@ for details on configuring this project to bundle and minify static web assets. 
 body {
     margin: 0;
     padding: 0;
+    padding-bottom:24px;
     font-family: sans-serif;
     background-color: #f1ead8;
     box-sizing: border-box;
+
 }
 
 a {
@@ -17,11 +19,13 @@ a {
         text-decoration:none;
     }
 
-footer {
+.footer {
     position:fixed;
     bottom:0;
     left:0;
-
+    height:24px;
+    background-color:#1b5972;
+    color:#e4dcc5;
 }
 main {
 }
@@ -237,7 +241,7 @@ ul li a span:nth-child(4) {
         color: #ffcd00;
     }
 
-    .form-submit{
+    .form-submit:focus{
        outline:none;
     }
 
@@ -461,7 +465,7 @@ ul li a span:nth-child(4) {
     margin: 0 auto;
     align-self: center;
     width: 100%;
-    height: auto;
+    max-height: 80vmin;
     object-fit: contain;
 }
 

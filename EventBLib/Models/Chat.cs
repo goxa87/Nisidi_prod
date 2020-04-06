@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EventB.Models
+namespace EventBLib.Models
 {
     /// <summary>
     /// Типы возможных чатов.

@@ -1,5 +1,4 @@
-﻿
-using EventB.Models;
+﻿using EventBLib.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
  
-namespace EventB.DataContext
+namespace EventBlib.DataContext
 {
     public class Context : IdentityDbContext<User>
     {
