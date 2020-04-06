@@ -30,7 +30,7 @@ namespace EventB
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<DataContext.Context>();
+            services.AddDbContext<Context>();
             //services.AddScoped<IDataProvider, DbData>();
 
             services.AddIdentity<User, IdentityRole>(
