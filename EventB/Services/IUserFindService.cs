@@ -8,8 +8,8 @@ namespace EventB.Services
 {
     public interface IUserFindService
     {
-        public User GetUserById(string id);
-        public User GetUserByName(string name);
-        public User GetCurrentUser(string name);
+        public Task<User> GetUserByIdAsync(string id);
+        public Task<User> GetUserByNameAsync(string name);
+        public Task<User> GetCurrentUserAsync(string name);
     }
 }

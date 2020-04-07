@@ -31,8 +31,8 @@ namespace EventB.Controllers
         {
             if (!string.IsNullOrWhiteSpace(userId))
             {
-                var currentUser = userFind.GetCurrentUser(User.Identity.Name);
-                var friend = userFind.GetUserById(userId);
+                var currentUser = await userFind.GetCurrentUserAsync(User.Identity.Name);
+                var friend = await userFind.GetUserByIdAsync(userId);
 
                 var userFriend = new Friend
                 {

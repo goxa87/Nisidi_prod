@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EventB.Services;
 using EventBLib.DataContext;
 using EventBLib.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -14,10 +15,12 @@ namespace EventB.Controllers
     public class FriendsController : Controller
     {
         readonly Context context;
-
-        public FriendsController(Context _context)
+        readonly IUserFindService userFind;
+        public FriendsController(Context _context,
+            IUserFindService _userFind)
         {
             context = _context;
+            userFind = _userFind;
         }
 
         /// <summary>
@@ -37,12 +40,17 @@ namespace EventB.Controllers
         /// <returns></returns>
         public async Task<ActionResult> SearchFriend(string search)
         {
-            var owner = await context.Users.FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
+            var owner =await userFind.GetCurrentUserAsync(User.Identity.Name);
 
             List<Friend> friends = await context.Users.Where(e => e.Name.ToLower().Contains(search.ToLower())).
                 Select(e => new Friend { UserId = owner.Id, UserName = e.Name, UserPhoto = e.Photo, PersonFriendId=e.Id}).
                 ToListAsync();
-
+            // удаляем себя как друга иначе будут коллизии.
+            var ownerAsFriend = friends.FirstOrDefault(e => e.PersonFriendId == owner.Id);
+            if (ownerAsFriend != null)
+            {
+                friends.Remove(ownerAsFriend);
+            }
             return View(friends);
         }
 

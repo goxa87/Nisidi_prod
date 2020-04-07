@@ -1,5 +1,6 @@
 ﻿using EventBLib.DataContext;
 using EventBLib.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,21 +17,21 @@ namespace EventB.Services
             context = _context;
         }
 
-        public User GetCurrentUser(string name)
+        public async Task<User> GetCurrentUserAsync(string name)
         {
-            var user = context.Users.FirstOrDefault(e => e.UserName == name);
+            var user = await context.Users.FirstOrDefaultAsync(e => e.UserName == name);
             return user;
         }
 
-        public User GetUserById(string id)
+        public async Task<User> GetUserByIdAsync(string id)
         {
-            var user = context.Users.FirstOrDefault(e => e.Id==id);
+            var user = await context.Users.FirstOrDefaultAsync(e => e.Id==id);
             return user;
         }
 
-        public User GetUserByName(string name)
+        public async Task<User> GetUserByNameAsync(string name)
         {
-            var user = context.Users.FirstOrDefault(e => e.Name == name);
+            var user = await context.Users.FirstOrDefaultAsync(e => e.Name == name);
             return user;
         }
     }
