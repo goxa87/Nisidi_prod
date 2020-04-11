@@ -12,7 +12,10 @@ namespace EventB.Services
     {
         public IEnumerable<string> GetEnumerable(string input)
         {
-            return input.Split(' ', ',', '.', '/', ':', '*', '+', '-', '@').Where(e => !string.IsNullOrEmpty(e));
+            if (input != "")
+                return input.Split(' ', ',', '.', '/', ':', '*', '+', '-', '@').Where(e => !string.IsNullOrEmpty(e));
+            else 
+                return null;
         }
     }
 }

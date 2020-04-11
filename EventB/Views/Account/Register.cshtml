@@ -7,7 +7,7 @@
     <div class="small-container">
         <h3>Регистрация</h3>
         <div class="identity-cintainer">
-            <form asp-action="Register" asp-antiforgery="true" method="post">
+            <form asp-action="Register" asp-antiforgery="true" method="post" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                 <label class="StartAdd-label" asp-for="Email"></label><br>
@@ -26,6 +26,10 @@
                 <label class="StartAdd-label" asp-for="Name"></label><br>
                 <span asp-validation-for="Name"></span>
                 <input class="form-entry-title" type="text" asp-for="Name"><br>
+
+                <label class="form-label" asp-for="Photo"></label>
+                <span asp-validation-for="Photo"></span><br>
+                <input class="form-date" type="file" asp-for="Photo" /><br>
 
                 <label class="StartAdd-label" asp-for="City"></label><br>
                 <span asp-validation-for="City"></span>

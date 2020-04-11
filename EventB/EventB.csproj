@@ -22,6 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\images\Profileimages\08_04_20me2.jpg" />
+    <None Include="wwwroot\images\Profileimages\08_04_20me3.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\EventBLib\EventBLib.csproj" />
   </ItemGroup>
 

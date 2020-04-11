@@ -27,8 +27,7 @@
     
     <div class="right-column-container">
         <input type="hidden" name="friendId" value="@item.PersonFriendId" />
-        <button class="form-submit btn-submit">Подписаться</button>
-        <button class="form-submit" asp-controller="Messages" asp-action="Index" >Сообщение</button>
+        <div class="form-submit ref-holder"><a class="form-submit" asp-controller="Messages" asp-action="Index" asp-route-opponentId="@item.PersonFriendId">Сообщение</a></div>
         <button class="form-submit" asp-action="BlockUser" >Заблокировать</button>
     </div>
 </div>

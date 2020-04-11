@@ -98,8 +98,7 @@ namespace EventB.Controllers
                     WillGo = 1,
                     Creator = creator,
                     Image = src,
-                    CreationDate = DateTime.Now,
-
+                    CreationDate = DateTime.Now,                    
                     Vizits = vizits
                 };
 
@@ -131,6 +130,12 @@ namespace EventB.Controllers
             }
 
             return NotFound();
+        }
+
+
+        public async Task<IActionResult> UserEvents(string userId)
+        {
+            return View();
         }
     }
 }

@@ -1,8 +1,61 @@
-﻿
+﻿@model EventB.ViewModels.MessagesViewModel
 @{
     ViewData["Title"] = "Index";
+    ViewData["Style"] = "Chat.css";
+    ViewData["Script"] = "Messages.js";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h3>Сообщения</h3>
 
+<div class="chat-frame">
+    <div class="left-columnn">
+        <div >
+            <form class="search">
+                <input id="txt-search" type="text">
+                <button id="btn-search"></button>
+            </form>
+        </div>
+        <div class="opponents-list">
+            @foreach (var opponent in Model.userChats)
+            {
+            <div class="opponent-container">
+                <input class="opponent-chat-id" type="hidden" value="@opponent.ChatId" />
+                <div class="opponent-name">@opponent.ChatName</div>
+                <input class="opponent-id" type="hidden" value="@opponent.OpponentId" />
+                <div class="new-message-flag"></div>
+            </div>
+            }
+        </div>
+    </div>
+
+    <div class="right-columnn">
+        <div class="message-list">
+
+            @if (Model.Messages != null)
+            {
+                foreach (var mes in Model.Messages)
+                { 
+                    <div class="message-item">
+                        <div class="message-sender">@mes.SenderName</div>
+                        <div class="message-text">@mes.Text</div>
+                        <div class="message-date">@mes.PostDate</div>
+                    </div>
+                }
+            }
+        </div>
+        <div>
+            <label>Сообщение</label><br>
+            <form class="form-send">
+                <input id="user-id" type="hidden" value="@Model.CurrentUserId" />
+                <input id="user-name" type="hidden" value="@Model.CurrentUserName" />
+                <input id="chat-id" type="hidden" value="@Model.CurrentChatId" />
+                <input id="opponent-id" type="hidden" value="@Model.OpponentId" />
+
+                <input id="message" type="text" />
+                <button id="btn-send"></button>
+            </form>
+        </div>
+
+    </div>
+</div>

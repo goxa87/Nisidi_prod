@@ -29,11 +29,15 @@ a {
 }
 main {
 }
+
+.ref-holder {
+    text-align:center;
+}
 /*ВАЛИДАЦИЯ *****************************************/
 .field-validation-error {
     color: orangered;
     display: block;
-    padding:5px;
+    padding: 5px;
 }
 
 .field-validation-valid {

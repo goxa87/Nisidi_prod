@@ -4,14 +4,16 @@ using EventBLib.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EventBLib.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20200410035610_remove_FK_message_ChatId")]
+    partial class remove_FK_message_ChatId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -273,9 +275,6 @@ namespace EventBLib.Migrations
                     b.Property<string>("ChatName")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
-
-                    b.Property<string>("OpponentId")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");

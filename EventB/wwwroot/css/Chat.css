@@ -1,0 +1,137 @@
+﻿/*
+    золотой #ffcd00
+    темный синь #1b5972
+    беж темный #e4dcc5
+    беж темный #f1ead8
+
+*/
+
+.chat-frame {
+    background-color: #1b5972;
+    width:100%;
+    height:calc(100vh - 180px);
+    display:flex;
+    align-items:stretch;    
+}
+
+.left-columnn {
+    min-width: 300px;
+    border-right: 3px solid #e4dcc5;
+    padding: 16px;
+}
+
+.right-columnn{
+    padding:16px;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+}
+
+.search {
+    display: flex;
+}
+
+    .search > input {
+        background-color: #fff6;
+        width: calc(100% - 30px);
+        margin-bottom: 8px;
+        padding: 3px;
+        border: none;
+    }
+        .search > input:focus{
+            outline:none;
+        }
+
+    .search > button {
+        background-color: #1b5972;
+        width: 30px;
+        margin-bottom: 8px;
+        border: none;
+        background-image: url('/resourses/loop.png');
+        background-size: 30px 30px;
+        background-repeat: no-repeat;
+        outline:none;
+    }
+
+
+.opponents-list{
+
+}
+.opponent-container {
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 0 solid #e4dcc5;
+}
+    .opponent-container:hover{
+        background-color:#fff4;
+    }
+
+    .opponent-name {
+        color: #ffcd00;
+        font-weight: bold;
+    }
+.new-message-flag{
+    min-width: 12px;
+    padding: 0 5px;
+    color:#05dfed;
+    font-size:12px;
+}
+
+.selected-opponent{
+    background-color:#fff9;
+}
+
+
+.message-list{
+    overflow-y:auto;
+    padding-right:10px;
+}
+
+.message-item {
+    background-color: #ffffff33;
+    margin-bottom:16px;
+    padding: 8px;
+}
+.message-sender {
+    color: #ffcd00;
+    font-size:14px;
+    text-transform: uppercase;
+}
+.message-text{
+    color: #e4dcc5;
+
+}
+.message-date {
+    color: #f1ead899;
+    font-size:10px;
+
+}
+.form-send {
+    display: flex;  
+}
+    .form-send > input {
+        background-color: #e4dcc5;
+        width: calc(100% - 30px);
+        padding: 3px;
+        border: none;
+    }
+        .form-send > input:focus{
+            outline:none;
+        }
+
+    .form-send > button {
+        background-color: #1b5972;
+        width: 30px;
+        border: none;
+        background-image: url('/resourses/yellowarrowright.png');
+        background-size: 40px 40px;
+        background-repeat: no-repeat;
+        background-position: -5px -8px;
+    }
+
+.hidden{
+    display:none;
+}

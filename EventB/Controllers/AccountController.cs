@@ -8,6 +8,8 @@ using EventB.Services;
 using EventB.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace EventB.Controllers
 {
@@ -16,6 +18,7 @@ namespace EventB.Controllers
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly Context context;
+        readonly IWebHostEnvironment environment;
 
         private readonly ITegSplitter tegSplitter;
 
@@ -23,13 +26,15 @@ namespace EventB.Controllers
         public AccountController(UserManager<User> UM,
             SignInManager<User> SIM,
             ITegSplitter TS,
-            Context Context
+            Context Context,
+            IWebHostEnvironment _environment
             )
         {
             userManager = UM;
             signInManager = SIM;
             tegSplitter = TS;
             context = Context;
+            environment = _environment;
         }
 
         public  IActionResult Login(string returnUrl)
@@ -69,7 +74,18 @@ namespace EventB.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new User() { Email = model.Email, UserName = model.Email,  Name = model.Name, City = model.City };            
+                var user = new User() { Email = model.Email, UserName = model.Email,  Name = model.Name, City = model.City };
+                // Соххранение фотографии.
+                string photoPath = "/images/Profileimages/17032020me1.jpg";
+                if (model.Photo != null)
+                {
+                    photoPath = string.Concat("/images/Profileimages/",DateTime.Now.ToString("dd_MM_yy_mm_ss"), model.Photo.FileName).Replace(" ","");
+                }
+                using (var FS = new FileStream(environment.WebRootPath + photoPath, FileMode.Create))
+                {
+                    await model.Photo.CopyToAsync(FS);
+                }
+                user.Photo = photoPath;
 
                 var createResult = await userManager.CreateAsync(user, model.Password);
 
@@ -77,11 +93,14 @@ namespace EventB.Controllers
                 {
                     var interests = new List<Interes>();
                     var splitted = tegSplitter.GetEnumerable(model.Tegs);
-                    foreach (var inter in splitted)
+                    if (splitted != null)
                     {
-                        interests.Add(new Interes { Value = inter });
+                        foreach (var inter in splitted)
+                        {
+                            interests.Add(new Interes { Value = inter });
+                        }                    
+                        user.Intereses = interests;
                     }
-                    user.Intereses = interests;
                     context.Users.Update(user);
                     await context.SaveChangesAsync();
                     // надо както его прилепить к пользователю
