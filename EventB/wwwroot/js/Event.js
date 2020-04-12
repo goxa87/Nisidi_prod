@@ -38,10 +38,10 @@ $(document).ready(function ()
         event.preventDefault();
         if ($('#chat-id').val() == '0') {
             console.log('клик - чата нет');
-
-
             // создаем чат отправляем сообщение(включает отправку)
+            $('.message-item').empty();
             CreateChat();
+           
         }
         else
         {
@@ -91,6 +91,8 @@ $(document).ready(function ()
         let chat = $('#chat-id').val();
         let message = $('#text').val();
         let name = $('#user-name').val();
+
+        if (message == '') return;
 
         $.ajax({
             url: '/Events/SendMessage',

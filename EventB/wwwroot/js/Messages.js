@@ -11,7 +11,7 @@ $('#btn-send').on('click', function (event)
     let currentId = $('#user-id').val();
     let chatId = $('#chat-id').val();
     let opponentId = $('#opponent-id').val();
-    if (chatId == '0') {
+    if (chatId == '0' || chatId=='') {
         if (opponentId == '0') {
             alert('Выбирите собеседника');
             return;

@@ -97,8 +97,7 @@ namespace EventB.Controllers
                 {
                     userChatCurent,
                     userChatopponent
-                },
-                EventId = 0
+                }
             };
 
             await context.Chats.AddAsync(chat);

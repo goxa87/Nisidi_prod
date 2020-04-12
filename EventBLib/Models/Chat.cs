@@ -39,6 +39,7 @@ namespace EventBLib.Models
         /// </summary>
         public int? EventId { get; set; }
 
+        public Event Event { get; set; }
 
                 
     }

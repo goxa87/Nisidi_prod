@@ -55,7 +55,7 @@ namespace EventB
                 services.ConfigureApplicationCookie(options =>
                 {
                     options.Cookie.HttpOnly = true;
-                    options.Cookie.Expiration = TimeSpan.FromMinutes(30);
+                    options.Cookie.Expiration = TimeSpan.FromDays(7);
                     options.LoginPath = "/Account/Login";
                     options.LogoutPath = "/Account/Logout";
 

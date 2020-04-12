@@ -127,26 +127,28 @@ namespace EventB.Controllers
             {
                 var eve = await context.Events.
                     Include(e => e.Creator).
+                    Include(e=>e.Chat).
                     Include(e => e.Vizits).
                     FirstOrDefaultAsync(e => e.EventId == id);
 
                 Chat chat;
 
-                if (eve.ChatId.HasValue)
+                if (eve.Chat!=null)
                 {
                     var messages = await context.Messages.
-                        Where(e => e.ChatId == eve.ChatId).
+                        Where(e => e.ChatId == eve.Chat.ChatId).
                         OrderByDescending(e => e.PostDate).
                         Take(30).ToListAsync();
 
                     chat = new Chat
                     {
-                        ChatId = eve.ChatId.Value,
+                        ChatId = eve.Chat.ChatId,
                         Messages = messages
                     };
                 }
                 else
                 {
+                    // Создает псевдо класс который нигде не сохраняется.(для отображения в вью).
                     chat = new Chat
                     {
                         ChatId = 0,

@@ -93,14 +93,8 @@ namespace EventBLib.Models
         /// <summary>
         /// Список пользователей с отметкой пойду.
         /// </summary>
-        public List<Vizit> Vizits { get; set; }
-        /// <summary>
-        /// id чата привязанного к событию
-        /// </summary>
-        public int? ChatId{ get; set; }
-        /// <summary>
-        /// Свойство связи для чата события.
-        /// </summary>
-        public Chat Chat { get; set; }        
+        public List<Vizit> Vizits { get; set; }        
+               
+        public Chat Chat { get; set; }
     }
 }
