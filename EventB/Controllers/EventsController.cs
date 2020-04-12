@@ -20,26 +20,29 @@ namespace EventB.Controllers
     {
         private Context context { get; }
         private readonly SignInManager<User> userManager;
+        readonly IUserFindService userFindService;
         IWebHostEnvironment environment;
 
-        public EventsController(Context c, 
-            SignInManager<User> UM, 
-            IWebHostEnvironment env)
+        public EventsController(Context c,
+            SignInManager<User> UM,
+            IWebHostEnvironment env,
+            IUserFindService _userFindService)
         {
             context = c;
             userManager = UM;
             environment = env;
+            userFindService = _userFindService;
         }
 
         public async Task<IActionResult> Start()
         {
             if (User.Identity.IsAuthenticated)
             {
-
-                return View( await context.Events.Where(e => e.City.ToLower() == "ставрополь").Take(30).ToListAsync());
+                // добавить чат
+                return View(await context.Events.Include(e => e.Creator).Where(e => e.City.ToLower() == "ставрополь").Take(30).ToListAsync());
             }
 
-            return View(await context.Events.Where(e=>e.City.ToLower()=="ставрополь").Take(30).ToListAsync());
+            return View(await context.Events.Include(e => e.Creator).Where(e => e.City.ToLower() == "ставрополь").Take(30).ToListAsync());
             //return View(list);
         }
 
@@ -80,7 +83,7 @@ namespace EventB.Controllers
                     VizitorName = creator.Name,
                     VizitirPhoto = "/images/defaultimg.jpg"
                 };
-                
+
                 var vizits = new List<Vizit> { vizit };
                 // Итоговое формирование события.
                 var eve = new Event
@@ -98,7 +101,7 @@ namespace EventB.Controllers
                     WillGo = 1,
                     Creator = creator,
                     Image = src,
-                    CreationDate = DateTime.Now,                    
+                    CreationDate = DateTime.Now,
                     Vizits = vizits
                 };
 
@@ -110,7 +113,7 @@ namespace EventB.Controllers
             {
                 ModelState.AddModelError("", "Неверные данные");
                 return View(model);
-            }            
+            }
         }
 
         /// <summary>
@@ -123,15 +126,136 @@ namespace EventB.Controllers
             if (id != null)
             {
                 var eve = await context.Events.
-                    Include(e=>e.Creator).
-                    Include(e=>e.Vizits).
+                    Include(e => e.Creator).
+                    Include(e => e.Vizits).
                     FirstOrDefaultAsync(e => e.EventId == id);
+
+                Chat chat;
+
+                if (eve.ChatId.HasValue)
+                {
+                    var messages = await context.Messages.
+                        Where(e => e.ChatId == eve.ChatId).
+                        OrderByDescending(e => e.PostDate).
+                        Take(30).ToListAsync();
+
+                    chat = new Chat
+                    {
+                        ChatId = eve.ChatId.Value,
+                        Messages = messages
+                    };
+                }
+                else
+                {
+                    chat = new Chat
+                    {
+                        ChatId = 0,
+                        Messages = new List<Message>()
+                    };
+                }
+                eve.Chat = chat;
+                var user = await userFindService.GetCurrentUserAsync(User.Identity.Name);
+                ViewData["UserId"]=user.Id ;
+                ViewData["UserName"] = user.Name;
                 return View(eve);
             }
 
             return NotFound();
         }
 
+        #region АПИ для деталей события
+        // Создание чата
+        /// <summary>
+        /// Создание чата для события.
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [Route("/Events/CreateEventChat")]
+        [Authorize]
+        public async Task<int> CreateEventChat(int eventId, string userId)
+        {
+            // Здесь может быть логика оповещения владельца события о начале чата.
+            // Создание чата для первого пользователя.
+            var event1 = await context.Events.FirstOrDefaultAsync(e => e.EventId == eventId);
+            if (event1 == null)
+            {
+                Response.StatusCode = 204;
+                return 0;
+            }
+            var name = event1.Title.Length > 50 ? event1.Title.Remove(49) : event1.Title;
+
+            var userChat = new UserChat
+            {
+                UserId = userId,
+                ChatName = name
+            };
+            var chat = new Chat
+            {
+                UserChat = new List<UserChat>
+                {
+                    userChat
+                },
+                EventId = eventId
+            };
+            event1.Chat = chat;
+            context.Events.Update(event1);
+            await context.SaveChangesAsync();
+
+            return chat.ChatId;
+        }
+        /// <summary>
+        /// Отправка сообщения в чат события.
+        /// </summary>
+        /// <param name="userId">id пользователя</param>
+        /// <param name="chatId">id чата</param>
+        /// <returns></returns>
+        [Authorize]
+        [Route("/Events/SendMessage")]
+        public async Task<StatusCodeResult> SendMessage(string userId,string userName, int chatId, string text)
+        {
+            var chat = await context.Chats.FirstOrDefaultAsync(e => e.ChatId == chatId);
+            if (chat == null)
+            {
+                Response.StatusCode = 204;
+                return StatusCode(204);
+            }
+            Message message = new Message
+            {
+                ChatId= chatId,
+                PersonId = userId,
+                SenderName = userName,
+                Text = text,
+                ReciverId = "0",
+                PostDate = DateTime.Now,
+                Read = false
+            };            
+            await context.Messages.AddAsync(message);
+            await context.SaveChangesAsync();
+            return Ok();
+        }
+        
+        /// <summary>
+        /// Получение новых сообщений динамически.
+        /// </summary>
+        /// <param name="chatId">ИД чата</param>
+        /// <param name="lastMes"> доля секунды последнего получения сообщения</param>
+        /// <returns></returns>        
+        [Authorize]
+        [Route("GetNewMessage")]
+        public async Task GetNewMessage(int chatId, int lastMes) 
+        {
+        
+        }
+
+        [Authorize]
+        [Route("GetHistory")]
+        public async Task GetHistory(int chatId, int firstMessage, int Count = 30)
+        { 
+            
+        }
+
+        #endregion
 
         public async Task<IActionResult> UserEvents(string userId)
         {

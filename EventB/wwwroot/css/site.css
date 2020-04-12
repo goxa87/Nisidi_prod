@@ -140,10 +140,10 @@ ul li a span:nth-child(4) {
 }
 
 #title-container {
-    padding: 20px;
+    padding: 8px 24px;
     color: #1b5972;
     background-color: #1b5972;
-    font-size: 20px;
+    font-size: 18px;
     display: flex;
     justify-content: space-between;
     align-items:center;
@@ -156,6 +156,9 @@ ul li a span:nth-child(4) {
 
 .shared-login h5, .shared-login a {
     color: #e4dcc5;
+    font-size:14px;
+    display:inline-block;
+    margin-left:24px;
 }
 
 .shared-login a:hover{
@@ -171,14 +174,22 @@ ul li a span:nth-child(4) {
     margin: 0;
     padding: 0;
 }
-/* ******************** формы*/
 
-.small-container {   
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    padding:20px;
+.top-page-header{
+    color:#ffcd00;
+    background-color:#1b5972;
+    width:100%;
+    padding:8px 24px;
+    font-size:18px;
+    text-transform:uppercase;
+}
+/* ******************** формы*/
+.small-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
 }
 
 .identity-cintainer {
@@ -270,249 +281,9 @@ ul li a span:nth-child(4) {
 .search-submit, .search-entry, .form-submit, .form-date, .form-entry-body, .form-entry-title:focus{
     outline: none;
 }
-/* >****************** добавление записи Event - Add  */
-.page-top-menu {
-    display: flex;
-    justify-content: space-around;
-    padding: 8px;
-    background-color: #1b5972;
-    margin-bottom: 16px;
-}
-
-    .page-top-menu a {
-         color: #e4dcc5;  
-         margin:  0 24px;
-    }
-
-    .page-top-menu a:hover {
-        color:#ffcd00;        
-    }
-
-    .common-text {
-        font-size: 14px;
-        margin: 0;
-        color: #1b5972;
-        margin: 10px 5px;
-    }
-
-/*>******************************* список событий Event - start*/
-.top-line {
-    height: 5px;
-    background-color: #1b5972;
-}
-
-.eventlist-container {
-    display: flex;
-    justify-content: stretch;
-    align-items: center;
-    border: 2px solid #1b5972;
-    background-color: #e4dcc5
-}
-
-.eventlist-img {
-    flex: 1;
-    margin:8px;
-    background-color: grey;
-}
-
-    .eventlist-img img {
-        object-fit: contain;
-        width: 300px;
-        height: 250px;
-    }
 
 
 
-.eventlist-info {
-    flex: 3;
-    padding: 16px;
-}
-
-
-    .eventlist-info h4 {
-        margin: 0;
-        display: inline;
-        font-weight: normal;
-        font-size: 14px;
-    }
-
-    .eventlist-info label {
-        margin-right: 16px;
-        font-size: 12px;
-    }
-
-
-.eventlist-stats span {
-    font-size: 12px;
-    color: grey;
-}
-
-.eventlist-bottom-menu {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #1b5972;
-    margin-bottom: 16px;
-}
-
-.will-go {
-    display: flex;
-    justify-content: left;
-    align-items: center;
-}
-
-.will-go-img {
-    width: 30px;
-    height: 30px;
-    visibility: hidden;
-}
-
-    .will-go-img img {
-        color: rgb(255, 205, 0);
-        width: 100%;
-        height: 100%;
-    }
-
-.eventlist-btn-come {
-    box-sizing: border-box;
-    max-width: 150px;
-    color: rgb(255, 205, 0);
-    text-align: center;
-    font-weight: bold;
-    padding: 15px;
-    cursor: pointer;
-}
-
-.eventlist-btn-come-right-col {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-    .eventlist-btn-come-right-col .info-img {
-        cursor: pointer;
-    }
-
-    .eventlist-btn-come-right-col .info-num {
-        padding: 0 15px;
-    }
 
 
 
-/* >***************************  контейнер деталей события Event - details*/
-.item-container {
-    background-color: #e4dcc5;
-    padding: 20px;
-    width: 100%;
-    border: 2px solid #1b5972;
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: flex-start;
-    box-sizing: border-box;
-}
-
-    .item-container h2 {
-        text-align: center;
-        font-size: 24px;
-        font-weight: bold;
-        color: #1b5972;
-        text-transform: uppercase;
-        align-self: center;
-    }
-
-    .item-container h3 {
-        text-align: center;
-        font-size: 18px;
-        margin: 5px 0;
-        font-weight: bold;
-        color: #1b5972;
-    }
-
-    .item-container h4 {
-        text-align: center;
-        padding: 5px 0;
-        margin: 5px 0;
-        font-size: 16px;
-        font-weight: bold;
-        color: #1b5972;
-        display: inline-flex;
-        padding-right: 30px;
-    }
-
-
-
-    .item-container p {
-        font-size: 18px;
-        padding: 10px 0;
-        margin: 0;
-        color: #1b5972;
-    }
-
-
-.item-inner-separator {
-    height: 2px;
-    background-color: #607d8b8c;
-    margin: 0 0 10px 0;
-    width: 100%;
-}
-
-.author {
-    float: right;
-}
-
-.item-container-img {
-    width: 100%;
-}
-
-.item-img {
-    margin: 0 auto;
-    align-self: center;
-    width: 100%;
-    max-height: 80vmin;
-    object-fit: contain;
-}
-
-.eventitem-vizitors-list {
-    margin-top: 16px;
-    box-sizing: border-box;
-}
-
-.eventitem-vizitors-list {
-    border: 2px solid #1b5972;
-}
-
-.eventitem-vizitors-list-header {
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    padding: 8px;
-    height: 32px;
-    color: #ffcd00;
-    background-color: #1b5972;
-}
-
-.eventitem-vizitors-list-arrow {
-    cursor:pointer;
-}
-
-.eventitem-vizitors-list-body{
-    display: none;
-}
-
-
-.eventitem-vizitors-list-body-flex{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-}
-
-.eventitem-vizitors-list-body-element {
-    border: 1px solid #1b5972;
-    width: 300px;
-    background-color: #e4dcc5;
-    text-align: center;
-    margin: 8px;
-    border-radius: 8px;
-    padding:4px;
-}

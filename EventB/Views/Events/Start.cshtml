@@ -2,6 +2,7 @@
 @model IEnumerable<Event>
 @{
     ViewData["Title"] = "Start";
+    ViewData["Style"] = "Event.css";
 }
 
     <div class="page-top-menu">
@@ -34,25 +35,17 @@
                         @e.Tegs
                     </h4><BR>
                 <div class="eventlist-stats">
-                    <span>Автор: @e.Creator</span><BR>
+                    <span>Автор: @e.Creator.Name</span><BR>
                     <span>Опубликовано: @e.CreationDate.ToString("dd.MM.yyyy")</span>
                 </div>
             </div>
 
         </div>
         <div class="eventlist-bottom-menu">
-            <div class="will-go">
-                <div class="eventlist-btn-come">Я ПОЙДУ!</div>
-                <div class="will-go-img">
-                    <img src="~/resourses/check-yellow.png" />
-                </div>
-            </div>
             <div class="eventlist-btn-come-right-col">
-                <img class="info-img" title="просмотров" src="~/resourses/eye.png" />
+                <img class="info-img" title="Просмотров" src="~/resourses/eye.png" />
                 <span class="info-num">@e.Views.ToString()</span>
-                <img class="info-img" title="отметок нравится" src="~/resourses/like.png" />
-                <span class="info-num">@e.Likes.ToString()</span>
-                <img class="info-img" title="отметок Пойду" src="~/resourses/share.png" />
+                <img class="info-img" title="Пойдут" src="~/resourses/share.png" />
                 <span class="info-num">xxx</span>
 
             </div>
@@ -65,7 +58,9 @@
         <div>Нет ни одного элемента</div>
     }
 
-
+@{
+    ViewData["Script"] = "Event.js";
+}
 
 
 

@@ -38,6 +38,8 @@ namespace EventBLib.Models
         /// Индекс события к которому относится чат.
         /// </summary>
         public int? EventId { get; set; }
+
+
                 
     }
 }

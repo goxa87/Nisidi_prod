@@ -98,7 +98,7 @@ namespace EventB.Controllers
                     userChatCurent,
                     userChatopponent
                 },
-                EventId = null
+                EventId = 0
             };
 
             await context.Chats.AddAsync(chat);
@@ -106,44 +106,7 @@ namespace EventB.Controllers
             return chat.ChatId;
         }
 
-        /// <summary>
-        /// Создание чата для события.
-        /// </summary>
-        /// <param name="eventId"></param>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        [Route("CreateEventChat")]
-        [Authorize]
-        public async Task<int> CreateEventChat(int eventId, string userId)
-        {
-            // Здесь может быть логика оповещения владельца события о начале чата.
-            // Создание чата для первого пользователя.
-            var event1 = await context.Events.FirstOrDefaultAsync(e => e.EventId == eventId);            
-            if (event1 == null)
-            {
-                Response.StatusCode = 204;
-                return 0;
-            }
-            var name = event1.Title.Length > 50 ? event1.Title.Remove(49) : event1.Title;
-
-            var userChat = new UserChat
-            {
-                UserId = userId,
-                ChatName = name
-            };
-            var chat = new Chat 
-            {
-                UserChat = new List<UserChat> 
-                {
-                    userChat
-                },
-                EventId = eventId
-            };
-
-            var rezult = await context.Chats.AddAsync(chat);
-            await context.SaveChangesAsync();
-            return rezult.Entity.ChatId;
-        }
+        
         /// <summary>
         /// Отправление сообщения в чат.
         /// </summary>
@@ -184,6 +147,8 @@ namespace EventB.Controllers
         [Authorize]
         public async Task<List<Message>> GetMessageHistory(int chatId, int lastCount = 30)
         {
+            // Реализовать количество загрузок.
+
             var messages = await context.Messages.
                 Where(e => e.ChatId == chatId).
                 OrderByDescending(e => e.PostDate).
@@ -214,7 +179,6 @@ namespace EventB.Controllers
             await context.SaveChangesAsync();
 
             return messages;
-
         }
         #endregion
     }

@@ -5,31 +5,35 @@
     ViewData["Script"] = "MyPage.js";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<div class="top-page-header">Это вы: @Model.Name</div>
 <div class="mp-header">
     <div class="mp-img">
         <img src="@Model.Photo" alt="фото">
     </div>
     <div class="mp-data">
         <a id="btn-edit">РЕДАКТИРОВАТЬ</a>
-        <h3 class="mp-name">@Model.Name</h3>                   
+        <h3 class="mp-name">@Model.Name</h3>
+        <div class="mp-data-label">Электронная почта:</div>
+        <div class="mp-data-value">@Model.Email</div>
         <div class="mp-data-label">Ccылка на страницу:</div>
         <div class="mp-data-value">ссылка ..............</div>
         <div class="mp-data-label">Городе:</div>
         <div class="mp-data-value">@Model.City</div>
         <div class="mp-data-label">Мои теги:</div>
-        <div class="mp-data-tegs">            
+        <div class="mp-data-tegs">
             @if (Model.Intereses != null)
             {
                 @foreach (var e in Model.Intereses)
                 {
                     <span class="mp-teg">@e.Value</span>
                 }
-            }               
+            }
         </div>
         <div class="mp-data-label">Пара слов:</div>
-        <div>text text text text text text text text text text text text text text text
-        text text text text text text text text text text text text text </div>
+        <div>
+            text text text text text text text text text text text text text text text
+            text text text text text text text text text text text text text
+        </div>
     </div>
 </div>
 
@@ -37,6 +41,7 @@
     <span id="events-willgo" class="mp-my-selector selected-label">Я пойду</span>
     <span id="my-events" class="mp-my-selector">Мои события</span>
     <span id="friends" class="mp-my-selector">Подписки</span>
+    <span id="invites" class="mp-my-selector">Приглашения</span>
 </div>
 <div>
 
@@ -49,35 +54,35 @@
         {
             <div>Вы пойдете на следующие события:</div>
             <div class="element-square-container">
-            @foreach (var e in Model.Vizits)
-            {
-                <div class="events-square-item">
-                    <a asp-route-id="@e.EventId" asp-action="Details" asp-controller="Events">
-                        <figure>
-                            <img src="@e.EventPhoto" />
-                            <figcaption><div>@e.EventTitle</div></figcaption>
-                        </figure>
-                    </a>
-                </div>
+                @foreach (var e in Model.Vizits)
+                {
+                    <div class="events-square-item">
+                        <a asp-route-id="@e.EventId" asp-action="Details" asp-controller="Events">
+                            <figure>
+                                <img src="@e.EventPhoto" />
+                                <figcaption><div>@e.EventTitle</div></figcaption>
+                            </figure>
+                        </a>
+                    </div>
 
-                <div class="events-square-item">
-                    <a asp-route-id="@e.EventId" asp-action="Details" asp-controller="Events">
-                        <figure>
-                            <img src="@e.EventPhoto" />
-                            <figcaption><div>@e.EventTitle</div></figcaption>
-                        </figure>
-                    </a>
-                </div>
+                    <div class="events-square-item">
+                        <a asp-route-id="@e.EventId" asp-action="Details" asp-controller="Events">
+                            <figure>
+                                <img src="@e.EventPhoto" />
+                                <figcaption><div>@e.EventTitle</div></figcaption>
+                            </figure>
+                        </a>
+                    </div>
 
-                <div class="events-square-item">
-                    <a asp-route-id="@e.EventId" asp-action="Details" asp-controller="Events">
-                        <figure>
-                            <img src="@e.EventPhoto" />
-                            <figcaption><div>@e.EventTitle</div></figcaption>
-                        </figure>
-                    </a>
-                </div>
-            }
+                    <div class="events-square-item">
+                        <a asp-route-id="@e.EventId" asp-action="Details" asp-controller="Events">
+                            <figure>
+                                <img src="@e.EventPhoto" />
+                                <figcaption><div>@e.EventTitle</div></figcaption>
+                            </figure>
+                        </a>
+                    </div>
+                }
             </div>
         }
     </div>
@@ -125,5 +130,10 @@
                 </div>
             }
     </div>
-</div>
+
+    <div id="friends-body" class="mp-my-content display-none">
+        Здесь будут приглашения
+    
+    </div>
+    </div>
 

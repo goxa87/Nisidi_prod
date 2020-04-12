@@ -1,10 +1,10 @@
 ﻿@model EventBLib.Models.Event
 @{
     ViewData["Title"] = "Details";
+    ViewData["Style"] = "Event.css";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<div class="top-line"></div>
+<div class="top-page-header">@Model.Title</div>
 <div class="item-container">
     <div class="item-container-img">
         <img class="item-img" src="@Model.Image">
@@ -18,47 +18,97 @@
     <div class="item-inner-separator"></div>
 
     <div class="author">выложил: @Model.Creator.Name</div>
-
+    <div>Я пойду</div>
+    <div>Пригласить на это событие</div>
     <div class="item-inner-separator"></div>
 </div>
 
 <div class="eventlist-bottom-menu">
-    <div class="will-go">
-        <div class="eventlist-btn-come">Я ПОЙДУ!</div>
-        <div class="will-go-img">
-            <img src="~/resourses/check-yellow.png" />
-        </div>
-    </div>
     <div class="eventlist-btn-come-right-col">
-        <img class="info-img" title="просмотров" src="~/resourses/eye.png" />
+        <img class="info-img" title="Просмотров" src="~/resourses/eye.png" />
         <span class="info-num">@Model.Views.ToString()</span>
-        <img class="info-img" title="отметок нравится" src="~/resourses/like.png" />
-        <span class="info-num">@Model.Likes.ToString()</span>
-        <img class="info-img" title="отметок Пойду" src="~/resourses/willgo2.png" />
+        <img class="info-img" title="Пойдут" src="~/resourses/share.png" />
         <span class="info-num">@Model.WillGo.ToString()</span>
     </div>
 </div>
 
-<!--  Список посетителей  -->
-<div class="eventitem-vizitors-list">
-    <div class="eventitem-vizitors-list-header">
-        <div>
-            <img class="eventitem-vizitors-list-arrow" src="~/resourses/yellowarrowright.png">
-        </div>
-        <span>Отметились пойдут(@Model.WillGo.ToString()):</span>
+<!--  Список посетителей
+
+/*
+    здесь должно быть
+изменения
+чат
+отметились пойдут
+
+*/
+    -->
+
+
+<div class="bottom-menu">
+    <span class="bottom-menu-item bottom-menu-item-selected" id="btn-changes">Изменения</span>
+    <span class="bottom-menu-item" id="btn-chat">Чат</span>
+    <span class="bottom-menu-item" id="btn-vizitors">Участники(@Model.Vizits.Count())</span>
+
+</div>
+<div class="bottom-body">
+
+    <!--Изменения-->
+    <div class="bottom-page" id="changes">
+        changes
     </div>
-    <div class="eventitem-vizitors-list-body">
-        <div class="eventitem-vizitors-list-body-flex">
-            @foreach (var e in Model.Vizits)
-            { 
-                <div class="eventitem-vizitors-list-body-element">
-                    <div>@e.VizitorName</div>
-                    <div style="{width:40px;height:40px;}"><img src="@e.VizitirPhoto" /></div>
+
+    <!--чат-->
+    <div class="bottom-page display-none" id="chat" >
+        <form>
+            <label>Сообщение</label><br>
+            <input type="hidden" id="user-id" value="@ViewData["UserId"]" />
+            <input type="hidden" id="user-name" value="@ViewData["UserName"]" />
+            <input type="hidden" id="event-id" value="@Model.EventId" />
+            <input type="hidden" id="chat-id" value="@Model.ChatId" />
+            <button type="submit" id="btn-send">Отправить</button>
+            <input type="text" id="text" />
+
+        </form>
+        <div class="message-list">
+            @if (Model.Chat.Messages.Count == 0)
+            {
+                <div class="message-item">
+                    <div class="message-text">Сообщений пока нет</div>
                 </div>
             }
+            else
+            {
+                @foreach (var message in Model.Chat.Messages)
+                {
+                    <div class="message-item">
+                        <div class="message-sender">@message.SenderName</div>
+                        <div class="message-text">@message.Text</div>
+                        <div class="message-date">@message.PostDate</div>
+                    </div>
+                }
+                @if (Model.Chat.Messages.Count == 30)
+                {
+                    @* здесь не отображается если сообщений меньше 30. т.е. истории нет в базе*@
+                    <form id="form-load">
+                        <input type="hidden" id="first-id" value="0" />
+                        <!--количество на загрузку из js-->
+                        <button id="btn-load">загрузить историю</button>
+                    </form>
+                 }
+            }
+
         </div>
     </div>
+
+    <!-- посетители-->
+    <div class="bottom-page display-none" id="vizitors">
+        vizitirs
+    </div>
+
 
 </div>
 
 <!--  comments  -->
+
+@{ViewData["Script"] = "Event.js";
+}

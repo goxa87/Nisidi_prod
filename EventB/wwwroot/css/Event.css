@@ -1,0 +1,302 @@
+﻿/*>******************************* список событий Event - start*/
+.top-line {
+    height: 5px;
+    background-color: #1b5972;
+}
+
+.eventlist-container {
+    display: flex;
+    justify-content: stretch;
+    align-items: center;
+    border: 2px solid #1b5972;
+    background-color: #e4dcc5
+}
+
+.eventlist-img {
+    flex: 1;
+    margin: 8px;
+    background-color: grey;
+}
+
+    .eventlist-img img {
+        object-fit: contain;
+        width: 300px;
+        height: 250px;
+    }
+
+
+
+.eventlist-info {
+    flex: 3;
+    padding: 16px;
+}
+
+
+    .eventlist-info h4 {
+        margin: 0;
+        display: inline;
+        font-weight: normal;
+        font-size: 14px;
+    }
+
+    .eventlist-info label {
+        margin-right: 16px;
+        font-size: 12px;
+    }
+
+
+.eventlist-stats span {
+    font-size: 12px;
+    color: grey;
+}
+
+.eventlist-bottom-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1b5972;
+    margin-bottom: 16px;
+    padding:4px 24px;
+}
+
+
+.eventlist-btn-come-right-col {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+    .info-img {
+        cursor: pointer;
+    }
+
+    .info-num {
+        padding: 0 15px;
+        color:#e4dcc5;
+    }
+
+/* >***************************  контейнер деталей события Event - details*/
+.item-container {
+    background-color: #e4dcc5;
+    padding: 20px;
+    width: 100%;
+    border: 2px solid #1b5972;
+    border-top:0;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: flex-start;
+    box-sizing: border-box;
+}
+
+    .item-container h2 {
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+        color: #1b5972;
+        text-transform: uppercase;
+        align-self: center;
+    }
+
+    .item-container h3 {
+        text-align: center;
+        font-size: 18px;
+        margin: 5px 0;
+        font-weight: bold;
+        color: #1b5972;
+    }
+
+    .item-container h4 {
+        text-align: center;
+        padding: 5px 0;
+        margin: 5px 0;
+        font-size: 16px;
+        font-weight: bold;
+        color: #1b5972;
+        display: inline-flex;
+        padding-right: 30px;
+    }
+
+
+
+    .item-container p {
+        font-size: 18px;
+        padding: 10px 0;
+        margin: 0;
+        color: #1b5972;
+    }
+
+
+.item-inner-separator {
+    height: 2px;
+    background-color: #607d8b8c;
+    margin: 0 0 10px 0;
+    width: 100%;
+}
+
+.author {
+    float: right;
+}
+
+.item-container-img {
+    width: 100%;
+}
+
+.item-img {
+    margin: 0 auto;
+    align-self: center;
+    width: 100%;
+    max-height: 80vmin;
+    object-fit: contain;
+}
+/*
+.eventitem-vizitors-list {
+    margin-top: 16px;
+    box-sizing: border-box;
+}
+
+.eventitem-vizitors-list {
+    border: 2px solid #1b5972;
+}
+
+.eventitem-vizitors-list-header {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 8px;
+    height: 32px;
+    color: #ffcd00;
+    background-color: #1b5972;
+}
+
+.eventitem-vizitors-list-arrow {
+    cursor: pointer;
+}
+
+.eventitem-vizitors-list-body {
+    display: none;
+}
+
+
+.eventitem-vizitors-list-body-flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.eventitem-vizitors-list-body-element {
+    border: 1px solid #1b5972;
+    width: 300px;
+    background-color: #e4dcc5;
+    text-align: center;
+    margin: 8px;
+    border-radius: 8px;
+    padding: 4px;
+}
+    */
+/* >****************** добавление записи Event - Add  */
+.page-top-menu {
+    display: flex;
+    justify-content: space-around;
+    padding: 8px;
+    background-color: #1b5972;
+    margin-bottom: 16px;
+}
+
+    .page-top-menu a {
+        color: #e4dcc5;
+        margin: 0 24px;
+    }
+
+        .page-top-menu a:hover {
+            color: #ffcd00;
+        }
+
+.common-text {
+    font-size: 14px;
+    margin: 0;
+    color: #1b5972;
+    margin: 10px 5px;
+}
+
+
+/* нижнее меню деталей*/
+
+.bottom-menu{
+    display:flex;
+    justify-content:space-around;
+    flex-wrap:wrap;
+    background-color:#1b5972;
+    padding:8px 24px;
+}
+
+.bottom-menu-item{
+    color:#e4dcc5;
+    cursor:pointer;
+}
+
+.bottom-menu-item-selected {
+    color:#ffcd00;
+}
+.display-none {
+    display:none;
+}
+
+.bottom-body {
+    border: 2px solid #1b5972;
+    padding: 16px;
+    background-color: #e4dcc5;
+}
+
+
+/* Сообщения */
+#text{
+    width:calc(100% - 105px);
+}
+#btn-send{
+    width:100px;
+    border:none;
+    background-color:#1b5972;
+    color:#ffcd00;
+}
+
+.message-list {
+    width: 100%;
+}
+
+.message-item {
+    width: 100%;
+    background-color:#1b5972;
+    padding:8px;
+    margin-bottom:16px;
+}
+
+.message-sender {
+    color: #ffcd00;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.message-text{
+    color:#e4dcc5;
+}
+
+.message-date {
+    color: #f1ead899;
+    font-size: 10px;
+}
+
+form{
+    margin-bottom:16px;
+}
+
+form label {
+    font-size:12px;
+}
+
+#btn-load{
+    color:#1b5972;
+    cursor:pointer;
+    background-color:#0000;
+    border:none;
+}
