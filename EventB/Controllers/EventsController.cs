@@ -22,27 +22,45 @@ namespace EventB.Controllers
         private readonly SignInManager<User> userManager;
         readonly IUserFindService userFindService;
         IWebHostEnvironment environment;
+        ITegSplitter tegSplitter;
+        IEventSelectorService eventSelector;
 
         public EventsController(Context c,
             SignInManager<User> UM,
             IWebHostEnvironment env,
-            IUserFindService _userFindService)
+            IUserFindService _userFindService,
+            ITegSplitter _tegSplitter,
+            IEventSelectorService _eventSelector)
         {
             context = c;
             userManager = UM;
             environment = env;
             userFindService = _userFindService;
+            tegSplitter = _tegSplitter;
+            eventSelector = _eventSelector;
         }
 
         public async Task<IActionResult> Start()
         {
             if (User.Identity.IsAuthenticated)
             {
-                // добавить чат
-                return View(await context.Events.Include(e => e.Creator).Where(e => e.City.ToLower() == "ставрополь").Take(30).ToListAsync());
+                var user = await userFindService.GetCurrentUserAsync(User.Identity.Name);
+                var events = await eventSelector.GetStartEventListAsync(user);
+                // параллельно обновляем количество просмотров в другом потоке.
+                Task.Factory.StartNew(async () => 
+                {
+                    foreach (var ev in events)
+                    {
+                        ev.Views++;
+                    }
+
+                    context.UpdateRange(events);
+                    await context.SaveChangesAsync();
+                });
+                return View(events);
             }
 
-            return View(await context.Events.Include(e => e.Creator).Where(e => e.City.ToLower() == "ставрополь").Take(30).ToListAsync());
+            return View(await context.Events.Include(e => e.Creator).Include(e => e.EventTegs).Where(e => e.City.ToLower() == "ставрополь").Take(30).ToListAsync());
             //return View(list);
         }
 
@@ -85,12 +103,19 @@ namespace EventB.Controllers
                 };
 
                 var vizits = new List<Vizit> { vizit };
+
+                var tegs = tegSplitter.GetEnumerable(model.Tegs).ToList();
+                List<EventTeg> eventTegs = new List<EventTeg>();
+                foreach (var teg in tegs)
+                {
+                    eventTegs.Add(new EventTeg { Teg = teg });
+                }
                 // Итоговое формирование события.
                 var eve = new Event
                 {
                     Title = model.Title,
                     Body = model.Body,
-                    Tegs = model.Tegs,
+                    EventTegs = eventTegs,
                     City = model.City,
                     Place = model.Place,
                     Date = model.Date,
@@ -128,6 +153,7 @@ namespace EventB.Controllers
                 var eve = await context.Events.
                     Include(e => e.Creator).
                     Include(e=>e.Chat).
+                    Include(e=>e.EventTegs).
                     Include(e => e.Vizits).
                     FirstOrDefaultAsync(e => e.EventId == id);
 

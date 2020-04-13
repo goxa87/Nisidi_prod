@@ -23,6 +23,5 @@ namespace EventBLib.Models
         /// Строковое значение интереса.
         /// </summary>
         public string Value { get; set; }
-
     }
 }

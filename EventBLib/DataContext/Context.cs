@@ -43,6 +43,10 @@ namespace EventBLib.DataContext
         /// Список друзей для пользователей.
         /// </summary>
         public DbSet<Friend> Friends { get; set; }
+        /// <summary>
+        /// Список тегов событий.
+        /// </summary>
+        public DbSet<EventTeg> EventTegs { get; set; }
 
         #region FluentApi Commented
         //protected override void OnModelCreating(ModelBuilder builder)
@@ -65,7 +69,7 @@ namespace EventBLib.DataContext
         //        .HasForeignKey(e => e.EventId).OnDelete(DeleteBehavior.ClientSetNull);
         //}
         #endregion
-        
+
         /// <summary>
         /// Конфигурация поставщика данных.
         /// </summary>

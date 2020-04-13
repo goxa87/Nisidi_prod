@@ -4,14 +4,16 @@ using EventBLib.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EventBLib.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20200413022725_add_TableEventTeg")]
+    partial class add_TableEventTeg
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,6 +73,9 @@ namespace EventBLib.Migrations
 
                     b.Property<int>("Shares")
                         .HasColumnType("int");
+
+                    b.Property<string>("Tegs")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -486,7 +491,7 @@ namespace EventBLib.Migrations
             modelBuilder.Entity("EventBLib.Models.EventTeg", b =>
                 {
                     b.HasOne("EventBLib.Models.Event", "Event")
-                        .WithMany("EventTegs")
+                        .WithMany()
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

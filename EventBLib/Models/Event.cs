@@ -39,12 +39,30 @@ namespace EventBLib.Models
         /// Заголовок.
         /// </summary>
         [Required]
-        [StringLength(300), Display(Name ="Заголовок")]
+        [StringLength(300), Display(Name = "Заголовок")]
         public string Title { get; set; }
         /// <summary>
         /// Ключи для поиска.
         /// </summary>
-        public string Tegs { get; set; }
+        public List<EventTeg> EventTegs { get; set; }
+        /// <summary>
+        /// Теги в строку.
+        /// </summary>
+        public string Tegs
+        {
+            get 
+            {
+                if (EventTegs == null || EventTegs.Count == 0)
+                    return "нет тегов или не загружено";
+
+                var rezult = "";
+                foreach (var teg in EventTegs)
+                {
+                    rezult += teg.Teg + " ";
+                }
+                return rezult;
+            }
+        }
         /// <summary>
         /// Адрес картинки.
         /// </summary>
