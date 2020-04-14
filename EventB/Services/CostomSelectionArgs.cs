@@ -15,12 +15,7 @@ namespace EventB.Services
         /// <summary>
         /// Город
         /// </summary>
-        public string Sity { get; set; }
-
-        /// <summary>
-        /// место проведения
-        /// </summary>
-        public string Place { get; set; }
+        public string City { get; set; }
         /// <summary>
         /// теги события
         /// </summary>
@@ -37,23 +32,17 @@ namespace EventB.Services
         public DateTime DateDue { get; set; }
 
         /// <summary>
-        /// часть имени создателя события
-        /// </summary>
-        public int Creator { get; set; }
-        /// <summary>
         /// Только события друзей
         /// </summary>
         public bool FriendsOnly { get; set; }
         
         public User Requester { get; set; }
 
-        public CostomSelectionArgs(DateTime DS, DateTime DE, string title = "", string sity = "ставрополь", string place = "", string tegs = "", int creator = -1, bool friends=false, User req=null)
+        public CostomSelectionArgs(DateTime DS, DateTime DE, string title = "", string city = "ставрополь", string tegs = "", bool friends=false, User req=null)
         {
             Title = title;
-            Sity = sity;
-            Place = place;
+            City = city;
             Tegs = tegs;
-            Creator = creator;
             DateSince = DS;
             DateDue = DE;
             FriendsOnly = friends;

@@ -66,7 +66,6 @@ namespace EventB
             services.AddTransient<ITegSplitter, TegSplitter>();
             services.AddTransient<IUserFindService, UserFindService>();
             services.AddScoped<IEventSelectorService, EventSelectorService>();
-            //services.AddTransient<IEventSelectorService, EventSelectorService>();
             //services.AddScoped<IViewModelFactory,ViewModelFactory>();
         }
 

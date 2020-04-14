@@ -8,7 +8,7 @@ namespace EventB.Services
 {
     public interface IEventSelectorService
     {
-        public Task<IEnumerable<Event>> GetStartEventListAsync(User user);
-        public Task<IEnumerable<Event>> GetCostomEventsAsync();
+        public Task<List<Event>> GetStartEventListAsync(User user);
+        public Task<List<Event>> GetCostomEventsAsync(CostomSelectionArgs args);
     }
 }

@@ -27,9 +27,9 @@ namespace EventB.ViewModels
         /// <summary>
         ///  город проведения
         /// </summary>
-        public string Sity { get; set; } 
+        public string Сity { get; set; } 
 
         public bool FriendsOnly { get; set; } 
-        public string Place { get; set; }
+
     }
 }

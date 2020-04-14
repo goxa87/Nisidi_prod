@@ -42,12 +42,13 @@ namespace EventB.Controllers
 
         public async Task<IActionResult> Start()
         {
+            List<Event> events;
             if (User.Identity.IsAuthenticated)
             {
                 var user = await userFindService.GetCurrentUserAsync(User.Identity.Name);
-                var events = await eventSelector.GetStartEventListAsync(user);
+                events = await eventSelector.GetStartEventListAsync(user);
                 // параллельно обновляем количество просмотров в другом потоке.
-                Task.Factory.StartNew(async () => 
+                Task.Factory.StartNew(async () =>
                 {
                     foreach (var ev in events)
                     {
@@ -59,8 +60,12 @@ namespace EventB.Controllers
                 });
                 return View(events);
             }
+            else 
+            {
+                events = await eventSelector.GetStartEventListAsync(null);
+            }
 
-            return View(await context.Events.Include(e => e.Creator).Include(e => e.EventTegs).Where(e => e.City.ToLower() == "ставрополь").Take(30).ToListAsync());
+            return View(events);
             //return View(list);
         }
 
@@ -183,8 +188,16 @@ namespace EventB.Controllers
                 }
                 eve.Chat = chat;
                 var user = await userFindService.GetCurrentUserAsync(User.Identity.Name);
-                ViewData["UserId"]=user.Id ;
-                ViewData["UserName"] = user.Name;
+                if (user != null)
+                {
+                    ViewData["UserId"] = user.Id;
+                    ViewData["UserName"] = user.Name;
+                }
+                else
+                {
+                    ViewData["UserId"] = "0";
+                    ViewData["UserName"] = "Неавторизован";
+                }
                 return View(eve);
             }
 

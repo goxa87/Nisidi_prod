@@ -15,18 +15,58 @@ namespace EventB.Services
     public class EventSelectorService : IEventSelectorService
     {
         readonly Context context;
-        readonly IUserFindService findService;
+        readonly ITegSplitter tegSplitter;
 
         public EventSelectorService(Context _context,
-            IUserFindService _findService)
+            ITegSplitter _tegSplitter
+            )
         {
             context = _context;
-            IUserFindService findService = _findService;
+            tegSplitter = _tegSplitter;
         }
 
-        public async Task<IEnumerable<Event>> GetCostomEventsAsync()
+        public async Task<List<Event>> GetCostomEventsAsync(CostomSelectionArgs args)
         {
-            throw new NotImplementedException();
+            // Фильтр
+            // по дате
+            var dateStart = args.DateSince;
+            if (dateStart == null)
+            {
+                dateStart = DateTime.Now;
+            }
+            var dateEnd = args.DateDue;
+            if (dateEnd == new DateTime(0))
+            {
+                dateEnd = DateTime.Now.AddDays(300);
+            }
+            var selection = context.Events.
+                Include(e=>e.EventTegs).
+                Include(e=>e.Creator).
+                Where(e => e.Date > dateStart && e.Date < dateEnd && e.Type == EventType.Private);
+            // город
+            if (!string.IsNullOrWhiteSpace(args.City))
+                selection = selection.Where(e => e.City.ToLower() == args.City.ToLower());
+            // заголовок
+            if (!string.IsNullOrWhiteSpace(args.Title))
+                selection = selection.Where(e => e.Title.ToLower() == args.Title.ToLower());
+
+            var selectionLocal = selection;
+            // теги
+            if (!string.IsNullOrWhiteSpace(args.Tegs))
+            {
+                var tegs = tegSplitter.GetEnumerable(args.Tegs).ToList();
+                IQueryable<Event> tegSelection = context.Events.Include(e => e.Creator).Include(e=>e.EventTegs).Where(e=>e.EventId==0);
+                foreach (var teg in tegs)
+                {
+                    var tempSelection = context.EventTegs.Include(e=>e.Event).ThenInclude(e => e.Creator).
+                        Include(e => e.Event).ThenInclude(e=>e.EventTegs).
+                        Where(e => e.Teg.ToLower() == teg.ToLower()).Select(e=>e.Event);
+                    tegSelection = tegSelection.Union(tempSelection);
+                } 
+
+                selectionLocal = selectionLocal.Intersect(tegSelection);
+            }
+            return selectionLocal.OrderBy(e=>e.Date).ToList();
         }
 
         /// <summary>
@@ -34,31 +74,56 @@ namespace EventB.Services
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Event>> GetStartEventListAsync(User user)
+        public async Task<List<Event>> GetStartEventListAsync(User user)
         {
-            var dateStart = DateTime.Now;
-            var dateEnd = DateTime.Now.AddDays(30);
-            var city = user.City;
-            var tegs = user.Intereses;
-            // город
-            // период месяц
-            var fromDateCity = context.Events.Include(e=>e.Creator).
-                Include(e=>e.EventTegs).
-                Where(e => e.City == city && e.Date > dateStart && e.Date < dateEnd);
-            // подписался пойду
-            var fromVizits = context.Vizits.Include(e => e.Event).ThenInclude(e=>e.EventTegs).
-                Include(e => e.Event).ThenInclude(e=>e.Creator).
-                Where(e => e.UserId == user.Id).
-                Select(e => e.Event);
+            // Идентифицированный пользователь.
+            if (user != null)
+            {
+                var dateStart = DateTime.Now;
+                var dateEnd = DateTime.Now.AddDays(100);
+                var city = user.City;
+                var tegs = user.Intereses;
+                // город
+                // период месяц
+                var fromDateCity = context.Events.Include(e => e.Creator).
+                    Include(e => e.EventTegs).
+                    Where(e => e.City == city &&
+                        e.Date > dateStart &&
+                        e.Date < dateEnd &&
+                        e.Type==EventType.Private).ToList();
+                //подписался пойду
+                //var fromVizits = context.Vizits.Include(e => e.Event).ThenInclude(e => e.EventTegs).
+                //    Include(e => e.Event).ThenInclude(e => e.Creator).
+                //    Where(e => e.UserId == user.Id && e.Event.Type == EventType.Private).
+                //    Select(e => e.Event);
 
-            var imRez = fromDateCity.Intersect(fromVizits);
-            // пересечение интересов пользователя и тегов события
-            var intereses = context.Intereses.Where(e => e.UserId == user.Id);
-            var fromIntereses = context.EventTegs.Include(e => e.Event).ThenInclude(e=>e.Creator).
-                Include(e=>e.Event).ThenInclude(e=>e.EventTegs).
-                Join(intereses, teg => teg.Teg, interes => interes.Value, (teg, interes) => teg.Event);
+                //var imRez = fromDateCity.Intersect(fromVizits);
+                // пересечение интересов пользователя и тегов события
+                var intereses = context.Intereses.Where(e => e.UserId == user.Id);
+                var fromIntereses = context.EventTegs.
+                    Include(e => e.Event).ThenInclude(e => e.Creator).
+                    Include(e => e.Event).ThenInclude(e => e.EventTegs).
+                    Join(intereses,
+                        teg => teg.Teg,
+                        interes => interes.Value,
+                        (teg, interes) => teg.Event).ToList();
+                var fromInteresesGlobal = fromIntereses.Where(e => e.Type == EventType.Private);
+                return fromDateCity.Intersect(fromIntereses).OrderBy(e => e.Date).ToList();
+                return fromDateCity.ToList();
+            }
+            else
+            {
+                // Не аутентифицированный пользователь.
+                // Просто последние добавленные события.
+                var rezult = await context.Events.Include(e=>e.Creator).Include(e=>e.EventTegs).Where(e =>
+                    e.Date > DateTime.Now && e.Date < DateTime.Now.AddDays(300) &&
+                    e.Type == EventType.Private).
+                    OrderBy(e => e.Date).Take(40).ToListAsync();
 
-            return await imRez.Intersect(fromIntereses).OrderBy(e=>e.Date).ToListAsync();
+                //var rezult = await context.Events.ToListAsync();
+
+                return rezult;
+            }
         }    
     }
 }

@@ -36,6 +36,12 @@ $(document).ready(function ()
     $('#btn-send').click(function (event)
     {
         event.preventDefault();
+
+        if ($('#user-id').val() == '0') {
+            alert('Авторизуйтесь для отправки сооsбщений');
+            return;
+        }
+
         if ($('#chat-id').val() == '0') {
             console.log('клик - чата нет');
             // создаем чат отправляем сообщение(включает отправку)

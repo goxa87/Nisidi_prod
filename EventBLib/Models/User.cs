@@ -20,7 +20,7 @@ namespace EventBLib.Models
         /// </summary>
         public string City { get; set; }
         /// <summary>
-        /// 
+        /// Адрес фотографии.
         /// </summary>
         public string Photo { get; set; }
 
@@ -32,8 +32,6 @@ namespace EventBLib.Models
 
         public List<Friend> Friends { get; set; }
 
-        public List<UserChat> UserChats { get; set; }
-
-        
+        public List<UserChat> UserChats { get; set; }        
     }
 }
