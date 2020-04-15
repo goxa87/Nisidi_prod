@@ -66,7 +66,6 @@ namespace EventB.Controllers
             }
 
             return View(events);
-            //return View(list);
         }
 
         [Authorize]

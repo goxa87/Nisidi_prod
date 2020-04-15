@@ -91,13 +91,7 @@ namespace EventB.Services
                         e.Date > dateStart &&
                         e.Date < dateEnd &&
                         e.Type==EventType.Private).ToList();
-                //подписался пойду
-                //var fromVizits = context.Vizits.Include(e => e.Event).ThenInclude(e => e.EventTegs).
-                //    Include(e => e.Event).ThenInclude(e => e.Creator).
-                //    Where(e => e.UserId == user.Id && e.Event.Type == EventType.Private).
-                //    Select(e => e.Event);
-
-                //var imRez = fromDateCity.Intersect(fromVizits);
+                
                 // пересечение интересов пользователя и тегов события
                 var intereses = context.Intereses.Where(e => e.UserId == user.Id);
                 var fromIntereses = context.EventTegs.
@@ -109,7 +103,7 @@ namespace EventB.Services
                         (teg, interes) => teg.Event).ToList();
                 var fromInteresesGlobal = fromIntereses.Where(e => e.Type == EventType.Private);
                 return fromDateCity.Intersect(fromIntereses).OrderBy(e => e.Date).ToList();
-                return fromDateCity.ToList();
+                
             }
             else
             {

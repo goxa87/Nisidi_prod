@@ -12,11 +12,11 @@ namespace EventBLib.Models
         /// </summary>
         public int VizitId { get; set; }
         /// <summary>
-        /// ключ пользователя
+        /// Ключ пользователя
         /// </summary>        
         public string UserId { get; set; }
         /// <summary>
-        /// ключ  события
+        /// Ключ  события
         /// </summary>
         public int EventId { get; set; }
         /// <summary>
@@ -24,7 +24,7 @@ namespace EventBLib.Models
         /// </summary>
         public User User { get; set; }
         /// <summary>
-        /// событие
+        /// Событие
         /// </summary>
         public Event Event { get; set; }
         /// <summary>

@@ -12,13 +12,17 @@ namespace EventBLib.Models
         /// </summary>
         public int FriendId { get; set; }
         /// <summary>
-        /// Свойство связи с пользователем для которого друзья.
+        /// Id пользователя , который является другом.
+        /// </summary>
+        public string CurrentUserId { get; set; }
+        /// <summary>
+        /// Непосредственно друг (ID).
         /// </summary>
         public string  UserId { get; set; }
         /// <summary>
-        /// Id пользователя , который является другом.
+        /// Непосредственно друг.
         /// </summary>
-        public string PersonFriendId { get; set; }
+        public User User { get; set; }
         /// <summary>
         /// Имя Пользователя для представления в списках.
         /// </summary>
@@ -27,5 +31,9 @@ namespace EventBLib.Models
         /// Путь до фото пользователя для отображения в списках.
         /// </summary>
         public string UserPhoto { get; set; }
+        /// <summary>
+        /// Флаг заблокированности (true - заблокирован)
+        /// </summary>
+        public bool IsBlocked { get; set; }
     }
 }

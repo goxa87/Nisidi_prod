@@ -23,6 +23,10 @@ namespace EventBLib.Models
         /// Адрес фотографии.
         /// </summary>
         public string Photo { get; set; }
+        /// <summary>
+        /// Сигнализирует о возможности отправлять этому пользователю сообщения от пользователей, на которых он не подписан.
+        /// </summary>
+        public bool AnonMessages { get; set; }
 
         public List<Event> MyEvents { get; set; }
 

@@ -40,6 +40,9 @@ namespace EventB.Controllers
         [HttpPost]
         public async Task<IActionResult> Search(EventSearchViewModel model)
         {
+            // Добавить чтоб не было инъекций замены символов.
+            // Узнать паттерны инъекций
+           
             var user =await context.Users.Include(e=>e.Friends).FirstOrDefaultAsync(e=>e.Name == User.Identity.Name);
             CostomSelectionArgs args = new CostomSelectionArgs(model.DateStart,
                 model.DateEnd,
@@ -50,6 +53,16 @@ namespace EventB.Controllers
                 user);
 
             var list = await eventSelector.GetCostomEventsAsync(args);
+
+            Task.Factory.StartNew(async ()=>
+                {
+                    foreach (var item in list)
+                    {
+                        item.Views++;
+                    }
+                    context.UpdateRange(list);
+                    await context.SaveChangesAsync();
+                });
             return View(list);
         }
 
