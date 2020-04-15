@@ -39,8 +39,8 @@ namespace EventB.Controllers
 
                 var userFriend = new Friend
                 {
-                    UserId = currentUser.Id,
-                    PersonFriendId = friend.Id,
+                    CurrentUserId = currentUser.Id,
+                    UserId = friend.Id,
                     UserName = friend.Name,
                     UserPhoto = friend.Photo
                 };
@@ -153,6 +153,15 @@ namespace EventB.Controllers
                 OrderByDescending(e => e.PostDate).
                 Take(lastCount).OrderBy(e => e.PostDate).
                 ToListAsync();
+            //await Task.Factory.StartNew(async ()=>
+            //{
+                foreach (var item in messages)
+                {
+                    item.Read = true;
+                    context.UpdateRange(messages);
+                    await context.SaveChangesAsync();
+                }
+            //});
             return messages;
         }
 

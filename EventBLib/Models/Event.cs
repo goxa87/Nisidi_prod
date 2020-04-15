@@ -42,6 +42,17 @@ namespace EventBLib.Models
         [StringLength(300), Display(Name = "Заголовок")]
         public string Title { get; set; }
         /// <summary>
+        /// Возвращает короткое название.
+        /// </summary>
+        public string TitleShort 
+        {
+            get 
+            {
+                return Title.Remove(24);
+            }
+        }
+
+        /// <summary>
         /// Ключи для поиска.
         /// </summary>
         public List<EventTeg> EventTegs { get; set; }

@@ -20,3 +20,12 @@ $('.btn-submit').on('click', function ()
         }
     });
 });
+
+$('.search-submit').click(function (event)
+{
+    //event.preventDefault();
+    if ($('.search-entry').val() == '')
+    {
+        event.preventDefault();
+    }
+});

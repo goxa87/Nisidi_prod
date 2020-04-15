@@ -107,32 +107,4 @@
 }
 
 /* Отметки пойду */
-
-.element-square-container {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    flex-wrap:wrap;
-}
-
-figure{
-    padding: 16px;
-    width:200px;
-    background-color:#1b5972;
-    display:flex;
-    flex-direction:column;
-    justify-content:start;
-    align-items:center;
-}
-
-figcaption {
-    color:#ffcd00;
-    align-content:center;
-    padding:4px;
-}
-
-figure img {
-    max-width: 164px;
-    max-height: 164px;
-    object-fit:fill;
-}
+/*вынесено в мэйн*/

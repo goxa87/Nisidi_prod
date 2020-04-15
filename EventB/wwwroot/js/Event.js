@@ -111,6 +111,7 @@ $(document).ready(function ()
             },
             success: function () {
                 console.log('успешная отправка');
+                $('#text').val('');
                 AddMessageToListMessage(message);
             }
         });

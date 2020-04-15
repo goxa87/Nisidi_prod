@@ -43,10 +43,10 @@ namespace EventB.Controllers
             var owner =await userFind.GetCurrentUserAsync(User.Identity.Name);
 
             List<Friend> friends = await context.Users.Where(e => e.Name.ToLower().Contains(search.ToLower())).
-                Select(e => new Friend { UserId = owner.Id, UserName = e.Name, UserPhoto = e.Photo, PersonFriendId=e.Id}).
+                Select(e => new Friend { CurrentUserId = owner.Id, UserName = e.Name, UserPhoto = e.Photo, UserId=e.Id}).
                 ToListAsync();
             // удаляем себя как друга иначе будут коллизии.
-            var ownerAsFriend = friends.FirstOrDefault(e => e.PersonFriendId == owner.Id);
+            var ownerAsFriend = friends.FirstOrDefault(e => e.UserId == owner.Id);
             if (ownerAsFriend != null)
             {
                 friends.Remove(ownerAsFriend);
@@ -69,13 +69,28 @@ namespace EventB.Controllers
             
             await context.Friends.AddAsync(new Friend 
             {
-                UserId= user.Id,
-                PersonFriendId=friendId,
+                CurrentUserId= user.Id,
+                UserId=friendId,
                 UserName = friend.Name,
                 UserPhoto = friend.Photo
             });
             await context.SaveChangesAsync();
             RedirectToAction("List");
         }
+
+        #region детали пользователя
+
+        public async Task<IActionResult> UserInfo(string userId)
+        {
+            var user = await context.Users.FirstOrDefaultAsync(e => e.Id == userId);
+            if (user == null)
+            {
+                Response.StatusCode = 204;
+                return null;
+            }
+
+            return View(user);
+        }
+        #endregion
     }
 }

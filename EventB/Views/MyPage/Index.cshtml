@@ -64,24 +64,6 @@
                             </figure>
                         </a>
                     </div>
-
-                    <div class="events-square-item">
-                        <a asp-route-id="@e.EventId" asp-action="Details" asp-controller="Events">
-                            <figure>
-                                <img src="@e.EventPhoto" />
-                                <figcaption><div>@e.EventTitle</div></figcaption>
-                            </figure>
-                        </a>
-                    </div>
-
-                    <div class="events-square-item">
-                        <a asp-route-id="@e.EventId" asp-action="Details" asp-controller="Events">
-                            <figure>
-                                <img src="@e.EventPhoto" />
-                                <figcaption><div>@e.EventTitle</div></figcaption>
-                            </figure>
-                        </a>
-                    </div>
                 }
             </div>
         }
@@ -121,7 +103,7 @@
                     </div>
 
                     <div class="right-column-container">
-                        <input type="hidden" name="friendId" value="@e.PersonFriendId" />
+                        <input type="hidden" name="friendId" value="@e.UserId" />
                         <button class="form-submit" asp-controller="Events" asp-action="UserEvents">События</button>
                         <button class="form-submit" asp-controller="Messages" asp-action="DirectChat">Сообщение</button>
                         <button class="form-submit" asp-action="BlockUser">Заблокировать</button>

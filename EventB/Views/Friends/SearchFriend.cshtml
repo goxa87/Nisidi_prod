@@ -7,11 +7,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h3>Результат поиска</h3>
-<form asp-action="SearchFriend" method="post">
-    <input type="submit" class="search-submit" value="Поиск" />
-    <input name="search" class="search-entry" />
-</form>
+    <div class="top-page-header">Результат поиска 
+        <form asp-action="SearchFriend" method="post">
+        <input type="submit" class="search-submit" value="Поиск" />
+        <input name="search" class="search-entry" />
+        </form>
+    </div>
+
 @if (Model.Count == 0)
 { 
 <div>Никто не найден</div>
@@ -31,9 +33,9 @@
     </div>
 
     <div class="right-column-container">
-        <input type="hidden" name="friendId" value="@item.PersonFriendId" />
+        <input type="hidden" name="friendId" value="@item.UserId" />
         <button class="form-submit btn-submit">Подписаться</button>
-        <div class="form-submit ref-holder"><a class="form-submit" asp-controller="Messages" asp-action="Index"  asp-route-opponentId="@item.PersonFriendId">Сообщение</a></div>
+        <div class="form-submit ref-holder"><a class="form-submit" asp-controller="Messages" asp-action="Index"  asp-route-opponentId="@item.UserId">Сообщение</a></div>
         <button class="form-submit" asp-action="BlockUser">Заблокировать</button>
     </div>
 </div>

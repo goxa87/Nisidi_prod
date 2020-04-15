@@ -102,13 +102,23 @@
 
     <!-- посетители-->
     <div class="bottom-page display-none" id="vizitors">
-        
+        @foreach (var e in Model.Vizits)
+        {
+             <div class="events-square-item">
+                <a asp-action="UserInfo" asp-controller="Friends" asp-route-userId="@e.UserId">
+                <figure>
+                    <img src="@e.VizitirPhoto" />
+                    <figcaption><div>@e.VizitorName</div></figcaption>
+                </figure>
+                </a>
+             </div>
+
+        }
     </div>
 
 
 </div>
 
-<!--  comments  -->
 
 @{ViewData["Script"] = "Event.js";
 }

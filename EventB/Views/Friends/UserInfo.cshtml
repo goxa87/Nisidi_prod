@@ -1,0 +1,10 @@
+﻿@model EventBLib.Models.User
+
+@{
+    ViewData["Title"] = Model.Name;
+    ViewData["Style"] = "Friends.css";
+    ViewData["Script"] = "Friends.js";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+ }}
+
+<div>@Model.Name</div>

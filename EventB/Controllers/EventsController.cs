@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using EventB.ViewModels;
+using System.Threading;
 
 namespace EventB.Controllers
 {
@@ -199,7 +200,6 @@ namespace EventB.Controllers
                 }
                 return View(eve);
             }
-
             return NotFound();
         }
 
@@ -254,12 +254,49 @@ namespace EventB.Controllers
         [Route("/Events/SendMessage")]
         public async Task<StatusCodeResult> SendMessage(string userId,string userName, int chatId, string text)
         {
-            var chat = await context.Chats.FirstOrDefaultAsync(e => e.ChatId == chatId);
+            var chat = await context.Chats.Include(e=>e.Event).
+                FirstOrDefaultAsync(e => e.ChatId == chatId);
             if (chat == null)
             {
                 Response.StatusCode = 204;
                 return StatusCode(204);
             }
+            // Создаем UserChat для отображения в списке чатов.
+
+            //var task1 = Task.Run(async () =>
+            //{
+            //    var userChat = await context.UserChats.
+            //    FirstOrDefaultAsync(e => e.UserId == userId && e.ChatId == chatId);
+            //    if (userChat == null)
+            //    {
+            //        Thread.Sleep(2000);
+            //        // Создать юзер чат.
+            //        var newUserChat = new UserChat
+            //        {
+            //            ChatName = chat.Event.TitleShort + "...",
+            //            UserId = userId,
+            //            ChatId = chatId
+            //        };
+            //        await context.UserChats.AddAsync(newUserChat);
+            //        await context.SaveChangesAsync();
+            //    }
+            //});
+
+            var userChat = await context.UserChats.
+                FirstOrDefaultAsync(e => e.UserId == userId && e.ChatId == chatId);
+            if (userChat == null)
+            {
+                // Создать юзер чат.
+                var newUserChat = new UserChat
+                {
+                    ChatName = chat.Event.TitleShort,
+                    UserId = userId,
+                    ChatId = chatId
+                };
+                await context.UserChats.AddAsync(newUserChat);
+                await context.SaveChangesAsync();
+            }
+
             Message message = new Message
             {
                 ChatId= chatId,
@@ -272,7 +309,8 @@ namespace EventB.Controllers
             };            
             await context.Messages.AddAsync(message);
             await context.SaveChangesAsync();
-            return Ok();
+            //task1.Wait();
+            return Ok();            
         }
         
         /// <summary>
@@ -285,7 +323,7 @@ namespace EventB.Controllers
         [Route("GetNewMessage")]
         public async Task GetNewMessage(int chatId, int lastMes) 
         {
-        
+            
         }
 
         [Authorize]
@@ -295,11 +333,6 @@ namespace EventB.Controllers
             
         }
 
-        #endregion
-
-        public async Task<IActionResult> UserEvents(string userId)
-        {
-            return View();
-        }
+        #endregion   
     }
 }
