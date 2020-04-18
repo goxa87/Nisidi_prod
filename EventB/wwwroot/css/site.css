@@ -10,6 +10,10 @@ body {
 
 }
 
+p{
+    color:#1b5972;
+}
+
 a {
     color:#1b5972;
     text-decoration: none;
@@ -258,9 +262,9 @@ ul li a span:nth-child(4) {
     border: 0px;
     background-color: #1b5972;
     color: #e4dcc5;
-    border: 2px solid #1b5972;
     box-sizing: border-box;
     font-weight: 600;
+    cursor: pointer;
 }
 
     .form-submit:hover {
@@ -278,6 +282,7 @@ ul li a span:nth-child(4) {
     border:none;
     padding:0 24px;
     margin-left: 24px;
+    cursor:pointer;
 }
 .search-entry {
     box-sizing: border-box;
@@ -289,11 +294,28 @@ ul li a span:nth-child(4) {
     width: 500px;
 }
 
-.search-submit, .search-entry, .form-submit, .form-date, .form-entry-body, .form-entry-title:focus{
-    outline: none;
+.form-search-fade {
+    padding: 5px 40px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 0px;
+    background-color: #1b5972;
+    color: #ffcd00;
+    box-sizing: border-box;
+    font-weight: 600;
+    cursor: pointer;
 }
+    .form-search-fade:hover{
+        color:#e4dcc5;
+    }
 
-/*длоки фигур*/
+    .search-submit, .search-entry, .form-search-fade, .form-submit, .form-date, .form-entry-body, .form-entry-title:focus {
+        outline: none;
+    }
+
+
+
+/*блоки фигур*/
 
 .element-square-container {
     display: flex;

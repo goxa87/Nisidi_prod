@@ -29,10 +29,8 @@ $(document).ready(function ()
         $('.bottom-page').addClass('display-none');
         $('#vizitors').removeClass('display-none');
     });
-
-
-    
-
+          
+    // Отправить сообщение.
     $('#btn-send').click(function (event)
     {
         event.preventDefault();
@@ -62,7 +60,7 @@ $(document).ready(function ()
     // [Authorize]
     //    public async Task < int > CreateEventChat(int eventId, string userId)
     //  создать чат для события
-
+    // Создать чат.
     function CreateChat()
     {
         console.log('создание чата');
@@ -86,10 +84,11 @@ $(document).ready(function ()
         });
 
     }
-
-    // Отправка сообщения
+    
     // [Route("SendMessage")]
     //    public async Task SendMessage(string userId,string userName, int chatId, string text)
+
+    // Отправка сообщения
     function SendMessage()
     {
         console.log('отправка сообщения');
@@ -117,7 +116,7 @@ $(document).ready(function ()
         });
 
     }
-
+    // Добавление элекмента в дом (сообщение чата).
     function AddMessageToListMessage(text)
     {
         console.log('добавление сообщения');
@@ -130,18 +129,49 @@ $(document).ready(function ()
 
     }
     
-    // отправить сообщение в чат
+    // Нажатие кнопки пойду
+    $('#btn-come').click(function ()
+    {
+        let id = $('#event-id').val();
 
-    // [Route("GetNewMessage")]
-    //    public async Task GetNewMessage(int chatId, int lastMes) 
-    // Получить динамически новые ссобщения
+        let user = $('#user-id').val();
+        console.log(`event ${id} user ${user}`);
 
+        //[Route("/Event/SubmitToEvent")]
+        // public async Task < StatusCodeResult > SubmitToEvent(int eventId)
+        let req = $.ajax({
+            url: '/Event/SubmitToEvent',
+            data:
+            {
+                eventId: id
+            }           
+        });
 
-    //[Route("GetHistory")]
-    //    public async Task GetHistory(int chatId, int firstMessage, int Count = 30)
+        req.then(function (data, statusText,jqXHR)
+        {
+            let button = $('#btn-come');
+            if (jqXHR.status == 200) {
+                // Состояние проверяем по классу.
+                if (button.hasClass('form-search-fade')) {
 
-    // получение истории
-    // если пришло 0 убрать кнопку.
+                    button.removeClass('form-search-fade');
+                    button.addClass('form-submit');
+                    button.text('Подтвердить участие');
+                    button.siblings().toggleClass('display-none');
+                    // Отписаться.
+                }
+                else {
+                    button.removeClass('form-submit');
+                    button.addClass('form-search-fade');
+                    button.text('Отменить участие');
+                    button.siblings().toggleClass('display-none');
+                    // Подписаться.
+                }
+            }
+            else {
+                alert('Ошибка БД( Событие не найдено.');
+            }
 
-
+        });
+    });
 });

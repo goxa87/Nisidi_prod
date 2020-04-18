@@ -48,7 +48,12 @@ namespace EventBLib.Models
         {
             get 
             {
-                return Title.Remove(24);
+                if (Title.Length > 24)
+                {
+                    return Title.Remove(24) + "...";
+                }
+                else
+                    return Title;
             }
         }
 
@@ -102,6 +107,14 @@ namespace EventBLib.Models
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString ="{0:dd.MM.yy}", ApplyFormatInEditMode =true)]
         public DateTime CreationDate { get; set; }
+        /// <summary>
+        /// Признак наличия билетов на мероприятие.
+        /// </summary>
+        public bool Tickets { get; set; }
+        /// <summary>
+        /// Описание билетов.
+        /// </summary>
+        public string TicketsDesc { get; set; }
         /// <summary>
         /// Количество оценок нравится.
         /// </summary>

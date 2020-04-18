@@ -115,6 +115,28 @@ namespace EventB.Controllers
                 {
                     eventTegs.Add(new EventTeg { Teg = teg });
                 }
+                // Создание чата к событию.
+                var chat = new Chat 
+                {
+                    Messages = new List<Message> 
+                    { 
+                        new Message 
+                        { 
+                            PersonId= creator.Id,
+                            PostDate=DateTime.Now,
+                            SenderName = creator.Name,
+                            Text = "Событие создано!",
+                            EventState = true
+                        } 
+                    }
+                };
+
+                UserChat userChat = new UserChat
+                {
+                    UserId = creator.Id,
+                    ChatName = model.Title.Remove(25) + "..."
+                };
+                chat.UserChat.Add(userChat);
                 // Итоговое формирование события.
                 var eve = new Event
                 {
@@ -132,7 +154,8 @@ namespace EventB.Controllers
                     Creator = creator,
                     Image = src,
                     CreationDate = DateTime.Now,
-                    Vizits = vizits
+                    Vizits = vizits,
+                    Chat = chat
                 };
 
                 await context.Events.AddAsync(eve);
@@ -312,7 +335,73 @@ namespace EventB.Controllers
             //task1.Wait();
             return Ok();            
         }
-        
+
+        /// <summary>
+        /// Добавить пользователя как участника события.
+        /// </summary>
+        /// <param name="eventId">Id события</param>
+        /// <returns></returns>
+        [Authorize]
+        [Route("/Event/SubmitToEvent")]
+        public async Task<StatusCodeResult> SubmitToEvent(int eventId)
+        {
+            // Проверить подписан ли 
+            // Удалить визит
+            // Или создать визит и добавить чат
+            var user = await userFindService.GetCurrentUserAsync(User.Identity.Name);
+
+            var curentEv = await context.Events.
+                Include(e => e.Vizits).ThenInclude(e => e.User).
+                Include(e=>e.Chat).ThenInclude(e=>e.UserChat).
+                FirstOrDefaultAsync(e => e.EventId == eventId);
+            // Если не найдено событие.
+            if (curentEv == null)
+            {                
+                return StatusCode(204);
+            }
+            // Выбираем визит к событию. 
+            var vizit = curentEv.Vizits.FirstOrDefault(e => e.UserId == user.Id);
+            if (vizit!=null)
+            {
+                // он есть как визитор. Удалить. Удалить чат.
+                curentEv.Vizits.Remove(vizit);
+
+                var userChat = curentEv.Chat.UserChat.FirstOrDefault(e => e.UserId == user.Id);
+                if (userChat != null)
+                {
+                    curentEv.Chat.UserChat.Remove(userChat);                  
+                }
+                curentEv.WillGo--;
+            }
+            else
+            {
+                // Его нет. Добавить в список, добавить чат.
+                var newVizit = new Vizit
+                {
+                    UserId = user.Id,
+                    EventTitle = curentEv.TitleShort,
+                    EventPhoto = curentEv.Image,
+                    VizitorName = user.Name,
+                    VizitirPhoto = user.Photo
+                };
+                curentEv.Vizits.Add(newVizit);
+                curentEv.WillGo++;
+                context.Events.Update(curentEv);
+                
+                var newUserChat = new UserChat 
+                {
+                    ChatName = curentEv.TitleShort,
+                    UserId = user.Id,
+                    ChatId = curentEv.Chat.ChatId
+                };
+                await context.UserChats.AddAsync(newUserChat);
+               
+            }
+            await context.SaveChangesAsync();
+            return Ok();
+        }
+
+
         /// <summary>
         /// Получение новых сообщений динамически.
         /// </summary>

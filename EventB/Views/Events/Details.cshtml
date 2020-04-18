@@ -9,17 +9,38 @@
     <div class="item-container-img">
         <img class="item-img" src="@Model.Image">
     </div>
-    <h2 class="item-title">@Model.Title</h2>
+    <h2 >@Model.Title</h2>
     <h3>Когда: @Model.Date.ToString("dd-MM-yyyy hh.mm")</h3>
     <h4>Город: @Model.City</h4>
     <h4>Где: @Model.Place </h4>
     <p>@Model.Body</p>
-    <p>ТЕГИ: @Model.Tegs</p>
-    <div class="item-inner-separator"></div>
+    <p>Интересы: @Model.Tegs</p>
+    @if (Model.Tickets)
+    {
+        <p>Билеты: @Model.TicketsDesc</p>
+    }
 
-    <div class="author">выложил: @Model.Creator.Name</div>
-    <div>Я пойду</div>
-    <div>Пригласить на это событие</div>
+    <p>Выложил: @Model.Creator.Name</p>
+
+    <div class="item-inner-separator"></div>
+    <div id="come-block">
+        @if (Model.Vizits.Where(e => e.UserId == ViewData["UserId"].ToString()).Any())
+        {
+            <div class="form-label">Вы пойдете</div>
+            <div id="btn-come" class="form-search-fade">Отменить участие</div>
+        }
+        else
+        {
+            <div class="form-label display-none" >Вы пойдете</div>
+            <div id="btn-come" class="form-submit">Подтвердить участие</div>
+        }
+    </div>
+    <div id="btn-invite" class="form-submit">Пригласить на это событие</div>
+    @if (Model.Tickets)
+    {
+        <div id="btn-buy-tikets" class="form-submit">Купить билеты</div>
+    }
+
     <div class="item-inner-separator"></div>
 </div>
 
@@ -101,7 +122,7 @@
     </div>
 
     <!-- посетители-->
-    <div class="bottom-page display-none" id="vizitors">
+    <div class="bottom-page  display-none" id="vizitors">
         @foreach (var e in Model.Vizits)
         {
              <div class="events-square-item">

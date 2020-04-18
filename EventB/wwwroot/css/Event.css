@@ -97,6 +97,7 @@
         color: #1b5972;
         text-transform: uppercase;
         align-self: center;
+        margin-top: 24px;
     }
 
     .item-container h3 {
@@ -131,12 +132,7 @@
 .item-inner-separator {
     height: 2px;
     background-color: #607d8b8c;
-    margin: 0 0 10px 0;
     width: 100%;
-}
-
-.author {
-    float: right;
 }
 
 .item-container-img {

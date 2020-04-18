@@ -47,5 +47,9 @@ namespace EventBLib.Models
         /// Cимвол прочитанности.
         /// </summary>
         public bool Read { get; set; }
+        /// <summary>
+        /// true для сообщений о изменения в состоянии события.
+        /// </summary>
+        public bool EventState { get; set; }
     }
 }
