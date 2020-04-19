@@ -32,19 +32,26 @@ namespace EventB.Controllers
         [Authorize]
         public async Task<StatusCodeResult> AddAsFriend(string userId)
         {
+
+
             if (!string.IsNullOrWhiteSpace(userId))
             {
                 var currentUser = await userFind.GetCurrentUserAsync(User.Identity.Name);
                 var friend = await userFind.GetUserByIdAsync(userId);
 
+                if (context.Friends.Where(e => e.UserId == friend.Id && e.FriendUserId == currentUser.Id).Any())
+                {
+                    return StatusCode(204);
+                }
+
                 var userFriend = new Friend
                 {
-                    CurrentUserId = currentUser.Id,
                     UserId = friend.Id,
+                    FriendUserId = currentUser.Id,
                     UserName = friend.Name,
                     UserPhoto = friend.Photo
                 };
-
+                //if(await context.Friends.FirstOrDefaultAsync())
                 await context.Friends.AddAsync(userFriend);
                 await context.SaveChangesAsync();
 
@@ -54,6 +61,37 @@ namespace EventB.Controllers
             {
                 return StatusCode(404);
             }           
+        }
+        /// <summary>
+        /// Блокировать пользователя.
+        /// </summary>
+        /// <param name="curentUserId">текущий ползователь , который блокирует.</param>
+        /// <param name="friendId"></param>
+        /// <returns></returns>
+        [Authorize]
+        [Route("BlockUser")]
+        public async Task<StatusCodeResult> BlockUser(string currentUserId, string friendId)
+        {
+            // Валидация.
+            if (string.IsNullOrWhiteSpace(currentUserId) || string.IsNullOrWhiteSpace(friendId))
+            {
+                return StatusCode(204);
+            }
+            if(!context.Users.Any(e=>e.Id==currentUserId) || !context.Users.Any(e=>e.Id==friendId))
+            {
+                return StatusCode(204);
+            }
+
+            var friendItem = await context.Friends.Where(e => (e.FriendUserId == currentUserId && e.UserId == friendId) ||
+                (e.FriendUserId == friendId && e.UserId == currentUserId)).ToListAsync();
+            foreach (var i in friendItem)
+            {
+                i.IsBlocked = true;
+            }
+            context.UpdateRange(friendItem);
+            await context.SaveChangesAsync();
+
+            return StatusCode(200);
         }
 
         #endregion

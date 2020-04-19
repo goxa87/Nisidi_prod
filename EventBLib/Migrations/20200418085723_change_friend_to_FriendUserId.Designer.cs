@@ -4,14 +4,16 @@ using EventBLib.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EventBLib.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20200418085723_change_friend_to_FriendUserId")]
+    partial class change_friend_to_FriendUserId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -134,9 +136,6 @@ namespace EventBLib.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsBlocked")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsBlockedCurrent")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsConfirmed")

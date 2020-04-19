@@ -4,14 +4,16 @@ using EventBLib.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EventBLib.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20200418063150_add_User_Description_Visibility_Friend_IsConfirmed")]
+    partial class add_User_Description_Visibility_Friend_IsConfirmed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -130,13 +132,10 @@ namespace EventBLib.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("FriendUserId")
+                    b.Property<string>("CurrentUserId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsBlocked")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsBlockedCurrent")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsConfirmed")

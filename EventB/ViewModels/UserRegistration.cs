@@ -50,5 +50,8 @@ namespace EventB.ViewModels
         [MaxLength(1024,ErrorMessage ="Максимальная длина 1024 символа")]
         [Display(Name ="Ваши интересы через запятую или пробел(по ним будем искать события, подходящие для вас)")]
         public string Tegs { get; set; }
+        [MaxLength(1000,ErrorMessage = "Максимальная длина 1000 символа")]
+        [Display(Name = "Информация о вас(до 1000 символов)")]
+        public string Description { get; set; }
     }
 }

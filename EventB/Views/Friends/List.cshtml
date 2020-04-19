@@ -20,16 +20,29 @@
         <img src="@item.UserPhoto" class="friend-list-img"/>
         <div>
             <h3>@item.UserName</h3>
-            <div>Add statistics</div>
+            @if (!item.IsConfirmed)
+            {
+                <div class="red-btn-alert">Ваша заявка в друзья не подтверждена</div>
+            }
             <div>Add statistics</div>
             <div>Add statistics</div>
         </div>
     </div>
     
     <div class="right-column-container">
-        <input type="hidden" name="friendId" value="@item.CurrentUserId" />
-        <div class="form-submit ref-holder"><a class="form-submit" asp-controller="Messages" asp-action="Index" asp-route-opponentId="@item.UserId">Сообщение</a></div>
-        <button class="form-submit" asp-action="BlockUser" >Заблокировать</button>
+        <input type="hidden" name="friendId" value="@item.UserId" />
+        @if (!item.IsBlocked)
+        {
+            <button class="form-submit" id="btn-block">Заблокировать</button>
+        }
+        else
+        {
+            <button class="red-btn-alert" id="btn-block">Заблокирован</button>
+        }
+        <div class="form-submit ref-holder"><a class="form-submit" asp-controller="Messages" asp-action="Index" asp-route-opponentId="@item.FriendId">Сообщение</a></div>
+
+        <button class="form-submit" asp-action="DeleteFriend">Удалить из друзей</button>
+
     </div>
 </div>
 }

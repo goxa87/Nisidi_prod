@@ -313,10 +313,14 @@ ul li a span:nth-child(4) {
         outline: none;
     }
 
-
-
+.red-btn-alert {
+    background-color: #1b5972;
+    border-radius:5px;
+    color: orangered;
+    border: none;
+    padding: 8px 24px;
+}
 /*блоки фигур*/
-
 .element-square-container {
     display: flex;
     justify-content: space-between;

@@ -14,9 +14,9 @@ namespace EventBLib.Models
         /// <summary>
         /// Id пользователя , который является другом.
         /// </summary>
-        public string CurrentUserId { get; set; }
+        public string FriendUserId { get; set; }
         /// <summary>
-        /// Непосредственно друг (ID).
+        /// Свойство связи (ID).
         /// </summary>
         public string  UserId { get; set; }
         /// <summary>
@@ -32,8 +32,12 @@ namespace EventBLib.Models
         /// </summary>
         public string UserPhoto { get; set; }
         /// <summary>
-        /// Флаг заблокированности (true - заблокирован)
+        /// Флаг заблокированности (true - заблокирован) друг заблокирован.
         /// </summary>
         public bool IsBlocked { get; set; }
+        /// <summary>
+        /// Заявка в друзья подтверждена.
+        /// </summary>
+        public bool IsConfirmed { get; set; }
     }
 }

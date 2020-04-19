@@ -3,6 +3,7 @@
 .friend-list-container {
     display: flex;
     justify-content: space-between;
+    flex-wrap:wrap;
     align-items: center;
     border: 1px solid #1b5972;
     padding:16px;

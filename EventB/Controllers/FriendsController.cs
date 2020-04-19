@@ -16,11 +16,14 @@ namespace EventB.Controllers
     {
         readonly Context context;
         readonly IUserFindService userFind;
+        readonly ITegSplitter tegSplitter;
         public FriendsController(Context _context,
-            IUserFindService _userFind)
+            IUserFindService _userFind,
+            ITegSplitter _tegSplitter)
         {
             context = _context;
             userFind = _userFind;
+            tegSplitter = _tegSplitter;
         }
 
         /// <summary>
@@ -29,8 +32,9 @@ namespace EventB.Controllers
         /// <returns></returns>
         public async Task<IActionResult> List()
         {
-            var selection = await context.Users.Where(e => e.UserName == User.Identity.Name).Include(e => e.Friends).FirstOrDefaultAsync();
-            return View(selection.Friends);                        
+            var user = await userFind.GetCurrentUserAsync(User.Identity.Name);
+            var selection = await context.Friends.Where(e => e.FriendUserId == user.Id).ToListAsync();
+            return View(selection);                        
         }
          
         /// <summary>
@@ -38,20 +42,60 @@ namespace EventB.Controllers
         /// </summary>
         /// <param name="search">Фрагмент имени пользователя.</param>
         /// <returns></returns>
-        public async Task<ActionResult> SearchFriend(string search)
+        public async Task<ActionResult> SearchCurrentFriend(string search)
         {
-            var owner =await userFind.GetCurrentUserAsync(User.Identity.Name);
+            //Переделать
+            //var owner =await userFind.GetCurrentUserAsync(User.Identity.Name);
 
-            List<Friend> friends = await context.Users.Where(e => e.Name.ToLower().Contains(search.ToLower())).
-                Select(e => new Friend { CurrentUserId = owner.Id, UserName = e.Name, UserPhoto = e.Photo, UserId=e.Id}).
-                ToListAsync();
-            // удаляем себя как друга иначе будут коллизии.
-            var ownerAsFriend = friends.FirstOrDefault(e => e.UserId == owner.Id);
-            if (ownerAsFriend != null)
+            //List<Friend> friends = await context.Users.Where(e => e.Name.ToLower().Contains(search.ToLower())).
+            //    Select(e => new Friend { UserId = owner.Id, UserName = e.Name, UserPhoto = e.Photo, FriendUserId = e.Id}).
+            //    ToListAsync();
+            //// удаляем себя как друга иначе будут коллизии.
+            //var ownerAsFriend = friends.FirstOrDefault(e => e.UserId == owner.Id);
+            //if (ownerAsFriend != null)
+            //{
+            //    friends.Remove(ownerAsFriend);
+            //}
+            return View(null);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> SearchFriend(string name, string teg, string city)
+        {
+            IEnumerable<User> users;
+            var curUser = await context.Users.Include(e=>e.Friends).FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
+            // город
+            if (!string.IsNullOrWhiteSpace(city))
             {
-                friends.Remove(ownerAsFriend);
+                city = city.Trim();
+                users = context.Users.Where(e => e.City == city).ToList();
             }
-            return View(friends);
+            else
+            {
+                users = context.Users.Where(e => e.City == curUser.City).ToList();
+            }
+            // тег
+            if (!string.IsNullOrWhiteSpace(teg))
+            {
+                var arr = tegSplitter.GetEnumerable(teg).ToArray();
+
+                var usersWith = context.Intereses.Include(e => e.User).Where(e => e.Value == teg).Select(e => e.User).ToList();
+                users = users.Intersect(usersWith);
+            }
+            // имя (вконце потомучто контейнс (выполняется в памяти))
+            var usersRez = users;
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                usersRez = usersRez.Where(e => e.Name.Contains(name)).ToList();
+            }
+            // Друзья пользователя.
+            var isFriendFromSelect = usersRez.Join(curUser.Friends, rez => rez.Id, fr => fr.FriendUserId, (rez, fr) => rez).ToList();
+            isFriendFromSelect.Add(curUser);
+            // Вычесть друзей пользователя.
+            usersRez = usersRez.Except(isFriendFromSelect).ToList();
+
+            return View(usersRez);
         }
 
         [HttpPost]
@@ -69,11 +113,24 @@ namespace EventB.Controllers
             
             await context.Friends.AddAsync(new Friend 
             {
-                CurrentUserId= user.Id,
-                UserId=friendId,
+                UserId = user.Id,
+                FriendUserId = friendId,
                 UserName = friend.Name,
-                UserPhoto = friend.Photo
+                UserPhoto = friend.Photo,
+                IsBlocked =false,
+                IsConfirmed = false
             });
+            // Обратный объект друга для оппонента
+            await context.Friends.AddAsync(new Friend
+            {
+                UserId = friend.Id,
+                FriendUserId = user.Id,
+                UserName = user.Name,
+                UserPhoto = user.Photo,
+                IsBlocked = false,
+                IsConfirmed = false
+            });            
+
             await context.SaveChangesAsync();
             RedirectToAction("List");
         }
