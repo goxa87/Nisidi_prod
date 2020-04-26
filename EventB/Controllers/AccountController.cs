@@ -74,7 +74,12 @@ namespace EventB.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new User() { Email = model.Email, UserName = model.Email,  Name = model.Name, City = model.City };
+                var user = new User() { Email = model.Email,
+                    UserName = model.Email,
+                    Name = model.Name,
+                    City = model.City,
+                    Description = model.Description
+                };
                 // Соххранение фотографии.
                 string photoPath = "/images/Profileimages/17032020me1.jpg";
                 if (model.Photo != null)

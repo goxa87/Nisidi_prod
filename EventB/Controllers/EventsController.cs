@@ -104,7 +104,7 @@ namespace EventB.Controllers
                     EventTitle = model.Title,
                     EventPhoto = src,
                     VizitorName = creator.Name,
-                    VizitirPhoto = "/images/defaultimg.jpg"
+                    VizitirPhoto = creator.Photo
                 };
 
                 var vizits = new List<Vizit> { vizit };
@@ -116,25 +116,26 @@ namespace EventB.Controllers
                     eventTegs.Add(new EventTeg { Teg = teg });
                 }
                 // Создание чата к событию.
-                var chat = new Chat 
+                var chat = new Chat
                 {
-                    Messages = new List<Message> 
-                    { 
-                        new Message 
-                        { 
-                            PersonId= creator.Id,
-                            PostDate=DateTime.Now,
+                    Messages = new List<Message>
+                    {
+                        new Message
+                        {
+                            PersonId = creator.Id,
+                            PostDate = DateTime.Now,
                             SenderName = creator.Name,
                             Text = "Событие создано!",
                             EventState = true
-                        } 
-                    }
+                        }
+                    },
+                    UserChat = new List<UserChat>()                    
                 };
 
                 UserChat userChat = new UserChat
                 {
                     UserId = creator.Id,
-                    ChatName = model.Title.Remove(25) + "..."
+                    ChatName = model.Title.Length > 25 ? model.Title.Remove(25) + "..." : model.Title
                 };
                 chat.UserChat.Add(userChat);
                 // Итоговое формирование события.

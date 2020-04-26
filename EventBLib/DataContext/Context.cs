@@ -47,6 +47,10 @@ namespace EventBLib.DataContext
         /// Список тегов событий.
         /// </summary>
         public DbSet<EventTeg> EventTegs { get; set; }
+        /// <summary>
+        /// Приглашения на события.
+        /// </summary>
+        public DbSet<Invite> Invites { get; set; }
 
         #region FluentApi Commented
         //protected override void OnModelCreating(ModelBuilder builder)
@@ -77,7 +81,7 @@ namespace EventBLib.DataContext
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
             builder.UseSqlServer(
-                @"Server=georgiy-пк\sqlexpress;DataBase=EventBuilder2;Trusted_Connection=True;"
+                @"Server=georgiy-пк\sqlexpress;DataBase=EB1;Trusted_Connection=True;"
                 );
         }
 

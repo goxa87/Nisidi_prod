@@ -44,15 +44,29 @@ namespace EventBLib.Models
         /// </summary>
         [MaxLength(1000, ErrorMessage ="Длинна этого поля не более 1000 символов")]
         public string Description { get; set; }
-
+        /// <summary>
+        /// Мои события
+        /// </summary>
         public List<Event> MyEvents { get; set; }
-
+        /// <summary>
+        /// Мои отметки Пойду.
+        /// </summary>
         public List<Vizit> Vizits { get; set; }
-
+        /// <summary>
+        /// Мои интересы.
+        /// </summary>
         public List<Interes> Intereses { get; set; }
-
+        /// <summary>
+        /// Мои друзья.
+        /// </summary>
         public List<Friend> Friends { get; set; }
-
-        public List<UserChat> UserChats { get; set; }        
+        /// <summary>
+        /// Чаты, в которых участвует пользователь.
+        /// </summary>
+        public List<UserChat> UserChats { get; set; }
+        /// <summary>
+        /// Приглашения.
+        /// </summary>
+        public List<Invite> Invites { get; set; }
     }
 }

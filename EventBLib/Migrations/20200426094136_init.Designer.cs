@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EventBLib.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20200425024745_addFriend_blockAndFriendshipInitiator")]
-    partial class addFriend_blockAndFriendshipInitiator
+    [Migration("20200426094136_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -181,6 +181,47 @@ namespace EventBLib.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Intereses");
+                });
+
+            modelBuilder.Entity("EventBLib.Models.Invite", b =>
+                {
+                    b.Property<int>("InviteId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("InviteDescription")
+                        .HasColumnType("nvarchar(1000)")
+                        .HasMaxLength(1000);
+
+                    b.Property<string>("InviterId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InviterName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("InviterPhoto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(300)")
+                        .HasMaxLength(300);
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("InviteId");
+
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Invites");
                 });
 
             modelBuilder.Entity("EventBLib.Models.Message", b =>
@@ -538,6 +579,21 @@ namespace EventBLib.Migrations
                     b.HasOne("EventBLib.Models.User", "User")
                         .WithMany("Intereses")
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("EventBLib.Models.Invite", b =>
+                {
+                    b.HasOne("EventBLib.Models.Event", "Event")
+                        .WithMany()
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EventBLib.Models.User", "User")
+                        .WithMany("Invites")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("EventBLib.Models.Message", b =>

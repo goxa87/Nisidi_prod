@@ -41,8 +41,11 @@ namespace EventBLib.Migrations
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    City = table.Column<string>(nullable: true),
-                    Photo = table.Column<string>(nullable: true)
+                    City = table.Column<string>(maxLength: 50, nullable: true),
+                    Photo = table.Column<string>(nullable: true),
+                    AnonMessages = table.Column<bool>(nullable: false),
+                    Visibility = table.Column<int>(nullable: false),
+                    Description = table.Column<string>(maxLength: 1000, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -164,13 +167,14 @@ namespace EventBLib.Migrations
                     Type = table.Column<int>(nullable: false),
                     UserId = table.Column<string>(nullable: false),
                     Title = table.Column<string>(maxLength: 300, nullable: false),
-                    Tegs = table.Column<string>(nullable: true),
                     Image = table.Column<string>(nullable: true),
                     Body = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: true),
                     Place = table.Column<string>(nullable: true),
                     Date = table.Column<DateTime>(nullable: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
+                    Tickets = table.Column<bool>(nullable: false),
+                    TicketsDesc = table.Column<string>(nullable: true),
                     Likes = table.Column<int>(nullable: false),
                     Views = table.Column<int>(nullable: false),
                     Shares = table.Column<int>(nullable: false),
@@ -193,10 +197,14 @@ namespace EventBLib.Migrations
                 {
                     FriendId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    FriendUserId = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true),
-                    PersonFriendId = table.Column<string>(nullable: true),
                     UserName = table.Column<string>(nullable: true),
-                    UserPhoto = table.Column<string>(nullable: true)
+                    UserPhoto = table.Column<string>(nullable: true),
+                    IsBlocked = table.Column<bool>(nullable: false),
+                    BlockInitiator = table.Column<bool>(nullable: false),
+                    IsConfirmed = table.Column<bool>(nullable: false),
+                    FriendInitiator = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -236,7 +244,7 @@ namespace EventBLib.Migrations
                     ChatId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Type = table.Column<int>(nullable: false),
-                    EventId = table.Column<int>(nullable: false)
+                    EventId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -246,7 +254,57 @@ namespace EventBLib.Migrations
                         column: x => x.EventId,
                         principalTable: "Events",
                         principalColumn: "EventId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EventTegs",
+                columns: table => new
+                {
+                    EventTegId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EventId = table.Column<int>(nullable: false),
+                    Teg = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EventTegs", x => x.EventTegId);
+                    table.ForeignKey(
+                        name: "FK_EventTegs_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
+                        principalColumn: "EventId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Invites",
+                columns: table => new
+                {
+                    InviteId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EventId = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: false),
+                    InviterId = table.Column<string>(nullable: false),
+                    InviterName = table.Column<string>(maxLength: 100, nullable: false),
+                    InviterPhoto = table.Column<string>(maxLength: 300, nullable: false),
+                    InviteDescription = table.Column<string>(maxLength: 1000, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Invites", x => x.InviteId);
+                    table.ForeignKey(
+                        name: "FK_Invites_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
+                        principalColumn: "EventId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Invites_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -291,7 +349,8 @@ namespace EventBLib.Migrations
                     ReciverId = table.Column<string>(nullable: true),
                     Text = table.Column<string>(nullable: true),
                     PostDate = table.Column<DateTime>(nullable: false),
-                    Read = table.Column<bool>(nullable: false)
+                    Read = table.Column<bool>(nullable: false),
+                    EventState = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -375,12 +434,18 @@ namespace EventBLib.Migrations
                 name: "IX_Chats_EventId",
                 table: "Chats",
                 column: "EventId",
-                unique: true);
+                unique: true,
+                filter: "[EventId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Events_UserId",
                 table: "Events",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EventTegs_EventId",
+                table: "EventTegs",
+                column: "EventId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Friends_UserId",
@@ -390,6 +455,16 @@ namespace EventBLib.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Intereses_UserId",
                 table: "Intereses",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Invites_EventId",
+                table: "Invites",
+                column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Invites_UserId",
+                table: "Invites",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -436,10 +511,16 @@ namespace EventBLib.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "EventTegs");
+
+            migrationBuilder.DropTable(
                 name: "Friends");
 
             migrationBuilder.DropTable(
                 name: "Intereses");
+
+            migrationBuilder.DropTable(
+                name: "Invites");
 
             migrationBuilder.DropTable(
                 name: "Messages");
