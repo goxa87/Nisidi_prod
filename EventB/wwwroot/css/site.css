@@ -37,6 +37,10 @@ main {
 .ref-holder {
     text-align:center;
 }
+
+.display-none {
+    display:none;
+}
 /*ВАЛИДАЦИЯ *****************************************/
 .field-validation-error {
     color: orangered;
@@ -288,10 +292,11 @@ ul li a span:nth-child(4) {
     box-sizing: border-box;
     height: 30px;
     background-color: #f1ead8;
-    color: #1b5972;
-    border-radius: 0 15px 15px 0;
+    color: #1b5972; 
     border: 1px solid #1b5972;
-    width: 500px;
+    min-width: 300px;
+    flex-basis:800px;
+    margin-right: 32px;
 }
 
 .form-search-fade {
@@ -314,11 +319,14 @@ ul li a span:nth-child(4) {
     }
 
 .red-btn-alert {
+    padding: 5px 40px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 0px;
     background-color: #1b5972;
-    border-radius:5px;
     color: orangered;
-    border: none;
-    padding: 8px 24px;
+    box-sizing: border-box;
+    font-weight: 600;
 }
 /*блоки фигур*/
 .element-square-container {

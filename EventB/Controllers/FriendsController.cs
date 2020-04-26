@@ -34,6 +34,7 @@ namespace EventB.Controllers
         {
             var user = await userFind.GetCurrentUserAsync(User.Identity.Name);
             var selection = await context.Friends.Where(e => e.FriendUserId == user.Id).ToListAsync();
+            ViewBag.userId = user.Id;
             return View(selection);                        
         }
          
@@ -58,7 +59,14 @@ namespace EventB.Controllers
             //}
             return View(null);
         }
-
+        // это похоже решено на стороне клиента
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="teg"></param>
+        /// <param name="city"></param>
+        /// <returns></returns>
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> SearchFriend(string name, string teg, string city)
@@ -115,20 +123,23 @@ namespace EventB.Controllers
             {
                 UserId = user.Id,
                 FriendUserId = friendId,
-                UserName = friend.Name,
-                UserPhoto = friend.Photo,
+                UserName = user.Name,
+                UserPhoto = user.Photo,
                 IsBlocked =false,
-                IsConfirmed = false
+                IsConfirmed = false, 
+                FriendInitiator = false
+
             });
             // Обратный объект друга для оппонента
             await context.Friends.AddAsync(new Friend
             {
                 UserId = friend.Id,
                 FriendUserId = user.Id,
-                UserName = user.Name,
-                UserPhoto = user.Photo,
+                UserName = friend.Name,
+                UserPhoto = friend.Photo,
                 IsBlocked = false,
-                IsConfirmed = false
+                IsConfirmed = false,
+                FriendInitiator = true
             });            
 
             await context.SaveChangesAsync();
@@ -142,7 +153,7 @@ namespace EventB.Controllers
             var user = await context.Users.FirstOrDefaultAsync(e => e.Id == userId);
             if (user == null)
             {
-                Response.StatusCode = 204;
+                Response.StatusCode = 400;
                 return null;
             }
 

@@ -27,4 +27,6 @@
     justify-content:start;
 }
 
-
+.orders{
+    cursor:pointer;
+}

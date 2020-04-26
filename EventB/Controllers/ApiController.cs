@@ -28,31 +28,43 @@ namespace EventB.Controllers
         }
 
         #region Секция ПОДПИСКИ
+        /// <summary>
+        /// Добавление Пользователя в друзья.
+        /// </summary>
+        /// <param name="userId">ID пользователя, который должен быть добавлен в друзья.</param>
+        /// <returns></returns>
         [Route("AddFriend")]
         [Authorize]
         public async Task<StatusCodeResult> AddAsFriend(string userId)
-        {
-
-
+        {           
             if (!string.IsNullOrWhiteSpace(userId))
             {
                 var currentUser = await userFind.GetCurrentUserAsync(User.Identity.Name);
                 var friend = await userFind.GetUserByIdAsync(userId);
-
+                // Если есть такая запись о друзьях уже есть просто возвратить статус.
                 if (context.Friends.Where(e => e.UserId == friend.Id && e.FriendUserId == currentUser.Id).Any())
                 {
                     return StatusCode(204);
                 }
-
+                // Создание новых записей (прямой и обратный друг). 
                 var userFriend = new Friend
                 {
                     UserId = friend.Id,
                     FriendUserId = currentUser.Id,
                     UserName = friend.Name,
-                    UserPhoto = friend.Photo
+                    UserPhoto = friend.Photo,
+                    FriendInitiator=true
                 };
-                //if(await context.Friends.FirstOrDefaultAsync())
+                var userFriendReverce = new Friend
+                {
+                    UserId = currentUser.Id,
+                    FriendUserId = friend.Id,
+                    UserName = currentUser.Name,
+                    UserPhoto = currentUser.Photo
+                };
+
                 await context.Friends.AddAsync(userFriend);
+                await context.Friends.AddAsync(userFriendReverce);
                 await context.SaveChangesAsync();
 
                 return StatusCode(200);
@@ -61,6 +73,28 @@ namespace EventB.Controllers
             {
                 return StatusCode(404);
             }           
+        }
+        /// <summary>
+        /// Подтверждение для друга.
+        /// </summary>
+        /// <param name="friendEntityId">id записи в бд</param>
+        /// <returns></returns>
+        [Route("SubmitFriend")]
+        [Authorize]
+        public async Task<StatusCodeResult> SubmitFriend(int friendEntityId)
+        {
+            var entity = await context.Friends.FirstOrDefaultAsync(e => e.FriendId == friendEntityId);
+            var entityOpponent =  await context.Friends.FirstOrDefaultAsync(e => e.UserId == entity.FriendUserId && e.FriendUserId == entity.UserId);
+            if (entity == null)
+            {
+                return StatusCode(204);
+            }
+            entity.IsConfirmed = true;
+            entityOpponent.IsConfirmed = true;
+            context.Friends.Update(entity);
+            context.Friends.Update(entityOpponent);
+            await context.SaveChangesAsync();
+            return StatusCode(200);
         }
         /// <summary>
         /// Блокировать пользователя.
@@ -75,20 +109,27 @@ namespace EventB.Controllers
             // Валидация.
             if (string.IsNullOrWhiteSpace(currentUserId) || string.IsNullOrWhiteSpace(friendId))
             {
-                return StatusCode(204);
+                return StatusCode(400);
             }
             if(!context.Users.Any(e=>e.Id==currentUserId) || !context.Users.Any(e=>e.Id==friendId))
             {
-                return StatusCode(204);
+                return StatusCode(400);
+            }
+            // Друг и обратный друг.            
+            var friend = await context.Friends.FirstOrDefaultAsync(e => e.FriendUserId == currentUserId && e.UserId == friendId);
+            var opponentFriend = await context.Friends.FirstOrDefaultAsync(e=>e.FriendUserId == friendId && e.UserId == currentUserId);
+            // Если не инициатор, то запрещаем.
+            if (!friend.BlockInitiator && friend.IsBlocked )
+            {
+                return StatusCode(205);
             }
 
-            var friendItem = await context.Friends.Where(e => (e.FriendUserId == currentUserId && e.UserId == friendId) ||
-                (e.FriendUserId == friendId && e.UserId == currentUserId)).ToListAsync();
-            foreach (var i in friendItem)
-            {
-                i.IsBlocked = true;
-            }
-            context.UpdateRange(friendItem);
+            friend.IsBlocked = friend.IsBlocked ? false : true;
+            friend.BlockInitiator = friend.BlockInitiator ? false : true;
+            opponentFriend.IsBlocked = opponentFriend.IsBlocked ? false : true;
+           
+            context.Update(friend);
+            context.Update(opponentFriend);
             await context.SaveChangesAsync();
 
             return StatusCode(200);
@@ -156,6 +197,8 @@ namespace EventB.Controllers
         [Authorize]
         public async Task SaveMessage(int chatId, string senderId, string senderName, string reciverId, string text)
         {
+            if (senderId == "" || reciverId == "" || text == "")
+                return;
             var message = new Message
             {
                 ChatId = chatId,
@@ -166,8 +209,6 @@ namespace EventB.Controllers
                 Read = false,
                 ReciverId = reciverId
             };
-            //var chat = await context.Chats.FirstOrDefaultAsync(e => e.ChatId == chatId);
-            //chat.Messages.Add(message);
             await context.Messages.AddAsync(message);
             await context.SaveChangesAsync();
         }
@@ -191,15 +232,12 @@ namespace EventB.Controllers
                 OrderByDescending(e => e.PostDate).
                 Take(lastCount).OrderBy(e => e.PostDate).
                 ToListAsync();
-            //await Task.Factory.StartNew(async ()=>
-            //{
                 foreach (var item in messages)
                 {
                     item.Read = true;
-                    context.UpdateRange(messages);
-                    await context.SaveChangesAsync();
+                    context.UpdateRange(messages);                    
                 }
-            //});
+            await context.SaveChangesAsync();
             return messages;
         }
 

@@ -8,29 +8,41 @@
 
     <div class="top-page-header">Ваши подписки
         <form asp-action="SearchFriend" method="post">
+            <input type="hidden" id="user-id" value="@ViewBag.userId">
             <input type="submit" class="search-submit" value="Поиск" />
-            <input name="search" class="search-entry" />
+            <input name="search" class="search-entry" placeholder="из этого списка" />
         </form>
+        <span class="orders">заявки</span>
     </div>
 
 @foreach (var item in Model)
-{ 
+{
+    if (item.IsBlocked && !item.BlockInitiator)
+        continue;
+
 <div class="friend-list-container">
-    <div class="left-column-container">
-        <img src="@item.UserPhoto" class="friend-list-img"/>
-        <div>
-            <h3>@item.UserName</h3>
-            @if (!item.IsConfirmed)
-            {
-                <div class="red-btn-alert">Ваша заявка в друзья не подтверждена</div>
-            }
-            <div>Add statistics</div>
-            <div>Add statistics</div>
+    <input type="hidden" value="@item.FriendId" id="friend-entity-id">
+    <a asp-action="UserInfo" asp-route-userId="@item.UserId">
+        <div class="left-column-container">
+            <img src="@item.UserPhoto" class="friend-list-img" />
+            <div>
+                <h3>@item.UserName</h3>
+                @if (!item.IsConfirmed && item.FriendInitiator)
+                {
+                    <div class="red-btn-alert">Ваша заявка в друзья не подтверждена</div>
+                }
+                @if (!item.IsConfirmed && !item.FriendInitiator)
+                {
+                    <div class="form-submit" id="agree-friend">Добавить в друзья</div>
+                }
+
+                <div>Add statistics</div>
+                <div>Add statistics</div>
+            </div>
         </div>
-    </div>
-    
+    </a>
     <div class="right-column-container">
-        <input type="hidden" name="friendId" value="@item.UserId" />
+        <input type="hidden" id="friend-id" name="friendId" value="@item.UserId" />
         @if (!item.IsBlocked)
         {
             <button class="form-submit" id="btn-block">Заблокировать</button>

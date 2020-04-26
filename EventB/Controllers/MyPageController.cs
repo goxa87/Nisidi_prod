@@ -18,14 +18,16 @@ namespace EventB.Controllers
         }
 
         [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var user = context.Users.
+            var user = await context.Users.
                 Include(e=>e.Intereses).
                 Include(e=>e.MyEvents).
                 Include(e=>e.Vizits).
-                Include(e=>e.Friends).
-                FirstOrDefault(e => e.UserName == User.Identity.Name);
+                FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
+
+            var friends = await context.Friends.Where(e => e.FriendUserId == user.Id && e.IsBlocked == false).ToListAsync();
+            user.Friends = friends;
 
             return View(user);
         }

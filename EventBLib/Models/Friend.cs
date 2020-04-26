@@ -12,11 +12,11 @@ namespace EventBLib.Models
         /// </summary>
         public int FriendId { get; set; }
         /// <summary>
-        /// Id пользователя , который является другом.
+        /// Id пользователя , который владелец друга.
         /// </summary>
         public string FriendUserId { get; set; }
         /// <summary>
-        /// Свойство связи (ID).
+        /// Свойство связи (ID)(в списке у владельца).
         /// </summary>
         public string  UserId { get; set; }
         /// <summary>
@@ -36,8 +36,16 @@ namespace EventBLib.Models
         /// </summary>
         public bool IsBlocked { get; set; }
         /// <summary>
+        /// Инициатор Блокировки. (true- данный пользователь, false - оппонент) 
+        /// </summary>
+        public bool BlockInitiator { get; set; }
+        /// <summary>
         /// Заявка в друзья подтверждена.
         /// </summary>
         public bool IsConfirmed { get; set; }
+        /// <summary>
+        /// Инициатор дружбы( true- данный пользователь, false - оппонент).
+        /// </summary>
+        public bool FriendInitiator { get; set; }
     }
 }
