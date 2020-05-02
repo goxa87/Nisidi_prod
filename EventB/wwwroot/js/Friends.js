@@ -131,4 +131,33 @@
     {
         event.preventDefault();
     });
+
+    // События страницы userInfo
+    // переключение по вкладкам
+    $('.fr-selector').click(function ()
+    {
+        // Селекторы меняем цветами.
+        $('.fr-selector').removeClass('fr-checked');
+        $(this).addClass('fr-checked');
+        $('.content').addClass('display-none');
+        let selector = $(this).prop('id');
+        console.log(selector);
+        // В зависимости от того чт нажали добавляем удаляем класс видимости.
+        if (selector == 'will-go') {
+            $('.go-content').removeClass('display-none');
+        }
+        if (selector === 'created') {
+            $('.create-content').removeClass('display-none');
+        }
+        if (selector == 'friends') {
+            $('.friends-content').removeClass('display-none');
+        }
+        if (selector == 'photos') {
+            $('.photos-content').removeClass('display-none');
+        }
+    });
+
+
+
+
 });

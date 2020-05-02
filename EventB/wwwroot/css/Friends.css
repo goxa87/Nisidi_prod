@@ -1,12 +1,10 @@
-﻿
-
-.friend-list-container {
+﻿.friend-list-container {
     display: flex;
     justify-content: space-between;
-    flex-wrap:wrap;
+    flex-wrap: wrap;
     align-items: center;
     border: 1px solid #1b5972;
-    padding:16px;
+    padding: 16px;
     margin: 16px 0;
 }
 
@@ -29,4 +27,57 @@
 
 .orders{
     cursor:pointer;
+}
+
+label {
+    font-size: 14px;
+    color: #1b5972bb;
+    margin-bottom: 2px;
+}
+
+.ui-info {
+    margin: 16px 0;
+}
+
+@media(max-width:950px) {
+
+
+}
+.interes {
+    padding: 0 8px;
+    margin: 0 16px 0 0;
+    border: 1px solid #1b5972;
+    border-radius: 4px;
+}
+
+.photo{
+    max-height:500px;
+    max-width:400px;
+}
+
+.btn-area div{
+    width:100%;
+}
+.info-area{
+    padding: 0 16px;
+    flex-basis: 1000px;
+}
+
+.ui-bottom-menu{
+    background-color:#1b5972;
+    width:100%;
+    padding:8px;
+}
+
+.fr-selector {
+    color: #e4dcc5;
+    padding: 0 16px;
+    cursor:pointer;
+}
+.fr-checked {
+    color: #ffcd00;
+}
+.ui-botom-content{
+    border:2px solid #1b5972;
+    padding: 16px;
 }

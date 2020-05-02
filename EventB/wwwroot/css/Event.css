@@ -297,3 +297,95 @@ form label {
     background-color:#0000;
     border:none;
 }
+
+/* **** контейнер приглашений */
+
+.inline{
+    display:inline-block;
+}
+
+.over-cont {
+    display:none;
+    position: fixed;
+    background-color: #0007;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.invite-cont{
+    margin:auto;
+    background-color:#e4dcc5;
+    max-width:500px;
+    height:80%;
+    display:flex;
+    flex-direction:column;
+    justify-content:start;
+}
+
+.invite-menu{
+    padding:8px;
+}
+
+.invite-list{
+    flex-basis:1000px;
+    overflow-y:auto;
+    overflow-x:hidden;
+
+    padding:8px;
+}
+
+.invite-item{
+    border-top:1px solid #1b5972;
+    padding: 8px 0;
+}
+.invite-item > img {
+    max-width:180px;
+    max-height:180px;
+    object-fit:contain;
+    margin-right:16px;
+}
+
+.invite-data{
+    flex-basis:400px;
+}
+
+#text {
+    width: 100%;
+    height:94px;
+    max-width: 100%;
+    padding: 4px 8px;
+    font-size:12px;
+    border:1px solid #1b5972;
+}
+#text:focus{
+    outline:none;
+}
+    .invite-title > H5{
+    color:#1b5972;
+    font-size:18px;
+    margin:4px 16px;
+    }
+.inv-button {
+    height: 20px;
+    width: 20px;
+    border-radius: 10px;
+    border: 2px solid #1b5972;
+    box-shadow: #aaa 0 0 3px 3px;
+    margin-right: 3px;
+}
+.inv-button:focus{
+    outline: none;
+}
+
+.checked-inv{
+    background-color:#ffcd00;
+
+}
+
+
+

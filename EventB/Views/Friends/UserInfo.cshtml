@@ -5,6 +5,62 @@
     ViewData["Style"] = "Friends.css";
     ViewData["Script"] = "Friends.js";
     Layout = "~/Views/Shared/_Layout.cshtml";
- }
+}
 
-<div class="top-page-header">@Model.Name</div>
+@if (Model == null)
+{
+    <div class="top-page-header">"Пользователь скрыт"</div>
+}
+else
+{
+    <div class="top-page-header">@Model.Name</div>
+    <div class="ui-info flex-hsbs">
+        <input type="hidden" id="user-id" value="@Model.Id">
+        <div>
+            <img class="photo" src="@Model.Photo" />
+        </div>
+        <div class="info-area">
+            <label>Город:</label>
+            <div>@Model.City</div>
+            <label>Интересы:</label>
+            <div class="flex-hsc flex-wr">
+                @foreach (var e in Model.Intereses)
+                {
+                    <div class="interes">@e.Value</div>
+                }
+            </div>
+            <label>Пара слов:</label>
+            <div>@Model.Description</div>
+            <label>Отправить ссылку:</label>
+            <div>(Место для ссылки)</div>
+            <label>Телефон:</label>
+            <div>@Model.PhoneNumber</div>
+            <label>Адрес:</label>
+            <div>(Место для адреса)</div>
+        </div>
+        <div class="btn-area">
+            @if (ViewBag.isFriend == true)
+            {
+                <div class="btn" id="btn-del-friend">Удалить из друзей</div>
+            }
+            else
+            {
+                <div class="btn" id="btn-add-friend">В друзья</div>
+            }
+            <div class="btn" id="btn-send-message">Сообщение</div>
+            <div class="btn" id="btn-block-user">Заблокировать</div>
+        </div>
+    </div>
+    <div class="ui-bottom-menu flex-hsac">
+        <span id="will-go" class="fr-selector fr-checked">Отметки пойду</span>
+        <span id="created" class="fr-selector">Созданные</span>
+        <span id="friends" class="fr-selector">Друзья</span>
+        <span id="photos" class="fr-selector">Фотографии</span>
+    </div>
+    <div class="ui-botom-content">
+        <div class="content go-content">отметки  пойду</div>
+        <div class="content create-content display-none">созданные события</div>
+        <div class="content friends-content display-none">друзья</div>
+        <div class="content photos-content display-none">фотографии</div>
+    </div>
+}

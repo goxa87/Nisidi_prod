@@ -147,16 +147,22 @@ namespace EventB.Controllers
         }
 
         #region детали пользователя
-
+        /// <summary>
+        /// Подробная страница пользователя.
+        /// </summary>
+        /// <param name="userId">Id пользователя.</param>
+        /// <returns></returns>
         public async Task<IActionResult> UserInfo(string userId)
         {
-            var user = await context.Users.FirstOrDefaultAsync(e => e.Id == userId);
+            var user = await context.Users.Include(e=>e.Intereses).FirstOrDefaultAsync(e => e.Id == userId);
             if (user == null)
             {
                 Response.StatusCode = 400;
                 return null;
             }
 
+            // Подставить вычисление.
+            ViewBag.isFriend = true;
             return View(user);
         }
         #endregion

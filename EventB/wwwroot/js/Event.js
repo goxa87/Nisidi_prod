@@ -174,4 +174,106 @@ $(document).ready(function ()
 
         });
     });
+
+    // Секция Пориглашения.
+    // Запрос с сервера на получение данных д доступных для приглашения друзьях.
+    function GetFriends()
+    {
+        let eve = $('#event-id').val();
+        var rez;
+        var req = $.ajax({
+            url: '/Events/GetFriendslist',
+            data:
+            {
+                eventId: eve
+            }
+        });
+        req.then(function (data, stat, jqXHR)
+        {
+            // Парс в HTML
+            var block = '';
+            $(data).each(function (i, v) {
+                block +=
+                    `<div class="invite-item flex-hsbc">
+                <img src="${v.photo}" />
+                <div class="invite-data">
+                    <div class="invite-title flex-hec">
+                        <h5>${v.name}</h5>
+                        <input class="inv-button" type="button" title="Отметить" />
+                    </div>
+                    <textarea id="text"></textarea>
+                    <input type="hidden" id="friend-id" value="${v.userId}"/>
+                </div>
+            </div>`
+            });
+            $('.invite-list').append(block);
+        });
+        return rez;
+    }
+    // Нажатие на форме детали кнопки пригласить.
+    $('#btn-invite').click(function ()
+    {
+        // Получение с сервера InviteOutVM списка.
+        $('.over-cont').css('display', 'flex');
+        let friends = GetFriends();       
+    });
+
+    // Скрытие списка по нажатии на серое поле.
+    $('.over-cont').on('click' ,function (event) {
+        
+        $(this).css('display', 'none');
+    });
+    $('.invite-cont').click(function (e) {
+        e.stopPropagation();
+    });
+    // Выбрать всех кнопка.
+    $('#inv-selectall').click(function () {
+        if ($('.inv-button').hasClass('checked-inv'))
+            $('.inv-button').removeClass('checked-inv');
+        else
+            $('.inv-button').addClass('checked-inv');
+    });
+    // Скопировать текст приглашения.
+    $('#invite-copy').click(function () {
+        let text1 = $('#text:first').val();
+        console.log(text1);
+        alert('not working');
+    });
+
+    // Нажатие пригласить в темном контейнере.
+    // InviteFriendsIn(int eventId, InviteInVm[] invites)
+    $('#inv-invite').click(function ()
+    {
+        var ids = [];
+
+        $('.checked-inv').each(function (i, v)
+        {
+            let id = $(v).parents('.invite-data').children('#friend-id').val();
+            let mess = $(v).parents('.invite-data').children('#text').val();
+            let inv = { userId: id, message: mess };
+
+            ids.push(inv);
+        });
+
+        let eventid = $('#event-id').val();
+        console.log(eventid);
+        console.log(ids);
+
+        $.ajax({
+            type: 'post',
+            url: '/Events/InviteFriendsIn',
+            data:
+            {
+                eventId: eventid,
+                invites:ids
+            }
+        });
+
+        $('.over-cont').css('display', 'none');
+
+    });
+});
+// Нажатие галочки напротив имени.
+$('.invite-list').on('click', '.inv-button', function () {
+    $(this).toggleClass('checked-inv');
 });

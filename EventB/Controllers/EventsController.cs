@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using EventB.ViewModels;
 using System.Threading;
+using EventB.ViewModels.EventsVM;
+using System.Diagnostics;
 
 namespace EventB.Controllers
 {
@@ -353,16 +355,16 @@ namespace EventB.Controllers
 
             var curentEv = await context.Events.
                 Include(e => e.Vizits).ThenInclude(e => e.User).
-                Include(e=>e.Chat).ThenInclude(e=>e.UserChat).
+                Include(e => e.Chat).ThenInclude(e => e.UserChat).
                 FirstOrDefaultAsync(e => e.EventId == eventId);
             // Если не найдено событие.
             if (curentEv == null)
-            {                
+            {
                 return StatusCode(204);
             }
             // Выбираем визит к событию. 
             var vizit = curentEv.Vizits.FirstOrDefault(e => e.UserId == user.Id);
-            if (vizit!=null)
+            if (vizit != null)
             {
                 // он есть как визитор. Удалить. Удалить чат.
                 curentEv.Vizits.Remove(vizit);
@@ -370,7 +372,7 @@ namespace EventB.Controllers
                 var userChat = curentEv.Chat.UserChat.FirstOrDefault(e => e.UserId == user.Id);
                 if (userChat != null)
                 {
-                    curentEv.Chat.UserChat.Remove(userChat);                  
+                    curentEv.Chat.UserChat.Remove(userChat);
                 }
                 curentEv.WillGo--;
             }
@@ -388,15 +390,15 @@ namespace EventB.Controllers
                 curentEv.Vizits.Add(newVizit);
                 curentEv.WillGo++;
                 context.Events.Update(curentEv);
-                
-                var newUserChat = new UserChat 
+
+                var newUserChat = new UserChat
                 {
                     ChatName = curentEv.TitleShort,
                     UserId = user.Id,
                     ChatId = curentEv.Chat.ChatId
                 };
                 await context.UserChats.AddAsync(newUserChat);
-               
+
             }
             await context.SaveChangesAsync();
             return Ok();
@@ -423,6 +425,61 @@ namespace EventB.Controllers
             
         }
 
-        #endregion   
+        #endregion
+
+        #region Форма приглашений на событие
+
+        public async Task<List<InviteOutVM>> GetFriendslist(int eventId)
+        {
+            var curUser = await context.Users.
+                FirstOrDefaultAsync(e =>e.UserName==User.Identity.Name);
+
+            var friends = await context.Friends.Where(e => e.FriendUserId == curUser.Id
+                && e.IsBlocked == false
+                && e.IsConfirmed == true).
+                Select(e => new InviteOutVM
+                {
+                    UserId = e.UserId,
+                    Name = e.UserName,
+                    Photo = e.UserPhoto
+                }).ToListAsync();
+            // Вычесть тех , которые уже пойдут на событие. 
+            var willGoId = context.Vizits.Where(e => e.EventId == eventId).Select(e => e.UserId);
+            var allId = context.Users.Select(e => e.Id);
+            var willWillNot = await allId.Except(willGoId).ToListAsync();
+            var rezult = friends.Join(willWillNot, f => f.UserId, w => w, (f, w) => f).ToList();
+            return rezult;
+        }
+        /// <summary>
+        /// Апи получает приглашения с морды и парсит их в Invite.
+        /// </summary>
+        /// <param name="eventId">Ид события</param>
+        /// <param name="invites">Инвайты (userId - id, message- сообщение)</param>
+        /// <returns></returns>
+        public async Task InviteFriendsIn(int eventId, InviteInVm[] invites) 
+        {
+            var curUser = await userFindService.GetCurrentUserAsync(User.Identity.Name);
+            var newInv = new List<Invite>();
+
+            foreach (var id in invites)
+            {
+                var newItm = new Invite
+                {
+                    EventId = eventId,
+                    UserId = id.userId,
+                    InviterId = curUser.Id,
+                    InviterName = curUser.Name,
+                    InviterPhoto = curUser.Photo,
+                    InviteDescription = id.message
+                };
+                newInv.Add(newItm);
+            }
+
+            await context.Invites.AddRangeAsync(newInv);
+            await context.SaveChangesAsync();
+        }
+
+
+        #endregion
     }
 }

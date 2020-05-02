@@ -16,7 +16,7 @@
         <div class="mp-data-label">Электронная почта:</div>
         <div class="mp-data-value">@Model.Email</div>
         <div class="mp-data-label">Ccылка на страницу:</div>
-        <div class="mp-data-value">ссылка ..............</div>
+        <div class="mp-data-value">Отправить</div>
         <div class="mp-data-label">Городе:</div>
         <div class="mp-data-value">@Model.City</div>
         <div class="mp-data-label">Мои теги:</div>
@@ -57,7 +57,7 @@
                         <a asp-route-id="@e.EventId" asp-action="Details" asp-controller="Events">
                             <figure>
                                 <img src="@e.EventPhoto" />
-                                <figcaption><div>@e.EventTitle</div></figcaption>
+                                <figcaption><div>@e.Event.TitleShort</div></figcaption>
                             </figure>
                         </a>
                     </div>
@@ -119,10 +119,10 @@
         {
             foreach (var inv in Model.Invites)
             {
-                <input id="inviteId" type="hidden" value="@inv.InviteId" />
+                <div class="total-invite">
                 <div class="invite-header">Приглашение</div>
-                    
-                <div class="invite-container" alt="@inv.Event.TitleShort">
+
+                <div class="invite-container" alt="@inv.Event.Title">
                     <a asp-action="Details" asp-controller="Events" asp-route-id="@inv.EventId">
                         <img class="item-img" src="@inv.Event.Image">
                     </a>
@@ -133,6 +133,8 @@
                         <p>@inv.Event.Place </p>
                         <p>@inv.Event.Date.ToString("dd-MM-yy hh-mm")</p>
                         <p>@inv.Event.City</p>
+                        <input id="eveId" type="hidden" value="@inv.EventId">
+                        <input id="inviteId" type="hidden" value="@inv.InviteId">
                         <div class="btn" id="will-go">Пойду )</div>
                         <div class="btn" id="will-notgo">Не пойду (</div>
 
@@ -146,7 +148,7 @@
                         <img class="item-img" src="@inv.InviterPhoto" alt="@inv.InviterName" />
                     </a>
                 </div>
-                
+            </div>
             }
         }       
 

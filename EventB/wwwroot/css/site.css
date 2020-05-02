@@ -368,7 +368,43 @@ figure img {
     object-fit: fill;
 }
 
+/* flex контейнеры*/
+/* в расшифровке на примере первого
+    h - horizontal
+    sb - space beetven для jc
+    c - center для ai
+*/
+.flex-wr{
+    flex-wrap:wrap;
+}
+.flex-hsbc{
+    display:flex;
+    justify-content:space-between;
+    align-items: center;
+}
+.flex-hsac {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
 
+.flex-hsbs {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.flex-hsc {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.flex-hec {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
 
 
 
