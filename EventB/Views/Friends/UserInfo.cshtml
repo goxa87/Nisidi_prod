@@ -1,7 +1,7 @@
-﻿@model EventBLib.Models.User
+﻿@model EventB.ViewModels.FriendsVM.UserInfoVM
 
 @{
-    ViewData["Title"] = Model.Name;
+    ViewData["Title"] = "Пользователь";
     ViewData["Style"] = "Friends.css";
     ViewData["Script"] = "Friends.js";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -13,33 +13,33 @@
 }
 else
 {
-    <div class="top-page-header">@Model.Name</div>
+    <div class="top-page-header">@Model.User.Name</div>
     <div class="ui-info flex-hsbs">
-        <input type="hidden" id="user-id" value="@Model.Id">
+        <input type="hidden" id="user-id" value="@Model.User.Id">
         <div>
-            <img class="photo" src="@Model.Photo" />
+            <img class="photo" src="@Model.User.Photo" />
         </div>
         <div class="info-area">
             <label>Город:</label>
-            <div>@Model.City</div>
+            <div>@Model.User.City</div>
             <label>Интересы:</label>
             <div class="flex-hsc flex-wr">
-                @foreach (var e in Model.Intereses)
+                @foreach (var e in Model.User.Intereses)
                 {
                     <div class="interes">@e.Value</div>
                 }
             </div>
             <label>Пара слов:</label>
-            <div>@Model.Description</div>
+            <div>@Model.User.Description</div>
             <label>Отправить ссылку:</label>
             <div>(Место для ссылки)</div>
             <label>Телефон:</label>
-            <div>@Model.PhoneNumber</div>
+            <div>@Model.User.PhoneNumber</div>
             <label>Адрес:</label>
             <div>(Место для адреса)</div>
         </div>
         <div class="btn-area">
-            @if (ViewBag.isFriend == true)
+            @if (Model.IsFriend == true)
             {
                 <div class="btn" id="btn-del-friend">Удалить из друзей</div>
             }
@@ -57,10 +57,74 @@ else
         <span id="friends" class="fr-selector">Друзья</span>
         <span id="photos" class="fr-selector">Фотографии</span>
     </div>
+
     <div class="ui-botom-content">
-        <div class="content go-content">отметки  пойду</div>
-        <div class="content create-content display-none">созданные события</div>
-        <div class="content friends-content display-none">друзья</div>
-        <div class="content photos-content display-none">фотографии</div>
+        <div class="content go-content">
+            @if (Model.WillGoEvents == null || Model.WillGoEvents.Count == 0)
+            {
+                <div class="mp-none-content">Отметок пойду пока нет.</div>
+            }
+            else
+            {
+                <div>Отметки пойду:</div>
+                <div class="element-square-container">
+                    @foreach (var e in Model.WillGoEvents)
+                    {
+                        <div class="events-square-item">
+                            <a asp-route-id="@e.EventId" asp-action="Details" asp-controller="Events">
+                                <figure>
+                                    <img src="@e.EventPhoto" />
+                                    <figcaption><div>@e.EventTitle</div></figcaption>
+                                </figure>
+                            </a>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+        <div class="content create-content display-none">
+            @if (Model.CreatedEvents == null || Model.CreatedEvents.Count() == 0)
+            {
+                <p>Нет сзданных событий</p>
+            }
+            else
+            {
+                <div>Созданные события:</div>
+                <div class="element-square-container">
+                    @foreach (var e in Model.CreatedEvents)
+                    {
+                        <div class="events-square-item">
+                            <a asp-route-id="@e.EventId" asp-action="Details" asp-controller="Events">
+                                <figure>
+                                    <img src="@e.Image" />
+                                    <figcaption><div>@e.TitleShort</div></figcaption>
+                                </figure>
+                            </a>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+        <div class="content friends-content display-none">
+            @if (Model.Friends == null || Model.Friends.Count() == 0)
+            {
+                <div class="mp-none-content">Друзей пока нет.</div>
+            }
+            else
+                @foreach (var e in Model.Friends)
+                {
+                    <div class="events-square-item">
+                        <a asp-route-userId="@e.UserId" asp-action="UserInfo" asp-controller="Friends">
+                            <figure>
+                                <img src="@e.UserPhoto" />
+                                <figcaption><div>@e.UserName</div></figcaption>
+                            </figure>
+                        </a>
+                    </div>
+                }
+        </div>
+        <div class="content photos-content display-none">Фотографии не имплементированы.</div>
+
     </div>
 }
+    

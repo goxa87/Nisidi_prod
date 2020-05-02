@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EventB.Services;
+using EventB.ViewModels.FriendsVM;
 using EventBLib.DataContext;
 using EventBLib.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -154,16 +155,53 @@ namespace EventB.Controllers
         /// <returns></returns>
         public async Task<IActionResult> UserInfo(string userId)
         {
-            var user = await context.Users.Include(e=>e.Intereses).FirstOrDefaultAsync(e => e.Id == userId);
+            var currUser = await userFind.GetCurrentUserAsync(User.Identity.Name);
+            var user = await context.Users.
+                Include(e=>e.Intereses).
+                Include(e=>e.Friends).
+                FirstOrDefaultAsync(e => e.Id == userId);
             if (user == null)
             {
                 Response.StatusCode = 400;
-                return null;
+                return View(null);
+            }
+            // Если это собственно сам, то редирект на мою страницу.
+            if (currUser == user)
+            {
+                return RedirectToAction("Index", "MyPage");
             }
 
+            // Если пользователь заблокировал показ всем
+            if (user.Visibility == AccountVisible.Unvisible)
+            {
+                return View(null);
+            }
+            // Если показ только для друзей
+            var friend = await context.Friends.FirstOrDefaultAsync(e => e.FriendUserId == userId && e.UserId == currUser.Id);
+            if (user.Visibility == AccountVisible.FriendsOnly && friend == null)
+            {
+                return View(null);
+            }
+            if (friend!=null && friend.IsBlocked)
+                return View(null);
+            
+            // Формирование VM.
+            var createdEve = await context.Events.Where(e => e.UserId == userId).ToListAsync();
+            var vizitEve = await context.Vizits.Where(e => e.UserId == userId).ToListAsync();
+            var friends = await context.Friends.Where(e => e.FriendUserId == userId).ToListAsync();
+            var infoVM = new UserInfoVM();
+            infoVM.User = user;
+            infoVM.CreatedEvents = createdEve;
+            infoVM.WillGoEvents = vizitEve;
+            infoVM.Friends = friends;
+            if (friend != null)
+                infoVM.IsFriend = true;
+            else
+                infoVM.IsFriend = false;
+
             // Подставить вычисление.
-            ViewBag.isFriend = true;
-            return View(user);
+            
+            return View(infoVM);
         }
         #endregion
     }

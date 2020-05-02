@@ -72,18 +72,29 @@
             <div class="mp-none-content">Моих событий пока нет.</div>
         }
         else
-            @foreach (var e in Model.MyEvents)
-            {
-                <div>
-                    <div>Название: @e.Title</div>
-                </div>
-            }
+        {
+        <div>Созданные события:</div>
+            <div class="element-square-container">
+                    @foreach (var e in Model.MyEvents)
+                    {
+                        <div class="events-square-item">
+                        <a asp-route-id="@e.EventId" asp-action="Details" asp-controller="Events">
+                            <figure>
+                            <img src="@e.Image" />
+                            <figcaption><div>@e.TitleShort</div></figcaption>
+                            </figure>
+                        </a>
+                        </div>
+                    }
+         
+            </div>
+        }
     </div>
 
     <div id="friends-body" class="mp-my-content display-none">
         @if (Model.Friends == null || Model.Friends.Count == 0)
         {
-            <div class="mp-none-content">Подписок пока нет.</div>
+            <div class="mp-none-content">Друзей пока нет.</div>
         }
         else
             @foreach (var e in Model.Friends)
