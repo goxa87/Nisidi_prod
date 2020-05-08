@@ -387,5 +387,16 @@ form label {
 
 }
 
-
+/* Форма редактирования */
+.content{
+    display:inline-block;
+    font-size:16px;
+    color:#1b5972;
+}
+.img-100{
+    width:100%;
+    object-fit:contain;
+    padding: 16px 0;
+    max-height:500px;
+}
 

@@ -40,7 +40,7 @@
     <span id="friends" class="mp-my-selector">Подписки</span>
     <span id="invites" class="mp-my-selector">Приглашения(@Model.Invites.Count())</span>
 </div>
-<div>
+<div class="details-container">
 
     <div class="mp-my-content" id="events-willgo-body">
         @if (Model.Vizits == null || Model.Vizits.Count == 0)
@@ -82,11 +82,11 @@
                             <figure>
                             <img src="@e.Image" />
                             <figcaption><div>@e.TitleShort</div></figcaption>
+                            <a asp-action="EventEdit" asp-controller="Events" asp-route-eventId="@e.EventId"><div class="btn-edit">редактировать</div></a>
                             </figure>
                         </a>
                         </div>
-                    }
-         
+                    }         
             </div>
         }
     </div>

@@ -53,18 +53,6 @@
     </div>
 </div>
 
-<!--  Список посетителей
-
-/*
-    здесь должно быть
-изменения
-чат
-отметились пойдут
-
-*/
-    -->
-
-
 <div class="bottom-menu">
     <span class="bottom-menu-item bottom-menu-item-selected" id="btn-changes">Изменения</span>
     <span class="bottom-menu-item" id="btn-chat">Чат</span>
@@ -122,7 +110,7 @@
     </div>
 
     <!-- посетители-->
-    <div class="bottom-page  display-none" id="vizitors">
+    <div class="bottom-page  display-none flex-hsc" id="vizitors">
         @foreach (var e in Model.Vizits)
         {
              <div class="events-square-item">

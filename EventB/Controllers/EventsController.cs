@@ -16,6 +16,7 @@ using EventB.ViewModels;
 using System.Threading;
 using EventB.ViewModels.EventsVM;
 using System.Diagnostics;
+using System.Text;
 
 namespace EventB.Controllers
 {
@@ -63,7 +64,7 @@ namespace EventB.Controllers
                 });
                 return View(events);
             }
-            else 
+            else
             {
                 events = await eventSelector.GetStartEventListAsync(null);
             }
@@ -131,7 +132,7 @@ namespace EventB.Controllers
                             EventState = true
                         }
                     },
-                    UserChat = new List<UserChat>()                    
+                    UserChat = new List<UserChat>()
                 };
 
                 UserChat userChat = new UserChat
@@ -183,14 +184,14 @@ namespace EventB.Controllers
             {
                 var eve = await context.Events.
                     Include(e => e.Creator).
-                    Include(e=>e.Chat).
-                    Include(e=>e.EventTegs).
+                    Include(e => e.Chat).
+                    Include(e => e.EventTegs).
                     Include(e => e.Vizits).
                     FirstOrDefaultAsync(e => e.EventId == id);
 
                 Chat chat;
 
-                if (eve.Chat!=null)
+                if (eve.Chat != null)
                 {
                     var messages = await context.Messages.
                         Where(e => e.ChatId == eve.Chat.ChatId).
@@ -278,9 +279,9 @@ namespace EventB.Controllers
         /// <returns></returns>
         [Authorize]
         [Route("/Events/SendMessage")]
-        public async Task<StatusCodeResult> SendMessage(string userId,string userName, int chatId, string text)
+        public async Task<StatusCodeResult> SendMessage(string userId, string userName, int chatId, string text)
         {
-            var chat = await context.Chats.Include(e=>e.Event).
+            var chat = await context.Chats.Include(e => e.Event).
                 FirstOrDefaultAsync(e => e.ChatId == chatId);
             if (chat == null)
             {
@@ -325,18 +326,18 @@ namespace EventB.Controllers
 
             Message message = new Message
             {
-                ChatId= chatId,
+                ChatId = chatId,
                 PersonId = userId,
                 SenderName = userName,
                 Text = text,
                 ReciverId = "0",
                 PostDate = DateTime.Now,
                 Read = false
-            };            
+            };
             await context.Messages.AddAsync(message);
             await context.SaveChangesAsync();
             //task1.Wait();
-            return Ok();            
+            return Ok();
         }
 
         /// <summary>
@@ -413,16 +414,16 @@ namespace EventB.Controllers
         /// <returns></returns>        
         [Authorize]
         [Route("GetNewMessage")]
-        public async Task GetNewMessage(int chatId, int lastMes) 
+        public async Task GetNewMessage(int chatId, int lastMes)
         {
-            
+
         }
 
         [Authorize]
         [Route("GetHistory")]
         public async Task GetHistory(int chatId, int firstMessage, int Count = 30)
-        { 
-            
+        {
+
         }
 
         #endregion
@@ -432,7 +433,7 @@ namespace EventB.Controllers
         public async Task<List<InviteOutVM>> GetFriendslist(int eventId)
         {
             var curUser = await context.Users.
-                FirstOrDefaultAsync(e =>e.UserName==User.Identity.Name);
+                FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
 
             var friends = await context.Friends.Where(e => e.FriendUserId == curUser.Id
                 && e.IsBlocked == false
@@ -456,7 +457,7 @@ namespace EventB.Controllers
         /// <param name="eventId">Ид события</param>
         /// <param name="invites">Инвайты (userId - id, message- сообщение)</param>
         /// <returns></returns>
-        public async Task InviteFriendsIn(int eventId, InviteInVm[] invites) 
+        public async Task InviteFriendsIn(int eventId, InviteInVm[] invites)
         {
             var curUser = await userFindService.GetCurrentUserAsync(User.Identity.Name);
             var newInv = new List<Invite>();
@@ -478,8 +479,100 @@ namespace EventB.Controllers
             await context.Invites.AddRangeAsync(newInv);
             await context.SaveChangesAsync();
         }
-
-
         #endregion
+        /// <summary>
+        /// Страница редактирования события.
+        /// </summary>
+        /// <param name="eventId">Id события</param>
+        /// <returns>Вид.</returns>
+        [Authorize]
+        public async Task<IActionResult> EventEdit(int eventId)
+        {
+            var curUser = await context.Users.FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
+            var eve = await context.Events.Include(e => e.EventTegs).FirstOrDefaultAsync(e => e.EventId == eventId);
+            if (curUser == null || eve == null)
+            {
+                Response.StatusCode = 204;
+                ViewBag.Status = 204;
+                return View(null);
+            }
+            if (curUser.Id != eve.UserId)
+            {
+                Response.StatusCode = 403;
+                ViewBag.Status = 403;
+                return View(null);
+            }
+            var model = new EventB.ViewModels.EventsVM.EventEditVM
+            {
+                Title = eve.Title,
+                Tegs = eve.Tegs,
+                Body = eve.Body,
+                Date = eve.Date,
+                City = eve.City,
+                Place = eve.Place,
+                MainPicture = eve.Image,
+                EventId = eve.EventId
+            };
+
+            return View(model);
+        }
+
+        /// <summary>
+        /// Внесение изменений в событие.
+        /// </summary>
+        /// <param name="model">VM формы представления события</param>
+        /// <returns>редирект к деталям события</returns>
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> EventEdit(EventEditVM model)
+        {
+            // Валидация.
+            if ( string.IsNullOrWhiteSpace(model.City) || string.IsNullOrWhiteSpace(model.Tegs) ||  string.IsNullOrWhiteSpace(model.Title))
+            {
+                ModelState.AddModelError("", "Нужно заполнить обязательные поля");
+                return View(model);
+            }
+            else
+            {
+                var eve = await context.Events.Include(e => e.EventTegs).FirstOrDefaultAsync(e => e.EventId == model.EventId);
+                // Значение картинки если ее нет.
+                if (model.NewPicture != null)
+                {
+                    string src = "/images/defaultimg.jpg";
+                    // Формирование строки имени картинки.
+                    string fileName = String.Concat(DateTime.Now.ToString("dd-MM-yy_hh-mm"), "_", model.NewPicture.FileName);
+                    src = String.Concat("/images/EventImages/", fileName);
+                    // Запись на диск.
+                    using (var FS = new FileStream(environment.WebRootPath + src, FileMode.Create))
+                    {
+                        await model.NewPicture.CopyToAsync(FS);
+                    }
+                    eve.Image = src;
+                }
+                if (model.Tegs != eve.Tegs)
+                {
+                    var tegs = tegSplitter.GetEnumerable(model.Tegs).ToList();
+                    List<EventTeg> eventTegs = new List<EventTeg>();
+                    foreach (var teg in tegs)
+                    {
+                        eventTegs.Add(new EventTeg { Teg = teg });
+                    }
+                    eve.EventTegs = eventTegs;
+                }
+                eve.Title = model.Title;
+                eve.Body = model.Body;
+                eve.Place = model.Place;
+                eve.City = model.City;
+                if (model.Date > (new DateTime(2020, 1, 1)))
+                {
+                    eve.Date = model.Date;
+                }
+
+                context.Events.Update(eve);
+                await context.SaveChangesAsync();
+                return Redirect($"/Events/Details/{eve.EventId}");
+            }
+        
+        }
     }
 }

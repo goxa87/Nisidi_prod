@@ -36,8 +36,6 @@ namespace EventB.Controllers
                 Include(e => e.Invites).
                 ThenInclude(e => e.Event).
                 FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
-
-            var ev1 = context.Events.First(e => e.EventId == 1); 
             
             var friends = await context.Friends.Where(e => e.FriendUserId == user.Id && e.IsBlocked == false).ToListAsync();
             user.Friends = friends;

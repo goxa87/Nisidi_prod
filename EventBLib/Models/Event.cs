@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace EventBLib.Models
@@ -66,17 +67,20 @@ namespace EventBLib.Models
         /// </summary>
         public string Tegs
         {
+            // Склеивает теги в 1 строку.
             get 
             {
                 if (EventTegs == null || EventTegs.Count == 0)
                     return "нет тегов или не загружено";
 
-                var rezult = "";
+                var SB = new StringBuilder();
                 foreach (var teg in EventTegs)
                 {
-                    rezult += teg.Teg + " ";
+                    SB.Append(teg.Teg);
+                    SB.Append(" ");
                 }
-                return rezult;
+
+                return SB.ToString();
             }
         }
         /// <summary>

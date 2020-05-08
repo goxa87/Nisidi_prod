@@ -71,6 +71,11 @@
     display: block;
 }
 
+.details-container{
+    border:2px solid #1b5972;
+    padding:16px;
+}
+
 
 .mp-my-selector {
     color: #e4dcc5;
