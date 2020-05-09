@@ -226,7 +226,7 @@ namespace EventB.Controllers
         public async Task<List<Message>> GetMessageHistory(int chatId, int lastCount = 30)
         {
             // Реализовать количество загрузок.
-
+            // ! Реализовать ПОЛУЧЕНИЕ ИМЕНИ ИЗ БД т.к. в изменении профиля к ссобщениям имя не меяется.
             var messages = await context.Messages.
                 Where(e => e.ChatId == chatId).
                 OrderByDescending(e => e.PostDate).
@@ -251,6 +251,7 @@ namespace EventB.Controllers
         [Route("GetNewMessages")]
         public async Task<List<Message>> GetNewMessages(int chatId, string opponentId)
         {
+            // ! Реализовать ПОЛУЧЕНИЕ ИМЕНИ ИЗ БД т.к. в изменении профиля к ссобщениям имя не меяется.
             var messages = await context.Messages.
                 Where(e => e.ChatId == chatId && e.PersonId==opponentId && e.Read==false).
                 ToListAsync();

@@ -11,7 +11,7 @@
         <img src="@Model.Photo" alt="фото">
     </div>
     <div class="mp-data">
-        <a id="btn-edit">РЕДАКТИРОВАТЬ</a>
+        <a id="btn-edit" asp-action="EditProfile">РЕДАКТИРОВАТЬ</a>
         <h3 class="mp-name">@Model.Name</h3>
         <div class="mp-data-label">Электронная почта:</div>
         <div class="mp-data-value">@Model.Email</div>

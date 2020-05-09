@@ -1,0 +1,47 @@
+﻿@model EventB.ViewModels.MyPage.EditProfileVM
+@{
+    ViewData["Title"] = "Редактирование";
+    ViewData["Style"] = "MyPage.css";
+    ViewData["Script"] = "MyPage.js";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="top-page-header">Редактировать профиль</div>
+<form asp-antiforgery="true" asp-action="EditProfile" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="form-summary"></div>
+
+    <label class="form-label" asp-for="Name"></label>
+    <span asp-validation-for="Name"></span><br>
+    <input class="form-entry-title" type="text" asp-for="Name" value="@Model.Name" /><br>
+    <input type="hidden" asp-for="OldName" value="@Model.OldName" /><br>
+
+    <label class="form-label" asp-for="City"></label>
+    <span asp-validation-for="City"></span><br>
+    <input class="form-entry-title" type="text" asp-for="City" value="@Model.City" /><br>
+
+    <label class="form-label" asp-for="Tegs"></label>
+    <span asp-validation-for="Tegs"></span><br>
+    <input class="form-entry-title" type="text" asp-for="Tegs" value="@Model.Tegs" /><br>
+    <input type="hidden" asp-for="OldTegs" value="@Model.OldTegs" /><br>
+
+    <label class="form-label" asp-for="Description"></label>
+    <span asp-validation-for="Description"></span><br>
+    <textarea class="form-entry-title" type="text" asp-for="Description"> @Model.Tegs"</textarea><br>
+
+    <span asp-validation-for="AlowAnonMessages"></span><br>
+    <input type="checkbox" asp-for="AlowAnonMessages" value="@Model.AlowAnonMessages" /><label class="form-label" asp-for="AlowAnonMessages"></label><br>
+
+    <label class="form-label" asp-for="Visibility"></label>
+    <span asp-validation-for="Visibility"></span><br>
+    <select asp-for="Visibility">
+        <option value="0">Виден всем</option>
+        <option value="1">Виден друзьям</option>
+        <option value="2">Не видим никому</option>
+    </select><br>
+
+    <label class="form-label" asp-for="newPhoto"></label><br>
+    <img class="img-100" src="@Model.OldPhoto" /><br>
+    <label class="form-label">Изменить на:</label>
+    <input class="form-date" type="file" asp-for="newPhoto" /><br>
+
+    <input class="form-submit" type="submit" value="Сохранить" />
+</form>

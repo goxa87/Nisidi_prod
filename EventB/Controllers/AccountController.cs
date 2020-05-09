@@ -85,11 +85,12 @@ namespace EventB.Controllers
                 if (model.Photo != null)
                 {
                     photoPath = string.Concat("/images/Profileimages/",DateTime.Now.ToString("dd_MM_yy_mm_ss"), model.Photo.FileName).Replace(" ","");
+                    using (var FS = new FileStream(environment.WebRootPath + photoPath, FileMode.Create))
+                    {
+                        await model.Photo.CopyToAsync(FS);
+                    }
                 }
-                using (var FS = new FileStream(environment.WebRootPath + photoPath, FileMode.Create))
-                {
-                    await model.Photo.CopyToAsync(FS);
-                }
+                
                 user.Photo = photoPath;
 
                 var createResult = await userManager.CreateAsync(user, model.Password);
@@ -102,7 +103,7 @@ namespace EventB.Controllers
                     {
                         foreach (var inter in splitted)
                         {
-                            interests.Add(new Interes { Value = inter });
+                            interests.Add(new Interes { Value = inter.ToLower() });
                         }                    
                         user.Intereses = interests;
                     }
