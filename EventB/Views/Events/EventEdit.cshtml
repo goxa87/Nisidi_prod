@@ -23,6 +23,7 @@ else
         <label class="form-label" asp-for="Title"></label>
         <span asp-validation-for="Title"></span><br>
         <input class="form-entry-title" type="text" asp-for="Title" value="@Model.Title" /><br>
+        <input type="hidden" asp-for="OldTitle" value="@Model.OldTitle" />
 
         <label class="form-label" asp-for="Body"></label>
         <span asp-validation-for="Body"></span><br>

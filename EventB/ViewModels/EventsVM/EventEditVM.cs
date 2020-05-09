@@ -13,7 +13,10 @@ namespace EventB.ViewModels.EventsVM
         [Required(ErrorMessage = "Поле Заголовок не заполнено")]
         [MaxLength(1000, ErrorMessage = "Длинна этого поля не должна быть больше 1000 символов")]
         public string Title { get; set; }
-
+        /// <summary>
+        /// Ставрое имя. 
+        /// </summary>
+        public string OldTitle { get; set; }
         [Display(Name = "Теги тобытия")]
         [MaxLength(1000, ErrorMessage = "Длинна этого поля не должна быть больше 1000 символов")]
         public string Tegs { get; set; }

@@ -505,6 +505,7 @@ namespace EventB.Controllers
             var model = new EventB.ViewModels.EventsVM.EventEditVM
             {
                 Title = eve.Title,
+                OldTitle = eve.Title,
                 Tegs = eve.Tegs,
                 Body = eve.Body,
                 Date = eve.Date,
@@ -534,7 +535,11 @@ namespace EventB.Controllers
             }
             else
             {
-                var eve = await context.Events.Include(e => e.EventTegs).FirstOrDefaultAsync(e => e.EventId == model.EventId);
+                var eve = await context.Events.Include(e => e.EventTegs)
+                    .Include(e=>e.Chat)
+                    .ThenInclude(e=>e.UserChat)
+                    .FirstOrDefaultAsync(e => e.EventId == model.EventId);
+                List<Vizit> vizits = null;
                 // Значение картинки если ее нет.
                 if (model.NewPicture != null)
                 {
@@ -547,8 +552,15 @@ namespace EventB.Controllers
                     {
                         await model.NewPicture.CopyToAsync(FS);
                     }
+                    vizits = await context.Vizits.Where(e => e.EventId == eve.EventId).ToListAsync();
+                    foreach (var e in vizits)
+                    {
+                        e.EventPhoto = src;
+                    }
                     eve.Image = src;
+                    context.Vizits.UpdateRange(vizits);
                 }
+                // При внесении изменений в теги.
                 if (model.Tegs != eve.Tegs)
                 {
                     var tegs = tegSplitter.GetEnumerable(model.Tegs).ToList();
@@ -559,7 +571,21 @@ namespace EventB.Controllers
                     }
                     eve.EventTegs = eventTegs;
                 }
-                eve.Title = model.Title;
+                // При внесении изменений в назавание.
+                if(model.Title != model.OldTitle)
+                {
+                    eve.Title = model.Title;
+                    foreach (var e in eve.Chat.UserChat)
+                    {
+                        e.ChatName = eve.TitleShort;
+                    }
+                    vizits = vizits != null ? vizits : await context.Vizits.Where(e => e.EventId == eve.EventId).ToListAsync();
+                    foreach (var e in vizits)
+                    {
+                        e.EventTitle = eve.TitleShort;
+                    }
+                    context.Vizits.UpdateRange(vizits);                    
+                }
                 eve.Body = model.Body;
                 eve.Place = model.Place;
                 eve.City = model.City;
