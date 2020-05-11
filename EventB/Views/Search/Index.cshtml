@@ -10,22 +10,24 @@
 </div>
 <hr class="item-inner-separator">
 
-<form asp-action="Search" asp-antiforgery="true"  method="post">
-    <div asp-validation-summary="ModelOnly" ></div>
+<form asp-action="SearchEventlist" asp-controller="Events" asp-antiforgery="true" method="post">
     <label class="form-label">Название:</label><br>
-    <input class="form-entry-title" type="text" asp-for="Title"><br>
-
-    <label class="form-label">Теги:</label><br>
-    <input class="form-entry-title" type="text" asp-for="Tegs"><br>
-
-    <label class="form-label">Дата начала С:</label><br>
-    <input class="form-date" type="date" asp-for="DateStart"><br>
-
-    <label class="form-label">Дата начала ПО:</label><br>
-    <input class="form-date" type="date" asp-for="DateEnd"><br>
+    <input class="form-entry-title" type="text" name="Title"><br>
 
     <label class="form-label">Город:</label><br>
-    <input class="form-entry-title" type="text" asp-for="Сity"><br>
+    <input class="form-entry-title" type="text" name="City"><br>
+
+    <label class="form-label">Теги:</label><br>
+    <input class="form-entry-title" type="text" name="Tegs"><br>
+
+    <label class="form-label">Дата начала С:</label><br>
+    <input class="form-date" type="date" name="DateSince"><br>
+
+    <label class="form-label">Дата начала ПО:</label><br>
+    <input class="form-date" type="date" name="DateDue"><br>
+
+    <input type="hidden" name="Skip" value="0" />
+    <input type="hidden" name="Take" value="3" />
 
     <input class="form-submit" type="submit" name="f" value="Найти событие"><br><br>
 </form>

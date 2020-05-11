@@ -8,12 +8,12 @@ namespace EventB.Services
     /// <summary>
     /// Разбивает строку тегов на список
     /// </summary>
-    public class TegSplitter:ITegSplitter
+    public class TegSplitter : ITegSplitter
     {
-        public IEnumerable<string> GetEnumerable(string input)
+        public List<string> GetEnumerable(string input)
         {
             if (input != "")
-                return input.Split(' ', ',', '.', '/', ':', '*', '+', '-', '@').Where(e => !string.IsNullOrEmpty(e));
+                return input.Split(new char[]{ ' ', ',', '.', '/', ':', '*', '+', '-', '@','?','!','='}, StringSplitOptions.RemoveEmptyEntries).ToList();
             else 
                 return null;
         }

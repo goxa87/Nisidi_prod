@@ -55,6 +55,7 @@ namespace EventB.Services
             if (!string.IsNullOrWhiteSpace(args.Tegs))
             {
                 var tegs = tegSplitter.GetEnumerable(args.Tegs).ToList();
+                // Просто чтоб получить инстанцированный экземпляр IQueryable.
                 IQueryable<Event> tegSelection = context.Events.Include(e => e.Creator).Include(e=>e.EventTegs).Where(e=>e.EventId==0);
                 foreach (var teg in tegs)
                 {

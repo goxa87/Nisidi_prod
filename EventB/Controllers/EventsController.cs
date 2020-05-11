@@ -63,19 +63,18 @@ namespace EventB.Controllers
                 {
                     tegsStr = $"{tegsStr} {e.Value}";
                 }
-                var args = new CostomSelectionArgs(
-                    DateTime.Now,
-                    DateTime.Now.AddDays(30),
-                    "",
-                    user.City,
-                    tegsStr
-                    )
-                {
-                    Skip=0,
-                    Take=2,
-                };
+                var args = new CostomSelectionArgs { 
+                        DateSince = DateTime.Now,
+                        DateDue = DateTime.Now.AddDays(31),
+                        Title = "",
+                        City = user.City,
+                        Tegs = tegsStr,                
+                        Skip=0,
+                        Take=3
+                    };
                 var rezult = await eventSelector.GetCostomEventsAsync(args);
-                args.Skip = 2;
+                // Пропускаем то что уж нашли.
+                args.Skip = args.Take;
                 var VM = new EventListVM
                 {
                     events = rezult,
@@ -85,19 +84,19 @@ namespace EventB.Controllers
             }
             else
             {
-                var args = new CostomSelectionArgs(
-                   DateTime.Now,
-                   DateTime.Now.AddDays(30),
-                   "",
-                   "москва",
-                   ""
-                   )
+                var args = new CostomSelectionArgs
                 {
+                    DateSince = DateTime.Now,
+                    DateDue = DateTime.Now.AddDays(31),
+                    Title = "",
+                    City = "МОСКВА",
+                    Tegs = "",
                     Skip = 0,
-                    Take = 2,
+                    Take = 3
                 };
                 var rezult = await eventSelector.GetCostomEventsAsync(args);
-
+                // Пропускаем то что уж нашли.
+                args.Skip = args.Take; 
                 var VM = new EventListVM
                 {
                     events = rezult,
@@ -105,8 +104,6 @@ namespace EventB.Controllers
                 };
                 return View(VM);
             }
-
-            // return View(events);
         }
 
         /// <summary>
@@ -119,6 +116,20 @@ namespace EventB.Controllers
         {
             var rezult = await eventSelector.GetCostomEventsAsync(args);
             return PartialView("_eventList", rezult);
+        }
+
+        public async Task<IActionResult> SearchEventlist(CostomSelectionArgs args)
+        {
+            args.DateDue = args.DateDue.AddDays(1);
+            var rezult = await eventSelector.GetCostomEventsAsync(args);
+            // Пропускаем то что уж нашли.
+            args.Skip = args.Take;
+            var VM = new EventListVM
+            {
+                events = rezult,
+                args = args
+            };
+            return View("Start", VM);
         }
         #endregion
 

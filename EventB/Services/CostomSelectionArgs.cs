@@ -29,7 +29,7 @@ namespace EventB.Services
         /// <summary>
         /// Дата окончания
         /// </summary>
-        public DateTime DateDue { get; set; }
+        public DateTime DateDue { get; set; } = DateTime.Now.AddDays(31);
         /// <summary>
         /// Пропустить.
         /// </summary>
@@ -38,15 +38,6 @@ namespace EventB.Services
         /// Взять.
         /// </summary>
         public int Take { get; set; }
-
-        public CostomSelectionArgs(DateTime DS, DateTime DE, string title = "", string city = "ставрополь", string tegs = "")
-        {
-            Title = title;
-            City = city;
-            Tegs = tegs;
-            DateSince = DS;
-            DateDue = DE;
-        }
 
         public CostomSelectionArgs() { }
     }

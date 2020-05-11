@@ -46,11 +46,13 @@ namespace EventB.Controllers
             var user =await context.Users
                 .Include(e=>e.Friends)
                 .FirstOrDefaultAsync(e=>e.Name == User.Identity.Name);
-            CostomSelectionArgs args = new CostomSelectionArgs(model.DateStart,
-                model.DateEnd,
-                model.Title,
-                model.Сity,
-                model.Tegs);
+            CostomSelectionArgs args = new CostomSelectionArgs {
+                DateSince = model.DateStart,
+                DateDue = model.DateEnd,
+                Title = model.Title,
+                City = model.Сity,
+                Tegs = model.Tegs
+            };
 
             var list = await eventSelector.GetCostomEventsAsync(args);
 

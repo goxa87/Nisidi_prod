@@ -7,6 +7,6 @@ namespace EventB.Services
 {
     public interface ITegSplitter
     {
-        public IEnumerable<string> GetEnumerable(string input);
+        public List<string> GetEnumerable(string input);
     }
 }
