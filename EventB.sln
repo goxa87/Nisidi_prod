@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventB", "EventB\EventB.csproj", "{DD4C0C08-A088-459E-BDB2-837A88D7021B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBLib", "EventBLib\EventBLib.csproj", "{BBB898DF-45C1-453A-9F49-7E09D2EC55BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBLib", "EventBLib\EventBLib.csproj", "{BBB898DF-45C1-453A-9F49-7E09D2EC55BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBTests", "EventBTests\EventBTests.csproj", "{5F6733A7-4F92-4563-BDB8-B370852FB568}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{BBB898DF-45C1-453A-9F49-7E09D2EC55BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBB898DF-45C1-453A-9F49-7E09D2EC55BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBB898DF-45C1-453A-9F49-7E09D2EC55BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F6733A7-4F92-4563-BDB8-B370852FB568}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F6733A7-4F92-4563-BDB8-B370852FB568}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F6733A7-4F92-4563-BDB8-B370852FB568}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F6733A7-4F92-4563-BDB8-B370852FB568}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
