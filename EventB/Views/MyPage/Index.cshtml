@@ -77,15 +77,15 @@
             <div class="element-square-container">
                     @foreach (var e in Model.MyEvents)
                     {
-                        <div class="events-square-item">
-                        <a asp-route-id="@e.EventId" asp-action="Details" asp-controller="Events">
-                            <figure>
+                <div class="events-square-item">
+                    <a asp-route-id="@e.EventId" asp-action="Details" asp-controller="Events">
+                        <figure>
                             <img src="@e.Image" />
-                            <figcaption><div>@e.TitleShort</div></figcaption>
-                            <a asp-action="EventEdit" asp-controller="Events" asp-route-eventId="@e.EventId"><div class="btn-edit">редактировать</div></a>
-                            </figure>
-                        </a>
-                        </div>
+                            <figcaption>@e.TitleShort</figcaption>
+                        </figure>
+                    </a>
+                    <a asp-action="EventEdit" asp-controller="Events" asp-route-eventId="@e.EventId">редактировать</a>
+                </div>
                     }         
             </div>
         }

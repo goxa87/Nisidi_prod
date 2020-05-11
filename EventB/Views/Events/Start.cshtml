@@ -1,54 +1,82 @@
 ﻿@using EventBLib.Models
-@model IEnumerable<Event>
+@model EventB.ViewModels.EventsVM.EventListVM
 @{
-    ViewData["Title"] = "Start";
+    ViewData["Title"] = "События";
     ViewData["Style"] = "Event.css";
+    ViewData["Script"] = "Event.js";
 }
 
     <div class="top-page-header">
         <a asp-controller="Events" asp-action="Add">ДОБАВИТЬ СОБЫТИЕ</a>
     </div>
-
-    @if (Model.Any())
-    {
-        foreach (var e in Model)
+    <div class="top-page-header" id="header-title">
+        <div class="arrow-down" id="search-menu"></div>
+        <div class="ticket">c: @Model.args.DateSince.ToString("dd.MM.yyyy")</div>
+        <div class="ticket">по: @Model.args.DateDue.ToString("dd.MM.yyyy")</div>
+        <div class="ticket">@Model.args.City</div>
+        @if (Model.args.Tegs != "")
         {
-        <div class="eventlist-container">
-            <div class="eventlist-img">
-                <a asp-controller="Events" asp-action="Details" asp-route-id="@e.EventId"><img src="@e.Image" alt="@e.Title"></a>
+            <div class="ticket">Ваши интересы</div>
+        }
+        @if (Model.args.Title != "")
+        {<div class="ticket">@Model.args.Title</div>}
+
+        <input type="hidden" id="args-date-s" value="@Model.args.DateSince.ToString("MM.dd.yyyy hh:mm:ss")" />
+        <input type="hidden" id="args-date-e" value="@Model.args.DateDue.ToString("MM.dd.yyyy hh:mm:ss")" />
+        <input type="hidden" id="args-city" value="@Model.args.City" />
+        <input type="hidden" id="args-teg" value="@Model.args.Tegs" />
+        <input type="hidden" id="args-title" value="@Model.args.Title" />
+        <input type="hidden" id="args-skip" value=@Model.args.Skip />
+        <input type="hidden" id="args-take" value=@Model.args.Take />
+        <input type="hidden" id="flag-dwnl-more" value="true" />
+    </div>
+    <div class="top-page-header display-none" id="header-args">
+        меню пргументов
+    </div>
+
+    @if (Model.events.Any())
+    {
+        <div id="event-list">
+        @foreach (var e in Model.events)
+        {
+            <div class="eventlist-container">
+                <div class="eventlist-img">
+                    <a asp-controller="Events" asp-action="Details" asp-route-id="@e.EventId"><img src="@e.Image" alt="@e.Title"></a>
+                </div>
+                <div class="eventlist-info">
+                    <a asp-controller="Events" asp-action="Details" asp-route-id="@e.EventId"><h3>@e.Title</h3></a>
+                        <label class="eventlist-label">Город:</label>
+                        <h4>@e.City</h4><br>
+                        <label class="eventlist-label">Место:</label>
+                        <h4>@e.Place</h4><br>
+                        <label class="eventlist-label">дата-время:</label>
+                        <h4>@e.Date.ToString("dd.MM.yyyy hh.mm")</h4><br>
+                        <label class="eventlist-label">Билеты:</label>
+                        <h4>билеты</h4><br>
+                        <label class="eventlist-label">Теги:</label>
+                        <h4>
+                            @e.Tegs
+                        </h4><BR>
+                    <div class="eventlist-stats">
+                        <span>Автор: @e.Creator.Name</span><BR>
+                        <span>Опубликовано: @e.CreationDate.ToString("dd.MM.yyyy")</span>
+                    </div>
+                </div>
+
             </div>
-            <div class="eventlist-info">
-                <a asp-controller="Events" asp-action="Details" asp-route-id="@e.EventId"><h3>@e.Title</h3></a>
-                    <label class="eventlist-label">Город:</label>
-                    <h4>@e.City</h4><br>
-                    <label class="eventlist-label">Место:</label>
-                    <h4>@e.Place</h4><br>
-                    <label class="eventlist-label">дата-время:</label>
-                    <h4>@e.Date.ToString("dd.MM.yyyy hh.mm")</h4><br>
-                    <label class="eventlist-label">Билеты:</label>
-                    <h4>билеты</h4><br>
-                    <label class="eventlist-label">Теги:</label>
-                    <h4>
-                        @e.Tegs
-                    </h4><BR>
-                <div class="eventlist-stats">
-                    <span>Автор: @e.Creator.Name</span><BR>
-                    <span>Опубликовано: @e.CreationDate.ToString("dd.MM.yyyy")</span>
+            <div class="eventlist-bottom-menu">
+                <div class="eventlist-btn-come-right-col">
+                    <img class="info-img" title="Просмотров" src="~/resourses/eye.png" />
+                    <span class="info-num">@e.Views.ToString()</span>
+                    <img class="info-img" title="Пойдут" src="~/resourses/share.png" />
+                    <span class="info-num">@e.WillGo</span>
+
                 </div>
             </div>
 
-        </div>
-        <div class="eventlist-bottom-menu">
-            <div class="eventlist-btn-come-right-col">
-                <img class="info-img" title="Просмотров" src="~/resourses/eye.png" />
-                <span class="info-num">@e.Views.ToString()</span>
-                <img class="info-img" title="Пойдут" src="~/resourses/share.png" />
-                <span class="info-num">@e.WillGo</span>
-
-            </div>
-        </div>
-
         }
+        </div>
+        <div id="end-marker"></div>
     }
     else
     { 

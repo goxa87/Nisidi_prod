@@ -1,6 +1,53 @@
 ﻿// Начало исполнения
 $(document).ready(function ()
 {
+    // Start постранично.
+    $(window).scroll(function () {
+        console.log("in");
+        if ($('#flag-dwnl-more').val() == 'true') {
+            var endMarker = $('#end-marker').offset().top;
+            var currentPosition = $(this.window).scrollTop() + $(this.window).height();
+            if (endMarker < currentPosition)
+            {
+                $('#flag-dwnl-more').val('false');
+                console.log("more than");
+                var args = {
+                    Title: $('#args-title').val(),
+                    City: $('#args-city').val(),
+                    Tegs: $('#args-teg').val(),
+                    DateSince: $('#args-date-s').val(),
+                    DateDue: $('#args-date-e').val(),
+                    Skip: $('#args-skip').val(),
+                    Take: $('#args-take').val()
+                }
+                LoadEvents(args);
+            }
+        }        
+    });
+
+    function LoadEvents(args)
+    {
+        console.log('in load');
+        var responce = $.ajax({
+            url: '/Events/LoadDynamic',
+            data: args
+        });
+
+        responce.then(function (data, stat, jqXHR) {
+            console.log(data);
+            if (jqXHR.status == 200) {
+                if (data != "") {
+                    $('#flag-dwnl-more').val('true');
+                }
+                $('#event-list').append(data);
+                $('#args-skip').val(Number($('#args-skip').val()) + Number($('#args-take').val()));
+            }
+            else {
+                alert("больше нельзя загрузить");
+            }
+            
+        });
+    }
     // DETAILS
     
     // клик на элементе меню внизу страницы

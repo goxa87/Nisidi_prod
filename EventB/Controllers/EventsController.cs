@@ -23,7 +23,8 @@ namespace EventB.Controllers
     public class EventsController : Controller
     {
         private Context context { get; }
-        private readonly SignInManager<User> userManager;
+        private readonly SignInManager<User> signInManager;
+        readonly UserManager<User> userManager;
         readonly IUserFindService userFindService;
         IWebHostEnvironment environment;
         ITegSplitter tegSplitter;
@@ -34,43 +35,92 @@ namespace EventB.Controllers
             IWebHostEnvironment env,
             IUserFindService _userFindService,
             ITegSplitter _tegSplitter,
-            IEventSelectorService _eventSelector)
+            IEventSelectorService _eventSelector,
+             UserManager<User> _userManager)
         {
             context = c;
-            userManager = UM;
+            signInManager = UM;
+            userManager = _userManager;
             environment = env;
             userFindService = _userFindService;
             tegSplitter = _tegSplitter;
             eventSelector = _eventSelector;
         }
-
+        #region Выборки и постраничный вывод
+        /// <summary>
+        ///  Точка входа
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Start()
         {
-            List<Event> events;
+            // Сформировать первоначальный список событий и задать параметры для будущего поиска.
             if (User.Identity.IsAuthenticated)
             {
-                var user = await userFindService.GetCurrentUserAsync(User.Identity.Name);
-                events = await eventSelector.GetStartEventListAsync(user);
-                // параллельно обновляем количество просмотров в другом потоке.
-                Task.Factory.StartNew(async () =>
+                var user = await userManager.GetUserAsync(HttpContext.User);
+                var tegs = await context.Intereses.Where(e => e.UserId == user.Id).ToListAsync();
+                var tegsStr = "";
+                foreach (var e in tegs)
                 {
-                    foreach (var ev in events)
-                    {
-                        ev.Views++;
-                    }
-
-                    context.UpdateRange(events);
-                    await context.SaveChangesAsync();
-                });
-                return View(events);
+                    tegsStr = $"{tegsStr} {e.Value}";
+                }
+                var args = new CostomSelectionArgs(
+                    DateTime.Now,
+                    DateTime.Now.AddDays(30),
+                    "",
+                    user.City,
+                    tegsStr
+                    )
+                {
+                    Skip=0,
+                    Take=2,
+                };
+                var rezult = await eventSelector.GetCostomEventsAsync(args);
+                args.Skip = 2;
+                var VM = new EventListVM
+                {
+                    events = rezult,
+                    args = args
+                };
+                return View(VM);
             }
             else
             {
-                events = await eventSelector.GetStartEventListAsync(null);
+                var args = new CostomSelectionArgs(
+                   DateTime.Now,
+                   DateTime.Now.AddDays(30),
+                   "",
+                   "москва",
+                   ""
+                   )
+                {
+                    Skip = 0,
+                    Take = 2,
+                };
+                var rezult = await eventSelector.GetCostomEventsAsync(args);
+
+                var VM = new EventListVM
+                {
+                    events = rezult,
+                    args = args
+                };
+                return View(VM);
             }
 
-            return View(events);
+            // return View(events);
         }
+
+        /// <summary>
+        /// Динамическая загрузка для постраничного вывода.
+        /// </summary>
+        /// <param name="args">Аргументы для ффильтраци.</param>
+        /// <returns></returns>
+        [Route("/Events/LoadDynamic")]
+        public async Task<IActionResult> LoadDynamic(CostomSelectionArgs args) 
+        {
+            var rezult = await eventSelector.GetCostomEventsAsync(args);
+            return PartialView("_eventList", rezult);
+        }
+        #endregion
 
         [Authorize]
         [HttpGet]

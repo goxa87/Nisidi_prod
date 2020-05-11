@@ -30,23 +30,24 @@ namespace EventB.Services
         /// Дата окончания
         /// </summary>
         public DateTime DateDue { get; set; }
-
         /// <summary>
-        /// Только события друзей
+        /// Пропустить.
         /// </summary>
-        public bool FriendsOnly { get; set; }
-        
-        public User Requester { get; set; }
+        public int Skip { get; set; }
+        /// <summary>
+        /// Взять.
+        /// </summary>
+        public int Take { get; set; }
 
-        public CostomSelectionArgs(DateTime DS, DateTime DE, string title = "", string city = "ставрополь", string tegs = "", bool friends=false, User req=null)
+        public CostomSelectionArgs(DateTime DS, DateTime DE, string title = "", string city = "ставрополь", string tegs = "")
         {
             Title = title;
             City = city;
             Tegs = tegs;
             DateSince = DS;
             DateDue = DE;
-            FriendsOnly = friends;
-            Requester = req;
         }
+
+        public CostomSelectionArgs() { }
     }
 }

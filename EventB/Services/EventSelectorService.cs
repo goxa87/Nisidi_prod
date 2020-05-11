@@ -66,7 +66,10 @@ namespace EventB.Services
 
                 selectionLocal = selectionLocal.Intersect(tegSelection);
             }
-            return selectionLocal.OrderBy(e=>e.Date).ToList();
+            // Постранично.
+            selectionLocal = selectionLocal.OrderBy(e => e.Date).Skip(args.Skip).Take(args.Take);
+
+            return selectionLocal.ToList();
         }
 
         /// <summary>
@@ -76,6 +79,7 @@ namespace EventB.Services
         /// <returns></returns>
         public async Task<List<Event>> GetStartEventListAsync(User user)
         {
+            // Это отнесено к кастомизированному поиску, т.к. по сути поже самое что и выше.
             // Идентифицированный пользователь.
             if (user != null)
             {

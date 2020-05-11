@@ -38,23 +38,23 @@ namespace EventB.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Search(EventSearchViewModel model)
+        public async Task<IActionResult> Search(EventSearchViewModel model, int Skip = 0, int Take = 3)
         {
             // Добавить чтоб не было инъекций замены символов.
             // Узнать паттерны инъекций
            
-            var user =await context.Users.Include(e=>e.Friends).FirstOrDefaultAsync(e=>e.Name == User.Identity.Name);
+            var user =await context.Users
+                .Include(e=>e.Friends)
+                .FirstOrDefaultAsync(e=>e.Name == User.Identity.Name);
             CostomSelectionArgs args = new CostomSelectionArgs(model.DateStart,
                 model.DateEnd,
                 model.Title,
                 model.Сity,
-                model.Tegs,
-                model.FriendsOnly,
-                user);
+                model.Tegs);
 
             var list = await eventSelector.GetCostomEventsAsync(args);
 
-            Task.Factory.StartNew(async ()=>
+            await Task.Factory.StartNew(async ()=>
                 {
                     foreach (var item in list)
                     {
@@ -71,8 +71,6 @@ namespace EventB.Controllers
         {
             return View(list);
         }
-
-        //public ActionResult SearchResult()
     }
 
     

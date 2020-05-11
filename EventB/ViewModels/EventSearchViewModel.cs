@@ -29,7 +29,5 @@ namespace EventB.ViewModels
         /// </summary>
         public string Сity { get; set; } 
 
-        public bool FriendsOnly { get; set; } 
-
     }
 }
