@@ -214,7 +214,7 @@ namespace EventB.Controllers
 
                 await context.Events.AddAsync(eve);
                 await context.SaveChangesAsync();
-                return RedirectToAction("Start");
+                return Redirect($"/Events/Details/{eve.EventId}");
             }
             else
             {
