@@ -13,7 +13,7 @@ namespace EventB.Services
         public List<string> GetEnumerable(string input)
         {
             if (input != "")
-                return input.Split(new char[]{ ' ', ',', '.', '/', ':', '*', '+', '-', '@','?','!','='}, StringSplitOptions.RemoveEmptyEntries).ToList();
+                return input.ToLower().Split(new char[]{ ' ', ',', '.', '/', ':', '*', '+', '-', '@','?','!','='}, StringSplitOptions.RemoveEmptyEntries).ToList();
             else 
                 return null;
         }

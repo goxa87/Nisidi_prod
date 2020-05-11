@@ -52,5 +52,18 @@ namespace EventBTests
 
             Assert.AreEqual(0, rezult.Count);
         }
+
+        [TestMethod]
+        public void GetEnumerable_withUpper_toLower()
+        {
+            var input = " aaa BBB";
+            string[] output = { };
+
+            var splitter = new TegSplitter();
+            var rezult = splitter.GetEnumerable(input);
+
+            Assert.AreEqual("bbb", rezult[1]);
+        }
+
     }
 }

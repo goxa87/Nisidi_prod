@@ -54,7 +54,7 @@ namespace EventB.Services
             // теги
             if (!string.IsNullOrWhiteSpace(args.Tegs))
             {
-                var tegs = tegSplitter.GetEnumerable(args.Tegs).ToList();
+                var tegs = tegSplitter.GetEnumerable(args.Tegs);
                 // Просто чтоб получить инстанцированный экземпляр IQueryable.
                 IQueryable<Event> tegSelection = context.Events.Include(e => e.Creator).Include(e=>e.EventTegs).Where(e=>e.EventId==0);
                 foreach (var teg in tegs)
@@ -70,7 +70,7 @@ namespace EventB.Services
             // Постранично.
             selectionLocal = selectionLocal.OrderBy(e => e.Date).Skip(args.Skip).Take(args.Take);
 
-            return selectionLocal.ToList();
+            return await selectionLocal.ToListAsync();
         }
 
         /// <summary>
