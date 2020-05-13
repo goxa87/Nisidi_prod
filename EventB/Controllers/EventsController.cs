@@ -121,6 +121,9 @@ namespace EventB.Controllers
         public async Task<IActionResult> SearchEventlist(CostomSelectionArgs args)
         {
             args.DateDue = args.DateDue.AddDays(1);
+            args.Title = args.Title ?? "";
+            args.City = args.City ?? "";
+            args.Tegs = args.Tegs ?? "";
             var rezult = await eventSelector.GetCostomEventsAsync(args);
             // Пропускаем то что уж нашли.
             args.Skip = args.Take;

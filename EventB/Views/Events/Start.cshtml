@@ -10,15 +10,18 @@
         <a asp-controller="Events" asp-action="Add">ДОБАВИТЬ СОБЫТИЕ</a>
     </div>
     <div class="top-page-header" id="header-title">
-        <div class="arrow-down" id="search-menu"></div>
         <div class="ticket">c: @Model.args.DateSince.ToString("dd.MM.yyyy")</div>
         <div class="ticket">по: @Model.args.DateDue.ToString("dd.MM.yyyy")</div>
-        <div class="ticket">@Model.args.City</div>
-        @if (Model.args.Tegs != "")
+        @if (Model.args.City != "" || Model.args.City == null)
         {
-            <div class="ticket">Ваши интересы</div>
+            <div class="ticket">@Model.args.City</div>
         }
-        @if (Model.args.Title != "")
+        
+        @if (Model.args.Tegs != "" || Model.args.Tegs == null)
+        {
+            <div class="ticket">@Model.args.Tegs</div>
+        }
+        @if (Model.args.Title != "" || Model.args.Title == null)
         {<div class="ticket">@Model.args.Title</div>}
 
         <input type="hidden" id="args-date-s" value="@Model.args.DateSince.ToString("MM.dd.yyyy hh:mm:ss")" />
