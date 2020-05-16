@@ -37,6 +37,7 @@ namespace EventB.Controllers
         [Authorize]
         public async Task<StatusCodeResult> AddAsFriend(string userId)
         {           
+            // Здесь появились новые поял для класса Friend/ добавить инициализацию.
             if (!string.IsNullOrWhiteSpace(userId))
             {
                 var currentUser = await userFind.GetCurrentUserAsync(User.Identity.Name);
@@ -162,13 +163,15 @@ namespace EventB.Controllers
             {
                 UserId = id,
                 ChatName = opponent.Name,
-                OpponentId = opponentId
+                OpponentId = opponentId,
+                ChatPhoto = opponent.Photo
             };
             var userChatopponent = new UserChat
             {
                 UserId = opponentId,
                 ChatName = user.Name,
-                OpponentId = id
+                OpponentId = id,
+                ChatPhoto = user.Photo
             };
             var chat = new Chat
             {

@@ -6,10 +6,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="top-page-header">Сообщения</div>
 
 <div class="chat-frame">
-    <div class="left-columnn">
+    <div class="left-column">
         <div >
             <form class="search">
                 <input id="txt-search" type="text">
@@ -21,7 +20,8 @@
             {
             <div class="opponent-container">
                 <input class="opponent-chat-id" type="hidden" value="@opponent.ChatId" />
-                <div class="opponent-name">@opponent.ChatName</div>
+                <input class="opponent-photo-value" type="hidden" value="@opponent.ChatPhoto" />
+                <div class="opponent-name-value">@opponent.ChatName</div>
                 <input class="opponent-id" type="hidden" value="@opponent.OpponentId" />
                 <div class="new-message-flag"></div>
             </div>
@@ -30,27 +30,60 @@
     </div>
 
     <div class="right-columnn">
-        <div class="message-list">
+        <div class="message-header flex-hsc">
 
+            @if (Model.Opponent != null)
+            {
+                <div class="flex-hcc opponent-photo">
+                    <img src="@Model.Opponent.Photo" />
+                </div>
+                <div class="opponent-name" id="header-name">@Model.Opponent.Name</div>
+            }
+            else
+            {
+                <div class="opponent-photo flex-hcc">
+                    <img />
+                </div>
+                <div class="opponent-name" id="header-name"></div>
+            }
+        </div>
+           
+        <div class="message-list">
             @if (Model.Messages != null)
             {
                 foreach (var mes in Model.Messages)
-                { 
-                    <div class="message-item">
-                        <div class="message-sender">@mes.SenderName</div>
-                        <div class="message-text">@mes.Text</div>
-                        <div class="message-date">@mes.PostDate</div>
-                    </div>
+                {
+                    if (mes.EventState)
+                    {
+                        <div class="message-item message-item-event">
+                            <div class="message-sender-event">@mes.SenderName</div>
+                            <div class="message-text-event">@mes.Text</div>
+                            <div class="message-date-event">@mes.PostDate</div>
+                            <div class="message-info display-none">@mes.PersonId</div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="message-item">
+                            <div class="message-sender">@mes.SenderName</div>
+                            <div class="message-text">@mes.Text</div>
+                            <div class="message-date">@mes.PostDate</div>
+                            <div class="message-info display-none">@mes.PersonId</div>
+                        </div>
+                    }
                 }
             }
+            <div id="vertical-trigger"></div>
         </div>
-        <div>
+        <div >
             <label>Сообщение</label><br>
             <form class="form-send">
                 <input id="user-id" type="hidden" value="@Model.CurrentUserId" />
                 <input id="user-name" type="hidden" value="@Model.CurrentUserName" />
                 <input id="chat-id" type="hidden" value="@Model.CurrentChatId" />
-                <input id="opponent-id" type="hidden" value="@Model.OpponentId" />
+                @if (Model.Opponent != null){ <input id="opponent-id" type="hidden" value="@Model.Opponent.Id" />}
+                else { <input id="opponent-id" type="hidden" value="0"/> }
+                <input id="opponent-is-event" type="hidden" value="false" />
 
                 <input id="message" type="text" />
                 <button id="btn-send"></button>

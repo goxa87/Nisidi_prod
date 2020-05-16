@@ -7,25 +7,25 @@
 */
 
 .chat-frame {
-    background-color: #1b5972;
+    background-color: #fff;
     width:100%;
-    height:calc(100vh - 180px);
+    height:calc(100vh - 160px);
     display:flex;
     align-items:stretch;    
 }
 
-.left-columnn {
+.left-column {
     min-width: 300px;
-    border-right: 3px solid #e4dcc5;
     padding: 16px;
+    background-color: #1b5972;
 }
 
-.right-columnn{
-    padding:16px;
-    width:100%;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
+.right-columnn {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #e4dcc588;
 }
 
 .search {
@@ -34,6 +34,7 @@
 
     .search > input {
         background-color: #fff6;
+        color:#000;
         width: calc(100% - 30px);
         margin-bottom: 8px;
         padding: 3px;
@@ -48,15 +49,16 @@
         width: 30px;
         margin-bottom: 8px;
         border: none;
-        background-image: url('/resourses/loop.png');
+        background-image: url('/resourses/cancel.png');
         background-size: 30px 30px;
         background-repeat: no-repeat;
-        outline:none;
+        outline: none;
     }
 
 
-.opponents-list{
-
+.opponents-list {
+    overflow-y: auto;
+    max-height: calc(100% - 30px);
 }
 .opponent-container {
     padding: 8px;
@@ -67,9 +69,10 @@
 }
     .opponent-container:hover{
         background-color:#fff4;
+        cursor:pointer;
     }
 
-    .opponent-name {
+    .opponent-name-value, .opponent-name {
         color: #ffcd00;
         font-weight: bold;
     }
@@ -84,33 +87,68 @@
     background-color:#fff9;
 }
 
+.message-header{
+    background-color:#1b5972;    
+}
 
-.message-list{
-    overflow-y:auto;
-    padding-right:10px;
+.opponent-photo{
+    width:60px;
+    height:60px;
+    border-radius:30px;
+    margin: 4px 16px; 
+}
+    .opponent-photo>img{
+        max-width:100%;
+        max-height:100%;
+        object-fit:contain;
+    }
+
+.message-list {
+    overflow-y: auto;
+    padding-right: 20px;
+    flex-basis:2000px;
+    background-color:#e4dcc588;
 }
 
 .message-item {
-    background-color: #ffffff33;
-    margin-bottom:16px;
-    padding: 8px;
+    background-color: #ccc;
+    margin:4px 16px;
+    padding: 4px;
+    border:1px solid #1b5972;
+    max-width:80%;
 }
-.message-sender {
-    color: #ffcd00;
-    font-size:14px;
-    text-transform: uppercase;
+.my-message{
+    margin-left: 56px;
+    background-color:#e4dcc5;
 }
-.message-text{
-    color: #e4dcc5;
 
+.message-sender {
+    color: #1b5972;
+    font-size:14px;
+}
+.message-item-event{
+    background-color:#1b5972;
+}
+.message-sender-event {
+    color:#ffcd00;
+}
+.message-text-event{
+    color: #e4dcc5;
+}
+.message-text {
+    color: black;
+}
+.message-date-event {
+    color: #e4dcc5;
+    font-size: 10px;
 }
 .message-date {
-    color: #f1ead899;
-    font-size:10px;
-
+    color: #1b597299;
+    font-size: 10px;
 }
 .form-send {
-    display: flex;  
+    display: flex;
+    border: 1px solid #1b5972;    
 }
     .form-send > input {
         background-color: #e4dcc5;

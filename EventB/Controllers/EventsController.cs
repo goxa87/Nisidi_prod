@@ -202,7 +202,8 @@ namespace EventB.Controllers
                 UserChat userChat = new UserChat
                 {
                     UserId = creator.Id,
-                    ChatName = model.Title.Length > 25 ? model.Title.Remove(25) + "..." : model.Title
+                    ChatName = model.Title.Length > 25 ? model.Title.Remove(25) + "..." : model.Title,
+                    ChatPhoto = src
                 };
                 chat.UserChat.Add(userChat);
                 // Итоговое формирование события.

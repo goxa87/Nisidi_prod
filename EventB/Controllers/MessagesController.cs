@@ -30,13 +30,13 @@ namespace EventB.Controllers
             var user = await context.Users.
                 Include(e => e.UserChats).
                 FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
-
+            var opponent = await context.Users.FirstOrDefaultAsync(e => e.Id == opponentId);
             var chatVM = new MessagesViewModel
             {
                 userChats=user.UserChats,
                 CurrentUserId = user.Id,
                 CurrentUserName = user.Name,
-                OpponentId = "0",
+                Opponent = opponent,
                 CurrentChatId = 0
             };
 
@@ -75,7 +75,8 @@ namespace EventB.Controllers
                 //}
                 ////var commonChats = user.
                 #endregion
-                chatVM.OpponentId = opponentId;
+                // Будет несоответствие если подзагрузку делать иначе.
+                // Переделать к общему виду.
                 var messages = await context.Messages.
                     Where( e => (e.PersonId==user.Id && e.ReciverId==opponentId) || (e.PersonId == opponentId && e.ReciverId == user.Id) )
                     .OrderByDescending(e=>e.PostDate)

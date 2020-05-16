@@ -27,7 +27,7 @@ namespace EventB.ViewModels
         /// <summary>
         /// Собеседник, если он выбран.
         /// </summary>
-        public string OpponentId { get; set; }
+        public User Opponent { get; set; }
         /// <summary>
         /// Id чата если создается для конкретного чата.
         /// </summary>
