@@ -6,11 +6,11 @@
         year: "numeric",
         hour: "2-digit",
         minute: "2-digit",
-        second: "2-digit"       
+        second: "2-digit"
     });
 
     // Начальная прокрутка до конца чата.
-    let startoffset = $('#vertical-trigger').offset().top +1000;
+    let startoffset = $('#vertical-trigger').offset().top + 1000;
     $('.message-list').scrollTop(startoffset);
     // окраска собщений в цвет отправителя (темнее если отправитель текущий).
     function colored(item) {
@@ -51,7 +51,6 @@
             // или выбран вручную из списка.
             SendMessage();
         }
-        console.log('clicked');
     });
 
     // Запрос к АПИ на отправление сообщения.
@@ -104,7 +103,6 @@
                 opponentId: Opponent
             },
             complete: function (response) {
-                console.log(response.responseJSON);
                 $('#chat-id').val(response.responseJSON);
                 SendMessage();
             }
@@ -114,7 +112,7 @@
     // Выбор собеседника из левой колонки.
     $('.opponent-container').on('click', function () {
         // Картинку и имя в заголовок.
-        
+
         $('.opponent-photo').children('img').prop('src', $(this).children('.opponent-photo-value').val());
         $('.opponent-name').text($(this).children('.opponent-name-value').text());
 
@@ -124,6 +122,8 @@
         $(this).addClass('selected-opponent');
         // отчистить сообщения с листа
         $('.message-list').empty();
+        // убрать количество новых сообщений
+        $(this).children('.new-message-flag').text('');
 
         // скопировать значения id b chat id в форму
         let newChat = $(this).children('.opponent-chat-id').val();
@@ -152,8 +152,8 @@
         // Рендеринг ответа в блоки
         let block = '';
         $(content).each(function (index, value) {
-                let date = formatter.format(new Date(value.postDate));
-            if (value.eventState == false) {                
+            let date = formatter.format(new Date(value.postDate));
+            if (value.eventState == false) {
                 block += '<div class="message-item"><div class="message-sender">' + value.senderName +
                     '</div><div class="message-text">' + value.text + '</div ><div class="message-date">' + date + '</div >' +
                     '<div class="message-info display-none">' + value.personId + '</div ></div > ';
@@ -176,7 +176,7 @@
         $(content).each(function (index, value) {
             block += '<div class="message-item"><div class="message-sender">' + value.senderName +
                 '</div><div class="message-text">' + value.text + '</div ><div class="message-date">' + value.postDate + '</div >' +
-                '<div class="message-info display-none">'+ value.PersonId +'</div></div > ';
+                '<div class="message-info display-none">' + value.PersonId + '</div></div > ';
         });
 
         $('.message-list').append(block);
@@ -184,7 +184,7 @@
         list.scrollTop(1000);
     };
 
-    // Клик на кнопке поиска.
+    // Клик на кнопке Отчистить.
     $('#btn-search').on('click', function (event) {
         event.preventDefault();
         $('#txt-search').val('');
@@ -230,8 +230,35 @@
             }
         });
 
+
+
     }, 5000);
 
-
-})
+    // отправка запроса на получение количества новых сообщений в чатах в списке.
+    getNewMessageCount();
+    setInterval(function () {
+        getNewMessageCount();
+    }, 7000);
+    function displayNewMessageFlag(count, chatId) {
+        if (count > 0) {
+            $('.opponent-chat-id').each((ind, chat) => {
+                if ($(chat).val() == String(chatId)) {
+                    $(chat).parent('.opponent-container').children('.new-message-flag').text(count);
+                    $(chat).parent('.opponent-container').detach().prependTo('.opponents-list');
+                    return true;
+                }
+            })
+        }
+    }
+    function getNewMessageCount() {
+        $.ajax({
+            url: '/Api/GetNewMessagesCount',
+            success: function (rezult) {
+                $(rezult).each(function (i, value) {
+                    displayNewMessageFlag(value.countNew, value.chatId)
+                });
+            }
+        });
+    }
+});
 

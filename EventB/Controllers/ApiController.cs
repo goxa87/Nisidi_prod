@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using EventB.ViewModels.MessagesVM;
+using Microsoft.AspNetCore.Identity;
 
 namespace EventB.Controllers
 {
@@ -18,13 +20,16 @@ namespace EventB.Controllers
     {
         readonly Context context;
         readonly IUserFindService userFind;
+        readonly UserManager<User> userManager;
         public ApiController(
             Context _context,
-            IUserFindService _userFind
+            IUserFindService _userFind,
+            UserManager<User> _userManager
             )
         {
             context = _context;
             userFind = _userFind;
+            userManager = _userManager;
         }
 
         #region Секция ПОДПИСКИ
@@ -267,6 +272,31 @@ namespace EventB.Controllers
             await context.SaveChangesAsync();
 
             return messages;
+        }
+        /// <summary>
+        /// Возвращает количество новых сообщений в чатах по chatId.
+        /// </summary>
+        /// <param name="chatIds"></param>
+        /// <returns></returns>
+        [Authorize]
+        [Route("GetNewMessagesCount")]
+        public async Task<List<NewMessagesVM>> GetNewMessagesCount()
+        {
+            // Мне кажется это криво и неэффективно. Нужно отрефакторить.
+            var user = await userManager.GetUserAsync(User);
+            var selection = context.UserChats.Where(e => e.UserId == user.Id).Select(e => e.ChatId);
+            var rezult = new List<NewMessagesVM>();
+
+            await Task.Run(() =>
+            {
+                rezult = selection.Select(e => new NewMessagesVM
+                {
+                    ChatId = e,
+                    CountNew = context.Messages.Where(m => m.ChatId == e && m.Read == false).Count()
+                }).ToList();
+            });
+
+            return rezult;
         }
         #endregion
     }
