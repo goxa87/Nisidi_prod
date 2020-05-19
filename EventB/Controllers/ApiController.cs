@@ -292,7 +292,7 @@ namespace EventB.Controllers
                 rezult = selection.Select(e => new NewMessagesVM
                 {
                     ChatId = e,
-                    CountNew = context.Messages.Where(m => m.ChatId == e && m.Read == false).Count()
+                    CountNew = context.Messages.Where(m => m.ChatId == e && m.Read == false && m.PersonId != user.Id).Count()
                 }).ToList();
             });
 
