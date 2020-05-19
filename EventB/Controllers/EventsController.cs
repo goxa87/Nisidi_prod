@@ -545,6 +545,8 @@ namespace EventB.Controllers
             await context.SaveChangesAsync();
         }
         #endregion
+
+        #region изменение события
         /// <summary>
         /// Страница редактирования события.
         /// </summary>
@@ -572,10 +574,15 @@ namespace EventB.Controllers
                 Title = eve.Title,
                 OldTitle = eve.Title,
                 Tegs = eve.Tegs,
+                OldTegs = eve.Tegs,
                 Body = eve.Body,
+                OldBody = eve.Body,
                 Date = eve.Date,
+                OldDate = eve.Date,
                 City = eve.City,
+                OldCity = eve.City,
                 Place = eve.Place,
+                OldPlace = eve.Place,
                 MainPicture = eve.Image,
                 EventId = eve.EventId
             };
@@ -601,8 +608,8 @@ namespace EventB.Controllers
             else
             {
                 var eve = await context.Events.Include(e => e.EventTegs)
-                    .Include(e=>e.Chat)
-                    .ThenInclude(e=>e.UserChat)
+                    .Include(e=>e.Chat).ThenInclude(e=>e.Messages)
+                    .Include(e=>e.Chat).ThenInclude(e=>e.UserChat)
                     .FirstOrDefaultAsync(e => e.EventId == model.EventId);
                 List<Vizit> vizits = null;
                 // Значение картинки если ее нет.
@@ -625,6 +632,8 @@ namespace EventB.Controllers
                     eve.Image = src;
                     context.Vizits.UpdateRange(vizits);
                 }
+                // Здесь подправить разметку чтобы отображать абзацами
+                string chatMessage = "Изменения в событии:<br>";
                 // При внесении изменений в теги.
                 if (model.Tegs != eve.Tegs)
                 {
@@ -635,6 +644,7 @@ namespace EventB.Controllers
                         eventTegs.Add(new EventTeg { Teg = teg });
                     }
                     eve.EventTegs = eventTegs;
+                    chatMessage += $"<p>{model.OldTegs}</p><p>{model.Tegs}</p><br>";
                 }
                 // При внесении изменений в назавание.
                 if(model.Title != model.OldTitle)
@@ -649,21 +659,43 @@ namespace EventB.Controllers
                     {
                         e.EventTitle = eve.TitleShort;
                     }
-                    context.Vizits.UpdateRange(vizits);                    
+                    context.Vizits.UpdateRange(vizits);
+                    chatMessage += $"<p>Было: {model.OldTitle}</p><p>Стало: {model.Title}</p><br>";
                 }
-                eve.Body = model.Body;
-                eve.Place = model.Place;
-                eve.City = model.City;
-                if (model.Date > (new DateTime(2020, 1, 1)))
+                if (model.Body != model.OldBody)
+                {
+                    eve.Body = model.Body;
+                    chatMessage += $"<p>Изменено описание.</p><br>";
+                }
+                if (model.Place != model.OldPlace)
+                {
+                    eve.Place = model.OldPlace;
+                    chatMessage += $"<p>Было: {model.OldPlace}</p><p>Стало: {model.Place}</p><br>";
+                }
+                if (model.City != model.OldCity)
+                {
+                    eve.City = model.OldCity;
+                    chatMessage += $"<p>Было: {model.OldCity}</p><p>Стало: {model.City}</p><br>";
+                }
+                if (model.Date != model.OldDate)
                 {
                     eve.Date = model.Date;
+                    chatMessage += $"<p>Было: {model.OldDate.ToString("dd.MM.yy hh:mm")}</p><p>Стало: {model.Date.ToString("dd.MM.yy hh:mm")}</p><br>";
                 }
-
+                var user = await userManager.GetUserAsync(User);
+                eve.Chat.Messages.Add(new Message
+                {
+                    PersonId = user.Id,
+                    EventState = true,
+                    PostDate = DateTime.Now,
+                    SenderName = user.Name,
+                    Text = chatMessage
+                });
                 context.Events.Update(eve);
                 await context.SaveChangesAsync();
                 return Redirect($"/Events/Details/{eve.EventId}");
-            }
-        
+            }        
         }
+        #endregion
     }
 }

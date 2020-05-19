@@ -17,44 +17,48 @@ else if (ViewBag.Status == 403)
 }
 else
 {
-    <form asp-action="EventEdit" asp-antiforgery="true" method="post" enctype="multipart/form-data">
-        <div asp-validation-summary="ModelOnly" class="form-summary"></div>
+<form asp-action="EventEdit" asp-antiforgery="true" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="form-summary"></div>
 
-        <label class="form-label" asp-for="Title"></label>
-        <span asp-validation-for="Title"></span><br>
-        <input class="form-entry-title" type="text" asp-for="Title" value="@Model.Title" /><br>
-        <input type="hidden" asp-for="OldTitle" value="@Model.OldTitle" />
+    <label class="form-label" asp-for="Title"></label>
+    <span asp-validation-for="Title"></span><br>
+    <input class="form-entry-title" type="text" asp-for="Title" value="@Model.Title" /><br>
+    <input type="hidden" asp-for="OldTitle" value="@Model.OldTitle" />
 
-        <label class="form-label" asp-for="Body"></label>
-        <span asp-validation-for="Body"></span><br>
-        <textarea class="form-entry-body" type="text" asp-for="Body"></textarea><br>
+    <label class="form-label" asp-for="Body"></label>
+    <span asp-validation-for="Body"></span><br>
+    <textarea class="form-entry-body" type="text" asp-for="Body"></textarea><br>
+    <input type="hidden" asp-for="OldBody" value="@Model.OldBody" />
 
-        <label class="form-label" asp-for="Tegs"></label>
-        <span asp-validation-for="Tegs"></span><br>
-        <input class="form-entry-title" type="text" asp-for="Tegs" /><br>
+    <label class="form-label" asp-for="Tegs"></label>
+    <span asp-validation-for="Tegs"></span><br>
+    <input class="form-entry-title" type="text" asp-for="Tegs" /><br>
+    <input type="hidden" asp-for="OldTegs" value="@Model.OldTegs" />
 
-        <label class="form-label" asp-for="City"></label>
-        <span asp-validation-for="City"></span><br>
-        <input class="form-entry-title" type="text" asp-for="City" /><br>
+    <label class="form-label" asp-for="City"></label>
+    <span asp-validation-for="City"></span><br>
+    <input class="form-entry-title" type="text" asp-for="City" /><br>
+    <input type="hidden" asp-for="OldCity" value="@Model.OldCity" />
 
-        <label class="form-label" asp-for="Place"></label>
-        <span asp-validation-for="Place"></span><br>
-        <input class="form-entry-title" type="text" asp-for="Place" /><br>
+    <label class="form-label" asp-for="Place"></label>
+    <span asp-validation-for="Place"></span><br>
+    <input class="form-entry-title" type="text" asp-for="Place" /><br>
+    <input type="hidden" asp-for="OldPlace" value="@Model.OldPlace" />
 
-        <label class="form-label" asp-for="Date"></label>
-        <span asp-validation-for="Date"></span><br>
-        <div class="content">@Model.Date.ToString("dd.MM.yyyy hh:mm") изменить на </div>
-        <input class="form-date" type="datetime-local" value="@Model.Date" asp-for="Date" /><br>
+    <label class="form-label" asp-for="Date"></label>
+    <span asp-validation-for="Date"></span><br>
+    <div class="content">@Model.Date.ToString("dd.MM.yyyy hh:mm") изменить на </div>
+    <input class="form-date" type="datetime-local" value="@Model.Date" asp-for="Date" /><br>
 
-        <label class="form-label" asp-for="MainPicture"></label>
-        <img class="img-100" src="@Model.MainPicture">
-        <span asp-validation-for="Date"></span><br>
-        <div class="content">изменить на</div>
-        <input class="form-date" type="file" asp-for="NewPicture" /><br>
+    <label class="form-label" asp-for="MainPicture"></label>
+    <img class="img-100" src="@Model.MainPicture">
+    <span asp-validation-for="Date"></span><br>
+    <div class="content">изменить на</div>
+    <input class="form-date" type="file" asp-for="NewPicture" /><br>
 
-        <input type="hidden" asp-for="EventId">
+    <input type="hidden" asp-for="EventId">
 
-        <input class="form-submit" type="submit" value="Сохранить" />
-    </form>
+    <input class="form-submit" type="submit" value="Сохранить" />
+</form>
 }
 @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

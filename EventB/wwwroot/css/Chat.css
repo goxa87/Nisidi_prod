@@ -6,6 +6,11 @@
 
 */
 
+p{
+    color: #e4dcc5;
+    margin:0;
+}
+
 .chat-frame {
     background-color: #fff;
     width:100%;
