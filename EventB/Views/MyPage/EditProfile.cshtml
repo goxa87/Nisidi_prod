@@ -41,7 +41,9 @@
     <label class="form-label" asp-for="newPhoto"></label><br>
     <img class="img-100" src="@Model.OldPhoto" /><br>
     <label class="form-label">Изменить на:</label>
-    <input class="form-date" type="file" asp-for="newPhoto" /><br>
+    <input class="form-date" type="file" asp-for="newPhoto" />
+
+    <div><a href="/Account/ChangePassword">Изменить пароль</a></div>
 
     <input class="form-submit" type="submit" value="Сохранить" />
 </form>

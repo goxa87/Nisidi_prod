@@ -6,10 +6,12 @@ using EventBLib.DataContext;
 using EventBLib.Models;
 using EventB.Services;
 using EventB.ViewModels;
+using EventB.ViewModels.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EventB.Controllers
 {
@@ -130,7 +132,47 @@ namespace EventB.Controllers
 
             return RedirectToAction("Start", "Events");
         }
-
-        
+        /// <summary>
+        /// Форма изменения пароля.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [Authorize]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+        /// <summary>
+        /// Изменение пароля.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordVM model)
+        {           
+            if (model.OldPassword == null || model.NewPassword == null || model.ConfirmPassword == null)
+            {
+                ModelState.AddModelError("", "Все поля обязательны для заполнения.");
+                return View(model);
+            }
+            if (model.NewPassword != model.ConfirmPassword)
+            {
+                ModelState.AddModelError("", "Новый пароль и подтверждение не совпадают.");
+                return View(model);
+            }
+            var user = await userManager.GetUserAsync(User);
+            var rezult = await userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+            if (rezult.Succeeded)
+            {
+                return RedirectToAction("Index", "MyPage");
+            }
+            else 
+            {
+                ModelState.AddModelError("", "Что-то пошло не так.");
+                return View(model);
+            }            
+        }
     }
 }

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EventB.ViewModels
+namespace EventB.ViewModels.Account
 {
     public class UserLogin
     {

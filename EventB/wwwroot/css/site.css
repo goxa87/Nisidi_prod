@@ -34,6 +34,10 @@ a {
 main {
 }
 
+ul{
+    margin:0px;
+}
+
 .ref-holder {
     text-align:center;
 }
@@ -208,7 +212,6 @@ ul li a span:nth-child(4) {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 20px;
 }
 
 .identity-cintainer {

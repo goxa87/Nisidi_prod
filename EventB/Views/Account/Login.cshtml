@@ -1,4 +1,4 @@
-﻿@model EventB.ViewModels.UserLogin
+﻿@model EventB.ViewModels.Account.UserLogin
 @{
     ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -10,7 +10,7 @@
         <form asp-action="Login" asp-antiforgery="true" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ReturnUrl" />
-        
+
             <label class="form-label" asp-for="LoginProp"></label><br>
             <span asp-validation-for="LoginProp"></span>
             <input class="form-entry-title" type="text" asp-for="LoginProp"><br>
