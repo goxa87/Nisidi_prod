@@ -140,6 +140,7 @@
             success: function (rezult) {
                 // Рендеринг сообщений.
                 buildMessagesContent(rezult);
+                $('.message-list').append('<div id="vertical-trigger"></div>');
                 colorAllItems();
             }
         });
@@ -167,7 +168,8 @@
 
         $('.message-list').html(block);
         var list = $('.message-list');
-        list.scrollTop(10000);
+        let offset = $('.vertical-trigger').offset().top = 1000;
+        list.scrollTop(offset);
     };
 
     function addBuildMessagesContent(content) {
@@ -180,8 +182,8 @@
         });
 
         $('.message-list').append(block);
-        var list = $('.message-list');
-        list.scrollTop(1000);
+        let offset = $('.vertical-trigger').offset().top = 1000;
+        list.scrollTop(offset);
     };
 
     // Клик на кнопке Отчистить.

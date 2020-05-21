@@ -10,13 +10,15 @@ p{
     color: #e4dcc5;
     margin:0;
 }
-
+.vertical-trigger{
+    height:1px;
+}
 .chat-frame {
     background-color: #fff;
-    width:100%;
-    height:calc(100vh - 160px);
-    display:flex;
-    align-items:stretch;    
+    width: 100%;
+    height: calc(100vh - 160px);
+    display: flex;
+    align-items: stretch;
 }
 
 .left-column {
