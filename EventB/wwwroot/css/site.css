@@ -73,14 +73,30 @@ input[type="checkbox"].input-validation-error {
 }
 
 /*>********************************** главное меню _Layout*/
+.main-menu-container{
+    background-color:#e4dcc5;
+    border-bottom:2px solid #1b5972;
+}
+.float-menu {
+    position: fixed;
+    top: 0;
+    max-width: 1140px;
+    margin: 0 auto;
+}
+
+.menu-voider {
+    background-color: #e4dcc5;
+
+}
+
 #main-menu-li {
     top: 0px;
     left: 0%;
     margin: 0;
     padding: 0;
     display: flex;
-    flex-wrap:wrap;
-    justify-content:space-between;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
     #main-menu-li li {
@@ -143,12 +159,9 @@ ul li a span:nth-child(4) {
     transition-delay: 0.45s;
 }
 
-.container {
+.the-container {
     max-width: 1140px;
     margin: 0 auto 0 auto;
-}
-
-.main-menu-container {
 }
 
 #title-container {

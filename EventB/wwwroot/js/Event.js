@@ -3,14 +3,12 @@ $(document).ready(function ()
 {
     // Start постранично.
     $(window).scroll(function () {
-        console.log("in");
         if ($('#flag-dwnl-more').val() == 'true') {
             var endMarker = $('#end-marker').offset().top;
             var currentPosition = $(this.window).scrollTop() + $(this.window).height();
             if (endMarker < currentPosition)
             {
                 $('#flag-dwnl-more').val('false');
-                console.log("more than");
                 var args = {
                     Title: $('#args-title').val(),
                     City: $('#args-city').val(),
@@ -27,14 +25,12 @@ $(document).ready(function ()
 
     function LoadEvents(args)
     {
-        console.log('in load');
         var responce = $.ajax({
             url: '/Events/LoadDynamic',
             data: args
         });
 
         responce.then(function (data, stat, jqXHR) {
-            console.log(data);
             if (jqXHR.status == 200) {
                 if (data != "") {
                     $('#flag-dwnl-more').val('true');
@@ -81,26 +77,21 @@ $(document).ready(function ()
     $('#btn-send').click(function (event)
     {
         event.preventDefault();
-
         if ($('#user-id').val() == '0') {
             alert('Авторизуйтесь для отправки сооsбщений');
             return;
         }
 
         if ($('#chat-id').val() == '0') {
-            console.log('клик - чата нет');
             // создаем чат отправляем сообщение(включает отправку)
             $('.message-item').empty();
             CreateChat();
-           
         }
         else
         {
-            console.log('клик - чата есть');
             //Отправляем сообщение
             SendMessage();
         }
-
     });
 
     // [Route("CreateEventChat")]
@@ -110,7 +101,6 @@ $(document).ready(function ()
     // Создать чат.
     function CreateChat()
     {
-        console.log('создание чата');
         let user = $('#user-id').val();
         let event = $('#event-id').val();
 
@@ -122,10 +112,7 @@ $(document).ready(function ()
                 userId: user
             }, complete: function (responce)
             {
-                console.log('выполнгение создания чата');
-                console.log(responce.responseJSON);
                 $('#chat-id').val(responce.responseJSON);
-
                 SendMessage();
             }
         });
@@ -138,7 +125,6 @@ $(document).ready(function ()
     // Отправка сообщения
     function SendMessage()
     {
-        console.log('отправка сообщения');
         let user = $('#user-id').val();
         let chat = $('#chat-id').val();
         let message = $('#text').val();
@@ -156,7 +142,6 @@ $(document).ready(function ()
                 text: message
             },
             success: function () {
-                console.log('успешная отправка');
                 $('#text').val('');
                 AddMessageToListMessage(message);
             }
@@ -166,7 +151,6 @@ $(document).ready(function ()
     // Добавление элекмента в дом (сообщение чата).
     function AddMessageToListMessage(text)
     {
-        console.log('добавление сообщения');
         let date = Date();
         let block ='<div class="message-item">'+
             '<div class="message-sender">Вы</div>'+

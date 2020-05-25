@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace EventB.Services
 {
+    // По сути не нужен , тк реализация есть в Identity/
     public class UserFindService : IUserFindService
     {
         readonly Context context;
