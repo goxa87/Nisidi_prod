@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventB", "EventB\EventB.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBLib", "EventBLib\EventBLib.csproj", "{BBB898DF-45C1-453A-9F49-7E09D2EC55BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBTests", "EventBTests\EventBTests.csproj", "{5F6733A7-4F92-4563-BDB8-B370852FB568}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBTests", "EventBTests\EventBTests.csproj", "{5F6733A7-4F92-4563-BDB8-B370852FB568}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authorization;
+using EventB.Services.SenderServices;
 
 namespace EventB.Controllers
 {
@@ -173,6 +174,81 @@ namespace EventB.Controllers
                 ModelState.AddModelError("", "Что-то пошло не так.");
                 return View(model);
             }            
+        }
+
+        /// <summary>
+        /// Начало восстановления пароля.
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult PasswordRecovery() => View();
+        /// <summary>
+        /// Начало восстановления пароля ввод почты.
+        /// </summary>
+        /// <param name="email">почта - логин для восстановления.</param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> PasswordRecovery(string email) 
+        {
+            if(string.IsNullOrWhiteSpace(email))
+            {
+                ModelState.AddModelError("", "Не указан адрес электронной почты");
+            }
+            var user = await userManager.FindByNameAsync(email);
+            if(user==null || !(await userManager.IsEmailConfirmedAsync(user)))
+                return View("PasswordRecoveryConfirm");
+
+            var code = await userManager.GeneratePasswordResetTokenAsync(user);
+            var url = Url.Action("PasswordRecoveryPage", "Account", new {userId= user.Id, code = code }, HttpContext.Request.Scheme);
+            MailSender mailSender = new MailSender();
+            await mailSender.SendEmailAsync(email, "Восстановление пароля", $"<a href={url}>Нажмите для восстановления</a>");
+            return View("PasswordRecoveryConfirm");
+        }
+        /// <summary>
+        /// Страница с вводом нового пароля.
+        /// </summary>
+        /// <param name="userId">id пользователя.</param>
+        /// <param name="code">сгенерированный токен для восстановления.</param>
+        /// <returns></returns>
+        public async Task<IActionResult> PasswordRecoveryPage(string userId, string code)
+        {
+            if(code!= null)
+                return View(new PasswordRecoveryVM { UserId = userId, Token = code });
+            else
+                return BadRequest();
+        }
+        /// <summary>
+        /// Восстановление пароля. 
+        /// </summary>
+        /// <param name="model"> одель с паролями и токеном и id пользоватеял лоя восстановления</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> PasswordRecoveryPage(PasswordRecoveryVM model)
+        {
+            if(ModelState.IsValid)
+            {
+                var user = await userManager.FindByIdAsync(model.UserId);
+                // Возвращаем сюда чтоб не дать информаци злоумышленнику о том что именно не сработало.
+                if (user == null) return View("PasswordRecoveryConfirm");
+
+                var changeResult = await userManager.ResetPasswordAsync(user, model.Token, model.Password);
+                if(changeResult.Succeeded)
+                {
+                    return View("PasswordRecoveryConfirmed");
+                }
+                else
+                {
+                    foreach(var err in changeResult.Errors)
+                    {
+                        ModelState.AddModelError("", err.Description);
+                    }
+                    return View(model);
+                }
+            }
+            else
+            {
+                return View(model);
+            }
         }
     }
 }

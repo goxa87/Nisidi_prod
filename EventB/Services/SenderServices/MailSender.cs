@@ -23,15 +23,14 @@ namespace EventB.Services.SenderServices
             emailMessage.From.Add(new MailboxAddress("EventBuilder", "goxa87878787@yandex.ru"));
             emailMessage.To.Add(new MailboxAddress(email));
             emailMessage.Subject = target;
-            emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Plain)
+            emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
                 Text = message
             };
 
             using (var client = new SmtpClient())
             {
-                await client.ConnectAsync("smtp.yandex.ru", 25, false);
-                await client.AuthenticateAsync("goxa87878787", "987Ijn++");
+                await client.ConnectAsync("127.0.0.1", 25, false);
                 await client.SendAsync(emailMessage);
                 await client.DisconnectAsync(true);
             }
