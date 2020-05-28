@@ -13,6 +13,7 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authorization;
 using EventB.Services.SenderServices;
+using System.Diagnostics;
 
 namespace EventB.Controllers
 {
@@ -50,6 +51,10 @@ namespace EventB.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = await (userManager.FindByEmailAsync(model.LoginProp));
+                if (!await userManager.IsEmailConfirmedAsync(user))
+                    return View("ConfirmEmail", model.LoginProp);
+
                 var loginResult = await signInManager.PasswordSignInAsync(model.LoginProp, model.Password, false, false);
 
                 if (loginResult.Succeeded)
@@ -112,9 +117,13 @@ namespace EventB.Controllers
                     }
                     context.Users.Update(user);
                     await context.SaveChangesAsync();
+
+                    await SendEmailConfirmationAsync(model.Email);
+                    return View("ConfirmEmail", model.Email);
+
                     // надо както его прилепить к пользователю
-                    await signInManager.SignInAsync(user, false);
-                    return RedirectToAction("Start", "Events");
+                    // await signInManager.SignInAsync(user, false);
+                    //return RedirectToAction("Start", "Events");
                 }
                 else//иначе
                 {
@@ -127,6 +136,58 @@ namespace EventB.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Отправляет сообщение с подтверждением пароля на почту.
+        /// </summary>
+        /// <param name="email">Email к которому привязан аккаунт.</param>
+        /// <returns></returns>
+        [NonAction]
+        public async Task SendEmailConfirmationAsync(string email)
+        {
+            var user = await userManager.FindByEmailAsync(email);
+            var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            var url = Url.Action("FinishConfirmEmail", "Account", new { token = token, userId = user.Id }, HttpContext.Request.Scheme);
+            string message = $"<p>Внимаение! Этот адрес был указан при регистрации на сайте EventBuilder.ru. </p>" +
+                $"<p>Для подтвердения сдреса перейдите по ссылке нажав <a href=\"{url}\">ЗДЕСЬ</a>.</p>" +
+                $"<p>Это письмо создано автоматически, пожалуйста не отвечайте на него.</p>" +
+                $"<p>Если вы не регистрировались на сайте, то просто проигнорируйте это сообщение.</p>";
+
+            var mailSender = new MailSender();
+
+            await mailSender.SendEmailAsync(email, "Подтверждение электронной почты на сайте EventBuilder.", message);
+        }
+        /// <summary>
+        /// Повторная отправка подтверждения почты.
+        /// </summary>
+        /// <param name="email">email на который зарегестрирован аккаунт.</param>
+        /// <returns></returns>
+        public async Task<IActionResult> RepeatEmailConfirmMessage(string email)
+        {
+            if(string.IsNullOrWhiteSpace(email))
+                return View("ConfirmEmail", email);
+
+            await SendEmailConfirmationAsync(email);
+
+            return View("ConfirmEmail", email);
+        }
+        /// <summary>
+        /// ФИнальное подтверждение почты. 
+        /// </summary>
+        /// <param name="token">тоен подтверждения</param>
+        /// <param name="userId">id пользователя, которого подтверждать</param>
+        /// <returns></returns>
+        public async Task<IActionResult> FinishConfirmEmail(string token,string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            var rezult = await userManager.ConfirmEmailAsync(user, token);
+            Debug.WriteLine("regisration email confirm errors:", rezult.Errors);
+            return RedirectToAction("Login");
+        }
+
+        /// <summary>
+        /// Разлогин.
+        /// </summary>
+        /// <returns></returns>
         public async Task<ActionResult> Exit()
         {
             await signInManager.SignOutAsync();
