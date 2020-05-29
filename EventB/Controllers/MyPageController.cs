@@ -190,6 +190,7 @@ namespace EventB.Controllers
                 if (model.Name != model.OldName)
                 {
                     user.Name = model.Name;
+                    user.NormalizedName = model.Name.ToUpper();
                     inFriends = inFriends != null ? inFriends : await context.Friends.Where(e => e.UserId == user.Id).ToListAsync();
                     foreach (var e in inFriends)
                     {
@@ -214,13 +215,14 @@ namespace EventB.Controllers
                 {
                     var oldTegsDb = context.Intereses.Where(e => e.UserId == user.Id);
                     context.Intereses.RemoveRange(oldTegsDb);
-                    var newTegs = tegSplitter.GetEnumerable(model.Tegs)
+                    var newTegs = tegSplitter.GetEnumerable(model.Tegs.ToUpper())
                         .Select(e => new Interes { Value = e })
                         .ToList();
                     user.Intereses = newTegs;
                 }
                 // Прочие изменения.
                 user.City = model.City;
+                user.NormalizedCity = model.City.ToUpper();
                 user.Description = model.Description;
                 user.AnonMessages = model.AlowAnonMessages;
                 user.Visibility = model.Visibility;

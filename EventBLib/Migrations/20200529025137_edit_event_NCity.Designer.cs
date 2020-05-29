@@ -4,14 +4,16 @@ using EventBLib.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EventBLib.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20200529025137_edit_event_NCity")]
+    partial class edit_event_NCity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,7 +74,7 @@ namespace EventBLib.Migrations
                     b.Property<string>("NormalizedCity")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("NormalizedTitle")
+                    b.Property<string>("NormalizedName")
                         .HasColumnType("nvarchar(300)")
                         .HasMaxLength(300);
 

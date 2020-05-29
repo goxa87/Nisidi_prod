@@ -77,17 +77,17 @@ namespace EventB.Controllers
             // город
             if (!string.IsNullOrWhiteSpace(city))
             {
-                city = city.Trim();
-                users = context.Users.Where(e => e.City == city).ToList();
+                city = city.Trim().ToUpper();
+                users = context.Users.Where(e => e.NormalizedCity == city).ToList();
             }
             else
             {
-                users = context.Users.Where(e => e.City == curUser.City).ToList();
+                users = context.Users.Where(e => e.NormalizedCity == curUser.City).ToList();
             }
             // тег
             if (!string.IsNullOrWhiteSpace(teg))
             {
-                var arr = tegSplitter.GetEnumerable(teg).ToArray();
+                var arr = tegSplitter.GetEnumerable(teg.ToUpper()).ToArray();
 
                 var usersWith = context.Intereses.Include(e => e.User).Where(e => e.Value == teg).Select(e => e.User).ToList();
                 users = users.Intersect(usersWith);
@@ -96,7 +96,8 @@ namespace EventB.Controllers
             var usersRez = users;
             if (!string.IsNullOrWhiteSpace(name))
             {
-                usersRez = usersRez.Where(e => e.Name.Contains(name)).ToList();
+                name = name.ToUpper();
+                usersRez = usersRez.Where(e => e.NormalizedName.Contains(name)).ToList();
             }
             // Друзья пользователя.
             var isFriendFromSelect = usersRez.Join(curUser.Friends, rez => rez.Id, fr => fr.FriendUserId, (rez, fr) => rez).ToList();

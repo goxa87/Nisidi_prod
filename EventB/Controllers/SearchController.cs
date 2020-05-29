@@ -49,9 +49,9 @@ namespace EventB.Controllers
             CostomSelectionArgs args = new CostomSelectionArgs {
                 DateSince = model.DateStart,
                 DateDue = model.DateEnd,
-                Title = model.Title,
-                City = model.Сity,
-                Tegs = model.Tegs
+                Title = model.Title.ToUpper(),
+                City = model.Сity.ToUpper(),
+                Tegs = model.Tegs.ToUpper()
             };
 
             var list = await eventSelector.GetCostomEventsAsync(args);

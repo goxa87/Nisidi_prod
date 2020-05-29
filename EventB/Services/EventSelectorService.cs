@@ -45,10 +45,10 @@ namespace EventB.Services
                 Where(e => e.Date > dateStart && e.Date < dateEnd && e.Type == EventType.Private);
             // город
             if (!string.IsNullOrWhiteSpace(args.City))
-                selection = selection.Where(e => e.City.ToLower() == args.City.ToLower());
+                selection = selection.Where(e => e.NormalizedCity == args.City);
             // заголовок
             if (!string.IsNullOrWhiteSpace(args.Title))
-                selection = selection.Where(e => e.Title.ToLower() == args.Title.ToLower());
+                selection = selection.Where(e => e.NormalizedTitle == args.Title);
 
             var selectionLocal = selection;
             // теги

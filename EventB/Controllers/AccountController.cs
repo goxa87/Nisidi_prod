@@ -106,7 +106,7 @@ namespace EventB.Controllers
                 if (createResult.Succeeded)
                 {
                     var interests = new List<Interes>();
-                    var splitted = tegSplitter.GetEnumerable(model.Tegs);
+                    var splitted = tegSplitter.GetEnumerable(model.Tegs.ToUpper());
                     if (splitted != null)
                     {
                         foreach (var inter in splitted)

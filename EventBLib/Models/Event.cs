@@ -61,7 +61,7 @@ namespace EventBLib.Models
         /// Нормлизованный заголовок.
         /// </summary>
         [StringLength(300)]
-        public string NormalizedName { get; set; }
+        public string NormalizedTitle { get; set; }
 
         /// <summary>
         /// Ключи для поиска.
@@ -100,6 +100,10 @@ namespace EventBLib.Models
         /// Город проведения.
         /// </summary>
         public string City { get; set; }
+        /// <summary>
+        /// Нормализованный город.
+        /// </summary>
+        public string NormalizedCity { get; set; }
         /// <summary>
         /// Мето проведения.
         /// </summary>

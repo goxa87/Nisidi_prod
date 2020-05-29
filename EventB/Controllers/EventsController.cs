@@ -176,7 +176,7 @@ namespace EventB.Controllers
 
                 var vizits = new List<Vizit> { vizit };
 
-                var tegs = tegSplitter.GetEnumerable(model.Tegs).ToList();
+                var tegs = tegSplitter.GetEnumerable(model.Tegs.ToUpper()).ToList();
                 List<EventTeg> eventTegs = new List<EventTeg>();
                 foreach (var teg in tegs)
                 {
@@ -210,9 +210,11 @@ namespace EventB.Controllers
                 var eve = new Event
                 {
                     Title = model.Title,
+                    NormalizedTitle = model.Title.ToUpper(),
                     Body = model.Body,
                     EventTegs = eventTegs,
                     City = model.City,
+                    NormalizedCity = model.City.ToUpper(),
                     Place = model.Place,
                     Date = model.Date,
                     Type = EventType.Private,
@@ -494,7 +496,11 @@ namespace EventB.Controllers
         #endregion
 
         #region Форма приглашений на событие
-
+        /// <summary>
+        /// Возвращает список друзей которых можно пригласить.
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
         public async Task<List<InviteOutVM>> GetFriendslist(int eventId)
         {
             var curUser = await context.Users.
@@ -637,19 +643,20 @@ namespace EventB.Controllers
                 // При внесении изменений в теги.
                 if (model.Tegs != eve.Tegs)
                 {
-                    var tegs = tegSplitter.GetEnumerable(model.Tegs).ToList();
+                    var tegs = tegSplitter.GetEnumerable(model.Tegs.ToUpper()).ToList();
                     List<EventTeg> eventTegs = new List<EventTeg>();
                     foreach (var teg in tegs)
                     {
                         eventTegs.Add(new EventTeg { Teg = teg });
                     }
                     eve.EventTegs = eventTegs;
-                    chatMessage += $"<p>{model.OldTegs}</p><p>{model.Tegs}</p><br>";
+                    chatMessage += $"<p>Новые теги</p><p>{model.Tegs}</p><br>";
                 }
                 // При внесении изменений в назавание.
                 if(model.Title != model.OldTitle)
                 {
                     eve.Title = model.Title;
+                    eve.NormalizedTitle = model.Title.ToUpper();
                     foreach (var e in eve.Chat.UserChat)
                     {
                         e.ChatName = eve.TitleShort;
@@ -658,9 +665,9 @@ namespace EventB.Controllers
                     foreach (var e in vizits)
                     {
                         e.EventTitle = eve.TitleShort;
-                    }
+                    }                    
                     context.Vizits.UpdateRange(vizits);
-                    chatMessage += $"<p>Было: {model.OldTitle}</p><p>Стало: {model.Title}</p><br>";
+                    chatMessage += $"<p>Новое название</p><p>{model.Title}</p><br>";
                 }
                 if (model.Body != model.OldBody)
                 {
@@ -670,17 +677,18 @@ namespace EventB.Controllers
                 if (model.Place != model.OldPlace)
                 {
                     eve.Place = model.OldPlace;
-                    chatMessage += $"<p>Было: {model.OldPlace}</p><p>Стало: {model.Place}</p><br>";
+                    chatMessage += $"<p>Новое место</p><p>{model.Place}</p><br>";
                 }
                 if (model.City != model.OldCity)
                 {
                     eve.City = model.OldCity;
-                    chatMessage += $"<p>Было: {model.OldCity}</p><p>Стало: {model.City}</p><br>";
+                    eve.NormalizedCity = model.City.ToUpper();
+                    chatMessage += $"<p>Новый город</p><p>Стало: {model.City}</p><br>";
                 }
                 if (model.Date != model.OldDate)
                 {
                     eve.Date = model.Date;
-                    chatMessage += $"<p>Было: {model.OldDate.ToString("dd.MM.yy hh:mm")}</p><p>Стало: {model.Date.ToString("dd.MM.yy hh:mm")}</p><br>";
+                    chatMessage += $"<p>новое дремя</p><p>Стало: {model.Date.ToString("dd.MM.yy hh:mm")}</p><br>";
                 }
                 var user = await userManager.GetUserAsync(User);
                 eve.Chat.Messages.Add(new Message
