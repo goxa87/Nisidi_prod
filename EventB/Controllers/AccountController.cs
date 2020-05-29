@@ -148,7 +148,7 @@ namespace EventB.Controllers
             var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
             var url = Url.Action("FinishConfirmEmail", "Account", new { token = token, userId = user.Id }, HttpContext.Request.Scheme);
             string message = $"<p>Внимаение! Этот адрес был указан при регистрации на сайте EventBuilder.ru. </p>" +
-                $"<p>Для подтвердения сдреса перейдите по ссылке нажав <a href=\"{url}\">ЗДЕСЬ</a>.</p>" +
+                $"<p>Для подтвердения адреса перейдите по ссылке нажав <a href=\"{url}\">ЗДЕСЬ</a>.</p>" +
                 $"<p>Это письмо создано автоматически, пожалуйста не отвечайте на него.</p>" +
                 $"<p>Если вы не регистрировались на сайте, то просто проигнорируйте это сообщение.</p>";
 

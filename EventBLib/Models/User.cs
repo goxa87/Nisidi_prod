@@ -20,12 +20,20 @@ namespace EventBLib.Models
         /// Псевдоним пользователя в системе.
         /// </summary>
         public string Name { get; set; }
-
+        /// <summary>
+        /// Нормализованное имя.
+        /// </summary>
+        public string NormalizedName { get; set; }
         /// <summary>
         /// Город привязки пользователя. 
         /// </summary>
         [MaxLength(50)]
         public string City { get; set; }
+        /// <summary>
+        /// Нормализованный город.
+        /// </summary>
+        [MaxLength(50)]
+        public string NormalizedCity { get; set; }
         /// <summary>
         /// Адрес фотографии.
         /// </summary>
@@ -44,6 +52,12 @@ namespace EventBLib.Models
         /// </summary>
         [MaxLength(1000, ErrorMessage ="Длинна этого поля не более 1000 символов")]
         public string Description { get; set; }
+
+        /// <summary>
+        /// Блокировка пользователя.
+        /// </summary>
+        public bool IsBlockedUser { get; set; }
+        
         /// <summary>
         /// Мои события
         /// </summary>

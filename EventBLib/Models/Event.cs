@@ -57,6 +57,11 @@ namespace EventBLib.Models
                     return Title;
             }
         }
+        /// <summary>
+        /// Нормлизованный заголовок.
+        /// </summary>
+        [StringLength(300)]
+        public string NormalizedName { get; set; }
 
         /// <summary>
         /// Ключи для поиска.
@@ -67,7 +72,7 @@ namespace EventBLib.Models
         /// </summary>
         public string Tegs
         {
-            // Склеивает теги в 1 строку.
+            // Склеивает теги в 1 строку. незабывать что нужно загружать теги чтоб это работало.
             get 
             {
                 if (EventTegs == null || EventTegs.Count == 0)
@@ -135,6 +140,14 @@ namespace EventBLib.Models
         /// Количество отметок пойду.
         /// </summary>
         public int WillGo { get; set; }
+        /// <summary>
+        /// Возрастные ограничения.
+        /// </summary>
+        public int AgeRestrictions { get; set; }
+        /// <summary>
+        /// Контактный телефон к событию.
+        /// </summary>
+        public string Phone { get; set; }        
 
         /// <summary>
         /// Список пользователей с отметкой пойду.
