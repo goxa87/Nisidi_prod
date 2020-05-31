@@ -73,14 +73,15 @@ input[type="checkbox"].input-validation-error {
 }
 
 /*>********************************** главное меню _Layout*/
-.main-menu-container{
-    background-color:#e4dcc5;
-    border-bottom:2px solid #1b5972;
+.main-menu-container {
+    border-bottom: 2px solid #1b5972;
+    background-color: #e4dcc5;
 }
 .float-menu {
     position: fixed;
     top: 0;
     max-width: 1140px;
+    width:100%;
     margin: 0 auto;
 }
 
@@ -118,45 +119,10 @@ input[type="checkbox"].input-validation-error {
             box-sizing: border-box;
         }
 
-ul li a span {
-    position: absolute;
-    width: 25%;
-    height: 100%;
-    background-color: #1b5972;
-    z-index: -1;
-    transform-origin: top;
-    transform: scaleY(0);
-    transition: transform .5s;
-}
-
 #main-menu-li li a:hover {
     color: #ffcd00;
+    background-color: #1b5972;
     text-decoration: none;
-}
-
-ul li a:hover span {
-    transform-origin: bottom;
-    transform: scaleY(1);
-}
-
-ul li a span:nth-child(1) {
-    left: 0;
-    transition-delay: 0s;
-}
-
-ul li a span:nth-child(2) {
-    left: 25%;
-    transition-delay: 0.15s;
-}
-
-ul li a span:nth-child(3) {
-    left: 50%;
-    transition-delay: 0.3s;
-}
-
-ul li a span:nth-child(4) {
-    left: 75%;
-    transition-delay: 0.45s;
 }
 
 .the-container {
