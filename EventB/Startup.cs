@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using EventBLib.DataContext;
+using EventBLib.MarketingDataContext;
 using EventB.Services;
 using EventBLib.Models;
 
@@ -31,6 +32,7 @@ namespace EventB
             services.AddControllersWithViews();
 
             services.AddDbContext<Context>();
+            services.AddDbContext<MarketingContext>();
             //services.AddScoped<IDataProvider, DbData>();
 
             services.AddIdentity<User, IdentityRole>(
