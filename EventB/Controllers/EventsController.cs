@@ -70,7 +70,7 @@ namespace EventB.Controllers
                         City = user.City,
                         Tegs = tegsStr,                
                         Skip=0,
-                        Take=3
+                        Take=12
                     };
                 var rezult = await eventSelector.GetCostomEventsAsync(args);
                 // Пропускаем то что уж нашли.
@@ -92,7 +92,7 @@ namespace EventB.Controllers
                     City = "МОСКВА",
                     Tegs = "",
                     Skip = 0,
-                    Take = 3
+                    Take = 12
                 };
                 var rezult = await eventSelector.GetCostomEventsAsync(args);
                 // Пропускаем то что уж нашли.
@@ -115,7 +115,7 @@ namespace EventB.Controllers
         public async Task<IActionResult> LoadDynamic(CostomSelectionArgs args) 
         {
             var rezult = await eventSelector.GetCostomEventsAsync(args);
-            return PartialView("_eventList", rezult);
+            return PartialView("_eventListPartial", rezult);
         }
 
         public async Task<IActionResult> SearchEventlist(CostomSelectionArgs args)
