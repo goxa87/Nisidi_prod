@@ -14,6 +14,14 @@ namespace EventBLib.Models.MarketingModels
         /// </summary>
         public int MarkListCardId { get; set; }
         /// <summary>
+        /// Внешний ключ привязки к кабинету.
+        /// </summary>
+        public int MarketKibnetId { get; set; }
+        /// <summary>
+        /// Свойство связи с рекламным кабинетом.
+        /// </summary>
+        public MarketKibnet MarketKibnet { get; set; }
+        /// <summary>
         /// Id пользователя, котороый выложил это объявление.
         /// </summary>
         public string UserId { get; set; }

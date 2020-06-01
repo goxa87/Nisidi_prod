@@ -1,4 +1,4 @@
-﻿
+﻿@model EventB.ViewModels.MarketRoom.MarketRoomVM
 @{
     ViewData["Title"] = "MarketRoom";
     ViewData["Style"] = "MarketRoom.css";
@@ -6,12 +6,53 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@model EventBLib.Models.MarketingModels.MarkListCard
+<div class="top-page-header">ваш личный кабинет</div>
 
-<p>@Model.AHref</p>
-<p>@Model.City</p>
-<p>@Model.CreationDate</p>
-<p>@Model.ImageLink</p>
-<p>@Model.IsPayed</p>
-<p>@Model.ShawnQuantity</p>
+<div class="market-frame">
+    <div class="left-column">
+        <div class="menu-block">
+            <div>Ваша активность:</div>
+            <div>События</div>
+            <div>Карточки</div>
+            <div>Баннеры</div>
+        </div>
+    </div>
+    <div class="right-columnn">
+        <div class="unit-header">Собятия:</div>
+        <p class="info-p">Всего: </p>
+        <p class="info-p">Активных: </p>
+        <p class="info-p">Публичных: </p>
+
+        @if (Model.Events.Count > 0)
+        {
+            foreach (var ev in Model.Events)
+            {
+                <div class="lk-event flex-hsbs">
+                    <div>
+
+                    </div>
+                    <div>
+                        <div class="form-submit">Изменить</div>
+                        <div class="form-submit">Сменить статус</div>
+                        <div class="form-submit">Удалить</div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="info-p">Пока событий нет.</p>
+        }
+        <hr>
+        <div class="unit-header">Карточки:</div>
+        <p class="info-p">Всего: </p>
+        <p class="info-p">Активных: </p>
+        <hr>
+        <div class="unit-header">Баннеры:</div>
+        <p class="info-p">Всего: </p>
+        <p class="info-p">Активных: </p>
+
+    </div>
+</div>
+
 
