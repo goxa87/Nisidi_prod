@@ -688,7 +688,7 @@ namespace EventB.Controllers
                 if (model.Date != model.OldDate)
                 {
                     eve.Date = model.Date;
-                    chatMessage += $"<p>новое дремя</p><p>Стало: {model.Date.ToString("dd.MM.yy hh:mm")}</p><br>";
+                    chatMessage += $"<p>новое время</p><p>Стало: {model.Date.ToString("dd.MM.yy hh:mm")}</p><br>";
                 }
                 var user = await userManager.GetUserAsync(User);
                 eve.Chat.Messages.Add(new Message
