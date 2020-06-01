@@ -704,6 +704,24 @@ namespace EventB.Controllers
                 return Redirect($"/Events/Details/{eve.EventId}");
             }        
         }
+        [Authorize]
+        public async Task<IActionResult> DeleteEvent(int eventId)
+        {
+            var user = await userManager.FindByNameAsync(User.Identity.Name);
+            var eve = await context.Events.Include(e => e.Chat).ThenInclude(e => e.UserChat)
+                .Include(e => e.Chat).ThenInclude(e => e.Messages)
+                .Include(e => e.EventTegs)
+                .Include(e => e.Vizits).FirstOrDefaultAsync(e => e.EventId == eventId);
+
+            if(user.Id != eve.UserId)
+            {
+                return BadRequest();
+            }
+
+            context.Remove(eve);
+            await context.SaveChangesAsync();
+            return RedirectToAction("Index", "MyPage");
+        }
         #endregion
     }
 }

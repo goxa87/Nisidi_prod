@@ -58,7 +58,9 @@ else
 
     <input type="hidden" asp-for="EventId">
 
-    <input class="form-submit" type="submit" value="Сохранить" />
+    <input class="form-submit" type="submit" value="Сохранить" /><hr>
+    
 </form>
+<input class="red-btn-alert" type="button" asp-action="DeleteEvent" asp-route-eventId="@Model.EventId" value="УДАЛИТЬ!" />
 }
 @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

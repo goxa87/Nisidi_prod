@@ -10,7 +10,7 @@
     });
 
     // Начальная прокрутка до конца чата.
-    let startoffset = $('#vertical-trigger').offset().top + 1000;
+    let startoffset = $('#vertical-trigger').offset().top;
     $('.message-list').scrollTop(startoffset);
     // окраска собщений в цвет отправителя (темнее если отправитель текущий).
     function colored(item) {
@@ -80,13 +80,15 @@
                                         <div class="message-text">${message}</div>
                                         <div class="message-date">${date}</div>
                                      </div >`;
+                $('#vertical-trigger').remove();
                 $('.message-list').append(renderMessage);
-
-                // Прокрутка лучше не придумал.((
+                $('.message-list').append('<div id="vertical-trigger"></div>');
+                // Прокрутка лучше не придумал.(( 
+                // Здесь vertical-trigger находится относительно окна а нужно относительно родителя. исправить
                 var list = $('.message-list');
-                list.scrollTop(10000);
+                console.log($('#vertical-trigger').offset().top + $(list).height())
+                list.scrollTop($('#vertical-trigger').offset().top + $(list).height());
                 $('#message').val('');
-
             }
         });
     };
@@ -139,8 +141,7 @@
             },
             success: function (rezult) {
                 // Рендеринг сообщений.
-                buildMessagesContent(rezult);
-                $('.message-list').append('<div id="vertical-trigger"></div>');
+                buildMessagesContent(rezult);                
                 colorAllItems();
             }
         });
@@ -165,10 +166,11 @@
                     '<div class="message-info display-none">' + value.personId + '</div ></div > ';
             }
         });
-
+        $('#vertical-trigger').remove();
         $('.message-list').html(block);
-        var list = $('.message-list');
-        let offset = $('.vertical-trigger').offset().top = 1000;
+        $('.message-list').append('<div id="vertical-trigger"></div>');
+        var list = $('.message-list'); 
+        let offset = $('#vertical-trigger').offset().top;
         list.scrollTop(offset);
     };
 
@@ -180,9 +182,11 @@
                 '</div><div class="message-text">' + value.text + '</div ><div class="message-date">' + value.postDate + '</div >' +
                 '<div class="message-info display-none">' + value.PersonId + '</div></div > ';
         });
-
+        $('#vertical-trigger').remove();
         $('.message-list').append(block);
-        let offset = $('.vertical-trigger').offset().top = 1000;
+        $('.message-list').append('<div id="vertical-trigger"></div>');
+        var list = $('.message-list');
+        let offset = $('#vertical-trigger').offset().top;
         list.scrollTop(offset);
     };
 
@@ -228,12 +232,11 @@
                 opponentId: opponent_Id
             },
             success: function (rezult) {
-                addBuildMessagesContent(rezult);
+                if (rezult.length != 0) {
+                    addBuildMessagesContent(rezult);
+                }                
             }
         });
-
-
-
     }, 5000);
 
     // отправка запроса на получение количества новых сообщений в чатах в списке.
