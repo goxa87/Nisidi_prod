@@ -74,51 +74,7 @@
     max-height: 80vmin;
     object-fit: contain;
 }
-/*
-.eventitem-vizitors-list {
-    margin-top: 16px;
-    box-sizing: border-box;
-}
 
-.eventitem-vizitors-list {
-    border: 2px solid #1b5972;
-}
-
-.eventitem-vizitors-list-header {
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    padding: 8px;
-    height: 32px;
-    color: #ffcd00;
-    background-color: #1b5972;
-}
-
-.eventitem-vizitors-list-arrow {
-    cursor: pointer;
-}
-
-.eventitem-vizitors-list-body {
-    display: none;
-}
-
-
-.eventitem-vizitors-list-body-flex {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-}
-
-.eventitem-vizitors-list-body-element {
-    border: 1px solid #1b5972;
-    width: 300px;
-    background-color: #e4dcc5;
-    text-align: center;
-    margin: 8px;
-    border-radius: 8px;
-    padding: 4px;
-}
-    */
 /* >****************** добавление записи Event - Add  */
 .page-top-menu {
     display: flex;
@@ -207,6 +163,28 @@
 }
 
 .message-date {
+    color: #f1ead899;
+    font-size: 10px;
+}
+
+.message-item-change {
+    width: 100%;
+    background-color: #1b5972;
+    padding: 8px;
+    margin-bottom: 16px;
+}
+
+.message-sender-change {
+    color: #ffcd00;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.message-text-change {
+    color: #e4dcc5;
+}
+
+.message-date-change {
     color: #f1ead899;
     font-size: 10px;
 }

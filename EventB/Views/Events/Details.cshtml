@@ -63,7 +63,14 @@
 
     <!--Изменения-->
     <div class="bottom-page" id="changes">
-        changes
+        @foreach (var mes in Model.Chat.Messages.Where(e => e.EventState).ToList())
+        {
+            <div class="message-item-change">
+                <div class="message-sender-change">@mes.SenderName</div>
+                <div class="message-text-change">@mes.Text</div>
+                <div class="message-date-change">@mes.PostDate</div>
+            </div>
+        }
     </div>
 
     <!--чат-->
