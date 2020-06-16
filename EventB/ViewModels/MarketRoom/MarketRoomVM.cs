@@ -19,13 +19,10 @@ namespace EventB.ViewModels.MarketRoom
         public List<Event> Events { get; set; }
 
         /// <summary>
-        /// Количество карточек листа.
+        /// Баннеры.
         /// </summary>
-        public int ListCardCount { get; set; }
-        /// <summary>
-        ///  Количество активных карточек листа.
-        /// </summary>
-        public int ListCardActiveCount { get; set; }
+        public List<MarketBanner> Banner { get; set; }
+        
         /// <summary>
         /// Карточки листа.
         /// </summary>

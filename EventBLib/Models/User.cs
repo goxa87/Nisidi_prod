@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using EventBLib.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using EventBLib.Models.MarketingModels;
 
 namespace EventBLib.Models
 {
@@ -59,7 +60,7 @@ namespace EventBLib.Models
         public bool IsBlockedUser { get; set; }
         
         /// <summary>
-        /// Мои события
+        /// Мои события.
         /// </summary>
         public List<Event> MyEvents { get; set; }
         /// <summary>
@@ -82,5 +83,9 @@ namespace EventBLib.Models
         /// Приглашения.
         /// </summary>
         public List<Invite> Invites { get; set; }
+        /// <summary>
+        /// ЛК пользователя.
+        /// </summary>
+        public MarketKibnet MarketKibnet { get; set; }
     }
 }

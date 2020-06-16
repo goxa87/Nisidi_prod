@@ -8,50 +8,75 @@
 
 <div class="top-page-header">ваш личный кабинет</div>
 
-<div class="market-frame">
-    <div class="left-column">
-        <div class="menu-block">
-            <div>Ваша активность:</div>
-            <div>События</div>
-            <div>Карточки</div>
-            <div>Баннеры</div>
+<div class="market-frame flex-hss">
+    <div class="lk-left-column">
+        <div class="lk-menu-block">
+            <div id="lk-kibnet-selector" class="lk-selector selected-selector">Кабинет</div>
+            <div id="lk-event-selector" class="lk-selector">События</div>
+            <div id="lk-cards-selector" class="lk-selector">Карточки</div>
+            <div id="lk-banners-selector" class="lk-selector">Баннеры</div>
         </div>
     </div>
     <div class="right-columnn">
-        <div class="unit-header">Собятия:</div>
-        <p class="info-p">Всего: </p>
-        <p class="info-p">Активных: </p>
-        <p class="info-p">Публичных: </p>
+        <div id="lk-kibnet-page" class="lk-page">
+            <div class="lk-header">СТАТИСТИКА:</div>
+            <div class="info-p">Статус кабинета: @Model.MarketKibnet.MarketState</div>
+            <div class="info-p">Баланс: @Model.MarketKibnet.PaymentAccountBalance</div>
+            <div class="info-p">Общее количество рекламных компаний: @Model.MarketKibnet.TotalMarcetCompanyCount</div>
+        </div>
+        <div id="lk-event-page" class="lk-page display-none">
+            <div class="lk-header">Собятия:</div>
+            <p class="info-p">Всего: @Model.Events.Count()</p>
+            <p class="info-p">Активных: </p>
+            <p class="info-p">Публичных: @Model.Events.Where(e =>e.Type == EventType.Global).Count()</p>
 
-        @if (Model.Events.Count > 0)
-        {
-            foreach (var ev in Model.Events)
+            @if (Model.Events.Count() > 0)
             {
-                <div class="lk-event flex-hsbs">
-                    <div>
-
+                foreach (var ev in Model.Events)
+                {
+                    <div class="lk-event flex-hss">
+                        <div>
+                            @{await Html.RenderPartialAsync("~/Views/Shared/_eventItemPartial.cshtml", ev);}
+                        </div>
+                        <div>
+                            <input class="kibnet-event-id" type="hidden" value="@ev.EventId" />
+                            <div class="form-submit">Статус: @ev.Type</div>
+                            <div class="form-submit">Сменить статус</div>
+                            <a asp-action="EventEdit" asp-controller="Events" asp-route-eventId="@ev.EventId"><div class="form-submit">Редактировать</div></a>
+                            <div class="form-submit">Статистика</div>
+                            <div class="form-submit">Удалить</div>
+                        </div>
                     </div>
-                    <div>
-                        <div class="form-submit">Изменить</div>
-                        <div class="form-submit">Сменить статус</div>
-                        <div class="form-submit">Удалить</div>
-                    </div>
-                </div>
+                }
             }
-        }
-        else
-        {
-            <p class="info-p">Пока событий нет.</p>
-        }
-        <hr>
-        <div class="unit-header">Карточки:</div>
-        <p class="info-p">Всего: </p>
-        <p class="info-p">Активных: </p>
-        <hr>
-        <div class="unit-header">Баннеры:</div>
-        <p class="info-p">Всего: </p>
-        <p class="info-p">Активных: </p>
+            else
+            {
+                <p class="info-p">Пока событий нет.</p>
+            }
+        </div>
+        
+        <div id="lk-cards-page" class="lk-page display-none">
+            <div class="lk-header">Карточки:</div>
+            <div class="info-p">Всего: </div>
+            <div class="info-p">Активных: </div>
+            @if(Model.ListCards == null || Model.ListCards.Count() == 0)
+            {
+                <div class="info-p">Карточек пока нет.</div>
+            }
+            else
+            {
+                foreach(var e in Model.ListCards)
+                {
+                    <div>@e.AHref</div>
+                }
+            }
 
+        </div>
+        <div id="lk-banners-page" class="lk-page display-none">
+            <div class="lk-header">Баннеры:</div>
+            <div class="info-p">Всего: </div>
+            <div class="info-p">Активных: </div>
+        </div>
     </div>
 </div>
 

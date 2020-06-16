@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Authorization;
 using EventB.Services.SenderServices;
 using System.Diagnostics;
+using EventBLib.Models.MarketingModels;
 
 namespace EventB.Controllers
 {
@@ -115,6 +116,7 @@ namespace EventB.Controllers
                         }                    
                         user.Intereses = interests;
                     }
+                    user.MarketKibnet = new MarketKibnet { MarketState = MarketState.common, PaymentAccountBalance = 0 , TotalMarcetCompanyCount =0};
                     context.Users.Update(user);
                     await context.SaveChangesAsync();
 

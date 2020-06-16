@@ -2,25 +2,36 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EventBLib.MarketingDataContext;
+using EventB.ViewModels.MarketRoom;
+using EventBLib.DataContext;
+using EventBLib.Models.MarketingModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EventB.Controllers
 {
     public class MarketRoomController : Controller
     {
-        readonly MarketingContext marketingContext;
+        readonly Context context;
 
-        public MarketRoomController(MarketingContext _marketingContext)
+        public MarketRoomController(Context _Context)
         {
-            marketingContext = _marketingContext;
+            context = _Context;
         }
 
-        public IActionResult MarketRoom()
+        public async Task<IActionResult> MarketRoom()
         {
-            var rez = marketingContext.MarkListCards.First();
+            var user = await context.Users.Include(e=>e.MarketKibnet).Include(e=>e.MyEvents)
+                .FirstOrDefaultAsync(e=>e.UserName == HttpContext.User.Identity.Name);
 
-            return View(rez);
+            var kibnet = await context.MarketKibnets.FirstOrDefaultAsync(e => e.UserId == user.Id);
+            var model = new MarketRoomVM { 
+                MarketKibnet = kibnet,
+                Events = user.MyEvents,
+                Banner = new List<MarketBanner>() 
+            };
+
+            return View(model);
         }
     }
 }

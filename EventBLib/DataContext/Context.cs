@@ -1,4 +1,5 @@
 ﻿using EventBLib.Models;
+using EventBLib.Models.MarketingModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -51,6 +52,14 @@ namespace EventBLib.DataContext
         /// Приглашения на события.
         /// </summary>
         public DbSet<Invite> Invites { get; set; }
+        /// <summary>
+        /// Личный кабиент пользователя.
+        /// </summary>
+        public DbSet<MarketKibnet> MarketKibnets { get; set; }
+        /// <summary>
+        /// Рекламные карточки (пока не добавляем в проект . нет бизнес схемы.)
+        /// </summary>
+        public DbSet<MarkListCard> MarkListCards { get; set; }
 
         #region FluentApi Commented
         //protected override void OnModelCreating(ModelBuilder builder)

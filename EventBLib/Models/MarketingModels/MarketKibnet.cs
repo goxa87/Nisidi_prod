@@ -38,14 +38,5 @@ namespace EventBLib.Models.MarketingModels
         /// Статус рекламного кабинета.
         /// </summary>
         public MarketState MarketState { get; set; }
-
-        /// <summary>
-        /// Карточки списков.
-        /// </summary>
-        public List<MarkListCard> MarkListCards { get; set; }
-        /// <summary>
-        /// События созданне пользователем.
-        /// </summary>
-        public List<Event> Events { get; set; }
     }
 }

@@ -421,6 +421,12 @@ figure img {
     align-items: center;
 }
 
+.flex-hss {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+}
+
 .flex-vss {
     display: flex;
     flex-direction:column;
