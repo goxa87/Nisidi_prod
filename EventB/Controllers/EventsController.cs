@@ -74,7 +74,7 @@ namespace EventB.Controllers
                     };
                 var rezult = await eventSelector.GetCostomEventsAsync(args);
                 // Пропускаем то что уж нашли.
-                args.Skip = args.Take;
+                args.Skip += args.Take;
                 var VM = new EventListVM
                 {
                     events = rezult,
@@ -96,7 +96,7 @@ namespace EventB.Controllers
                 };
                 var rezult = await eventSelector.GetCostomEventsAsync(args);
                 // Пропускаем то что уж нашли.
-                args.Skip = args.Take; 
+                args.Skip += args.Take; 
                 var VM = new EventListVM
                 {
                     events = rezult,
@@ -126,7 +126,7 @@ namespace EventB.Controllers
             args.Tegs = args.Tegs ?? "";
             var rezult = await eventSelector.GetCostomEventsAsync(args);
             // Пропускаем то что уж нашли.
-            args.Skip = args.Take;
+            args.Skip += args.Take;
             var VM = new EventListVM
             {
                 events = rezult,

@@ -90,7 +90,7 @@ namespace EventBLib.DataContext
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
             builder.UseSqlServer(
-                @"Server=georgiy-пк\sqlexpress;DataBase=EB1;Trusted_Connection=True;"
+                @"Server=.\sqlexpress;DataBase=EB1;Trusted_Connection=True;"
                 );
         }
 

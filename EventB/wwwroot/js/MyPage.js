@@ -48,7 +48,8 @@
             },
             success: function () {
                 $(this).parents('.total-invite').fadeOut(600);
-            }
+            },
+            error: data => { console.log(data);}
         });
     });
 
@@ -64,7 +65,8 @@
             },
             success: function () {
                 $(this).parents('.total-invite').fadeOut(600);
-            }
+            },
+            error: data => { console.log(data); }
         });
     });
 });
