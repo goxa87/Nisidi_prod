@@ -87,10 +87,12 @@ namespace EventB.Controllers
                     UserName = model.Email,
                     Name = model.Name,
                     City = model.City,
+                    NormalizedName = model.Name.ToUpper(),
+                    NormalizedCity = model.City.ToUpper(),
                     Description = model.Description
                 };
-                // Соххранение фотографии.
-                string photoPath = "/images/Profileimages/17032020me1.jpg";
+                // Сохранение фотографии.
+                string photoPath = "/images/Profileimages/defaultimg.jpg";
                 if (model.Photo != null)
                 {
                     photoPath = string.Concat("/images/Profileimages/",DateTime.Now.ToString("dd_MM_yy_mm_ss"), model.Photo.FileName).Replace(" ","");
@@ -107,12 +109,12 @@ namespace EventB.Controllers
                 if (createResult.Succeeded)
                 {
                     var interests = new List<Interes>();
-                    var splitted = tegSplitter.GetEnumerable(model.Tegs.ToUpper());
+                    var splitted = tegSplitter.GetEnumerable(model.Tegs);
                     if (splitted != null)
                     {
                         foreach (var inter in splitted)
                         {
-                            interests.Add(new Interes { Value = inter.ToLower() });
+                            interests.Add(new Interes { Value = inter });
                         }                    
                         user.Intereses = interests;
                     }

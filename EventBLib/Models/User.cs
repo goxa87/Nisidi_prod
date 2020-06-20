@@ -22,7 +22,7 @@ namespace EventBLib.Models
         /// </summary>
         public string Name { get; set; }
         /// <summary>
-        /// Нормализованное имя.
+        /// Нормализованное имя (Верхний регистр).
         /// </summary>
         public string NormalizedName { get; set; }
         /// <summary>

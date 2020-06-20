@@ -78,11 +78,11 @@ namespace EventB.Controllers
             if (!string.IsNullOrWhiteSpace(city))
             {
                 city = city.Trim().ToUpper();
-                users = context.Users.Where(e => e.NormalizedCity == city).ToList();
+                users = context.Users.Where(e => e.NormalizedCity == city.ToUpper()).ToList();
             }
             else
             {
-                users = context.Users.Where(e => e.NormalizedCity == curUser.City).ToList();
+                users = context.Users.Where(e => e.NormalizedCity == curUser.NormalizedCity).ToList();
             }
             // тег
             if (!string.IsNullOrWhiteSpace(teg))
@@ -102,7 +102,7 @@ namespace EventB.Controllers
             // Друзья пользователя.
             var isFriendFromSelect = usersRez.Join(curUser.Friends, rez => rez.Id, fr => fr.FriendUserId, (rez, fr) => rez).ToList();
             isFriendFromSelect.Add(curUser);
-            // Вычесть друзей пользователя.
+            // Вычесть друзей пользователя и себя.
             usersRez = usersRez.Except(isFriendFromSelect).ToList();
 
             return View(usersRez);

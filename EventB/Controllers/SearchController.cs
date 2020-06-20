@@ -38,7 +38,7 @@ namespace EventB.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Search(EventSearchViewModel model, int Skip = 0, int Take = 3)
+        public async Task<IActionResult> Search(EventSearchViewModel model, int Skip = 0, int Take = 12)
         {
             // Добавить чтоб не было инъекций замены символов.
             // Узнать паттерны инъекций
