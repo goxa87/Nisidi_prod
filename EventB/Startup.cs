@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using EventBLib.DataContext;
 using EventB.Services;
 using EventBLib.Models;
+using EventB.Services.MarketKibnetApiServices;
 
 namespace EventB
 {
@@ -66,6 +67,7 @@ namespace EventB
             services.AddTransient<ITegSplitter, TegSplitter>();
             services.AddTransient<IUserFindService, UserFindService>();
             services.AddScoped<IEventSelectorService, EventSelectorService>();
+            services.AddTransient<IMarketKibnetApiServices, MarketKibnetApiServices>();
             //services.AddScoped<IViewModelFactory,ViewModelFactory>();
         }
 

@@ -24,9 +24,8 @@ namespace EventB.Controllers
             var user = await context.Users.Include(e=>e.MarketKibnet).Include(e=>e.MyEvents)
                 .FirstOrDefaultAsync(e=>e.UserName == HttpContext.User.Identity.Name);
 
-            var kibnet = await context.MarketKibnets.FirstOrDefaultAsync(e => e.UserId == user.Id);
             var model = new MarketRoomVM { 
-                MarketKibnet = kibnet,
+                MarketKibnet = user.MarketKibnet,
                 Events = user.MyEvents,
                 Banner = new List<MarketBanner>() 
             };

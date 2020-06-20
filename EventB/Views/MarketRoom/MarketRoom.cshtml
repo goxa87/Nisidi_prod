@@ -25,10 +25,13 @@
             <div class="info-p">Общее количество рекламных компаний: @Model.MarketKibnet.TotalMarcetCompanyCount</div>
         </div>
         <div id="lk-event-page" class="lk-page display-none">
-            <div class="lk-header">Собятия:</div>
-            <p class="info-p">Всего: @Model.Events.Count()</p>
-            <p class="info-p">Активных: </p>
-            <p class="info-p">Публичных: @Model.Events.Where(e =>e.Type == EventType.Global).Count()</p>
+            <div class="lk-header">
+                События:
+                <span class="lk-info-p">Всего: @Model.Events.Count()</span>
+                <span class="lk-info-p">Активных: @Model.Events.Where(e => e.Date > DateTime.Now).Count()</span>
+                <span class="lk-info-p">Публичных: @Model.Events.Where(e => e.Type == EventType.Global).Count()</span>
+            </div>
+            
 
             @if (Model.Events.Count() > 0)
             {
@@ -40,13 +43,14 @@
                         </div>
                         <div>
                             <input class="kibnet-event-id" type="hidden" value="@ev.EventId" />
-                            <div class="form-submit">Статус: @ev.Type</div>
-                            <div class="form-submit">Сменить статус</div>
+                            <div class="form-submit lk-event-state">Статус: @ev.Type</div>
+                            <div class="form-submit lk-change-event-status">Сменить статус</div>
                             <a asp-action="EventEdit" asp-controller="Events" asp-route-eventId="@ev.EventId"><div class="form-submit">Редактировать</div></a>
                             <div class="form-submit">Статистика</div>
                             <div class="form-submit">Удалить</div>
                         </div>
                     </div>
+                    <hr>
                 }
             }
             else
