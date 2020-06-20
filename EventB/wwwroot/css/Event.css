@@ -301,6 +301,10 @@ form label {
 }
 /* параметры поиска */
 #end-marker {
+    width: 100%;
+    display:flex;
+    justify-content:center;
+    
 }
 
 

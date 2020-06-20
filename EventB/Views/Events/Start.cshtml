@@ -6,51 +6,53 @@
     ViewData["Script"] = "Event.js";
 }
 
-    <div class="top-page-header">
-        <a asp-controller="Events" asp-action="Add">ДОБАВИТЬ СОБЫТИЕ</a>
-    </div>
-    <div class="top-page-header" id="header-title">
-        <div class="ticket">c: @Model.args.DateSince.ToString("dd.MM.yyyy")</div>
-        <div class="ticket">по: @Model.args.DateDue.ToString("dd.MM.yyyy")</div>
-        @if (Model.args.City != "" || Model.args.City == null)
-        {
-            <div class="ticket">@Model.args.City</div>
-        }
-        
-        @if (Model.args.Tegs != "" || Model.args.Tegs == null)
-        {
-            <div class="ticket">@Model.args.Tegs</div>
-        }
-        @if (Model.args.Title != "" || Model.args.Title == null)
-        {<div class="ticket">@Model.args.Title</div>}
-
-        <input type="hidden" id="args-date-s" value="@Model.args.DateSince.ToString("MM.dd.yyyy hh:mm:ss")" />
-        <input type="hidden" id="args-date-e" value="@Model.args.DateDue.ToString("MM.dd.yyyy hh:mm:ss")" />
-        <input type="hidden" id="args-city" value="@Model.args.City" />
-        <input type="hidden" id="args-teg" value="@Model.args.Tegs" />
-        <input type="hidden" id="args-title" value="@Model.args.Title" />
-        <input type="hidden" id="args-skip" value=@Model.args.Skip />
-        <input type="hidden" id="args-take" value=@Model.args.Take />
-        <input type="hidden" id="flag-dwnl-more" value="true" />
-    </div>
-    <div class="top-page-header display-none" id="header-args">
-        меню пргументов
-    </div>
-
-    @if (Model.events.Any())
+<div class="top-page-header">
+    <a asp-controller="Events" asp-action="Add">ДОБАВИТЬ СОБЫТИЕ</a>
+</div>
+<div class="top-page-header" id="header-title">
+    <div class="ticket">c: @Model.args.DateSince.ToString("dd.MM.yyyy")</div>
+    <div class="ticket">по: @Model.args.DateDue.ToString("dd.MM.yyyy")</div>
+    @if (Model.args.City != "" || Model.args.City == null)
     {
-        <div id="event-list"> 
-            @foreach(var e in Model.events)
-            {
-                await Html.RenderPartialAsync("~/Views/Shared/_eventItemPartial.cshtml", e);
-            }           
+        <div class="ticket">@Model.args.City</div>
+    }
+
+    @if (Model.args.Tegs != "" || Model.args.Tegs == null)
+    {
+        <div class="ticket">@Model.args.Tegs</div>
+    }
+    @if (Model.args.Title != "" || Model.args.Title == null)
+    {<div class="ticket">@Model.args.Title</div>}
+
+    <input type="hidden" id="args-date-s" value="@Model.args.DateSince.ToString("MM.dd.yyyy hh:mm:ss")" />
+    <input type="hidden" id="args-date-e" value="@Model.args.DateDue.ToString("MM.dd.yyyy hh:mm:ss")" />
+    <input type="hidden" id="args-city" value="@Model.args.City" />
+    <input type="hidden" id="args-teg" value="@Model.args.Tegs" />
+    <input type="hidden" id="args-title" value="@Model.args.Title" />
+    <input type="hidden" id="args-skip" value=@Model.args.Skip />
+    <input type="hidden" id="args-take" value=@Model.args.Take />
+    <input type="hidden" id="flag-dwnl-more" value="true" />
+</div>
+<div class="top-page-header display-none" id="header-args">
+    меню пргументов
+</div>
+
+<div id="event-list">
+    
+</div>
+<div id="end-marker">
+    <div id="noTrespassingOuterBarG">
+        <div id="noTrespassingFrontBarG" class="noTrespassingAnimationG">
+            <div class="noTrespassingBarLineG"></div>
+            <div class="noTrespassingBarLineG"></div>
+            <div class="noTrespassingBarLineG"></div>
+            <div class="noTrespassingBarLineG"></div>
+            <div class="noTrespassingBarLineG"></div>
+            <div class="noTrespassingBarLineG"></div>
         </div>
-        <div id="end-marker"></div>
-    }
-    else
-    { 
-        <div>Нет ни одного элемента</div>
-    }
+    </div>
+</div>
+
 
 @{
     ViewData["Script"] = "Event.js";

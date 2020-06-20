@@ -72,12 +72,12 @@ namespace EventB.Controllers
                         Skip=0,
                         Take=12
                     };
-                var rezult = await eventSelector.GetCostomEventsAsync(args);
+                //var rezult = await eventSelector.GetCostomEventsAsync(args);
                 // Пропускаем то что уж нашли.
-                args.Skip += args.Take;
+                //args.Skip += args.Take;
                 var VM = new EventListVM
                 {
-                    events = rezult,
+                    events = null,
                     args = args
                 };
                 return View(VM);
@@ -94,12 +94,12 @@ namespace EventB.Controllers
                     Skip = 0,
                     Take = 12
                 };
-                var rezult = await eventSelector.GetCostomEventsAsync(args);
+                //var rezult = await eventSelector.GetCostomEventsAsync(args);
                 // Пропускаем то что уж нашли.
-                args.Skip += args.Take; 
+                //args.Skip += args.Take; 
                 var VM = new EventListVM
                 {
-                    events = rezult,
+                    events = null,
                     args = args
                 };
                 return View(VM);
@@ -115,7 +115,10 @@ namespace EventB.Controllers
         public async Task<IActionResult> LoadDynamic(CostomSelectionArgs args) 
         {
             var rezult = await eventSelector.GetCostomEventsAsync(args);
-            return PartialView("_eventListPartial", rezult);
+            if (rezult != null && rezult.Count() != 0)
+                return PartialView("_eventListPartial", rezult);
+            else
+                return StatusCode(204);
         }
 
         public async Task<IActionResult> SearchEventlist(CostomSelectionArgs args)
@@ -676,12 +679,12 @@ namespace EventB.Controllers
                 }
                 if (model.Place != model.OldPlace)
                 {
-                    eve.Place = model.OldPlace;
+                    eve.Place = model.Place;
                     chatMessage += $"<p>Новое место</p><p>{model.Place}</p><br>";
                 }
                 if (model.City != model.OldCity)
                 {
-                    eve.City = model.OldCity;
+                    eve.City = model.City;
                     eve.NormalizedCity = model.City.ToUpper();
                     chatMessage += $"<p>Новый город</p><p>Стало: {model.City}</p><br>";
                 }

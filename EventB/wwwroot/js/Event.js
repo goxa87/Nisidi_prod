@@ -1,28 +1,44 @@
 ﻿// Начало исполнения
 $(document).ready(function ()
 {
-    // Start постранично.
-    $(window).scroll(function () {
-        if ($('#flag-dwnl-more').val() == 'true') {
-            var endMarker = $('#end-marker').offset().top;
-            var currentPosition = $(this.window).scrollTop() + $(this.window).height();
-            if (endMarker < currentPosition)
-            {
-                $('#flag-dwnl-more').val('false');
-                var args = {
-                    Title: $('#args-title').val(),
-                    City: $('#args-city').val(),
-                    Tegs: $('#args-teg').val(),
-                    DateSince: $('#args-date-s').val(),
-                    DateDue: $('#args-date-e').val(),
-                    Skip: $('#args-skip').val(),
-                    Take: $('#args-take').val()
+    
+    // Флаг прекращения загрузки.
+    var dynamicLoadStopper = true;
+    var block = false;
+    // Сразу вызов для загрузки.
+    prepareDynamicLoad();
+    
+    // Start постранично при скролле.
+    $(window).scroll($.debounce(200, function () {     
+            if (dynamicLoadStopper == true) {
+                if (block == false) {
+                    block == true;
+                    var endMarker = $('#end-marker').offset().top;
+                    var currentPosition = $(this.window).scrollTop() + $(this.window).height();
+                    if (endMarker < currentPosition) {
+                        prepareDynamicLoad();
+                    }
                 }
-                LoadEvents(args);
             }
-        }        
-    });
-
+        }  )
+    );
+    // Формирование аргументов и вызов.
+    function prepareDynamicLoad() {
+        $('#flag-dwnl-more').val('false');
+        var args = {
+            Title: $('#args-title').val(),
+            City: $('#args-city').val(),
+            Tegs: $('#args-teg').val(),
+            DateSince: $('#args-date-s').val(),
+            DateDue: $('#args-date-e').val(),
+            Skip: $('#args-skip').val(),
+            Take: $('#args-take').val()
+        }
+        
+        LoadEvents(args);
+        
+    }
+    // Непосредственно загрузка контента и рассувать по ДОМ
     function LoadEvents(args)
     {
         var responce = $.ajax({
@@ -32,16 +48,14 @@ $(document).ready(function ()
 
         responce.then(function (data, stat, jqXHR) {
             if (jqXHR.status == 200) {
-                if (data != "") {
-                    $('#flag-dwnl-more').val('true');
-                }
                 $('#event-list').append(data);
                 $('#args-skip').val(Number($('#args-skip').val()) + Number($('#args-take').val()));
+                block = false;
             }
             else {
-                alert("больше нельзя загрузить");
-            }
-            
+                dynamicLoadStopper = false
+                block = false;
+            }            
         });
     }
     // DETAILS

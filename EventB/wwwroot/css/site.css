@@ -2,7 +2,7 @@
 for details on configuring this project to bundle and minify static web assets. */
 body {
     margin: 0;
-    padding: 0 5px;
+    padding: 0 5px 42px 5px;
     padding-bottom:24px;
     font-family: sans-serif;
     background-color: #f1ead8;
@@ -463,19 +463,21 @@ figure img {
 
 .eventlist-img {
     margin: 2px;
-    background-color: grey;
+    height: 260px;
 }
 
     .eventlist-img img {
         object-fit: contain;
         width: 364px;
         max-width:364px;
+        max-height: 260px;
     }
 
 .eventlist-info {
     flex: 3;
-    padding: 16px;
+    padding: 0 16px 16px 16px;
     width:100%;
+    min-height  : 240px;  
 }
 
 
@@ -514,6 +516,105 @@ figure img {
 .info-num {
     padding: 0 15px;
     color: #e4dcc5;
+}
+/*ИНДИКАТОР ЗАГРУЗКИ*/
+#noTrespassingOuterBarG {
+    height: 19px;
+    width: 156px;
+    border: 1px solid #1b5972;
+    overflow: hidden;
+    background-color: #ffcd00;
+    margin: 24px auto;
+}
+
+.noTrespassingBarLineG {
+    background-color: #1b5972;
+    float: left;
+    width: 14px;
+    height: 117px;
+    margin-right: 23px;
+    margin-top: -27px;
+    transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+}
+
+.noTrespassingAnimationG {
+    width: 230px;
+    animation-name: noTrespassingAnimationG;
+    -o-animation-name: noTrespassingAnimationG;
+    -ms-animation-name: noTrespassingAnimationG;
+    -webkit-animation-name: noTrespassingAnimationG;
+    -moz-animation-name: noTrespassingAnimationG;
+    animation-duration: 1.5s;
+    -o-animation-duration: 1.5s;
+    -ms-animation-duration: 1.5s;
+    -webkit-animation-duration: 1.5s;
+    -moz-animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    -o-animation-iteration-count: infinite;
+    -ms-animation-iteration-count: infinite;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    -o-animation-timing-function: linear;
+    -ms-animation-timing-function: linear;
+    -webkit-animation-timing-function: linear;
+    -moz-animation-timing-function: linear;
+}
+
+
+
+@keyframes noTrespassingAnimationG {
+    0% {
+        margin-left: 0px;
+    }
+
+    100% {
+        margin-left: -37px;
+    }
+}
+
+@-o-keyframes noTrespassingAnimationG {
+    0% {
+        margin-left: 0px;
+    }
+
+    100% {
+        margin-left: -37px;
+    }
+}
+
+@-ms-keyframes noTrespassingAnimationG {
+    0% {
+        margin-left: 0px;
+    }
+
+    100% {
+        margin-left: -37px;
+    }
+}
+
+@-webkit-keyframes noTrespassingAnimationG {
+    0% {
+        margin-left: 0px;
+    }
+
+    100% {
+        margin-left: -37px;
+    }
+}
+
+@-moz-keyframes noTrespassingAnimationG {
+    0% {
+        margin-left: 0px;
+    }
+
+    100% {
+        margin-left: -37px;
+    }
 }
 
 
