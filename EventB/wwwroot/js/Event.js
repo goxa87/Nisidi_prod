@@ -6,12 +6,12 @@ $(document).ready(function ()
     var dynamicLoadStopper = true;
     var block = false;
     // Сразу вызов для загрузки.
-    prepareDynamicLoad();
-    
+    prepareDynamicLoad();    
     // Start постранично при скролле.
-    $(window).scroll($.debounce(200, function () {     
+    $(window).scroll($.throttle(500,true,  function () {     
             if (dynamicLoadStopper == true) {
                 if (block == false) {
+                    $('#noTrespassingOuterBarG').removeClass('display-none');
                     block == true;
                     var endMarker = $('#end-marker').offset().top;
                     var currentPosition = $(this.window).scrollTop() + $(this.window).height();
@@ -24,6 +24,7 @@ $(document).ready(function ()
     );
     // Формирование аргументов и вызов.
     function prepareDynamicLoad() {
+        $('#noTrespassingOuterBarG').removeClass('display-none');
         $('#flag-dwnl-more').val('false');
         var args = {
             Title: $('#args-title').val(),
@@ -51,10 +52,12 @@ $(document).ready(function ()
                 $('#event-list').append(data);
                 $('#args-skip').val(Number($('#args-skip').val()) + Number($('#args-take').val()));
                 block = false;
+                $('#noTrespassingOuterBarG').addClass('display-none');
             }
             else {
                 dynamicLoadStopper = false
                 block = false;
+                $('#noTrespassingOuterBarG').addClass('display-none');
             }            
         });
     }
