@@ -17,6 +17,7 @@ using System.Threading;
 using EventB.ViewModels.EventsVM;
 using System.Diagnostics;
 using System.Text;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace EventB.Controllers
 {
@@ -358,26 +359,6 @@ namespace EventB.Controllers
                 Response.StatusCode = 204;
                 return StatusCode(204);
             }
-            // Создаем UserChat для отображения в списке чатов.
-
-            //var task1 = Task.Run(async () =>
-            //{
-            //    var userChat = await context.UserChats.
-            //    FirstOrDefaultAsync(e => e.UserId == userId && e.ChatId == chatId);
-            //    if (userChat == null)
-            //    {
-            //        Thread.Sleep(2000);
-            //        // Создать юзер чат.
-            //        var newUserChat = new UserChat
-            //        {
-            //            ChatName = chat.Event.TitleShort + "...",
-            //            UserId = userId,
-            //            ChatId = chatId
-            //        };
-            //        await context.UserChats.AddAsync(newUserChat);
-            //        await context.SaveChangesAsync();
-            //    }
-            //});
 
             var userChat = await context.UserChats.
                 FirstOrDefaultAsync(e => e.UserId == userId && e.ChatId == chatId);
@@ -475,6 +456,48 @@ namespace EventB.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Отправка ссылки на событие в чат.
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        [Authorize]
+        [Route("/Event/SendLink")]
+        public async Task<StatusCodeResult> SendLink(int eventId, int userChatId)
+        {
+            var user = await userManager.FindByNameAsync(User.Identity.Name);
+            var userChat = await context.UserChats.Include(e => e.Chat).FirstOrDefaultAsync(e => e.UserChatId == userChatId);
+            if (userChat == null) return BadRequest();
+            var message = new Message
+            {
+                PersonId = user.Id,
+                SenderName = user.Name,
+                ChatId = userChat.ChatId,
+                PostDate = DateTime.Now,
+                Read = false,
+                EventState = false,
+                EventLink = eventId
+            };
+
+            await context.Messages.AddAsync(message);
+            await context.SaveChangesAsync();
+            return Ok();
+        }
+
+        /// <summary>
+        /// Возвращает список доступных чатов виде PV _chatSmallListPartial
+        /// ИСКЛЮЧЕНЫ ЧАТЫ СОБЫТИЙ
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        [Route("/Event/GetAvailableChats")]
+        public async Task<PartialViewResult> GetAvailableChats()
+        {
+            var user = await userManager.FindByNameAsync(User.Identity.Name);
+            var chats = await context.UserChats.Include(e => e.Chat).Where(e => e.UserId == user.Id).ToListAsync();
+            chats = chats.Where(e => e.Chat.EventId == null).ToList();
+            return PartialView("_chatSmallListPartial", chats);
+        }
 
         /// <summary>
         /// Получение новых сообщений динамически.

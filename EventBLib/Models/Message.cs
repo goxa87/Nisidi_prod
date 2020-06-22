@@ -51,5 +51,9 @@ namespace EventBLib.Models
         /// true для сообщений о изменения в состоянии события.
         /// </summary>
         public bool EventState { get; set; }
+        /// <summary>
+        /// Является ссылкой на событие. Представляет id события, по которому будем искать.
+        /// </summary>
+        public int EventLink { get; set; }
     }
 }

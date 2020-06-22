@@ -10,6 +10,10 @@ body {
     height:100vh;
 }
 
+hr{
+    margin:2px 0;
+    border-top:1px solid #1b5972;
+}
 p{
     color:#1b5972;
 }
@@ -487,7 +491,11 @@ figure img {
         font-weight: normal;
         font-size: 14px;
     }
-
+    .eventlist-info h3 {
+        text-align:center;
+        font-size:18px;
+        font-weight:600;
+    }   
     .eventlist-info label {
         margin-right: 16px;
         font-size: 12px;
@@ -517,6 +525,16 @@ figure img {
     padding: 0 15px;
     color: #e4dcc5;
 }
+.container-box-shadow {
+    align-self:stretch; 
+    border: 1px solid #1b5972;
+    border-radius: 4px;
+    margin: 5px;
+    background-color: #e4dcc5;
+    box-shadow: 0 0 5px 2px;
+    padding:4px;
+}
+
 /*ИНДИКАТОР ЗАГРУЗКИ*/
 #noTrespassingOuterBarG {
     height: 19px;
@@ -617,5 +635,34 @@ figure img {
     }
 }
 
+/*Частичные представления*/
+/*список чатов*/
+.ev-chat-list {
+    overflow-y: scroll;
+    flex-basis: 1000px;
+    padding: 8px;
+}
+.ev-link-title{
+    padding:0 8px;
+}
+.chat-list-small {
+    width: 100%;
+}
 
+.chat-list-small > span{
+    color:#1b5972;
+    font-size:14px;
 
+}
+    .chat-list-small > i{
+        color:#000;
+    }
+.ev-link-img {
+    max-height: 48px;
+    max-width: 48px;
+    object-fit: contain;
+}
+.ev-link-send-btn{
+    cursor:pointer;
+    color:#1b5972;
+}

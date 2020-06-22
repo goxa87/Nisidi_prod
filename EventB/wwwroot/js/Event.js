@@ -7,21 +7,17 @@ $(document).ready(function ()
     var block = false;
     // Сразу вызов для загрузки.
     prepareDynamicLoad();    
-    // Start постранично при скролле.
-    $(window).scroll($.throttle(500,true,  function () {     
+    // Start постранично при нажатии загрузить еще.
+    $('#ev-load-more').click(function () {        
             if (dynamicLoadStopper == true) {
                 if (block == false) {
-                    $('#noTrespassingOuterBarG').removeClass('display-none');
                     block == true;
-                    var endMarker = $('#end-marker').offset().top;
-                    var currentPosition = $(this.window).scrollTop() + $(this.window).height();
-                    if (endMarker < currentPosition) {
-                        prepareDynamicLoad();
-                    }
+                    $('#noTrespassingOuterBarG').removeClass('display-none');
+                    $('#ev-load-more').addClass('display-none');
+                    prepareDynamicLoad();
                 }
             }
-        }  )
-    );
+        });
     // Формирование аргументов и вызов.
     function prepareDynamicLoad() {
         $('#noTrespassingOuterBarG').removeClass('display-none');
@@ -53,6 +49,8 @@ $(document).ready(function ()
                 $('#args-skip').val(Number($('#args-skip').val()) + Number($('#args-take').val()));
                 block = false;
                 $('#noTrespassingOuterBarG').addClass('display-none');
+                $('#ev-load-more').removeClass('display-none');
+
             }
             else {
                 dynamicLoadStopper = false
@@ -262,12 +260,12 @@ $(document).ready(function ()
     $('#btn-invite').click(function ()
     {
         // Получение с сервера InviteOutVM списка.
-        $('.over-cont').css('display', 'flex');
+        $('#over-cont').css('display', 'flex');
         let friends = GetFriends();       
     });
 
     // Скрытие списка по нажатии на серое поле.
-    $('.over-cont').on('click' ,function (event) {
+    $('#over-cont').on('click' ,function (event) {
         
         $(this).css('display', 'none');
     });
@@ -289,7 +287,8 @@ $(document).ready(function ()
     });
 
     // Нажатие пригласить в темном контейнере.
-    // InviteFriendsIn(int eventId, InviteInVm[] invites)
+
+    // Кнопка пригласить всех. InviteFriendsIn(int eventId, InviteInVm[] invites)
     $('#inv-invite').click(function ()
     {
         var ids = [];
@@ -317,9 +316,75 @@ $(document).ready(function ()
             }
         });
 
-        $('.over-cont').css('display', 'none');
+        $('#over-cont').css('display', 'none');
 
     });
+
+    // Секция Отправить ссылку в чат.
+    $('#btn-details-send-link').click(function () {
+        $('#ev-over-link').css('display','flex');
+        getChats();
+    })
+    //Запрос и вставка чатов
+    function getChats() {
+        //var rez;
+        var req = $.ajax({
+            url: '/Event/GetAvailableChats'
+        });
+        req.then(function (data, stat, jqXHR) {
+            if (jqXHR.status == 200) {
+                $('.ev-chat-list').html('');
+                $('.ev-chat-list').append(data);
+            } else {
+                alert(`Чтото пошло не так . Ошибка ${data}`)
+            }
+        });
+    }
+    // Скрытие по серому полю.
+    $('#ev-over-link').on('click', function (event) {
+        $(this).css('display', 'none');
+    });
+    $('.ev-link-cont').click(function (e) {
+        e.stopPropagation();
+    });
+    // Нажатие на кнопу отправить
+    $('.ev-chat-list').on('click', '.ev-link-send-btn', function () {
+        var evId = $('#event-id').val();
+        var chatId = $(this).parent().children('.ev-link-chat-id').val();
+
+        $.ajax({
+            url: '/Event/SendLink',
+            data: {
+                eventId: evId,
+                userChatId: chatId
+            }, success: function () {
+                $('#ev-over-link').css('display', 'none');
+            }
+        })
+    });
+
+    // Поиск по чатам
+    // Динамический поиск.
+    $(document).on('keyup', function () {
+        if ($('#ev-txt-search').is(':focus')) {
+            searchOpponent();
+        }
+    });
+
+    // Отображение чатов результатам поиска.
+    function searchOpponent() {
+        // получить список того что в опп лист
+        // добавить класс дисплей none тем кто не подходит
+        let searchText = $('#ev-txt-search').val();
+        console.log(searchText)
+        if (searchText == '') {
+            $('.chat-list-small').removeClass('display-none');
+            return;
+        }
+        $('.chat-list-small').addClass('display-none');
+        let opps = $(".chat-list-small:contains(" + searchText + ")");
+        $(opps).removeClass('display-none');
+    };
 });
 // Нажатие галочки напротив имени.
 $('.invite-list').on('click', '.inv-button', function () {

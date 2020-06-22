@@ -6,23 +6,26 @@
 }
 <div class="top-page-header">@Model.Title</div>
 <div class="item-container">
-    <div class="item-container-img">
-        <img class="item-img" src="@Model.Image">
+    <div class="flex-hsbs">
+        <div class="ev-half">
+            <img class="item-img" src="@Model.Image">
+        </div>
+        <div class="ev-half container-box-shadow">
+            <h2>@Model.Title</h2>
+            <h3>Когда: @Model.Date.ToString("dd.MM.yyyy hh:mm")</h3>
+            <h4>Город: @Model.City</h4>
+            <h4>Где: @Model.Place </h4>
+            <p>@Model.Body</p>
+            <p>Интересы: @Model.Tegs</p>
+            @if (Model.Tickets)
+            {
+                <p>Билеты: @Model.TicketsDesc</p>
+            }
+            <p>Выложил: @Model.Creator.Name</p>
+        </div>
     </div>
-    <h2 >@Model.Title</h2>
-    <h3>Когда: @Model.Date.ToString("dd-MM-yyyy hh.mm")</h3>
-    <h4>Город: @Model.City</h4>
-    <h4>Где: @Model.Place </h4>
     <p>@Model.Body</p>
-    <p>Интересы: @Model.Tegs</p>
-    @if (Model.Tickets)
-    {
-        <p>Билеты: @Model.TicketsDesc</p>
-    }
-
-    <p>Выложил: @Model.Creator.Name</p>
-
-    <div class="item-inner-separator"></div>
+    <hr>
     <div id="come-block">
         @if (Model.Vizits.Where(e => e.UserId == ViewData["UserId"].ToString()).Any())
         {
@@ -31,17 +34,18 @@
         }
         else
         {
-            <div class="form-label display-none" >Вы пойдете</div>
+            <div class="form-label display-none">Вы пойдете</div>
             <div id="btn-come" class="form-submit">Подтвердить участие</div>
         }
     </div>
     <div id="btn-invite" class="form-submit">Пригласить на это событие</div>
+    <div id="btn-details-send-link" class="form-submit">Отправить ссылку на событие</div>
     @if (Model.Tickets)
     {
         <div id="btn-buy-tikets" class="form-submit">Купить билеты</div>
     }
 
-    <div class="item-inner-separator"></div>
+    <hr>
 </div>
 
 <div class="eventlist-bottom-menu">
@@ -74,7 +78,7 @@
     </div>
 
     <!--чат-->
-    <div class="bottom-page display-none" id="chat" >
+    <div class="bottom-page display-none" id="chat">
         <form>
             <label>Сообщение</label><br>
             <input type="hidden" id="user-id" value="@ViewData["UserId"]" />
@@ -110,7 +114,7 @@
                         <!--количество на загрузку из js-->
                         <button id="btn-load">загрузить историю</button>
                     </form>
-                 }
+                }
             }
 
         </div>
@@ -120,14 +124,14 @@
     <div class="bottom-page  display-none flex-hsc" id="vizitors">
         @foreach (var e in Model.Vizits)
         {
-             <div class="events-square-item">
+            <div class="events-square-item">
                 <a asp-action="UserInfo" asp-controller="Friends" asp-route-userId="@e.UserId">
-                <figure>
-                    <img src="@e.VizitirPhoto" />
-                    <figcaption><div>@e.VizitorName</div></figcaption>
-                </figure>
+                    <figure>
+                        <img src="@e.VizitirPhoto" />
+                        <figcaption><div>@e.VizitorName</div></figcaption>
+                    </figure>
                 </a>
-             </div>
+            </div>
         }
     </div>
 
@@ -135,8 +139,7 @@
 </div>
 
 <!--Блок приглайшений фиксет темный контейнер-->
-
-<div class="over-cont">
+<div id="over-cont">
     <div class="invite-cont">
         <div class="top-page-header">Пригласить</div>
         <div class="invite-menu">
@@ -145,12 +148,24 @@
             <div class="form-submit inline" id="inv-invite">Пригласить</div>
         </div>
         <div class="invite-list">
-            
+
         </div>
 
     </div>
 </div>
 
+<!--Блок Отправки ссылки на событие темный контейнер-->
+<div id="ev-over-link" class="display-none">
+    <div class="ev-link-cont">
+        <div class="top-page-header">Отправить ссылку</div>        
+        <div>
+            <input id="ev-txt-search" type="text" placeholder="Поиск (не работает)"/>
+        </div>
+        <div class="ev-chat-list">
+
+        </div>
+    </div>
+</div>
 
 @{ViewData["Script"] = "Event.js";
 }
