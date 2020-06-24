@@ -666,3 +666,64 @@ figure img {
     cursor:pointer;
     color:#1b5972;
 }
+/*сообщения*/
+.message-item {
+    background-color: #ccc;
+    margin: 4px 16px;
+    padding: 4px;
+    border: 1px solid #1b5972;
+    max-width: 80%;
+}
+
+.my-message {
+    background-color: #e4dcc5;
+}
+
+.message-sender {
+    color: #1b5972;
+    font-size: 14px;
+}
+
+.message-item-event {
+    background-color: #1b5972;
+}
+
+.message-item-event-link {
+    cursor: pointer;
+}
+
+    .message-item-event-link:hover {
+        box-shadow: 0 0 4px 4px #2228;
+    }
+
+.message-link-img {
+    height: 150px;
+    width: 200px;
+    object-fit: contain;
+}
+
+.message-display-inline {
+    display: inline-block;
+}
+
+.message-sender-event {
+    color: #ffcd00;
+}
+
+.message-text-event {
+    color: #e4dcc5;
+}
+
+.message-text {
+    color: black;
+}
+
+.message-date-event {
+    color: #e4dcc5;
+    font-size: 10px;
+}
+
+.message-date {
+    color: #1b597299;
+    font-size: 10px;
+}

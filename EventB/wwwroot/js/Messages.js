@@ -12,20 +12,6 @@
     // Начальная прокрутка до конца чата.
     let startoffset = $('#vertical-trigger').offset().top;
     $('.message-list').scrollTop(startoffset);
-    // окраска собщений в цвет отправителя (темнее если отправитель текущий).
-    function colored(item) {
-        $(item).addClass('my-message');
-    }
-    colorAllItems();
-    function colorAllItems() {
-        let curentId = $('#user-id').val();
-        let startMes = $('.message-info');
-        startMes.each(function (i, value) {
-            if ($(value).text() === curentId) {
-                $(value).parent().addClass('my-message');
-            }
-        })
-    }
     // Нажатие на кнопу отправить сообщение.
     $('#btn-send').on('click', function (event) {
         event.preventDefault();
@@ -141,8 +127,7 @@
             },
             success: function (rezult) {
                 // Рендеринг сообщений.
-                buildMessagesContent(rezult);                
-                colorAllItems();
+                buildMessagesContent(rezult);
             }
         });
 
@@ -151,44 +136,16 @@
     // Построение результатов запроса в блок content - List<Message>
     // Добавление результата в конец и скролл.
     function buildMessagesContent(content) {
-        // Рендеринг ответа в блоки
-        let block = '';
-        $(content).each(function (index, value) {
-            let date = formatter.format(new Date(value.postDate));
-            if (value.eventState == false) {
-                block += '<div class="message-item"><div class="message-sender">' + value.senderName +
-                    '</div><div class="message-text">' + value.text + '</div ><div class="message-date">' + date + '</div >' +
-                    '<div class="message-info display-none">' + value.personId + '</div ></div > ';
-            }
-            else {
-                block += '<div class="message-item message-item-event"><div class="message-sender-event">' + value.senderName +
-                    '</div><div class="message-text-event">' + value.text + '</div ><div class="message-date-event">' + date + '</div >' +
-                    '<div class="message-info display-none">' + value.personId + '</div ></div > ';
-            }
-        });
+        // Рендеринг ответа в блоки        
+        let userId = $('#user-id').val();
+        let block = renderMessage(content, userId);
         $('#vertical-trigger').remove();
         $('.message-list').html(block);
         $('.message-list').append('<div id="vertical-trigger"></div>');
         var list = $('.message-list'); 
         let offset = $('#vertical-trigger').offset().top;
         list.scrollTop(offset);
-    };
-
-    function addBuildMessagesContent(content) {
-        // Рендеринг ответа в блоки
-        let block = '';
-        $(content).each(function (index, value) {
-            block += '<div class="message-item"><div class="message-sender">' + value.senderName +
-                '</div><div class="message-text">' + value.text + '</div ><div class="message-date">' + value.postDate + '</div >' +
-                '<div class="message-info display-none">' + value.PersonId + '</div></div > ';
-        });
-        $('#vertical-trigger').remove();
-        $('.message-list').append(block);
-        $('.message-list').append('<div id="vertical-trigger"></div>');
-        var list = $('.message-list');
-        let offset = $('#vertical-trigger').offset().top;
-        list.scrollTop(offset);
-    };
+    };    
 
     // Клик на кнопке Отчистить.
     $('#btn-search').on('click', function (event) {
@@ -233,7 +190,13 @@
             },
             success: function (rezult) {
                 if (rezult.length != 0) {
-                    addBuildMessagesContent(rezult);
+                    let block = renderMessage(rezult);
+                    $('#vertical-trigger').remove();
+                    $('.message-list').append(block);
+                    $('.message-list').append('<div id="vertical-trigger"></div>');
+                    var list = $('.message-list');
+                    let offset = $('#vertical-trigger').offset().top;
+                    list.scrollTop(offset);
                 }                
             }
         });

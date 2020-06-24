@@ -55,5 +55,9 @@ namespace EventBLib.Models
         /// Является ссылкой на событие. Представляет id события, по которому будем искать.
         /// </summary>
         public int EventLink { get; set; }
+        /// <summary>
+        /// Путь до картинки события
+        /// </summary>
+        public string EventLinkImage { get; set; }
     }
 }

@@ -468,6 +468,8 @@ namespace EventB.Controllers
             var user = await userManager.FindByNameAsync(User.Identity.Name);
             var userChat = await context.UserChats.Include(e => e.Chat).FirstOrDefaultAsync(e => e.UserChatId == userChatId);
             if (userChat == null) return BadRequest();
+            var eve = await context.Events.FirstOrDefaultAsync(e => e.EventId == eventId);
+            if (eve == null) return BadRequest();
             var message = new Message
             {
                 PersonId = user.Id,
@@ -476,7 +478,9 @@ namespace EventB.Controllers
                 PostDate = DateTime.Now,
                 Read = false,
                 EventState = false,
-                EventLink = eventId
+                EventLink = eventId,
+                Text = eve.Title,
+                EventLinkImage = eve.Image
             };
 
             await context.Messages.AddAsync(message);
