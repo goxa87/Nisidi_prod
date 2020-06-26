@@ -252,7 +252,7 @@ $(document).ready(function ()
                 </div>
             </div>`
             });
-            $('.invite-list').append(block);
+            $('.invite-list').html(block);            
         });
         return rez;
     }
