@@ -6,16 +6,20 @@
 }
 <div class="top-page-header">@Model.Title</div>
 <div class="item-container">
-    <div class="flex-hsbs">
+    <div class="ev-twin-details">
         <div class="ev-half">
-            <img class="item-img" src="@Model.Image">
+            <div class="image-container">
+                <img src="@Model.Image" class="image-self-back"/>
+                <div class="image-mask"></div>
+                <img src="@Model.Image"  class="image-self-front" />
+            </div>            
         </div>
         <div class="ev-half container-box-shadow">
             <h2>@Model.Title</h2>
+            <hr>
             <h3>Когда: @Model.Date.ToString("dd.MM.yyyy hh:mm")</h3>
             <h4>Город: @Model.City</h4>
-            <h4>Где: @Model.Place </h4>
-            <p>@Model.Body</p>
+            <h4>Где: @Model.Place </h4>            
             <p>Интересы: @Model.Tegs</p>
             @if (Model.Tickets)
             {
@@ -24,6 +28,7 @@
             <p>Выложил: @Model.Creator.Name</p>
         </div>
     </div>
+    <hr>
     <p>@Model.Body</p>
     <hr>
     <div id="come-block">

@@ -3,7 +3,11 @@
 <a class="event-a" asp-controller="Events" asp-action="Details" asp-route-id="@Model.EventId">
     <div class="eventlist-container flex-vss">
         <div class="eventlist-img">
-            <img src="@Model.Image" alt="@Model.Title">
+            <div class="image-container">
+                <img src="@Model.Image" class="image-self-back" alt="event/>
+                <div class="image-mask"></div>
+                <img src="@Model.Image" class="image-self-front" alt="event"/>
+            </div>
         </div>
         <div class="eventlist-info">
             <hr>
@@ -15,10 +19,9 @@
                 {<span>Нужны</span> }
                 else
                 {<span>Не нужны</span>}
-            </h4><br>
-            <label class="eventlist-label">Теги:</label>
+            </h4><br>            
             <h4>
-                @Model.Tegs
+                Теги: @Model.Tegs
             </h4>
             <BR>
         </div>
