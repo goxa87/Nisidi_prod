@@ -116,7 +116,7 @@ namespace EventB.Controllers
         public async Task<IActionResult> LoadDynamic(CostomSelectionArgs args) 
         {
             var rezult = await eventSelector.GetCostomEventsAsync(args);
-            if (rezult != null && rezult.Count() != 0)
+            if (rezult != null && rezult.Any())
                 return PartialView("_eventListPartial", rezult);
             else
                 return StatusCode(204);

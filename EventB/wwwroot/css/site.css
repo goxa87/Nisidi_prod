@@ -438,6 +438,13 @@ figure img {
     justify-content: start;
     align-items: start;
 }
+.flex-vsc{
+    display: flex;
+    flex-direction:column;
+    justify-content: start;
+    align-items: center;
+}
+
 /* картинка с фоном и маской*/
 /* Заполняет на 100% так что нужно оборачивать*/
 .image-container{

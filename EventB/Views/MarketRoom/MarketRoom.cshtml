@@ -44,7 +44,10 @@
                         <div>
                             <input class="kibnet-event-id" type="hidden" value="@ev.EventId" />
                             <div class="form-submit lk-event-state">Статус: @ev.Type</div>
-                            <div class="form-submit lk-change-event-status">Сменить статус</div>
+                            @if (ev.Type == EventType.Private)
+                            {
+                                <div class="form-submit lk-change-event-status">Сменить статус</div>
+                            }
                             <a asp-action="EventEdit" asp-controller="Events" asp-route-eventId="@ev.EventId"><div class="form-submit">Редактировать</div></a>
                             <div class="form-submit">Статистика</div>
                             <div class="form-submit">Удалить</div>

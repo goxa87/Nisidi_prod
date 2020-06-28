@@ -33,6 +33,10 @@
     <Folder Include="wwwroot\images\Profileimages\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
   <ItemGroup>    
     <ProjectReference Include="..\EventBLib\EventBLib.csproj" />
   </ItemGroup>

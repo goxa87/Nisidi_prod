@@ -23,6 +23,7 @@ $(document).ready(function ()
         $('#noTrespassingOuterBarG').removeClass('display-none');
         $('#flag-dwnl-more').val('false');
         var args = {
+            UserId: $('#args-user-id').val(),
             Title: $('#args-title').val(),
             City: $('#args-city').val(),
             Tegs: $('#args-teg').val(),

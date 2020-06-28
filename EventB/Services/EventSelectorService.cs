@@ -42,7 +42,7 @@ namespace EventB.Services
             var selection = context.Events.
                 Include(e=>e.EventTegs).
                 Include(e=>e.Creator).
-                Where(e => e.Date > dateStart && e.Date < dateEnd && e.Type == EventType.Private);
+                Where(e => e.Date > dateStart && e.Date < dateEnd && e.Type == EventType.Global);
             // город
             if (!string.IsNullOrWhiteSpace(args.City))
                 selection = selection.Where(e => e.NormalizedCity == args.City);
@@ -66,8 +66,7 @@ namespace EventB.Services
                 } 
 
                 selectionLocal = selectionLocal.Intersect(tegSelection);
-            }
-            // Постранично.
+            }            
             selectionLocal = selectionLocal.OrderBy(e => e.Date).Skip(args.Skip).Take(args.Take);
 
             return await selectionLocal.ToListAsync();
@@ -81,6 +80,7 @@ namespace EventB.Services
         public async Task<List<Event>> GetStartEventListAsync(User user)
         {
             // Это отнесено к кастомизированному поиску, т.к. по сути поже самое что и выше.
+            // Не используется.
             // Идентифицированный пользователь.
             if (user != null)
             {

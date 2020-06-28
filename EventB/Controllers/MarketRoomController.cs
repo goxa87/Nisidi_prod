@@ -32,5 +32,13 @@ namespace EventB.Controllers
 
             return View(model);
         }
+        /// <summary>
+        /// Форма оплаты 
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Pay()
+        {
+            return View();
+        }
     }
 }
