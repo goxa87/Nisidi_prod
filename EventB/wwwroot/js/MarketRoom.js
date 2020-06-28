@@ -26,10 +26,13 @@
         $('#lk-banners-page').removeClass('display-none');
     });
     // Кнопка сменить статус.
-    $('.right-columnn').on('click', '.lk-change-event-status', function () {        
+    $('.right-columnn').on('click', '.lk-change-event-status', function () {
         let eveId = $(this).parent().children('.kibnet-event-id').val();
         let eveType = $(this).parent().children('.lk-event-state').text();
-        let type = eveType.indexOf('Global') === -1 ? 0 : 1; 
+        // Удалить при имплементации реального апи
+        let type = eveType.indexOf('Global') === -1 ? 0 : 1;
+
+        getModelWindow('PRESSED', true, myFoo);
 
         $.ajax({
             url: '/api/MarketKibnet/change-event-type',
@@ -40,7 +43,6 @@
             success: () => {
                 let newLabel = type === 0 ? 'Статус: Global' : 'Статус: Private'
                 $(this).parent().children('.lk-event-state').text(newLabel);
-                alert('ИЗМЕНЕНО');
             },
             error: function () {
                 alert('Не получилось изменить статус');

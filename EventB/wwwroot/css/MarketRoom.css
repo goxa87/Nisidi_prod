@@ -38,3 +38,18 @@
     padding: 4px 8px;
 
 }
+.lk-event{
+    display: flex;
+}
+@media(max-width: 770px)
+{
+    .lk-event{
+        width: 370px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+hr{
+    margin-bottom: 24px;
+}

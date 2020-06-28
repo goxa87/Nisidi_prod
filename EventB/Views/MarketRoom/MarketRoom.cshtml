@@ -37,7 +37,7 @@
             {
                 foreach (var ev in Model.Events)
                 {
-                    <div class="lk-event flex-hss">
+                    <div class="lk-event">
                         <div>
                             @{await Html.RenderPartialAsync("~/Views/Shared/_eventItemPartial.cshtml", ev);}
                         </div>

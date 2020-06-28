@@ -64,3 +64,38 @@ function renderMessage(content, userId)
     return block;
 }
 
+/**
+ * Создает в теге body модальное окно, которое fixed и отображает контент.
+ * @param {any} title Заголовок модального окна.
+ * @param {any} okCancel Признак наличия кнопки отмена. true - ok cancell  false - ok.
+ * @param {any} okCallback Функция, вызываемая принажатии ОК.
+ * @param {any} cancelCollback Функция, вызываемая принажатии отмена.
+ */
+function getModelWindow(title, okCancel, okCallback, cancelCollback) {
+    let mainBlock =`<p>МОДАЛКА ${title}</p>`;
+    mainBlock =`<div class="modal-shadow">
+                    <div class="modal-content">
+                        <div class="top-page-header"> <span>${title}</span> </div>
+                        <div class="modal-body"></div>
+                        <div class="modal-my-footer">`;
+
+    if (okCancel){
+        mainBlock += `<span class="modal-ok">oк</span><span class="modal-cancel">отмена</span>`;
+    } else {
+        mainBlock += `<span class="modal-ok">oк</span>`;
+    }
+    mainBlock += `</div></div></div>`;                
+    $('body ').prepend(mainBlock)
+      // нажатие кнопы ОК
+    $('.modal-ok').click(() => {
+        if(okCallback !== undefined) okCallback();
+        okCallback();
+        $('.modal-shadow').remove();
+    });
+    // Нажатие отмены.
+    $('.modal-cancel').click(() => {
+        if(cancelCollback !== undefined) cancelCollback();
+        $('.modal-shadow').remove();
+    });  
+}
+

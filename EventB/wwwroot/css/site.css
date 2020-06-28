@@ -82,6 +82,7 @@ input[type="checkbox"].input-validation-error {
     background-color: #e4dcc5;
 }
 .float-menu {
+    z-index: 1000;
     position: fixed;
     top: 0;
     max-width: 1140px;
@@ -454,7 +455,6 @@ figure img {
     left:0;
 }
 .image-mask {
-    z-index: 5;
     width: 100%;
     height: 100%;
     background-color: #fff5;
@@ -463,7 +463,6 @@ figure img {
     left: 0;
 }
 .image-self-front {
-    z-index: 10;
     object-fit: contain;
     width: 100%;
     height: 100%;
@@ -755,4 +754,45 @@ figure img {
 .message-date {
     color: #1b597299;
     font-size: 10px;
+}
+/* МОДАЛЬНОЕ ОКНО*/
+.modal-shadow{
+    position:fixed;
+    z-index: 10;
+    top:0;
+    left:0;
+    width:100%;
+    height: 100%;
+    background-color: #0005;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.modal-content{
+    min-width: 400px;
+    max-width: 80%;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+}
+.modal-body{    
+    background-color: #e4dcc5;
+}
+.modal-my-footer{
+    display: flex;
+    justify-content: flex-end;
+    background-color: #1b5972;
+}
+.modal-ok, .modal-cancel{
+    padding: 8px;
+    color: #ffcd00;
+    cursor: pointer;
+}
+@media(max-width: 700px)
+{
+    .modal-content{
+        max-width: 94%;
+    }
 }
