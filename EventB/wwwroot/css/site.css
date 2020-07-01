@@ -53,6 +53,7 @@ ul{
     font-weight:600;
 }
 .action-button{
+    text-align:center;
     background-color:#1b5972;
     color:#e4dcc5;
     border-radius:2px;
@@ -62,6 +63,7 @@ ul{
     padding:4px;
     margin-bottom: 4px;
     text-transform:uppercase;
+    cursor: pointer;
 }
     .action-button:hover{
         color:#ffcd00;
@@ -329,14 +331,17 @@ input[type="checkbox"].input-validation-error {
 }
 
 .red-btn-alert {
-    padding: 5px 40px;
-    margin: 5px 0;
-    border-radius: 5px;
-    border: 0px;
+    text-align: center;
     background-color: #1b5972;
     color: orangered;
-    box-sizing: border-box;
-    font-weight: 600;
+    border-radius: 2px;
+    border: none;
+    font-weight: 200;
+    font-size: 16px;
+    padding: 4px;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    cursor: pointer;
 }
 
 .btn {
@@ -587,7 +592,6 @@ figure img {
 .container-box-shadow {
     border: 1px solid #1b5972;
     border-radius: 4px;
-    margin: 5px;
     background-color: #e4dcc5;
     box-shadow: 0 0 5px 2px;
     padding:4px;

@@ -87,10 +87,11 @@ namespace EventB.Controllers
         /// <returns></returns>
         [Route("SubmitFriend")]
         [Authorize]
-        public async Task<StatusCodeResult> SubmitFriend(int friendEntityId)
+        public async Task<StatusCodeResult> SubmitFriend(string friendId)
         {
-            var entity = await context.Friends.FirstOrDefaultAsync(e => e.FriendId == friendEntityId);
-            var entityOpponent =  await context.Friends.FirstOrDefaultAsync(e => e.UserId == entity.FriendUserId && e.FriendUserId == entity.UserId);
+            var user = await userManager.FindByNameAsync(User.Identity.Name);
+            var entity = await context.Friends.FirstOrDefaultAsync(e => e.UserId == friendId && e.FriendUserId == user.Id);
+            var entityOpponent =  await context.Friends.FirstOrDefaultAsync(e => e.UserId == user.Id && e.FriendUserId == friendId);
             if (entity == null)
             {
                 return StatusCode(204);
@@ -110,20 +111,21 @@ namespace EventB.Controllers
         /// <returns></returns>
         [Authorize]
         [Route("BlockUser")]
-        public async Task<StatusCodeResult> BlockUser(string currentUserId, string friendId)
+        public async Task<StatusCodeResult> BlockUser( string friendId)
         {
             // Валидация.
-            if (string.IsNullOrWhiteSpace(currentUserId) || string.IsNullOrWhiteSpace(friendId))
+            if (string.IsNullOrWhiteSpace(friendId))
             {
                 return StatusCode(400);
             }
-            if(!context.Users.Any(e=>e.Id==currentUserId) || !context.Users.Any(e=>e.Id==friendId))
+            if(!context.Users.Any(e=>e.Id==friendId))
             {
                 return StatusCode(400);
             }
-            // Друг и обратный друг.            
-            var friend = await context.Friends.FirstOrDefaultAsync(e => e.FriendUserId == currentUserId && e.UserId == friendId);
-            var opponentFriend = await context.Friends.FirstOrDefaultAsync(e=>e.FriendUserId == friendId && e.UserId == currentUserId);
+            // Друг и обратный друг.    
+            var currentUser = await userManager.FindByNameAsync(User.Identity.Name);
+            var friend = await context.Friends.FirstOrDefaultAsync(e => e.FriendUserId == currentUser.Id && e.UserId == friendId);
+            var opponentFriend = await context.Friends.FirstOrDefaultAsync(e=>e.FriendUserId == friendId && e.UserId == currentUser.Id);
             // Если не инициатор, то запрещаем.
             if (!friend.BlockInitiator && friend.IsBlocked )
             {
@@ -139,6 +141,41 @@ namespace EventB.Controllers
             await context.SaveChangesAsync();
 
             return StatusCode(200);
+        }
+
+        /// <summary>
+        /// Удаление друга.
+        /// </summary>
+        /// <param name="friendId"></param>
+        /// <returns></returns>
+        [Authorize]
+        [Route("DeleteFriend")]
+        public async Task<StatusCodeResult> DeleteFriend(string friendId)
+        {
+            // Валидация.
+            if (string.IsNullOrWhiteSpace(friendId))
+            {
+                return StatusCode(400);
+            }
+            
+            // Друг и обратный друг.    
+            var currentUser = await userManager.FindByNameAsync(User.Identity.Name);
+            var friend = await context.Friends.FirstOrDefaultAsync(e => e.FriendUserId == currentUser.Id && e.UserId == friendId);
+            var opponentFriend = await context.Friends.FirstOrDefaultAsync(e => e.FriendUserId == friendId && e.UserId == currentUser.Id);
+
+            if(friend == default)
+            {
+                return StatusCode(400);
+            }
+            // Если не инициатор, то запрещаем.
+            if (!friend.BlockInitiator && friend.IsBlocked)
+            {
+                return StatusCode(205);
+            }
+
+            context.Friends.RemoveRange(new[] { friend, opponentFriend });
+            await context.SaveChangesAsync();
+            return Ok();
         }
 
         #endregion

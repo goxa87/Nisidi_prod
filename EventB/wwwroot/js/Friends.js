@@ -47,51 +47,52 @@
     };
 
     // блокировка пользователя
-    $('#btn-block').click(function (event) {
-        event.preventDefault();
+    $('.btn-block').click(function () {
+        let thisCard = $(this).parents('.friend-list-container');
         // Данные запроса
-        let userid = $('#user-id').val();
-        let friendid = $('#friend-id').val();
+        let friendid = $(thisCard).children('#friend-entity-id').val();
         // Запрос
         let req = $.ajax({
             url: '/Api/BlockUser',
             data:
             {
-                currentUserId: userid,
                 friendId: friendid
             }
         });
         // в зависмости от результата запроса 
-        req.then(function (data, statusText, jqXHR) {
+        req.then((data, statusText, jqXHR) => {
             if (jqXHR.status == 200) {
                 // от вида кнопки сменить стили и надписаь
-                if ($('#btn-block').hasClass('form-submit')) {
-                    $('#btn-block').toggleClass('form-submit');
-                    $('#btn-block').toggleClass('red-btn-alert');
-                    $('#btn-block').text('Заблокирован');
+                if ($(this).hasClass('action-button')) {
+                    console.log('1')
+                    $(this).toggleClass('action-button');
+                    $(this).toggleClass('red-btn-alert');
+                    $(this).text('Заблокирован');
                 }
                 else {
                     // просто в обратном поярдке.
-                    $('#btn-block').toggleClass('form-submit');
-                    $('#btn-block').toggleClass('red-btn-alert');
-                    $('#btn-block').text('Заблокировать');
+                    console.log('2')
+                    $(this).toggleClass('action-button');
+                    $(this).toggleClass('red-btn-alert');
+                    $(this).text('Заблокировать');
                 }
             }
             else {
                 // Предупереждение об ошибке.
                 if (jqXHR.status == 400)
                     alert('Что-то пошло не так(');
-                if (jqXHR.status == 205)
-                    alert('Разблокировать может только оппонент');
+                if (jqXHR.status == 205) {
+                    var content ='<p>Разблокировать может только оппонент</p>'
+                    getModelWindow('Невозможно разблокировать.', false);
+                }                    
             }
         });
     });
 
     // Согласиться принять в друзья.
     //agree-friend
-    $('#agree-friend').click(function (event)
+    $('.agree-friend').click(function ()
     {
-        event.preventDefault();
         let id = $(this).parents('.friend-list-container').children('#friend-entity-id').val();
         let button = $(this);
 
@@ -103,12 +104,39 @@
         });
         req.then(function (data, stat,jqXHR) {
             if (jqXHR.status = 200) {
-                button.removeClass('form-submit');
+                button.removeClass('.agree-friend');
                 button.text('Добавлен(а)');
             }
             else
             {
                 alert('Что-то пошло не так(');
+            }
+        });
+    });
+
+    // Удаление друга
+    $('.delete-friend').click(function () {
+        let thisCard = $(this).parents('.friend-list-container');
+        // Данные запроса
+        let friendid = $(thisCard).children('#friend-entity-id').val();
+        let req = $.ajax({
+            url: '/Api/DeleteFriend',
+            data:
+            {
+                friendId: friendid
+            }
+        });
+        req.then((data, statusText, jqXHR) => {
+            if (jqXHR.status == 200) {
+                $(this).toggleClass('action-button');
+                $(this).toggleClass('red-btn-alert');
+                $(this).text('Удален');
+                $(this).removeClass('delete-friend');
+            }
+            else {
+                // Предупереждение об ошибке.
+                if (jqXHR.status == 400)
+                    alert('Что-то пошло не так( Обратитесь в поддержку.');
             }
         });
     });
@@ -131,8 +159,7 @@
     });
 
     // Предотвращение нажатия кнопы.
-    $('.red-btn-alert').click(function (event)
-    {
+    $('.red-btn-alert').click(function (event) {
         event.preventDefault();
     });
 
