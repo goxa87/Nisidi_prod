@@ -1,0 +1,8 @@
+﻿@model IEnumerable<EventB.ViewModels.FriendsVM.SmallFigureFriendVM>
+
+@{ 
+    foreach(var user in Model)
+    {
+        await Html.RenderPartialAsync("_smallFigure", user);
+    }
+}

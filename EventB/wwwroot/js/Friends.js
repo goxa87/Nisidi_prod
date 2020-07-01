@@ -82,38 +82,13 @@
                 if (jqXHR.status == 400)
                     alert('Что-то пошло не так(');
                 if (jqXHR.status == 205) {
-                    var content ='<p>Разблокировать может только оппонент</p>'
+                    var content = '<p>Разблокировать может только оппонент</p>'
                     getModelWindow('Невозможно разблокировать.', false);
-                }                    
+                    $('.modal-body').html(content);
+                }
             }
         });
     });
-
-    // Согласиться принять в друзья.
-    //agree-friend
-    $('.agree-friend').click(function ()
-    {
-        let id = $(this).parents('.friend-list-container').children('#friend-entity-id').val();
-        let button = $(this);
-
-        let req = $.ajax({
-            url: '/Api/SubmitFriend',
-            data: {
-                friendEntityId:id
-            }
-        });
-        req.then(function (data, stat,jqXHR) {
-            if (jqXHR.status = 200) {
-                button.removeClass('.agree-friend');
-                button.text('Добавлен(а)');
-            }
-            else
-            {
-                alert('Что-то пошло не так(');
-            }
-        });
-    });
-
     // Удаление друга
     $('.delete-friend').click(function () {
         let thisCard = $(this).parents('.friend-list-container');
@@ -188,7 +163,66 @@
         }
     });
 
+    function getUsersFriends() {
+        // Собирание данных
+        let nameThis = $('#fr-search-name').val();
+        let cityThis = $('#fr-search-city').val();
+        let tegThis = $('#fr-search-teg').val();
+        // Запрос
+        $.ajax({
+            url: '/Friends/SearchFriend',
+            data: {
+                name: nameThis,
+                city: cityThis,
+                teg: tegThis
+            }, success: (data) => {
+                // Рендеринг
+                displayFriendSearch(data)
+            }
+        });       
+        
+    }
 
+    // Поиск
+    $('.fr-search-modal').click(function () {
+        if ($(this).text() === 'ПОИСК') {
+            
+            let content =`
+                <div>
+                    <label class="form-label">Имя:</label><br>
+                    <input id="fr-search-name" class="form-entry-title" type="text" /><br>
 
+                    <label class="form-label">Теги (если несколько, то поиск только для первого):</label><br>
+                    <input id="fr-search-teg" class="form-entry-title" type="text"/><br>
+
+                    <label class="form-label">Город (полностью, если не указан, будет поиск для вашего города)</label><br>
+                    <input id=" fr-search-city" class="form-entry-title" type="text"/><br>
+                </div>  
+                `
+            ;
+            getModelWindow('Параметры для поиска пользователей', true, getUsersFriends, cancelModal);
+            $('.modal-body').html(content);
+        } else {
+            $(this).text('ПОИСК');
+            $('.fr-current-friends').removeClass('display-none');
+            $('.fr-current-friends').addClass('flex-hsac');
+            $('.fr-filter-container').removeClass('display-none');
+            $('.fr-search-list').addClass('display-none');
+            $('.fr-search-list').removeClass('flex-hsc');
+        }
+
+    });
+    // Вставка результата запроса
+    function displayFriendSearch(friends) {
+        $('.fr-current-friends').addClass('display-none');
+        $('.fr-current-friends').removeClass('flex-hsac');
+        $('.fr-filter-container').addClass('display-none');
+        $('.fr-search-list').removeClass('display-none');
+        $('.fr-search-list').addClass('flex-hsc');
+        $('.fr-search-list').html(friends);
+    }
+    function cancelModal() {
+        $(this).text('ПОИСК');
+    }
 
 });

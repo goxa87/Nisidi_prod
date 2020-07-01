@@ -129,14 +129,12 @@
     <div class="bottom-page  display-none flex-hsc" id="vizitors">
         @foreach (var e in Model.Vizits)
         {
-            <div class="events-square-item">
-                <a asp-action="UserInfo" asp-controller="Friends" asp-route-userId="@e.UserId">
-                    <figure>
-                        <img src="@e.VizitirPhoto" />
-                        <figcaption><div>@e.VizitorName</div></figcaption>
-                    </figure>
-                </a>
-            </div>
+            await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.FriendsVM.SmallFigureFriendVM()
+            {
+                Title = e.VizitorName,
+                Link = $"/Friends/UserInfo/UserInfo?userId={e.UserId}",
+                Image = e.VizitirPhoto
+            });
         }
     </div>
 

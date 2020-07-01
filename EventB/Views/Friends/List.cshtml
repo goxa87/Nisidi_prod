@@ -7,12 +7,19 @@
 }
 
 <div class="top-page-header flex-hsbs flex-wr">
-    <span>Ваши подписки</span>    
-    <span class="orders">заявки</span>
+    <span>Ваши подписки</span> 
+    <div>
+        <span class="orders">ЗАЯВКИ</span>&nbsp;
+        <span class="fr-search-modal">ПОИСК</span>
+    </div>
+    
 </div>
-<span class="small-label">Фильтр</span><br>
-<input id="fr-filter" class="fr-filter" /><img src="~/resourses/cancel.png" class="fr-filter-clear"/>
-<div class="flex-hsac flex-wr">
+<div class="fr-filter-container">
+    <span class="small-label">Фильтр</span><br>
+    <input id="fr-filter" class="fr-filter" /><img src="~/resourses/cancel.png" class="fr-filter-clear" />
+</div>
+
+<div class="flex-hsac flex-wr fr-current-friends">
     @foreach (var item in Model)
     {
         if (item.IsBlocked && !item.BlockInitiator)
@@ -22,6 +29,7 @@
 
     }
 </div>
+<div class="fr-search-list display-none"></div>
 
 
 

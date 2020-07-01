@@ -70,7 +70,8 @@ namespace EventB.Controllers
         /// <returns></returns>
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> SearchFriend(string name, string teg, string city)
+        [Route("/Friends/SearchFriend")]
+        public async Task<PartialViewResult> SearchFriend(string name, string teg, string city)
         {
             IEnumerable<User> users;
             var curUser = await context.Users.Include(e=>e.Friends).FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
@@ -103,11 +104,19 @@ namespace EventB.Controllers
             var isFriendFromSelect = usersRez.Join(curUser.Friends, rez => rez.Id, fr => fr.FriendUserId, (rez, fr) => rez).ToList();
             isFriendFromSelect.Add(curUser);
             // Вычесть друзей пользователя и себя.
-            usersRez = usersRez.Except(isFriendFromSelect).ToList();
+            var usersResult = usersRez.Except(isFriendFromSelect).Select(e => new SmallFigureFriendVM() {
+                Image = e.Photo,
+                Link = $"/Friends/UserInfo?userId={e.Id}",
+                Title = e.Name
+            }).ToList();
 
-            return View(usersRez);
+            return PartialView("_friendListSmallPartial", usersResult);
         }
-
+        /// <summary>
+        /// Это неактувльно делается на фронте.
+        /// </summary>
+        /// <param name="friendId"></param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize]
         public async Task AddFriend(string friendId) 

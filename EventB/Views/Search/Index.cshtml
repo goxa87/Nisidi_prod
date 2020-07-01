@@ -32,21 +32,4 @@
     <input class="form-submit" type="submit" name="f" value="Найти событие"><br><br>
 </form>
 
-<div class="top-page-header">Поиск сообщников</div>
-<form asp-action="SearchFriend" asp-controller="Friends" asp-antiforgery="true" method="get">
-    <div class="validation-summary-errors validation-summary-valid"></div>
-
-    <label class="form-label">Имя:</label><br>
-    <input class="form-entry-title" type="text" name="name"><br>
-
-    <label class="form-label">Теги (если несколько, то поиск только для первого):</label><br>
-    <input class="form-entry-title" type="text" name="teg"><br>
-
-    <label class="form-label">Город (полностью, если не указан, будет поиск для вашего города)</label><br>
-    <input class="form-entry-title" type="text" name="city"><br>
-
-    <input class="form-submit" type="submit" name="f" value="Найти пользователя"><br>
-
-</form>
-
 @{ ViewData["Script"] = "Search.js";}

@@ -84,15 +84,6 @@
     color:#ffcd00;
 }  
 /* блок друзей*/
-.friend-list-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid #1b5972;
-    padding: 16px;
-    margin: 16px 0;
-}
-
 .friend-list-img {
     max-height: 120px;
     border-radius: 15px;

@@ -54,20 +54,18 @@
             <div class="element-square-container">
                 @foreach (var e in Model.Vizits)
                 {
-                    <div class="events-square-item">
-                        <a asp-route-id="@e.EventId" asp-action="Details" asp-controller="Events">
-                            <figure>
-                                <img src="@e.EventPhoto" />
-                                <figcaption><div>@e.Event.TitleShort</div></figcaption>
-                            </figure>
-                        </a>
-                    </div>
+                    await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.FriendsVM.SmallFigureFriendVM() 
+                    {
+                        Title =e.EventTitle, 
+                        Link = $"/Events/Details/{e.EventId}",
+                        Image = e.EventPhoto
+                    });
                 }
             </div>
         }
     </div>
 
-    <div class="mp-my-content display-none" id="my-events-body">
+    <div class="mp-my-content flex-hsac display-none" id="my-events-body">
         @if (Model.MyEvents == null || Model.MyEvents.Count == 0)
         {
             <div class="mp-none-content">Моих событий пока нет.</div>
@@ -78,21 +76,18 @@
             <div class="element-square-container">
                     @foreach (var e in Model.MyEvents)
                     {
-                <div class="events-square-item">
-                    <a asp-route-id="@e.EventId" asp-action="Details" asp-controller="Events">
-                        <figure>
-                            <img src="@e.Image" />
-                            <figcaption>@e.TitleShort</figcaption>
-                        </figure>
-                    </a>
-                    <a asp-action="EventEdit" asp-controller="Events" asp-route-eventId="@e.EventId">редактировать</a>
-                </div>
+                        await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.FriendsVM.SmallFigureFriendVM()
+                        {
+                            Title = e.Title,
+                            Link = $"/Events/Details/{e.EventId}",
+                            Image = e.Image
+                        });                
                     }         
             </div>
         }
     </div>
 
-    <div id="friends-body" class="mp-my-content display-none">
+    <div id="friends-body" class="mp-my-content flex-hsac display-none">
         @if (Model.Friends == null || Model.Friends.Count == 0)
         {
             <div class="mp-none-content">Друзей пока нет.</div>
@@ -100,25 +95,7 @@
         else
             @foreach (var e in Model.Friends)
             {
-                <div class="friend-list-container">
-                    <div class="left-column-container">
-                        <img src="@e.UserPhoto" class="friend-list-img" />
-                        <div>
-                            <h3>@e.UserName</h3>
-                            <div>Add statistics</div>
-                            <div>Add statistics</div>
-                            <div>Add statistics</div>
-                        </div>
-                    </div>
-
-                    <div class="right-column-container">
-                        <input type="hidden" name="friendId" value="@e.UserId" />
-                        <button class="form-submit" asp-controller="Events" asp-action="UserEvents">События</button>
-                        <button class="form-submit" asp-controller="Messages" asp-action="DirectChat">Сообщение</button>
-                        <button class="form-submit" asp-action="BlockUser">Заблокировать</button>
-                    </div>
-
-                </div>
+                await Html.RenderPartialAsync("_friendBigCardPartial", e);                
             }
     </div>
 
@@ -143,7 +120,7 @@
                             <p>@inv.Event.Title </p>
                         </a>
                         <p>@inv.Event.Place </p>
-                        <p>@inv.Event.Date.ToString("dd-MM-yy hh-mm")</p>
+                        <p>@inv.Event.Date.ToString("dd.MM.yy hh:mm")</p>
                         <p>@inv.Event.City</p>
                         <input id="eveId" type="hidden" value="@inv.EventId">
                         <input id="inviteId" type="hidden" value="@inv.InviteId">

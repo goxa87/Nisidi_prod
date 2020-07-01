@@ -24,7 +24,7 @@
         $('.mp-my-content').addClass('display-none');
         $('.mp-my-content').removeClass('display-block');
         $('#friends-body').removeClass('display-none');
-        $('#friends-body').addClass('display-block');
+        //$('#friends-body').addClass('');
     });
     // Показ приглашения.
     $('#invites').click(function () {

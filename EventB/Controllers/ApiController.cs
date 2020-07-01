@@ -18,15 +18,18 @@ namespace EventB.Controllers
     [ApiController]
     public class ApiController : ControllerBase
     {
+        private readonly ITegSplitter tegSplitter;
         readonly Context context;
         readonly IUserFindService userFind;
         readonly UserManager<User> userManager;
         public ApiController(
             Context _context,
             IUserFindService _userFind,
-            UserManager<User> _userManager
+            UserManager<User> _userManager,
+            ITegSplitter _tegSplitter
             )
         {
+            tegSplitter = _tegSplitter;
             context = _context;
             userFind = _userFind;
             userManager = _userManager;
@@ -177,7 +180,6 @@ namespace EventB.Controllers
             await context.SaveChangesAsync();
             return Ok();
         }
-
         #endregion
 
         #region Секция СООБЩЕНИЯ отправить - создать чат

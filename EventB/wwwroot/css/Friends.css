@@ -1,21 +1,12 @@
-﻿.friend-list-container {
-    border: 1px solid #1b5972;
-    border-radius:4px;
-    padding: 2px;
-    margin: 16px 0;
-    width: 320px;
-}
-
-.friend-list-img {
-    width: 100%;
-    height:200px;
-}
-
-.left-column-container{
+﻿.left-column-container{
     display:flex;
     justify-content:start;
 }
 
+.fr-search-modal {
+    cursor: pointer;
+    width: 70px;
+}
 .orders{
     cursor:pointer;
     width:70px;
@@ -88,5 +79,5 @@ label {
     border-left: none;
     border-radius:0 4px 4px 0;
     background-color:#1b5972;
-        cursor:pointer;
+    cursor:pointer;
 }

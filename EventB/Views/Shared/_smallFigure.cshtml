@@ -1,0 +1,14 @@
+﻿@model EventB.ViewModels.ISmallFigure
+
+
+    <a href="@Model.Link">
+        <div class="flex-vsc small-figure-figure">
+            <div class="image-container min-height-180">
+                <img src="@Model.Image" class="image-self-back" />
+                <div class="image-mask"></div>
+                <img src="@Model.Image" class="image-self-front" />
+            </div>            
+            <div class="small-figure-title">@Model.Title</div>
+        </div>
+    </a>
+

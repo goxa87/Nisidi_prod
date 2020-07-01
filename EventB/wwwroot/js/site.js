@@ -21,6 +21,30 @@ $(document).ready(function () {
             $('#menu-voider').css('height', '0');
         }
     });
+
+    // Согласиться принять в друзья. иоя страница и друзья
+    //agree-friend
+    $('.agree-friend').click(function () {
+        let id = $(this).parents('.friend-list-container').children('#friend-entity-id').val();
+        let button = $(this);
+
+        let req = $.ajax({
+            url: '/Api/SubmitFriend',
+            data: {
+                friendId: id
+            }
+        });
+        req.then(function (data, stat, jqXHR) {
+            if (jqXHR.status = 200) {
+                button.removeClass('.agree-friend');
+                button.text('Добавлен(а)');
+                $(this).removeClass('.agree-friend');
+            }
+            else {
+                alert('Что-то пошло не так(');
+            }
+        });
+    });
 });
 
 /**
