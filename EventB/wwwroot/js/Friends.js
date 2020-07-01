@@ -22,27 +22,29 @@
     });
 
     // Поиск из списка друзей, по части имени.
-    $('.search-submit').click(function (event) {
-        event.preventDefault();
-        let search = $('.search-entry').val();
-        // Если пустая строка показать всех.
-        if (search == '') {
-            $('.friend-list-container').each(function (index, value) {
-                $(value).fadeIn();
-            });
-        }
-        else
-        {
-            // Показать только тех кто содержит как чать имени значение из поиска.
-            $('.friend-list-container').each(function (index, value) {
-                let name = $('h3',this).text();
-                if (!name.includes(search))
-                {
-                    $(this).fadeOut();
-                }
-            });
+    $(document).on('keyup', function () {
+        if ($('#fr-filter').is(':focus')) {
+            searchFriend();
         }
     });
+    $('.fr-filter-clear').click(function () {
+        clearSearch();
+    });
+    function clearSearch() {
+        $('#fr-filter').val('');
+        $('.friend-list-container').removeClass('display-none');
+    }
+    function searchFriend() {
+        let searchText = $('#fr-filter').val();
+        if (searchText == '') {
+            $('.friend-list-container').removeClass('display-none');
+            return;
+        }
+        $('.friend-list-container').addClass('display-none');
+        let opps = $(".friend-list-container:contains(" + searchText + ")");
+        $(opps).removeClass('display-none');
+        return;
+    };
 
     // блокировка пользователя
     $('#btn-block').click(function (event) {
@@ -118,10 +120,12 @@
             $('.friend-list-container').slideUp();
             $(this).text('все');
             $('#agree-friend').parents('.friend-list-container').slideDown();
+            clearSearch();
         }
         else {
             $('.friend-list-container').slideDown();
             $(this).text('заявки');
+            clearSearch();
         }
         
     });

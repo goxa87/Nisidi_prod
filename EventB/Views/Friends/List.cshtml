@@ -6,59 +6,22 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-    <div class="top-page-header">Ваши подписки
-        <form asp-action="SearchFriend" method="post">
-            <input type="hidden" id="user-id" value="@ViewBag.userId">
-            <input type="submit" class="search-submit" value="Поиск" />
-            <input name="search" class="search-entry" placeholder="из этого списка" />
-        </form>
-        <span class="orders">заявки</span>
-    </div>
-
-@foreach (var item in Model)
-{
-    if (item.IsBlocked && !item.BlockInitiator)
-        continue;
-
-<div class="friend-list-container">
-    <input type="hidden" value="@item.FriendId" id="friend-entity-id">
-    <a asp-action="UserInfo" asp-route-userId="@item.UserId">
-        <div class="left-column-container">
-            <img src="@item.UserPhoto" class="friend-list-img" />
-            <div>
-                <h3>@item.UserName</h3>
-                @if (!item.IsConfirmed && item.FriendInitiator)
-                {
-                    <div class="red-btn-alert">Ваша заявка в друзья не подтверждена</div>
-                }
-                @if (!item.IsConfirmed && !item.FriendInitiator)
-                {
-                    <div class="form-submit" id="agree-friend">Добавить в друзья</div>
-                }
-
-                <div>Add statistics</div>
-                <div>Add statistics</div>
-            </div>
-        </div>
-    </a>
-    <div class="right-column-container">
-        <input type="hidden" id="friend-id" name="friendId" value="@item.UserId" />
-        @if (!item.IsBlocked)
-        {
-            <button class="form-submit" id="btn-block">Заблокировать</button>
-        }
-        else
-        {
-            <button class="red-btn-alert" id="btn-block">Заблокирован</button>
-        }
-        <div class="form-submit ref-holder"><a class="form-submit" asp-controller="Messages" asp-action="Index" asp-route-opponentId="@item.UserId">Сообщение</a></div>
-
-        <button class="form-submit" asp-action="DeleteFriend">Удалить из друзей</button>
-
-    </div>
+<div class="top-page-header flex-hsbs flex-wr">
+    <span>Ваши подписки</span>    
+    <span class="orders">заявки</span>
 </div>
-}
+<span class="small-label">Фильтр</span><br>
+<input id="fr-filter" class="fr-filter" /><img src="~/resourses/cancel.png" class="fr-filter-clear"/>
+<div class="flex-hsac flex-wr">
+    @foreach (var item in Model)
+    {
+        if (item.IsBlocked && !item.BlockInitiator)
+            continue;
 
+        await Html.RenderPartialAsync("~/Views/Shared/_friendBigCardPartial.cshtml", item); 
+
+    }
+</div>
 
 
 

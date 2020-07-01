@@ -1,0 +1,39 @@
+﻿@model EventBLib.Models.Friend
+
+    <div class="friend-list-container">
+        <input type="hidden" value="@Model.FriendId" id="friend-entity-id">
+        <a asp-action="UserInfo" asp-route-userId="@Model.UserId">
+            <div class="friend-list-img">
+                <div class="image-container">
+                    <img src="@Model.UserPhoto" class="image-self-back" alt="event" />
+                    <div class="image-mask"></div>
+                    <img src="@Model.UserPhoto" class="image-self-front" alt="event" />
+                </div>                
+            </div>
+        </a>
+        <hr>
+        <div>
+            <h3 class="central-title">@Model.UserName</h3>
+            @if (!Model.IsConfirmed && Model.FriendInitiator)
+            {
+                <div class="red-btn-alert width100">Ваша заявка в друзья не подтверждена</div>
+            }
+            @if (!Model.IsConfirmed && !Model.FriendInitiator)
+            {
+                <div class="action-button width100" id="agree-friend">Добавить в друзья</div>
+            }        
+            <input type="hidden" id="friend-id" name="friendId" value="@Model.UserId" />
+            @if (!Model.IsBlocked)
+            {
+                <button class="action-button width100" id="btn-block">Заблокировать</button>
+            }
+            else
+            {
+                <button class="red-btn-alert width100" id="btn-block">Заблокирован</button>
+            }
+            <button class="action-button width100" asp-controller="Messages" asp-action="Index" asp-route-opponentId="@Model.UserId">Сообщение</button>
+
+            <button class="action-button width100" asp-action="DeleteFriend">Удалить из друзей</button>
+
+        </div>
+    </div>
