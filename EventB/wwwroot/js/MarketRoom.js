@@ -64,4 +64,37 @@
         $('.modal-body').html(content);
         
     });
+
+    // Кнопка удалить событие 
+    $('.right-columnn').on('click', '.lk-delete-event', function () {
+        let eveId = $(this).parent().children('.kibnet-event-id').val();
+        let eventContainer = $(this);
+        console.log(eveId)
+        console.log(eventContainer)
+
+        function onConfirmDelete() {
+            $.ajax({
+                url: '/api/MarketKibnet/delete-event',
+                data: {                    
+                    eventId: eveId
+                },
+                success: () => {
+                    
+                    console.log($(eventContainer))
+                    $(eventContainer).parents('.lk-event').html('<p>Удалено</p>');
+                },
+                error: function () {
+                    alert('Событие не удалено. Запрещено дибо не доступно.');
+                }
+            });
+        }
+        
+        let data = { id: eveId, container: eventContainer }
+        console.log(data)
+        getModelWindow('Удаление события', true, onConfirmDelete);
+        let content = `<h3>Внимание!</h3>
+            <p>Удалив данное событие вы не сможете его восстановить.</p>
+            <p>также будут удалены все отметки о визитах и чат.</p>`;
+        $('.modal-body').html(content);
+    });
 });

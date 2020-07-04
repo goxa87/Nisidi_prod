@@ -1,9 +1,13 @@
 ﻿using EventBLib.DataContext;
 using EventBLib.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,12 +17,15 @@ namespace EventB.Services.MarketKibnetApiServices
     {
         private readonly Context context;
         private readonly UserManager<User> userManager;
+        IWebHostEnvironment environment;
 
         public MarketKibnetApiServices(Context _context,
-            UserManager<User> _userManager)
+            UserManager<User> _userManager,
+             IWebHostEnvironment env)
         {
             context = _context;
             userManager = _userManager;
+            environment = env;
         }
 
         /// <summary>
@@ -39,6 +46,44 @@ namespace EventB.Services.MarketKibnetApiServices
             }
 
             curEvent.Type =  (EventType)Enum.GetValues(typeof(EventType)).GetValue(newType); ;
+            await context.SaveChangesAsync();
+            return true;
+        }
+
+        /// <summary>
+        /// Удаление события.
+        /// </summary>
+        /// <param name="eventId">id события</param>
+        /// <param name="userName">логин пользователя</param>
+        /// <returns></returns>
+        public async Task<bool> DeleteEvent(int eventId, string userName)
+        {
+            if (eventId == default || userName == default)
+                return false;
+
+            var user = await userManager.FindByNameAsync(userName);
+            var eve = await context.Events.Include(e => e.Chat)
+                .Include(e => e.EventTegs)
+                .Include(e => e.Vizits)
+                .FirstOrDefaultAsync(e => e.EventId == eventId);
+
+            if (eve.UserId != user.Id) return false;
+
+            context.UserChats.RemoveRange(await context.UserChats.Where(e => e.ChatId == eve.Chat.ChatId).ToListAsync());
+            context.Messages.RemoveRange(await context.Messages.Where(e => e.ChatId == eve.Chat.ChatId).ToListAsync());
+            context.Chats.Remove(eve.Chat);
+
+            var photoPath = environment.WebRootPath + "/" + eve.Image;
+            Debug.WriteLine("image path: ", photoPath);
+
+            if (File.Exists(photoPath))
+            {
+                File.Delete(photoPath);
+            }
+
+            context.Invites.RemoveRange(context.Invites.Where(e => e.EventId == eventId));
+            context.Remove(eve);
+
             await context.SaveChangesAsync();
             return true;
         }

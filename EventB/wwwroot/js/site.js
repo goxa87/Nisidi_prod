@@ -113,7 +113,7 @@ function getModelWindow(title, okCancel, okCallback, cancelCollback) {
       // нажатие кнопы ОК
     $('.modal-ok').click(() => {
         if(okCallback !== undefined) okCallback();
-        okCallback();
+        //okCallback();
         $('.modal-shadow').remove();
     });
     // Нажатие отмены.
