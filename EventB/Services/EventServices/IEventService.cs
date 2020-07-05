@@ -1,4 +1,5 @@
-﻿using EventBLib.Models;
+﻿using EventB.ViewModels;
+using EventBLib.Models;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,12 @@ namespace EventB.Services.EventServices
 {
     public interface IEventService
     {
+
+        Task<Event> AddEvent(AddEventViewModel model, string userName);
+
+        Task<Event> Details(int id);
+
+        Task<int> SendMessage(string userId, string userName, int chatId, string text);
         /// <summary>
         /// Получение списка изменений в событии.
         /// </summary>

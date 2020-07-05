@@ -157,88 +157,7 @@ namespace EventB.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Значение картинки если ее нет.
-                string src = "/images/defaultimg.jpg";
-                if (model.MainPicture != null)
-                {
-                    // Формирование строки имени картинки.
-                    string fileName = String.Concat(DateTime.Now.ToString("dd-MM-yy_hh-mm"), "_", model.MainPicture.FileName);
-                    src = String.Concat("/images/EventImages/", fileName);
-                    // Запись на диск.
-                    using (var FS = new FileStream(environment.WebRootPath + src, FileMode.Create))
-                    {
-                        await model.MainPicture.CopyToAsync(FS);
-                    }
-                }
-                // Пользователь который выложил.
-                var creator = await context.Users.FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
-                // Добавляем в посетителей автора.
-                var vizit = new Vizit
-                {
-                    User = creator,
-                    EventTitle = model.Title,
-                    EventPhoto = src,
-                    VizitorName = creator.Name,
-                    VizitirPhoto = creator.Photo
-                };
-
-                var vizits = new List<Vizit> { vizit };
-
-                var tegs = tegSplitter.GetEnumerable(model.Tegs.ToUpper()).ToList();
-                List<EventTeg> eventTegs = new List<EventTeg>();
-                foreach (var teg in tegs)
-                {
-                    eventTegs.Add(new EventTeg { Teg = teg });
-                }
-                // Создание чата к событию.
-                var chat = new Chat
-                {
-                    Messages = new List<Message>
-                    {
-                        new Message
-                        {
-                            PersonId = creator.Id,
-                            PostDate = DateTime.Now,
-                            SenderName = creator.Name,
-                            Text = "Событие создано!",
-                            EventState = true
-                        }
-                    },
-                    UserChat = new List<UserChat>()
-                };
-
-                UserChat userChat = new UserChat
-                {
-                    UserId = creator.Id,
-                    ChatName = model.Title.Length > 25 ? model.Title.Remove(25) + "..." : model.Title,
-                    ChatPhoto = src
-                };
-                chat.UserChat.Add(userChat);
-                // Итоговое формирование события.
-                var eve = new Event
-                {
-                    Title = model.Title,
-                    NormalizedTitle = model.Title.ToUpper(),
-                    Body = model.Body,
-                    EventTegs = eventTegs,
-                    City = model.City,
-                    NormalizedCity = model.City.ToUpper(),
-                    Place = model.Place,
-                    Date = model.Date,
-                    Type = EventType.Private,
-                    Likes = 0,
-                    Views = 0,
-                    Shares = 0,
-                    WillGo = 1,
-                    Creator = creator,
-                    Image = src,
-                    CreationDate = DateTime.Now,
-                    Vizits = vizits,
-                    Chat = chat
-                };
-
-                await context.Events.AddAsync(eve);
-                await context.SaveChangesAsync();
+                var eve = await eventService.AddEvent(model, User.Identity.Name);
                 return Redirect($"/Events/Details/{eve.EventId}");
             }
             else
@@ -255,41 +174,10 @@ namespace EventB.Controllers
         /// <returns></returns>
         public async Task<ActionResult> Details(int? id)
         {
-            if (id != null)
+            if (id.HasValue)
             {
-                var eve = await context.Events.
-                    Include(e => e.Creator).
-                    Include(e => e.Chat).
-                    Include(e => e.EventTegs).
-                    Include(e => e.Vizits).
-                    FirstOrDefaultAsync(e => e.EventId == id);
-
-                Chat chat;
-
-                if (eve.Chat != null)
-                {
-                    var messages = await context.Messages.
-                        Where(e => e.ChatId == eve.Chat.ChatId).
-                        OrderByDescending(e => e.PostDate).
-                        Take(30).ToListAsync();
-
-                    chat = new Chat
-                    {
-                        ChatId = eve.Chat.ChatId,
-                        Messages = messages
-                    };
-                }
-                else
-                {
-                    // Создает псевдо класс который нигде не сохраняется.(для отображения в вью).
-                    chat = new Chat
-                    {
-                        ChatId = 0,
-                        Messages = new List<Message>()
-                    };
-                }
-                eve.Chat = chat;
-                var user = await userFindService.GetCurrentUserAsync(User.Identity.Name);
+                var eve = await eventService.Details(id.Value);
+                var user = await userManager.FindByNameAsync(User.Identity.Name);
                 if (user != null)
                 {
                     ViewData["UserId"] = user.Id;
@@ -316,46 +204,7 @@ namespace EventB.Controllers
         {            
             return await eventService.GetEventMessages(eventId);
         }
-
-        /// <summary>
-        /// Создание чата для события.
-        /// </summary>
-        /// <param name="eventId"></param>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        [Route("/Events/CreateEventChat")]
-        [Authorize]
-        public async Task<int> CreateEventChat(int eventId, string userId)
-        {
-            // Здесь может быть логика оповещения владельца события о начале чата.
-            // Создание чата для первого пользователя.
-            var event1 = await context.Events.FirstOrDefaultAsync(e => e.EventId == eventId);
-            if (event1 == null)
-            {
-                Response.StatusCode = 204;
-                return 0;
-            }
-            var name = event1.Title.Length > 50 ? event1.Title.Remove(49) : event1.Title;
-
-            var userChat = new UserChat
-            {
-                UserId = userId,
-                ChatName = name
-            };
-            var chat = new Chat
-            {
-                UserChat = new List<UserChat>
-                {
-                    userChat
-                },
-                EventId = eventId
-            };
-            event1.Chat = chat;
-            context.Events.Update(event1);
-            await context.SaveChangesAsync();
-
-            return chat.ChatId;
-        }
+        
         /// <summary>
         /// Отправка сообщения в чат события.
         /// </summary>
@@ -366,43 +215,8 @@ namespace EventB.Controllers
         [Route("/Events/SendMessage")]
         public async Task<StatusCodeResult> SendMessage(string userId, string userName, int chatId, string text)
         {
-            var chat = await context.Chats.Include(e => e.Event).
-                FirstOrDefaultAsync(e => e.ChatId == chatId);
-            if (chat == null)
-            {
-                Response.StatusCode = 204;
-                return StatusCode(204);
-            }
-
-            var userChat = await context.UserChats.
-                FirstOrDefaultAsync(e => e.UserId == userId && e.ChatId == chatId);
-            if (userChat == null)
-            {
-                // Создать юзер чат.
-                var newUserChat = new UserChat
-                {
-                    ChatName = chat.Event.TitleShort,
-                    UserId = userId,
-                    ChatId = chatId
-                };
-                await context.UserChats.AddAsync(newUserChat);
-                await context.SaveChangesAsync();
-            }
-
-            Message message = new Message
-            {
-                ChatId = chatId,
-                PersonId = userId,
-                SenderName = userName,
-                Text = text,
-                ReciverId = "0",
-                PostDate = DateTime.Now,
-                Read = false
-            };
-            await context.Messages.AddAsync(message);
-            await context.SaveChangesAsync();
-            //task1.Wait();
-            return Ok();
+            var result = await eventService.SendMessage(userId, userName, chatId, text);
+            return StatusCode(result);
         }
 
         /// <summary>
@@ -414,6 +228,17 @@ namespace EventB.Controllers
         [Route("/Event/SubmitToEvent")]
         public async Task<StatusCodeResult> SubmitToEvent(int eventId)
         {
+            // !! не создавать UserChat если он уже есть
+            // Поверить
+            // ВАЖНАЯ функция
+
+
+
+
+
+
+
+
             // Проверить подписан ли 
             // Удалить визит
             // Или создать визит и добавить чат
