@@ -742,10 +742,9 @@ figure img {
 /*сообщения*/
 .message-item {
     background-color: #ccc;
-    margin: 4px 16px;
     padding: 4px;
+    margin-bottom:8px;
     border: 1px solid #1b5972;
-    max-width: 80%;
 }
 
 .my-message {

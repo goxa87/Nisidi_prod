@@ -146,53 +146,10 @@
     color:#ffcd00;
 }
 
-.message-list {
+.ed-message-list {
     width: 100%;
 }
 
-.message-item {
-    width: 100%;
-    background-color:#1b5972;
-    padding:8px;
-    margin-bottom:16px;
-}
-
-.message-sender {
-    color: #ffcd00;
-    font-size: 14px;
-    text-transform: uppercase;
-}
-
-.message-text{
-    color:#e4dcc5;
-}
-
-.message-date {
-    color: #f1ead899;
-    font-size: 10px;
-}
-
-.message-item-change {
-    width: 100%;
-    background-color: #1b5972;
-    padding: 8px;
-    margin-bottom: 16px;
-}
-
-.message-sender-change {
-    color: #ffcd00;
-    font-size: 14px;
-    text-transform: uppercase;
-}
-
-.message-text-change {
-    color: #e4dcc5;
-}
-
-.message-date-change {
-    color: #f1ead899;
-    font-size: 10px;
-}
 
 form{
     margin-bottom:16px;

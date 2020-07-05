@@ -14,6 +14,9 @@ using EventBLib.DataContext;
 using EventB.Services;
 using EventBLib.Models;
 using EventB.Services.MarketKibnetApiServices;
+using Microsoft.VisualStudio.Web.CodeGeneration.Utils.Messaging;
+using EventB.Services.MessageServices;
+using EventB.Services.EventServices;
 
 namespace EventB
 {
@@ -68,6 +71,8 @@ namespace EventB
             services.AddTransient<IUserFindService, UserFindService>();
             services.AddScoped<IEventSelectorService, EventSelectorService>();
             services.AddTransient<IMarketKibnetApiServices, MarketKibnetApiServices>();
+            services.AddTransient<IMessageService, MessageService>();
+            services.AddTransient<IEventService, EventService>();
             //services.AddScoped<IViewModelFactory,ViewModelFactory>();
         }
 

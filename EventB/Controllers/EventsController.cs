@@ -18,12 +18,14 @@ using EventB.ViewModels.EventsVM;
 using System.Diagnostics;
 using System.Text;
 using Microsoft.CodeAnalysis.CSharp;
+using EventB.Services.EventServices;
 
 namespace EventB.Controllers
 {
     public class EventsController : Controller
     {
         private Context context { get; }
+        private readonly IEventService eventService;
         private readonly SignInManager<User> signInManager;
         readonly UserManager<User> userManager;
         readonly IUserFindService userFindService;
@@ -32,6 +34,7 @@ namespace EventB.Controllers
         IEventSelectorService eventSelector;
 
         public EventsController(Context c,
+            IEventService _eventService,
             SignInManager<User> UM,
             IWebHostEnvironment env,
             IUserFindService _userFindService,
@@ -40,6 +43,7 @@ namespace EventB.Controllers
              UserManager<User> _userManager)
         {
             context = c;
+            eventService = _eventService;
             signInManager = UM;
             userManager = _userManager;
             environment = env;
@@ -302,7 +306,17 @@ namespace EventB.Controllers
         }
 
         #region АПИ для деталей события
-        // Создание чата
+        /// <summary>
+        /// Получение истории изменений.
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        [Route("/Evetns/GetEventMessages"), HttpGet]
+        public async Task<List<Message>> GetEventMessages(int eventId)
+        {            
+            return await eventService.GetEventMessages(eventId);
+        }
+
         /// <summary>
         /// Создание чата для события.
         /// </summary>

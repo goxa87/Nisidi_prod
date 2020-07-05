@@ -64,22 +64,14 @@
 
 <div class="bottom-menu">
     <span class="bottom-menu-item bottom-menu-item-selected" id="btn-changes">Изменения</span>
-    <span class="bottom-menu-item" id="btn-chat">Чат</span>
+    <span class="bottom-menu-item" id="btn-chat">Комментарии</span>
     <span class="bottom-menu-item" id="btn-vizitors">Участники(@Model.Vizits.Count())</span>
 
 </div>
 <div class="bottom-body">
-
     <!--Изменения-->
-    <div class="bottom-page" id="changes">
-        @foreach (var mes in Model.Chat.Messages.Where(e => e.EventState).ToList())
-        {
-            <div class="message-item-change">
-                <div class="message-sender-change">@mes.SenderName</div>
-                <div class="message-text-change">@mes.Text</div>
-                <div class="message-date-change">@mes.PostDate</div>
-            </div>
-        }
+    <div class="bottom-page" id="ed-changes">
+        Загрузка...
     </div>
 
     <!--чат-->
@@ -91,37 +83,11 @@
             <input type="hidden" id="event-id" value="@Model.EventId" />
             <input type="hidden" id="chat-id" value="@Model.Chat.ChatId" />
             <button type="submit" id="btn-send">Отправить</button>
-            <input type="text" id="text" />
+            <textarea id="text" ></textarea>
 
         </form>
-        <div class="message-list">
-            @if (Model.Chat.Messages.Count == 0)
-            {
-                <div class="message-item">
-                    <div class="message-text">Сообщений пока нет</div>
-                </div>
-            }
-            else
-            {
-                @foreach (var message in Model.Chat.Messages)
-                {
-                    <div class="message-item">
-                        <div class="message-sender">@message.SenderName</div>
-                        <div class="message-text">@message.Text</div>
-                        <div class="message-date">@message.PostDate</div>
-                    </div>
-                }
-                @if (Model.Chat.Messages.Count == 30)
-                {
-                    @* здесь не отображается если сообщений меньше 30. т.е. истории нет в базе*@
-                    <form id="form-load">
-                        <input type="hidden" id="first-id" value="0" />
-                        <!--количество на загрузку из js-->
-                        <button id="btn-load">загрузить историю</button>
-                    </form>
-                }
-            }
-
+        <div class="ed-message-list">   
+            Загрузка...
         </div>
     </div>
 

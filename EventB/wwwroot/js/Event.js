@@ -1,12 +1,14 @@
 ﻿// Начало исполнения
 $(document).ready(function ()
-{
-    
+{    
     // Флаг прекращения загрузки.
     var dynamicLoadStopper = true;
     var block = false;
     // Сразу вызов для загрузки.
-    prepareDynamicLoad();    
+    if ($('#end-marker').length) {
+        prepareDynamicLoad(); 
+    }
+      
     // Start постранично при нажатии загрузить еще.
     $('#ev-load-more').click(function () {        
             if (dynamicLoadStopper == true) {
@@ -51,7 +53,6 @@ $(document).ready(function ()
                 block = false;
                 $('#noTrespassingOuterBarG').addClass('display-none');
                 $('#ev-load-more').removeClass('display-none');
-
             }
             else {
                 dynamicLoadStopper = false
@@ -61,7 +62,28 @@ $(document).ready(function ()
         });
     }
     // DETAILS
-    
+    // Загрузка истории изменений и сообщений автоматически
+    console.log($('#ed-changes'))
+    if ($('#ed-changes').length) {
+        let eve = $('#event-id').val();
+        var user = $('#user-id').val();
+        $.ajax({
+            url: '/Evetns/GetEventMessages',
+            data: {
+                eventId: eve
+            },
+            success: (data) => {
+                // Загрузка в изменения
+                console.log(data)
+                let changes = data.filter(e=>e.eventState === true)
+                let block = renderMessage(changes, user);
+                $('#ed-changes').html(block);
+                // Загрузка в комментарии
+                block = renderMessage(data, user);
+                $('.ed-message-list').html(block);
+            }
+        });
+    }
     // клик на элементе меню внизу страницы
     $('#btn-changes').click(function ()
     {
@@ -70,7 +92,7 @@ $(document).ready(function ()
         $(this).addClass('bottom-menu-item-selected');
 
         $('.bottom-page').addClass('display-none');
-        $('#changes').removeClass('display-none');
+        $('#ed-changes').removeClass('display-none');
     });
     $('#btn-chat').click(function () {
         // bottom-menu-item-selected
@@ -101,7 +123,7 @@ $(document).ready(function ()
         if ($('#chat-id').val() == '0') {
             // создаем чат отправляем сообщение(включает отправку)
             $('.message-item').empty();
-            CreateChat();
+            console.log('Чат не создан.');
         }
         else
         {
@@ -109,34 +131,6 @@ $(document).ready(function ()
             SendMessage();
         }
     });
-
-    // [Route("CreateEventChat")]
-    // [Authorize]
-    //    public async Task < int > CreateEventChat(int eventId, string userId)
-    //  создать чат для события
-    // Создать чат.
-    function CreateChat()
-    {
-        let user = $('#user-id').val();
-        let event = $('#event-id').val();
-
-        $.ajax({
-            url: '/Events/CreateEventChat',
-            data:
-            {
-                eventId: event,
-                userId: user
-            }, complete: function (responce)
-            {
-                $('#chat-id').val(responce.responseJSON);
-                SendMessage();
-            }
-        });
-
-    }
-    
-    // [Route("SendMessage")]
-    //    public async Task SendMessage(string userId,string userName, int chatId, string text)
 
     // Отправка сообщения
     function SendMessage()
@@ -164,15 +158,15 @@ $(document).ready(function ()
         });
 
     }
-    // Добавление элекмента в дом (сообщение чата).
-    function AddMessageToListMessage(text)
+    // Добавление элемента в дом (сообщение чата).
+    function AddMessageToListMessage(text1)
     {
-        let date = Date();
-        let block ='<div class="message-item">'+
-            '<div class="message-sender">Вы</div>'+
-            '<div class="message-text">' + text + '</div>' +
-            '<div class="message-date">' + date + '</div></div>';
-        $('.message-list').prepend(block);
+        let date1 = Date();
+        let userId = $('#user-id').val();
+        let data = { personId: userId, text: text1, date: date1  }
+
+        let block = renderMessage(data, userId);
+        $('.ed-message-list').prepend(block);
 
     }
     
