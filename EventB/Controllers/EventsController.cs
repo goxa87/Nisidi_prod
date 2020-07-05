@@ -622,7 +622,7 @@ namespace EventB.Controllers
                 MainPicture = eve.Image,
                 EventId = eve.EventId
             };
-
+            ViewBag.EventType = eve.Type;
             return View(model);
         }
 
@@ -715,20 +715,23 @@ namespace EventB.Controllers
                     eve.NormalizedCity = model.City.ToUpper();
                     chatMessage += $"<p>Новый город</p><p>Стало: {model.City}</p><br>";
                 }
-                if (model.Date != model.OldDate)
+                if (model.Date != model.OldDate && eve.Type == EventType.Private)
                 {
                     eve.Date = model.Date;
                     chatMessage += $"<p>новое время</p><p>Стало: {model.Date.ToString("dd.MM.yy hh:mm")}</p><br>";
                 }
                 var user = await userManager.GetUserAsync(User);
-                eve.Chat.Messages.Add(new Message
+                if(chatMessage != "<br>")
                 {
-                    PersonId = user.Id,
-                    EventState = true,
-                    PostDate = DateTime.Now,
-                    SenderName = user.Name,
-                    Text = chatMessage
-                });
+                    eve.Chat.Messages.Add(new Message
+                    {
+                        PersonId = user.Id,
+                        EventState = true,
+                        PostDate = DateTime.Now,
+                        SenderName = user.Name,
+                        Text = chatMessage
+                    });                    
+                }
                 context.Events.Update(eve);
                 await context.SaveChangesAsync();
                 return Redirect($"/Events/Details/{eve.EventId}");

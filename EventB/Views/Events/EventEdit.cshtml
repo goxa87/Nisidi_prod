@@ -47,9 +47,16 @@ else
 
     <label class="form-label" asp-for="Date"></label>
     <span asp-validation-for="Date"></span><br>
-    <div class="content">@Model.Date.ToString("dd.MM.yyyy hh:mm") изменить на </div>
-    <input class="form-date" type="datetime-local" value="@Model.Date" asp-for="Date" /><br>
 
+    @if (ViewBag.EventType == EventType.Private)
+    {
+        <div class="content">@Model.Date.ToString("dd.MM.yyyy hh:mm") изменить на </div>
+        <input class="form-date" type="datetime-local" value="@Model.Date" asp-for="Date" /><br>
+    }
+    else
+    {
+        <p> Изменение даты для событий Global невозможно.</p>
+    }
     <label class="form-label" asp-for="MainPicture"></label>
     <img class="img-100" src="@Model.MainPicture">
     <span asp-validation-for="Date"></span><br>
@@ -59,7 +66,7 @@ else
     <input type="hidden" asp-for="EventId">
 
     <input class="form-submit" type="submit" value="Сохранить" /><hr>
-    
+
 </form>
 }
 @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
