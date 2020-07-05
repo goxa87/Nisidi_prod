@@ -36,8 +36,6 @@
     // Нажате на кнопку пойду в контейнере приглашения.
     $('#will-go').click(function ()
     {
-        //[Route("SubmitInvite")]
-        //public async Task SubmitInvite(int eventId, int inviteId)
         let eId = $(this).parent().children('#eveId').val();
         let invId = $(this).parent().children('#inviteId').val();
         $.ajax({
@@ -46,7 +44,7 @@
                 eventId: eId,
                 inviteId: invId
             },
-            success: function () {
+            success: () => {
                 $(this).parents('.total-invite').fadeOut(600);
             },
             error: data => { console.log(data);}
@@ -55,15 +53,13 @@
 
     // Нажате на кнопку НЕпойду в контейнере приглашения.
     $('#will-notgo').click(function () {
-         //[Route("RefuseInvite")]
-        //public async Task RefuseInvite(int inviteId)
         let invId = $(this).parent().children('#inviteId').val();
         $.ajax({
             url: '/MyPage/RefuseInvite',
             data: {
                 inviteId: invId
             },
-            success: function () {
+            success: () => {
                 $(this).parents('.total-invite').fadeOut(600);
             },
             error: data => { console.log(data); }

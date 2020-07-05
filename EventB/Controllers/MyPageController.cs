@@ -63,15 +63,18 @@ namespace EventB.Controllers
         /// <param name="inviteId">Ид приглашения.</param>
         /// <returns></returns>
         [Route("/MyPage/SubmitInvite")]
-        public async Task SubmitInvite(int eventId, int inviteId)
+        public async Task<StatusCodeResult> SubmitInvite(int eventId, int inviteId)
         {
-            var curUser = await context.Users.FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
-            var eve = await context.Events.FirstOrDefaultAsync(e => e.EventId == eventId);
+            var curUser = await userManager.FindByNameAsync(User.Identity.Name);
+            var eve = await context.Events.Include(e => e.Chat).FirstOrDefaultAsync(e => e.EventId == eventId);
             var inv = await context.Invites.FirstOrDefaultAsync(e => e.InviteId == inviteId);
+            if(curUser.Id != inv.UserId)
+            {
+                return StatusCode(401);
+            }
             if (curUser == null || eve == null || inv == null)
             {
-                Response.StatusCode = 410;
-                return;
+                return StatusCode(410);
             }
             // Добавляем Визит.
             var newVizit = new Vizit
@@ -84,9 +87,18 @@ namespace EventB.Controllers
                 VizitirPhoto = curUser.Photo
             };
             context.Vizits.Add(newVizit);
+            var userChat = new UserChat
+            {
+                ChatId = eve.Chat.ChatId,
+                ChatName = eve.TitleShort,
+                ChatPhoto = eve.Image,
+                UserId = curUser.Id
+            };
+            context.UserChats.Add(userChat);
             // Удаляем приглашение.
             context.Invites.Remove(inv);
             await context.SaveChangesAsync();
+            return Ok();
         }
 
         /// <summary>

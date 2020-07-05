@@ -109,35 +109,35 @@
             foreach (var inv in Model.Invites)
             {
                 <div class="total-invite">
-                <div class="invite-header">Приглашение</div>
+                    <div class="invite-header">Приглашение</div>
 
-                <div class="invite-container" alt="@inv.Event.Title">
-                    <a asp-action="Details" asp-controller="Events" asp-route-id="@inv.EventId">
-                        <img class="item-img" src="@inv.Event.Image">
-                    </a>
-                    <div class="inv-content">
+                    <div class="invite-container" alt="@inv.Event.Title">
                         <a asp-action="Details" asp-controller="Events" asp-route-id="@inv.EventId">
-                            <p>@inv.Event.Title </p>
+                            <img class="item-img" src="@inv.Event.Image">
                         </a>
-                        <p>@inv.Event.Place </p>
-                        <p>@inv.Event.Date.ToString("dd.MM.yy hh:mm")</p>
-                        <p>@inv.Event.City</p>
-                        <input id="eveId" type="hidden" value="@inv.EventId">
-                        <input id="inviteId" type="hidden" value="@inv.InviteId">
-                        <div class="btn" id="will-go">Пойду )</div>
-                        <div class="btn" id="will-notgo">Не пойду (</div>
+                        <div class="inv-content">
+                            <a asp-action="Details" asp-controller="Events" asp-route-id="@inv.EventId">
+                                <p>@inv.Event.Title </p>
+                            </a>
+                            <p>@inv.Event.Place </p>
+                            <p>@inv.Event.Date.ToString("dd.MM.yy hh:mm")</p>
+                            <p>@inv.Event.City</p>
+                            <input id="eveId" type="hidden" value="@inv.EventId">
+                            <input id="inviteId" type="hidden" value="@inv.InviteId">
+                            <div class="btn" id="will-go">Пойду )</div>
+                            <div class="btn" id="will-notgo">Не пойду (</div>
 
-                    </div>
+                        </div>
 
-                    <div class="inv-content">
-                        <p><b>Вас приглашает @inv.InviterName:</b></p>
-                        <p>@inv.InviteDescription</p>
+                        <div class="inv-content">
+                            <p><b>Вас приглашает @inv.InviterName:</b></p>
+                            <p>@inv.InviteDescription</p>
+                        </div>
+                        <a asp-action="UserInfo" asp-controller="Friends" asp-route-userId="@inv.InviterId">
+                            <img class="item-img" src="@inv.InviterPhoto" alt="@inv.InviterName" />
+                        </a>
                     </div>
-                    <a asp-action="UserInfo" asp-controller="Friends" asp-route-userId="@inv.InviterId">
-                        <img class="item-img" src="@inv.InviterPhoto" alt="@inv.InviterName" />
-                    </a>
                 </div>
-            </div>
             }
         }       
 

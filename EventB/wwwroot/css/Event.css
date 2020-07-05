@@ -31,7 +31,7 @@
         font-size: 18px;
         margin: 5px 0;
         font-weight: bold;
-        min-height: 4rem;
+        min-height: 2rem;
     }
 
     .item-container h4 {
@@ -40,7 +40,7 @@
         font-size: 16px;
         font-weight: bold;
         padding-right: 30px;
-        min-height: 4rem;
+        min-height: 2rem;
     }
 
 
