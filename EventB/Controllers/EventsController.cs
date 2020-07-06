@@ -231,68 +231,8 @@ namespace EventB.Controllers
             // !! не создавать UserChat если он уже есть
             // Поверить
             // ВАЖНАЯ функция
-
-
-
-
-
-
-
-
-            // Проверить подписан ли 
-            // Удалить визит
-            // Или создать визит и добавить чат
-            var user = await userFindService.GetCurrentUserAsync(User.Identity.Name);
-
-            var curentEv = await context.Events.
-                Include(e => e.Vizits).ThenInclude(e => e.User).
-                Include(e => e.Chat).ThenInclude(e => e.UserChat).
-                FirstOrDefaultAsync(e => e.EventId == eventId);
-            // Если не найдено событие.
-            if (curentEv == null)
-            {
-                return StatusCode(204);
-            }
-            // Выбираем визит к событию. 
-            var vizit = curentEv.Vizits.FirstOrDefault(e => e.UserId == user.Id);
-            if (vizit != null)
-            {
-                // он есть как визитор. Удалить. Удалить чат.
-                curentEv.Vizits.Remove(vizit);
-
-                var userChat = curentEv.Chat.UserChat.FirstOrDefault(e => e.UserId == user.Id);
-                if (userChat != null)
-                {
-                    curentEv.Chat.UserChat.Remove(userChat);
-                }
-                curentEv.WillGo--;
-            }
-            else
-            {
-                // Его нет. Добавить в список, добавить чат.
-                var newVizit = new Vizit
-                {
-                    UserId = user.Id,
-                    EventTitle = curentEv.TitleShort,
-                    EventPhoto = curentEv.Image,
-                    VizitorName = user.Name,
-                    VizitirPhoto = user.Photo
-                };
-                curentEv.Vizits.Add(newVizit);
-                curentEv.WillGo++;
-                context.Events.Update(curentEv);
-
-                var newUserChat = new UserChat
-                {
-                    ChatName = curentEv.TitleShort,
-                    UserId = user.Id,
-                    ChatId = curentEv.Chat.ChatId
-                };
-                await context.UserChats.AddAsync(newUserChat);
-
-            }
-            await context.SaveChangesAsync();
-            return Ok();
+            var code = await eventService.SubmitToEvent(eventId, User.Identity.Name);
+            return StatusCode(code);
         }
 
         /// <summary>
@@ -304,27 +244,7 @@ namespace EventB.Controllers
         [Route("/Event/SendLink")]
         public async Task<StatusCodeResult> SendLink(int eventId, int userChatId)
         {
-            var user = await userManager.FindByNameAsync(User.Identity.Name);
-            var userChat = await context.UserChats.Include(e => e.Chat).FirstOrDefaultAsync(e => e.UserChatId == userChatId);
-            if (userChat == null) return BadRequest();
-            var eve = await context.Events.FirstOrDefaultAsync(e => e.EventId == eventId);
-            if (eve == null) return BadRequest();
-            var message = new Message
-            {
-                PersonId = user.Id,
-                SenderName = user.Name,
-                ChatId = userChat.ChatId,
-                PostDate = DateTime.Now,
-                Read = false,
-                EventState = false,
-                EventLink = eventId,
-                Text = eve.Title,
-                EventLinkImage = eve.Image
-            };
-
-            await context.Messages.AddAsync(message);
-            await context.SaveChangesAsync();
-            return Ok();
+            return StatusCode( await eventService.SendLink(eventId, userChatId, User.Identity.Name));
         }
 
         /// <summary>
@@ -341,27 +261,6 @@ namespace EventB.Controllers
             chats = chats.Where(e => e.Chat.EventId == null).ToList();
             return PartialView("_chatSmallListPartial", chats);
         }
-
-        /// <summary>
-        /// Получение новых сообщений динамически.
-        /// </summary>
-        /// <param name="chatId">ИД чата</param>
-        /// <param name="lastMes"> доля секунды последнего получения сообщения</param>
-        /// <returns></returns>        
-        [Authorize]
-        [Route("GetNewMessage")]
-        public async Task GetNewMessage(int chatId, int lastMes)
-        {
-
-        }
-
-        [Authorize]
-        [Route("GetHistory")]
-        public async Task GetHistory(int chatId, int firstMessage, int Count = 30)
-        {
-
-        }
-
         #endregion
 
         #region Форма приглашений на событие
@@ -372,25 +271,9 @@ namespace EventB.Controllers
         /// <returns></returns>
         public async Task<List<InviteOutVM>> GetFriendslist(int eventId)
         {
-            var curUser = await context.Users.
-                FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
-
-            var friends = await context.Friends.Where(e => e.FriendUserId == curUser.Id
-                && e.IsBlocked == false
-                && e.IsConfirmed == true).
-                Select(e => new InviteOutVM
-                {
-                    UserId = e.UserId,
-                    Name = e.UserName,
-                    Photo = e.UserPhoto
-                }).ToListAsync();
-            // Вычесть тех , которые уже пойдут на событие. 
-            var willGoId = context.Vizits.Where(e => e.EventId == eventId).Select(e => e.UserId);
-            var allId = context.Users.Select(e => e.Id);
-            var willWillNot = await allId.Except(willGoId).ToListAsync();
-            var rezult = friends.Join(willWillNot, f => f.UserId, w => w, (f, w) => f).ToList();
-            return rezult;
+            return await eventService.GetFriendslist(eventId, User.Identity.Name);
         }
+
         /// <summary>
         /// Апи получает приглашения с морды и парсит их в Invite.
         /// </summary>
@@ -399,25 +282,7 @@ namespace EventB.Controllers
         /// <returns></returns>
         public async Task InviteFriendsIn(int eventId, InviteInVm[] invites)
         {
-            var curUser = await userFindService.GetCurrentUserAsync(User.Identity.Name);
-            var newInv = new List<Invite>();
-
-            foreach (var id in invites)
-            {
-                var newItm = new Invite
-                {
-                    EventId = eventId,
-                    UserId = id.userId,
-                    InviterId = curUser.Id,
-                    InviterName = curUser.Name,
-                    InviterPhoto = curUser.Photo,
-                    InviteDescription = id.message
-                };
-                newInv.Add(newItm);
-            }
-
-            await context.Invites.AddRangeAsync(newInv);
-            await context.SaveChangesAsync();
+            await eventService.InviteFriendsIn(eventId, User.Identity.Name, invites);
         }
         #endregion
 
@@ -482,117 +347,22 @@ namespace EventB.Controllers
             }
             else
             {
-                var eve = await context.Events.Include(e => e.EventTegs)
-                    .Include(e=>e.Chat).ThenInclude(e=>e.Messages)
-                    .Include(e=>e.Chat).ThenInclude(e=>e.UserChat)
-                    .FirstOrDefaultAsync(e => e.EventId == model.EventId);
-                List<Vizit> vizits = null;
-                // Значение картинки если ее нет.
-                if (model.NewPicture != null)
-                {
-                    string src = "/images/defaultimg.jpg";
-                    // Формирование строки имени картинки.
-                    string fileName = String.Concat(DateTime.Now.ToString("dd-MM-yy_hh-mm"), "_", model.NewPicture.FileName);
-                    src = String.Concat("/images/EventImages/", fileName);
-                    // Запись на диск.
-                    using (var FS = new FileStream(environment.WebRootPath + src, FileMode.Create))
-                    {
-                        await model.NewPicture.CopyToAsync(FS);
-                    }
-                    vizits = await context.Vizits.Where(e => e.EventId == eve.EventId).ToListAsync();
-                    foreach (var e in vizits)
-                    {
-                        e.EventPhoto = src;
-                    }
-                    eve.Image = src;
-                    context.Vizits.UpdateRange(vizits);
-                }
-                // Здесь подправить разметку чтобы отображать абзацами
-                string chatMessage = "Изменения в событии:<br>";
-                // При внесении изменений в теги.
-                if (model.Tegs != eve.Tegs)
-                {
-                    var tegs = tegSplitter.GetEnumerable(model.Tegs.ToUpper()).ToList();
-                    List<EventTeg> eventTegs = new List<EventTeg>();
-                    foreach (var teg in tegs)
-                    {
-                        eventTegs.Add(new EventTeg { Teg = teg });
-                    }
-                    eve.EventTegs = eventTegs;
-                    chatMessage += $"<p>Новые теги</p><p>{model.Tegs}</p><br>";
-                }
-                // При внесении изменений в назавание.
-                if(model.Title != model.OldTitle)
-                {
-                    eve.Title = model.Title;
-                    eve.NormalizedTitle = model.Title.ToUpper();
-                    foreach (var e in eve.Chat.UserChat)
-                    {
-                        e.ChatName = eve.TitleShort;
-                    }
-                    vizits = vizits != null ? vizits : await context.Vizits.Where(e => e.EventId == eve.EventId).ToListAsync();
-                    foreach (var e in vizits)
-                    {
-                        e.EventTitle = eve.TitleShort;
-                    }                    
-                    context.Vizits.UpdateRange(vizits);
-                    chatMessage += $"<p>Новое название</p><p>{model.Title}</p><br>";
-                }
-                if (model.Body != model.OldBody)
-                {
-                    eve.Body = model.Body;
-                    chatMessage += $"<p>Изменено описание.</p><br>";
-                }
-                if (model.Place != model.OldPlace)
-                {
-                    eve.Place = model.Place;
-                    chatMessage += $"<p>Новое место</p><p>{model.Place}</p><br>";
-                }
-                if (model.City != model.OldCity)
-                {
-                    eve.City = model.City;
-                    eve.NormalizedCity = model.City.ToUpper();
-                    chatMessage += $"<p>Новый город</p><p>Стало: {model.City}</p><br>";
-                }
-                if (model.Date != model.OldDate && eve.Type == EventType.Private)
-                {
-                    eve.Date = model.Date;
-                    chatMessage += $"<p>новое время</p><p>Стало: {model.Date.ToString("dd.MM.yy hh:mm")}</p><br>";
-                }
-                var user = await userManager.GetUserAsync(User);
-                if(chatMessage != "<br>")
-                {
-                    eve.Chat.Messages.Add(new Message
-                    {
-                        PersonId = user.Id,
-                        EventState = true,
-                        PostDate = DateTime.Now,
-                        SenderName = user.Name,
-                        Text = chatMessage
-                    });                    
-                }
-                context.Events.Update(eve);
-                await context.SaveChangesAsync();
+                var eve = await eventService.EventEdit(User.Identity.Name, model);
                 return Redirect($"/Events/Details/{eve.EventId}");
             }        
         }
+
+        /// <summary>
+        /// Удаление события.
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
         [Authorize]
         public async Task<IActionResult> DeleteEvent(int eventId)
         {
-            var user = await userManager.FindByNameAsync(User.Identity.Name);
-            var eve = await context.Events.Include(e => e.Chat).ThenInclude(e => e.UserChat)
-                .Include(e => e.Chat).ThenInclude(e => e.Messages)
-                .Include(e => e.EventTegs)
-                .Include(e => e.Vizits).FirstOrDefaultAsync(e => e.EventId == eventId);
-
-            if(user.Id != eve.UserId)
-            {
-                return BadRequest();
-            }
-
-            context.Remove(eve);
-            await context.SaveChangesAsync();
-            return RedirectToAction("Index", "MyPage");
+            var result = await eventService.DeleteEvent(User.Identity.Name, eventId);
+            if(result == 200) return RedirectToAction("Index", "MyPage");
+            else return BadRequest();
         }
         #endregion
     }
