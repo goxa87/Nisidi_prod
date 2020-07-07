@@ -45,6 +45,9 @@ ul{
 .display-none {
     display:none;
 }
+.visible-hidden{
+    visibility:hidden;
+}
 
 .central-title{
     font-size:18px;
@@ -217,12 +220,34 @@ input[type="checkbox"].input-validation-error {
             color:#ffcd00;
         }
 
+/*фильтр*/
+.s-filter {
+    padding: 4px;
+    font-size: 14px;
+    border: 1px solid #1b5972;
+    border-radius: 4px 0 0 4px;
+    border-right: none;
+    width: Calc(100% - 31px);
+}
+    .s-filter:focus{
+        outline:none;
+    }
+
+.s-filter-clear {
+    height: 31px;
+    width: 31px;
+    border: 1px solid #1b5972;
+    border-left: none;
+    border-radius: 0 4px 4px 0;
+    background-color: #1b5972;
+    cursor: pointer;
+}
 /* ******************** формы*/
 .small-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
 }
 
 .identity-cintainer {

@@ -97,4 +97,33 @@
             <p>также будут удалены все отметки о визитах и чат.</p>`;
         $('.modal-body').html(content);
     });
+
+
+    // Фильтр событий
+    // Поиск из списка друзей, по части имени.
+    $(document).on('keyup', function () {
+        if ($('#lk-eve-filter').is(':focus')) {
+            searchFriend();
+        }
+    });
+    $('#lk-eve-filter-clear').click(function () {
+        clearSearch();
+    });
+    function clearSearch() {
+        $('#lk-eve-filter').val('');
+        $('.lk-eve-item').removeClass('display-none');
+    }
+    function searchFriend() {
+        let searchText = $('#lk-eve-filter').val();
+        console.log(searchText)
+        if (searchText == '') {
+            $('.lk-eve-item').removeClass('display-none');
+            return;
+        }
+        $('.lk-eve-item').addClass('display-none');
+        let opps = $(".lk-eve-item:contains("+searchText+")");
+        $(opps).removeClass('display-none');
+        return;
+    };
+
 });

@@ -31,12 +31,18 @@
                 <span class="lk-info-p">Активных: @Model.Events.Where(e => e.Date > DateTime.Now).Count()</span>
                 <span class="lk-info-p">Публичных: @Model.Events.Where(e => e.Type == EventType.Global).Count()</span>
             </div>
-            
+
 
             @if (Model.Events.Count() > 0)
             {
+                <div class="s-filter-container">
+                    <span class="small-label">Фильтр</span>
+                    <input id="lk-eve-filter" class="s-filter" /><img src="~/resourses/cancel.png" class="s-filter-clear" id="lk-eve-filter-clear"/>
+                </div>
+
                 foreach (var ev in Model.Events)
                 {
+                <div class="lk-eve-item">
                     <div class="lk-event">
                         <div>
                             @{await Html.RenderPartialAsync("~/Views/Shared/_eventItemPartial.cshtml", ev);}
@@ -54,6 +60,8 @@
                         </div>
                     </div>
                     <hr>
+                 </div>    
+                    
                 }
             }
             else

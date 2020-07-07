@@ -27,7 +27,7 @@
             searchFriend();
         }
     });
-    $('.fr-filter-clear').click(function () {
+    $('.s-filter-clear').click(function () {
         clearSearch();
     });
     function clearSearch() {
