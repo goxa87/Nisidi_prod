@@ -19,7 +19,15 @@
 
     @if (Model.args.Tegs != "" || Model.args.Tegs == null)
     {
-        <div class="ticket">@Model.args.Tegs</div>
+        if (Model.args.IsTegsFromProfile)
+        {
+            <div class="ticket">Ваши интересы</div>
+        }
+        else
+        {
+            <div class="ticket">@Model.args.Tegs</div>
+        }
+
     }
     @if (Model.args.Title != "" || Model.args.Title == null)
     {<div class="ticket">@Model.args.Title</div>}

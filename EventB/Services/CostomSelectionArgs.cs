@@ -22,6 +22,10 @@ namespace EventB.Services
         public string Tegs { get; set; }
 
         /// <summary>
+        /// получены теги из профайла или из поля ввода
+        /// </summary>
+        public bool IsTegsFromProfile { get; set; }
+        /// <summary>
         /// дата начала
         /// </summary>
         public DateTime DateSince { get; set; } = DateTime.Now;

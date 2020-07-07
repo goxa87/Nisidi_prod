@@ -73,7 +73,8 @@ namespace EventB.Controllers
                         DateDue = DateTime.Now.AddDays(31),
                         Title = "",
                         City = user.City,
-                        Tegs = tegsStr,                
+                        Tegs = tegsStr,
+                        IsTegsFromProfile = true,
                         Skip=0,
                         Take=12
                     };
@@ -96,6 +97,7 @@ namespace EventB.Controllers
                     Title = "",
                     City = "МОСКВА",
                     Tegs = "",
+                    IsTegsFromProfile = false,
                     Skip = 0,
                     Take = 12
                 };

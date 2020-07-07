@@ -49,6 +49,7 @@ namespace EventB.Controllers
             CostomSelectionArgs args = new CostomSelectionArgs {
                 DateSince = model.DateStart,
                 DateDue = model.DateEnd,
+                IsTegsFromProfile = false,
                 Title = model.Title.ToUpper(),
                 City = model.Сity.ToUpper(),
                 Tegs = model.Tegs.ToUpper()
