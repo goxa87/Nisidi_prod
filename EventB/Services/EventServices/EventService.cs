@@ -6,6 +6,7 @@ using EventBLib.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Schema;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -325,6 +326,7 @@ namespace EventB.Services.EventServices
         public async Task<List<InviteOutVM>> GetFriendslist(int eventId, string userName)
         {
             var curUser = await userManager.FindByNameAsync(userName);
+            // не оздавать приглашения для тех, кто уже пойдет или имеет приглашение
 
             var friends = await context.Friends.Where(e => e.FriendUserId == curUser.Id
                 && e.IsBlocked == false
@@ -337,8 +339,9 @@ namespace EventB.Services.EventServices
                 }).ToListAsync();
             // Вычесть тех , которые уже пойдут на событие. 
             var willGoId = context.Vizits.Where(e => e.EventId == eventId).Select(e => e.UserId);
+            var alreadyHaveinvite = context.Invites.Where(e => e.EventId == eventId).Select(e => e.UserId);
             var allId = context.Users.Select(e => e.Id);
-            var willWillNot = await allId.Except(willGoId).ToListAsync();
+            var willWillNot = await allId.Except(willGoId).Except(alreadyHaveinvite).ToListAsync();
             var rezult = friends.Join(willWillNot, f => f.UserId, w => w, (f, w) => f).ToList();
             return rezult;
         }
@@ -357,6 +360,7 @@ namespace EventB.Services.EventServices
 
             foreach (var id in invites)
             {
+                // не оздавать приглашения для тех, кто уже пойдет или имеет приглашение
                 var newItm = new Invite
                 {
                     EventId = eventId,

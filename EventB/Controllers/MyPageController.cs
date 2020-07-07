@@ -68,13 +68,18 @@ namespace EventB.Controllers
             var curUser = await userManager.FindByNameAsync(User.Identity.Name);
             var eve = await context.Events.Include(e => e.Chat).FirstOrDefaultAsync(e => e.EventId == eventId);
             var inv = await context.Invites.FirstOrDefaultAsync(e => e.InviteId == inviteId);
-            if(curUser.Id != inv.UserId)
+            if (curUser.Id != inv.UserId)
             {
                 return StatusCode(401);
             }
             if (curUser == null || eve == null || inv == null)
             {
                 return StatusCode(410);
+            }
+            // Если визит уже есть
+            if (await context.Vizits.AnyAsync(e => e.EventId == eventId && e.UserId == curUser.Id))
+            {
+                return Ok();
             }
             // Добавляем Визит.
             var newVizit = new Vizit

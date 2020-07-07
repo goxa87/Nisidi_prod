@@ -111,7 +111,7 @@
                 <div class="total-invite">
                     <div class="invite-header">Приглашение</div>
 
-                    <div class="invite-container" alt="@inv.Event.Title">
+                    <div class="invite-container">
                         <a asp-action="Details" asp-controller="Events" asp-route-id="@inv.EventId">
                             <img class="item-img" src="@inv.Event.Image">
                         </a>
@@ -124,8 +124,8 @@
                             <p>@inv.Event.City</p>
                             <input id="eveId" type="hidden" value="@inv.EventId">
                             <input id="inviteId" type="hidden" value="@inv.InviteId">
-                            <div class="btn" id="will-go">Пойду )</div>
-                            <div class="btn" id="will-notgo">Не пойду (</div>
+                            <div class="btn mp-will-go" id="will-go">Пойду )</div>
+                            <div class="btn mp-will-notgo" id="will-notgo">Не пойду (</div>
 
                         </div>
 

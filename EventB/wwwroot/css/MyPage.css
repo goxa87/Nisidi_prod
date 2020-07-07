@@ -155,7 +155,7 @@
     .invite-container {
         display: flex;
         flex-direction: column;
-        align-content: center;
+        align-items: center;
         border: 2px solid #1b5972;
         width: 100%;
         padding: 16px;
