@@ -39,16 +39,31 @@ else
             <div>(Место для адреса)</div>
         </div>
         <div class="btn-area">
-            @if (Model.IsFriend == true)
+
+            <input type="hidden" value="@Model.User.Id" id="friend-entity-id" />
+            @if (Model.Friend != null && (!Model.Friend.IsConfirmed && Model.Friend.FriendInitiator))
             {
-                <div class="btn" id="btn-del-friend">Удалить из друзей</div>
+                <div class="red-btn-alert width100">Ваша заявка в друзья не подтверждена</div>
+            }
+            @if (Model.Friend == null)
+            {
+                <div class="action-button width100 btn-submit">Добавить в друзья</div>
+            }
+            else if (Model.Friend != null && (!Model.Friend.IsConfirmed && !Model.Friend.FriendInitiator))
+            {
+                <div class="action-button width100 agree-friend">Добавить в друзья</div>
+            }
+            else if (Model.Friend != null && !Model.Friend.IsBlocked)
+            {
+                <div class="action-button width100 btn-block" id="btn-block">Заблокировать</div>
+                <div class="action-button width100 delete-friend">Удалить из друзей</div>
             }
             else
             {
-                <div class="btn" id="btn-add-friend">В друзья</div>
+                <div class="red-btn-alert width100 btn-block" id="btn-block">Заблокирован</div>
             }
-            <div class="btn" id="btn-send-message">Сообщение</div>
-            <div class="btn" id="btn-block-user">Заблокировать</div>
+            <a asp-controller="Messages" asp-action="Index" asp-route-opponentId="@Model.User.Id"><div class="action-button width100">Сообщение</div></a>
+
         </div>
     </div>
     <div class="ui-bottom-menu flex-hsac">

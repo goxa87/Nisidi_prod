@@ -37,9 +37,11 @@ label {
     max-height:500px;
     max-width:400px;
 }
-
-.btn-area div{
-    width:100%;
+.btn-area{
+    min-width: 250px;
+}
+.btn-area div {
+    width: 100%;
 }
 .info-area{
     padding: 0 16px;

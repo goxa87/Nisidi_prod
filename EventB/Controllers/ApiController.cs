@@ -130,7 +130,7 @@ namespace EventB.Controllers
             var friend = await context.Friends.FirstOrDefaultAsync(e => e.FriendUserId == currentUser.Id && e.UserId == friendId);
             var opponentFriend = await context.Friends.FirstOrDefaultAsync(e=>e.FriendUserId == friendId && e.UserId == currentUser.Id);
             // Если не инициатор, то запрещаем.
-            if (!friend.BlockInitiator && friend.IsBlocked )
+            if (friend != null && (!friend.BlockInitiator && friend.IsBlocked ))
             {
                 return StatusCode(205);
             }

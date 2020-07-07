@@ -13,6 +13,11 @@ namespace EventB.ViewModels.FriendsVM
         /// Сам пользователь.
         /// </summary>
         public User User { get; set; }
+
+        /// <summary>
+        /// Сведения о дружбе.
+        /// </summary>
+        public Friend Friend { get; set; }
         /// <summary>
         /// Созданные пользоватьелем события
         /// </summary>

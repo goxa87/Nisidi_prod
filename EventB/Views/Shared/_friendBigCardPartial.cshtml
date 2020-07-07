@@ -13,6 +13,7 @@
         </a>
         <hr>
         <div>
+            <input type="hidden" value="@Model.UserId" id="friend-entity-id" />
             <h3 class="central-title">@Model.UserName</h3>
             @if (!Model.IsConfirmed && Model.FriendInitiator)
             {
@@ -20,8 +21,8 @@
             }
             @if (!Model.IsConfirmed && !Model.FriendInitiator)
             {
-                <div class="action-button width100 agree-friend" >Добавить в друзья</div>
-            }        
+                <div class="action-button width100 agree-friend">Добавить в друзья</div>
+            }
             <input type="hidden" id="friend-id" name="friendId" value="@Model.UserId" />
             @if (!Model.IsBlocked)
             {
@@ -33,7 +34,7 @@
             }
             <a asp-controller="Messages" asp-action="Index" asp-route-opponentId="@Model.UserId"><div class="action-button width100">Сообщение</div></a>
 
-            <div class="action-button width100 delete-friend" >Удалить из друзей</div>
+            <div class="action-button width100 delete-friend">Удалить из друзей</div>
 
         </div>
     </div>

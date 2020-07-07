@@ -192,15 +192,17 @@ namespace EventB.Controllers
             {
                 return View(null);
             }
-            if (friend!=null && friend.IsBlocked)
+            if (friend!=null && friend.IsBlocked && friend.BlockInitiator)
                 return View(null);
             
             // Формирование VM.
             var createdEve = await context.Events.Where(e => e.UserId == userId).ToListAsync();
             var vizitEve = await context.Vizits.Where(e => e.UserId == userId).ToListAsync();
             var friends = await context.Friends.Where(e => e.FriendUserId == userId).ToListAsync();
+            var asFriend = await context.Friends.FirstOrDefaultAsync(e => e.FriendUserId == currUser.Id && e.UserId == userId);
             var infoVM = new UserInfoVM();
             infoVM.User = user;
+            infoVM.Friend = asFriend;
             infoVM.CreatedEvents = createdEve;
             infoVM.WillGoEvents = vizitEve;
             infoVM.Friends = friends;

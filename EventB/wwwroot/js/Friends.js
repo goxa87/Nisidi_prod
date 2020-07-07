@@ -48,9 +48,9 @@
 
     // блокировка пользователя
     $('.btn-block').click(function () {
-        let thisCard = $(this).parents('.friend-list-container');
+        let friendid = $(this).parent().children('#friend-entity-id').val();
         // Данные запроса
-        let friendid = $(thisCard).children('#friend-entity-id').val();
+        //let friendid = $(thisCard).children('#friend-entity-id').val();
         // Запрос
         let req = $.ajax({
             url: '/Api/BlockUser',
@@ -91,9 +91,7 @@
     });
     // Удаление друга
     $('.delete-friend').click(function () {
-        let thisCard = $(this).parents('.friend-list-container');
-        // Данные запроса
-        let friendid = $(thisCard).children('#friend-entity-id').val();
+        let friendid = $(this).parent().children('#friend-entity-id').val();
         let req = $.ajax({
             url: '/Api/DeleteFriend',
             data:
