@@ -419,7 +419,7 @@ namespace EventB.Services.EventServices
                     eventTegs.Add(new EventTeg { Teg = teg });
                 }
                 eve.EventTegs = eventTegs;
-                chatMessage += $"<p>Новые теги</p><p>{model.Tegs}</p><br>";
+                chatMessage += $"<p><span>Новые теги: </span>{model.Tegs}</p>";
             }
             // При внесении изменений в назавание.
             if (model.Title != model.OldTitle)
@@ -436,28 +436,28 @@ namespace EventB.Services.EventServices
                     e.EventTitle = eve.TitleShort;
                 }
                 context.Vizits.UpdateRange(vizits);
-                chatMessage += $"<p>Новое название</p><p>{model.Title}</p><br>";
+                chatMessage += $"<p><span>Новое название: </span>{model.Title}</p>";
             }
             if (model.Body != model.OldBody)
             {
                 eve.Body = model.Body;
-                chatMessage += $"<p>Изменено описание.</p><br>";
+                chatMessage += $"<p>Изменено описание.</p>";
             }
             if (model.Place != model.OldPlace)
             {
                 eve.Place = model.Place;
-                chatMessage += $"<p>Новое место</p><p>{model.Place}</p><br>";
+                chatMessage += $"<p><span>Новое место: </span>{model.Place}</p>";
             }
             if (model.City != model.OldCity)
             {
                 eve.City = model.City;
                 eve.NormalizedCity = model.City.ToUpper();
-                chatMessage += $"<p>Новый город</p><p>Стало: {model.City}</p><br>";
+                chatMessage += $"<p><span>Новый город: </span>{model.City}</p>";
             }
             if (model.Date != model.OldDate && eve.Type == EventType.Private)
             {
                 eve.Date = model.Date;
-                chatMessage += $"<p>новое время</p><p>Стало: {model.Date.ToString("dd.MM.yy hh:mm")}</p><br>";
+                chatMessage += $"<p><span>Новое время: </span>{model.Date.ToString("dd.MM.yy hh:mm")}</p>";
             }
             var user = await userManager.FindByNameAsync(userName);
             if (chatMessage != "<br>")
