@@ -45,6 +45,11 @@ $(document).ready(function () {
             }
         });
     });
+
+    // Узкое меню
+    $('#thin-menu').click(function () {
+        $('.thin-menu-items-container').toggleClass('display-none');
+    });
 });
 
 /**

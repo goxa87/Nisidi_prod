@@ -35,7 +35,6 @@
             </div>
             <div id="menu-voider" class="menu-voider display-none"></div>
             <div class="main-menu-container">
-
                 <ul id="main-menu-li">
                     <li>
                         <a asp-controller="Events" asp-action="Start">СОБЫТИЯ</a>
@@ -56,6 +55,31 @@
                         <a asp-action="MarketRoom" asp-controller="MarketRoom">ПОМОЩЬ</a>
                     </li>
                 </ul>
+                <div class="main-menu-thin">
+                    <span id="thin-menu">Меню</span>
+                    <ul class="thin-menu-items-container display-none">
+                        
+                        <li>
+                            <a asp-controller="Events" asp-action="Start">СОБЫТИЯ</a>
+                        </li>
+                        <li>
+                            <a asp-controller="Search" asp-action="Index">ПОИСК</a>
+                        </li>
+                        <li>
+                            <a asp-controller="Friends" asp-action="List">ПОЛЬЗОВАТЕЛИ</a>
+                        </li>
+                        <li>
+                            <a asp-controller="MyPage" asp-action="Index">МОЯ СТРАНИЦА</a>
+                        </li>
+                        <li>
+                            <a asp-controller="Messages" asp-action="Index">СООБЩЕНИЯ</a>
+                        </li>
+                        <li>
+                            <a asp-action="MarketRoom" asp-controller="MarketRoom">ПОМОЩЬ</a>
+                        </li>
+                                               
+                    </ul>
+                </div>
 
             </div>
         </div>

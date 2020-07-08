@@ -1,8 +1,8 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 body {
-    margin: 0;
-    padding: 0 5px 42px 5px;
+    margin: 0 5px;
+    padding: 0;
     padding-bottom:24px;
     font-family: sans-serif;
     background-color: #f1ead8;
@@ -116,8 +116,9 @@ input[type="checkbox"].input-validation-error {
     position: fixed;
     top: 0;
     max-width: 1140px;
-    width:100%;
+    width:calc(100% - 10px);
     margin: 0 auto;
+    box-sizing:border-box;
 }
 
 .menu-voider {
@@ -132,7 +133,7 @@ input[type="checkbox"].input-validation-error {
     padding: 0;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-evenly;
 }
 
     #main-menu-li li {
@@ -141,9 +142,7 @@ input[type="checkbox"].input-validation-error {
     }
 
         #main-menu-li li a {
-            position: relative;
-            width: 185px;
-            height: 40px;
+            padding: 4px 8px;
             display: block;
             color: #1b5972;
             line-height: 40px;
@@ -220,6 +219,71 @@ input[type="checkbox"].input-validation-error {
             color:#ffcd00;
         }
 
+.main-menu-thin {
+    display: none;
+    justify-content:center;
+    align-items:center;
+}
+#thin-menu {
+    padding: 4px 8px;
+    min-width: 230px;
+    color: #1b5972;
+    line-height: 40px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: .5s;
+    box-sizing: border-box;
+    cursor:pointer;
+    position:relative;
+}
+    #thin-menu:hover {
+        color: #ffcd00;
+        background-color: #1b5972;
+        text-decoration: none;
+    }
+.thin-menu-items-container {
+   font-size:12px;
+}
+    .thin-menu-items-container li{
+        list-style:none;
+    }
+@media(max-width: 750px) {
+    #main-menu-li{
+    display:none;        
+    }
+    .main-menu-thin {
+        display: flex;
+        justify-content:space-between;
+    }
+    .thin-menu-items-container{
+        left:0;
+        padding:4px 10px;
+        text-align:right;
+    }
+        .thin-menu-items-container li>a:hover {
+            color: #ffcd00;
+            background-color: #1b5972;
+            text-decoration: none;
+        }
+}
+@media(max-width: 450px) {
+    #thin-menu {
+        padding: 4px 8px;
+        min-width: 230px;
+        width: 180px;
+        color: #1b5972;
+        line-height: 40px;
+        text-align: center;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: .5s;
+        box-sizing: border-box;
+        cursor: pointer;
+        position: relative;
+    }
+
+}
 /*фильтр*/
 .s-filter {
     padding: 4px;
