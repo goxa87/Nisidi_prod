@@ -47,16 +47,16 @@
                         <div>
                             @{await Html.RenderPartialAsync("~/Views/Shared/_eventItemPartial.cshtml", ev);}
                         </div>
-                        <div>
+                        <div class="margin-8px">
                             <input class="kibnet-event-id" type="hidden" value="@ev.EventId" />
-                            <div class="form-submit lk-event-state">Статус: @ev.Type</div>
+                            <div class="action-button lk-event-state">Статус: @ev.Type</div>
                             @if (ev.Type == EventType.Private)
                             {
-                                <div class="form-submit lk-change-event-status">Сменить статус</div>
+                                <div class="action-button lk-change-event-status">Сменить статус</div>
                             }
-                            <a asp-action="EventEdit" asp-controller="Events" asp-route-eventId="@ev.EventId"><div class="form-submit">Редактировать</div></a>
-                            <div class="form-submit">Статистика</div>
-                            <div class="lk-delete-event form-submit">Удалить</div>
+                            <a asp-action="EventEdit" asp-controller="Events" asp-route-eventId="@ev.EventId"><div class="action-button">Редактировать</div></a>
+                            <div class="action-button">Статистика</div>
+                            <div class="lk-delete-event action-button">Удалить</div>
                         </div>
                     </div>
                     <hr>

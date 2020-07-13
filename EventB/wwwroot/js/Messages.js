@@ -48,7 +48,7 @@
         let senderNam = $('#user-name').val();
         let opponentId = $('#opponent-id').val();
         let message = $('#message').val();
-        let date = new Date();
+        let date1 = new Date();
 
         $.ajax({
             url: '/Api/SendTo',
@@ -61,18 +61,14 @@
             },
             success: function () {
                 // Заполнить форму на странице новым сообщением.
-                let renderMessage = `<div class="message-item my-message">
-                                        <div class="message-sender">${senderNam}</div >
-                                        <div class="message-text">${message}</div>
-                                        <div class="message-date">${date}</div>
-                                     </div >`;
+                let data = { personId: senderId, text: message, postDate: date1, eventState: false, eventLink: false }
+                let block = renderMessage(data, senderId);
                 $('#vertical-trigger').remove();
-                $('.message-list').append(renderMessage);
+                $('.message-list').append(block);
                 $('.message-list').append('<div id="vertical-trigger"></div>');
                 // Прокрутка лучше не придумал.(( 
                 // Здесь vertical-trigger находится относительно окна а нужно относительно родителя. исправить
                 var list = $('.message-list');
-                console.log($('#vertical-trigger').offset().top + $(list).height())
                 list.scrollTop($('#vertical-trigger').offset().top + $(list).height());
                 $('#message').val('');
             }

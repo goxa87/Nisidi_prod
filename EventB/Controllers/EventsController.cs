@@ -134,12 +134,14 @@ namespace EventB.Controllers
             args.Title = args.Title ?? "";
             args.City = args.City ?? "";
             args.Tegs = args.Tegs ?? "";
-            var rezult = await eventSelector.GetCostomEventsAsync(args);
+
+            //var rezult = await eventSelector.GetCostomEventsAsync(args);
             // Пропускаем то что уж нашли.
-            args.Skip += args.Take;
+            //args.Skip += args.Take;
+            
             var VM = new EventListVM
             {
-                events = rezult,
+                events = null,
                 args = args
             };
             return View("Start", VM);

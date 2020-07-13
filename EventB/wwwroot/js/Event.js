@@ -137,10 +137,10 @@ $(document).ready(function ()
     {
         let user = $('#user-id').val();
         let chat = $('#chat-id').val();
-        let message = $('#text').val();
+        let messageText = $('#text').val();
         let name = $('#user-name').val();
 
-        if (message == '') return;
+        if (messageText == '') return;
 
         $.ajax({
             url: '/Events/SendMessage',
@@ -149,11 +149,11 @@ $(document).ready(function ()
                 userId: user,
                 userName: name,
                 chatId: chat,
-                text: message
+                text: messageText
             },
             success: function () {
                 $('#text').val('');
-                AddMessageToListMessage(message);
+                AddMessageToListMessage(messageText)
             }
         });
 
@@ -161,9 +161,10 @@ $(document).ready(function ()
     // Добавление элемента в дом (сообщение чата).
     function AddMessageToListMessage(text1)
     {
-        let date1 = Date();
+        let date1 = new Date();
+        console.log(date1);
         let userId = $('#user-id').val();
-        let data = { personId: userId, text: text1, date: date1  }
+        let data = { personId: userId, text: text1, postDate: date1, eventState:false, eventLink:false }
 
         let block = renderMessage(data, userId);
         $('.ed-message-list').prepend(block);

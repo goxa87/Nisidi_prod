@@ -28,10 +28,8 @@
     // Кнопка сменить статус.
     $('.right-columnn').on('click', '.lk-change-event-status', function () {
         let eveId = $(this).parent().children('.kibnet-event-id').val();
-        // let eveType = $(this).parent().children('.lk-event-state').text();
         // Удалить при имплементации реального апи
         let type = 0;
-        //let type = eveType.indexOf('Global') === -1 ? 0 : 1;
 
         // Запрос на изменение статуса.
         function changeStatus(){
@@ -115,7 +113,6 @@
     }
     function searchFriend() {
         let searchText = $('#lk-eve-filter').val();
-        console.log(searchText)
         if (searchText == '') {
             $('.lk-eve-item').removeClass('display-none');
             return;

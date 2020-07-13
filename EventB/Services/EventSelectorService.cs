@@ -47,8 +47,9 @@ namespace EventB.Services
             if (!string.IsNullOrWhiteSpace(args.City))
                 selection = selection.Where(e => e.NormalizedCity == args.City);
             // заголовок
+            // Возможно здесь будет тянуть из бд уже в оперативу. (узкое место нужно проверить)
             if (!string.IsNullOrWhiteSpace(args.Title))
-                selection = selection.Where(e => e.NormalizedTitle == args.Title);
+                selection = selection.Where(e => e.NormalizedTitle.Contains(args.Title));
 
             var selectionLocal = selection;
             // теги
@@ -61,7 +62,7 @@ namespace EventB.Services
                 {
                     var tempSelection = context.EventTegs.Include(e=>e.Event).ThenInclude(e => e.Creator).
                         Include(e => e.Event).ThenInclude(e=>e.EventTegs).
-                        Where(e => e.Teg.ToLower() == teg.ToLower()).Select(e=>e.Event);
+                        Where(e => e.Teg == teg).Select(e=>e.Event);
                     tegSelection = tegSelection.Union(tempSelection);
                 } 
 
