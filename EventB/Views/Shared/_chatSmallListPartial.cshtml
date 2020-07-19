@@ -2,13 +2,15 @@
 
 @foreach (var e in Model)
 {
-    <div class="chat-list-small flex-hsbc">
-        <input class="ev-link-chat-id" type="hidden" value="@e.UserChatId" />
-        <div class="flex-hss">
-            <img class="ev-link-img" src="@e.ChatPhoto" />
-            <span class="ev-link-title">@e.ChatName</span>
+    <div class="item-element-user-chat-small">
+        <div class="chat-list-small flex-hsbc">
+            <input class="ev-link-chat-id" type="hidden" value="@e.UserChatId" />
+            <div class="flex-hss">
+                <img class="ev-link-img" src="@e.ChatPhoto" />
+                <span class="ev-link-title">@e.ChatName</span>
+            </div>
+            <img class="ev-link-send-btn" src="~/resourses/send18dp.png" title="Отправить в этот чат" />
         </div>
-        <img class="ev-link-send-btn" src="~/resourses/send18dp.png" title="Отправить в этот чат"/>
-    </div>
+    </div>    
     <hr>
 }

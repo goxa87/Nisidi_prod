@@ -22,7 +22,7 @@ $(document).ready(function () {
         }
     });
 
-    // Согласиться принять в друзья. иоя страница и друзья
+    // Согласиться принять в друзья. моя страница и друзья
     //agree-friend
     $('.agree-friend').click(function () {
         let id = $(this).parents('.friend-list-container').children('#friend-entity-id').val();
@@ -69,7 +69,6 @@ function renderMessage(content, userId)
                 '<div class="message-info display-none">' + value.personId + '</div ></div > ';
         }
         else if( value.eventLink != 0) {
-            console.log('link' , value)
             block += `<a href="https://localhost:44344/Events/Details/${value.eventLink}">
                         <div class="message-item message-item-event message-item-event-link">
                             <img src="${value.eventLinkImage}" class="message-display-inline message-link-img" />
@@ -118,7 +117,6 @@ function getModelWindow(title, okCancel, okCallback, cancelCollback) {
       // нажатие кнопы ОК
     $('.modal-ok').click(() => {
         if(okCallback !== undefined) okCallback();
-        //okCallback();
         $('.modal-shadow').remove();
     });
     // Нажатие отмены.

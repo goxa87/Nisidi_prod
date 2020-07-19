@@ -318,7 +318,7 @@ $(document).ready(function ()
 
     // Секция Отправить ссылку в чат.
     $('#btn-details-send-link').click(function () {
-        $('#ev-over-link').css('display','flex');
+        //$('#ev-over-link').css('display','flex');
         getChats();
     })
     //Запрос и вставка чатов
@@ -328,14 +328,34 @@ $(document).ready(function ()
             url: '/Event/GetAvailableChats'
         });
         req.then(function (data, stat, jqXHR) {
+            // сюжа вставить модалку
             if (jqXHR.status == 200) {
-                $('.ev-chat-list').html('');
-                $('.ev-chat-list').append(data);
+                //$('.ev-chat-list').html('');
+                //$('.ev-chat-list').append(data);
+                let content = `<div class="s-filter-container">
+                    <span class="small-label">Фильтр</span>
+                    <input id="ev-send-link-filter" class="s-filter" /><img src="/resourses/cancel.png" class="s-filter-clear" />
+                    </div>` + data;
+                getModelWindow('Отправить ссылку', false);
+                $('.modal-body').html(content);
             } else {
                 alert(`Чтото пошло не так . Ошибка ${data}`)
             }
         });
     }
+    // поиск на отправке ссылки
+    $(document).on('keyup', function () {
+        if ($('#ev-send-link-filter').is(':focus')) {
+            let searchText = $('#ev-send-link-filter').val();
+            let items = $('.item-element-user-chat-small');
+            iensSearchByText(items, '.ev-link-title', searchText);
+        }
+    });
+    $('body').on('click', '.s-filter-clear', function () {
+        $('#ev-send-link-filter').val('');
+        $('.item-element-user-chat-small').removeClass('display-none');
+    }); 
+
     // Скрытие по серому полю.
     $('#ev-over-link').on('click', function (event) {
         $(this).css('display', 'none');
@@ -344,10 +364,9 @@ $(document).ready(function ()
         e.stopPropagation();
     });
     // Нажатие на кнопу отправить
-    $('.ev-chat-list').on('click', '.ev-link-send-btn', function () {
+    $('body').on('click', '.ev-link-send-btn', function () {
         var evId = $('#event-id').val();
         var chatId = $(this).parent().children('.ev-link-chat-id').val();
-
         $.ajax({
             url: '/Event/SendLink',
             data: {
@@ -355,7 +374,8 @@ $(document).ready(function ()
                 userChatId: chatId
             }, success: function () {
                 $('#ev-over-link').css('display', 'none');
-            }
+                $('.modal-shadow').remove();
+            }, error: () => alert('Что-то пошло не так(') 
         })
     });
 
