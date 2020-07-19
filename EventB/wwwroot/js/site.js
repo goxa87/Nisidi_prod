@@ -126,5 +126,24 @@ function getModelWindow(title, okCancel, okCallback, cancelCollback) {
         if(cancelCollback !== undefined) cancelCollback();
         $('.modal-shadow').remove();
     });  
-}
+}   
 
+/**
+ * Оставит видимым только те из items , которые в selector содердат textToSearch без учета регистра
+ * @param {any} items элементы для рендеринга
+ * @param {any} selector где будет искть строку
+ * @param {any} textToSearch что будем искать
+ */
+function iensSearchByText(items, selector, textToSearch) {
+    if (textToSearch === '') {
+        items.removeClass('display-none');
+        return;
+    }
+    items.addClass('display-none');    
+    items.each((index, element) => {
+        var Val = $(element).find(selector);
+        if (Val.text().toUpperCase().indexOf(textToSearch.toUpperCase()) !== -1) {
+            $(element).removeClass('display-none');
+        }
+    });
+}

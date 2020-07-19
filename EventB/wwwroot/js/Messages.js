@@ -147,29 +147,17 @@
     $('#btn-search').on('click', function (event) {
         event.preventDefault();
         $('#txt-search').val('');
-        $('.opponent-container').removeClass('hidden');
+        $('.mes-opponent-container').removeClass('display-none');
     });
     // Динамический поиск.
     $(document).on('keyup', function () {
         if ($('#txt-search').is(':focus')) {
-            searchOpponent();
+            let searchText = $('#txt-search').val();
+            let items = $('.mes-opponent-container');
+            iensSearchByText(items, '.opponent-name-value', searchText);
         }
     });
-
-    // Отображение собеседников в левой части согласно результатам поиска.
-    function searchOpponent() {
-        // получить список того что в опп лист
-        // добавить класс дисплей none тем кто не подходит
-        let searchText = $('#txt-search').val();
-        if (searchText == '') {
-            $('.opponent-container').removeClass('hidden');
-            return;
-        }
-        $('.opponent-container').addClass('hidden');
-        let opps = $(".opponent-container:contains(" + searchText + ")");
-        $(opps).removeClass('hidden');
-    };
-
+    
     //[Route("GetNewMessages")]
     //public async Task < List < Message >> GetNewMessages(int chatId, string opponentId)
     // Интервальный запрос на получение новых непрочитанных сообщений для чата. 

@@ -18,13 +18,15 @@
         <div class="opponents-list">
             @foreach (var opponent in Model.userChats)
             {
-            <div class="opponent-container">
-                <input class="opponent-chat-id" type="hidden" value="@opponent.ChatId" />
-                <input class="opponent-photo-value" type="hidden" value="@opponent.ChatPhoto" />
-                <div class="opponent-name-value">@opponent.ChatName</div>
-                <input class="opponent-id" type="hidden" value="@opponent.OpponentId" />
-                <div class="new-message-flag"></div>
-            </div>
+                <div class="mes-opponent-container">
+                    <div class="opponent-container">
+                        <input class="opponent-chat-id" type="hidden" value="@opponent.ChatId" />
+                        <input class="opponent-photo-value" type="hidden" value="@opponent.ChatPhoto" />
+                        <div class="opponent-name-value">@opponent.ChatName</div>
+                        <input class="opponent-id" type="hidden" value="@opponent.OpponentId" />
+                        <div class="new-message-flag"></div>
+                    </div>
+                </div>            
             }
         </div>
     </div>

@@ -18,14 +18,7 @@
         $('.mp-my-content').removeClass('display-block');
         $('#my-events-body').removeClass('display-none');
         $('#my-events-body').addClass('display-block');
-    });
-    // Показ Друзей.
-    $('#friends').click(function () {
-        $('.mp-my-content').addClass('display-none');
-        $('.mp-my-content').removeClass('display-block');
-        $('#friends-body').removeClass('display-none');
-        //$('#friends-body').addClass('');
-    });
+    });    
     // Показ приглашения.
     $('#invites').click(function () {
         $('.mp-my-content').addClass('display-none');
@@ -65,6 +58,52 @@
             error: data => { console.log(data); }
         });
     });
+
+    // Поиски на странице. Филтьруем за раз все 3 поля
+    $(document).on('keyup', function () {
+        if ($('#mp-vizits-filter').is(':focus')) {
+            
+            let searchText = $('#mp-vizits-filter').val();
+            $('#mp-created-ev-filter').val(searchText);
+            $('#mp-invites-filter').val(searchText);
+
+            let items = $('.mp-details-figure');
+            iensSearchByText(items, '.small-figure-title', searchText);
+            let invitesItems = $('.total-invite');
+            iensSearchByText(invitesItems, '.mp-invites-title', searchText);
+        }
+        if ($('#mp-created-ev-filter').is(':focus')) {
+            let searchText = $('#mp-created-ev-filter').val();
+
+            $('#mp-vizits-filter').val(searchText);
+            $('#mp-invites-filter').val(searchText);
+
+            let items = $('.mp-details-figure');
+            iensSearchByText(items, '.small-figure-title', searchText);
+            let invitesItems = $('.total-invite');
+            iensSearchByText(invitesItems, '.mp-invites-title', searchText);
+        }
+        if ($('#mp-invites-filter').is(':focus')) {
+            let searchText = $('#mp-invites-filter').val();
+
+            $('#mp-vizits-filter').val(searchText);
+            $('#mp-created-ev-filter').val(searchText);
+
+            let items = $('.mp-details-figure');
+            iensSearchByText(items, '.small-figure-title', searchText);
+            let invitesItems = $('.total-invite');
+            iensSearchByText(invitesItems, '.mp-invites-title', searchText);
+        }
+    });
+    $('.s-filter-clear').click(function () {
+        $('#mp-vizits-filter').val('');
+        $('#mp-created-ev-filter').val('');
+        $('#mp-invites-filter').val('');
+
+        $('.mp-details-figure').removeClass('display-none');
+        $('.total-invite').removeClass('display-none');
+    });
+
 });
 
 

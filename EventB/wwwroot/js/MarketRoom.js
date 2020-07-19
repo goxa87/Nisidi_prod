@@ -101,7 +101,9 @@
     // Поиск из списка друзей, по части имени.
     $(document).on('keyup', function () {
         if ($('#lk-eve-filter').is(':focus')) {
-            searchFriend();
+            let searchText = $('#lk-eve-filter').val();
+            let items = $('.lk-eve-item');
+            iensSearchByText(items, '.eve-title', searchText);
         }
     });
     $('#lk-eve-filter-clear').click(function () {
@@ -111,16 +113,4 @@
         $('#lk-eve-filter').val('');
         $('.lk-eve-item').removeClass('display-none');
     }
-    function searchFriend() {
-        let searchText = $('#lk-eve-filter').val();
-        if (searchText == '') {
-            $('.lk-eve-item').removeClass('display-none');
-            return;
-        }
-        $('.lk-eve-item').addClass('display-none');
-        let opps = $(".lk-eve-item:contains("+searchText+")");
-        $(opps).removeClass('display-none');
-        return;
-    };
-
 });

@@ -6,13 +6,11 @@
         console.log(friendId);
 
         $.ajax({
-
             url: '/Api/AddFriend',
             data: {
                 userId: friendId
             },
-            success: function (responce) {
-                
+            success: function (responce) {                
             },
             fail: function () {
                 console.log("ОШИБКА ЗАГРУЗКИ");
@@ -24,34 +22,19 @@
     // Поиск из списка друзей, по части имени.
     $(document).on('keyup', function () {
         if ($('#fr-filter').is(':focus')) {
-            searchFriend();
+            let searchText = $('#fr-filter').val();
+            let items = $('.friend-list-container');
+            iensSearchByText(items, '.central-title', searchText);
         }
     });
     $('.s-filter-clear').click(function () {
-        clearSearch();
-    });
-    function clearSearch() {
         $('#fr-filter').val('');
         $('.friend-list-container').removeClass('display-none');
-    }
-    function searchFriend() {
-        let searchText = $('#fr-filter').val();
-        if (searchText == '') {
-            $('.friend-list-container').removeClass('display-none');
-            return;
-        }
-        $('.friend-list-container').addClass('display-none');
-        let opps = $(".friend-list-container:contains(" + searchText + ")");
-        $(opps).removeClass('display-none');
-        return;
-    };
+    }); 
 
     // блокировка пользователя
     $('.btn-block').click(function () {
         let friendid = $(this).parent().children('#friend-entity-id').val();
-        // Данные запроса
-        //let friendid = $(thisCard).children('#friend-entity-id').val();
-        // Запрос
         let req = $.ajax({
             url: '/Api/BlockUser',
             data:
@@ -59,7 +42,6 @@
                 friendId: friendid
             }
         });
-        // в зависмости от результата запроса 
         req.then((data, statusText, jqXHR) => {
             if (jqXHR.status == 200) {
                 // от вида кнопки сменить стили и надписаь
@@ -145,7 +127,6 @@
         $(this).addClass('fr-checked');
         $('.content').addClass('display-none');
         let selector = $(this).prop('id');
-        console.log(selector);
         // В зависимости от того чт нажали добавляем удаляем класс видимости.
         if (selector == 'will-go') {
             $('.go-content').removeClass('display-none');
@@ -177,11 +158,10 @@
                 // Рендеринг
                 displayFriendSearch(data)
             }
-        });       
-        
+        });
     }
 
-    // Поиск
+    // Поиск из недрузей глобально
     $('.fr-search-modal').click(function () {
         if ($(this).text() === 'ПОИСК') {
             

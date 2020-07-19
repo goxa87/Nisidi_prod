@@ -12,8 +12,8 @@ namespace EventB.Services
     {
         public List<string> GetEnumerable(string input)
         {
-            if (input != "")
-                return input.ToUpper().Split(new char[]{ ' ', ',', '.', '/', ':', '*', '+', '-', '@','?','!','='}, StringSplitOptions.RemoveEmptyEntries).ToList();
+            if (!string.IsNullOrWhiteSpace(input))
+                return input.ToUpper().Split(new char[]{ ' ', ',', '.', '/', ':', '*', '+', '-', '@','?','!','='}, StringSplitOptions.RemoveEmptyEntries).Distinct().ToList();
             else 
                 return null;
         }

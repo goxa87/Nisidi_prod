@@ -10,7 +10,7 @@ namespace EventBTests
         public void GetEnumerable_normal_string()
         {
             var input = "aaa bbb ccc";
-            string[] output = { "aaa", "bbb", "ccc" };
+            string[] output = { "AAA", "BBB", "CCC" };
 
             var splitter = new TegSplitter();
             var rezult = splitter.GetEnumerable(input);
@@ -22,7 +22,7 @@ namespace EventBTests
         public void GetEnumerable_withEmpties()
         {
             var input = "aaa .,bbb/+ccc";
-            string[] output = { "aaa", "bbb", "ccc" };
+            string[] output = { "AAA", "BBB", "CCC" };
 
             var splitter = new TegSplitter();
             var rezult = splitter.GetEnumerable(input);
@@ -62,8 +62,20 @@ namespace EventBTests
             var splitter = new TegSplitter();
             var rezult = splitter.GetEnumerable(input);
 
-            Assert.AreEqual("bbb", rezult[1]);
+            Assert.AreEqual("BBB", rezult[1]);
         }
 
+
+        [TestMethod]
+        public void GetEnumerable_withUpper_toLowerAndRepeat()
+        {
+            var input = " aaa BBB aaa";
+            string[] output = { };
+
+            var splitter = new TegSplitter();
+            var rezult = splitter.GetEnumerable(input);
+
+            Assert.AreEqual(2, rezult.Count);
+        }
     }
 }

@@ -38,109 +38,119 @@
 <div class="mp-details-header">
     <span id="events-willgo" class="mp-my-selector selected-label">Я пойду</span>
     <span id="my-events" class="mp-my-selector">Мои события</span>
-    <span id="friends" class="mp-my-selector">Подписки</span>
     <span id="invites" class="mp-my-selector">Приглашения(@Model.Invites.Count())</span>
 </div>
 <div class="details-container">
 
     <div class="mp-my-content" id="events-willgo-body">
-        @if (Model.Vizits == null || Model.Vizits.Count == 0)
-        {
-            <div class="mp-none-content">Отметок пойду пока нет.</div>
-        }
-        else
-        {
-            <div>Вы пойдете на следующие события:</div>
-            <div class="element-square-container">
+        <div class="s-filter-container">
+            <span class="small-label">Фильтр</span>
+            <input id="mp-vizits-filter" class="s-filter" />
+            <img src="~/resourses/cancel.png" class="s-filter-clear"/>
+        </div>
+        <div>Вы пойдете на следующие события:</div>
+        <div class="element-square-container">
+            @if (Model.Vizits == null || Model.Vizits.Count == 0)
+            {
+                <div class="mp-none-content">Отметок пойду пока нет.</div>
+            }
+            else
+            {
+
                 @foreach (var e in Model.Vizits)
                 {
-                    await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.FriendsVM.SmallFigureFriendVM() 
-                    {
-                        Title =e.EventTitle, 
-                        Link = $"/Events/Details/{e.EventId}",
-                        Image = e.EventPhoto
-                    });
+                    <div class="mp-details-figure">
+                        @{await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.FriendsVM.SmallFigureFriendVM()
+                            {
+                                Title = e.EventTitle,
+                                Link = $"/Events/Details/{e.EventId}",
+                                Image = e.EventPhoto
+                            });
+                        }
+                    </div>
+                    
                 }
-            </div>
-        }
-    </div>
-
-    <div class="mp-my-content flex-hsac display-none" id="my-events-body">
-        @if (Model.MyEvents == null || Model.MyEvents.Count == 0)
-        {
-            <div class="mp-none-content">Моих событий пока нет.</div>
-        }
-        else
-        {
-        <div>Созданные события:</div>
-            <div class="element-square-container">
-                    @foreach (var e in Model.MyEvents)
-                    {
-                        await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.FriendsVM.SmallFigureFriendVM()
-                        {
-                            Title = e.Title,
-                            Link = $"/Events/Details/{e.EventId}",
-                            Image = e.Image
-                        });                
-                    }         
-            </div>
-        }
-    </div>
-
-    <div id="friends-body" class="mp-my-content flex-hsac display-none">
-        @if (Model.Friends == null || Model.Friends.Count == 0)
-        {
-            <div class="mp-none-content">Друзей пока нет.</div>
-        }
-        else
-            @foreach (var e in Model.Friends)
-            {
-                await Html.RenderPartialAsync("_friendBigCardPartial", e);                
             }
+        </div>
+    </div>
+
+    <div class="mp-my-content display-none" id="my-events-body">
+        <div class="s-filter-container">
+            <span class="small-label">Фильтр</span>
+            <input id="mp-created-ev-filter" class="s-filter" />
+            <img src="~/resourses/cancel.png" class="s-filter-clear" />
+        </div>
+        <div>Созданные события:</div>
+        <div class="element-square-container">
+            @if (Model.MyEvents == null || Model.MyEvents.Count == 0)
+            {
+                <div class="mp-none-content">Моих событий пока нет.</div>
+            }
+            else
+            {
+                @foreach (var e in Model.MyEvents)
+                {
+                    <div class="mp-details-figure">
+                        @{await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.FriendsVM.SmallFigureFriendVM()
+                            {
+                                Title = e.Title,
+                                Link = $"/Events/Details/{e.EventId}",
+                                Image = e.Image
+                            });
+                        }
+                    </div>                                  
+                 }
+            }
+        </div>
     </div>
 
     <div id="invites-body" class="mp-my-content display-none">
-        @if (Model.Invites == null || Model.Invites.Count() == 0)
-        {
-            <span>Приглашений нет</span>
-        }
-        else
-        {
-            foreach (var inv in Model.Invites)
+        <div class="s-filter-container">
+            <span class="small-label">Фильтр</span>
+            <input id="mp-invites-filter" class="s-filter" /><img src="~/resourses/cancel.png" class="s-filter-clear" />
+        </div>
+        <div class="element-square-container">
+            @if (Model.Invites == null || Model.Invites.Count() == 0)
             {
-                <div class="total-invite">
-                    <div class="invite-header">Приглашение</div>
-
-                    <div class="invite-container">
-                        <a asp-action="Details" asp-controller="Events" asp-route-id="@inv.EventId">
-                            <img class="item-img" src="@inv.Event.Image">
-                        </a>
-                        <div class="inv-content">
-                            <a asp-action="Details" asp-controller="Events" asp-route-id="@inv.EventId">
-                                <p>@inv.Event.Title </p>
-                            </a>
-                            <p>@inv.Event.Place </p>
-                            <p>@inv.Event.Date.ToString("dd.MM.yy hh:mm")</p>
-                            <p>@inv.Event.City</p>
-                            <input id="eveId" type="hidden" value="@inv.EventId">
-                            <input id="inviteId" type="hidden" value="@inv.InviteId">
-                            <div class="btn mp-will-go" id="will-go">Пойду )</div>
-                            <div class="btn mp-will-notgo" id="will-notgo">Не пойду (</div>
-
-                        </div>
-
-                        <div class="inv-content">
-                            <p><b>Вас приглашает @inv.InviterName:</b></p>
-                            <p>@inv.InviteDescription</p>
-                        </div>
-                        <a asp-action="UserInfo" asp-controller="Friends" asp-route-userId="@inv.InviterId">
-                            <img class="item-img" src="@inv.InviterPhoto" alt="@inv.InviterName" />
-                        </a>
-                    </div>
-                </div>
+                <span>Приглашений нет</span>
             }
-        }       
+            else
+            {
+                foreach (var inv in Model.Invites)
+                {
+                    <div class="total-invite">
+                        <div class="invite-header">Приглашение</div>
 
+                        <div class="invite-container">
+                            <a asp-action="Details" asp-controller="Events" asp-route-id="@inv.EventId">
+                                <img class="item-img" src="@inv.Event.Image">
+                            </a>
+                            <div class="inv-content">
+                                <a asp-action="Details" asp-controller="Events" asp-route-id="@inv.EventId">
+                                    <p class="mp-invites-title">@inv.Event.Title </p>
+                                </a>
+                                <p>@inv.Event.Place </p>
+                                <p>@inv.Event.Date.ToString("dd.MM.yy hh:mm")</p>
+                                <p>@inv.Event.City</p>
+                                <input id="eveId" type="hidden" value="@inv.EventId">
+                                <input id="inviteId" type="hidden" value="@inv.InviteId">
+                                <div class="btn mp-will-go" id="will-go">Пойду )</div>
+                                <div class="btn mp-will-notgo" id="will-notgo">Не пойду (</div>
+
+                            </div>
+
+                            <div class="inv-content">
+                                <p><b>Вас приглашает @inv.InviterName:</b></p>
+                                <p>@inv.InviteDescription</p>
+                            </div>
+                            <a asp-action="UserInfo" asp-controller="Friends" asp-route-userId="@inv.InviterId">
+                                <img class="item-img" src="@inv.InviterPhoto" alt="@inv.InviterName" />
+                            </a>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
     </div>
 </div>
 

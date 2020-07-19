@@ -296,6 +296,7 @@ input[type="checkbox"].input-validation-error {
     border-radius: 4px 0 0 4px;
     border-right: none;
     width: Calc(100% - 31px);
+    display:inline-block;
 }
     .s-filter:focus{
         outline:none;
@@ -309,6 +310,7 @@ input[type="checkbox"].input-validation-error {
     border-radius: 0 4px 4px 0;
     background-color: #1b5972;
     cursor: pointer;
+    display: inline-block;
 }
 /* ******************** формы*/
 .small-container {
