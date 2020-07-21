@@ -3,7 +3,6 @@
     margin-top:8px;
     background-color: #1b5972;
 }
-
 /* >***************************  контейнер деталей события Event - details*/
 .item-container {
     background-color: #e4dcc5;
@@ -17,7 +16,6 @@
     align-items: flex-start;
     box-sizing: border-box;
 }
-
     .item-container h2 {
         text-align: center;
         font-size: 24px;
@@ -26,14 +24,12 @@
         margin-top: 8px;
         min-height:4rem;
     }
-
     .item-container h3 {
         font-size: 18px;
         margin: 5px 0;
         font-weight: bold;
         min-height: 2rem;
     }
-
     .item-container h4 {
         padding: 5px 0;
         margin: 5px 0;
@@ -42,9 +38,6 @@
         padding-right: 30px;
         min-height: 2rem;
     }
-
-
-
     .item-container p {
         font-size: 18px;
         padding: 10px 0;
@@ -53,7 +46,6 @@
         max-width:100%;
         box-sizing:border-box;
     }
-
 .ev-half {
     width: 48%;
 }
@@ -64,14 +56,11 @@
     width: 100%;
     max-height: 50vmin;
     object-fit: contain;
-
 }
 .ev-twin-details{
     width: 100%;
     display:flex;
     justify-content:space-between;
-
-
 }
 @media(max-width:750px) {
     .ev-twin-details {
@@ -82,7 +71,6 @@
         width: 100%;
     }
 }
-
 /* >****************** добавление записи Event - Add  */
 .page-top-menu {
     display: flex;
@@ -91,26 +79,20 @@
     background-color: #1b5972;
     margin-bottom: 16px;
 }
-
     .page-top-menu a {
         color: #e4dcc5;
         margin: 0 24px;
     }
-
         .page-top-menu a:hover {
             color: #ffcd00;
         }
-
 .common-text {
     font-size: 14px;
     margin: 0;
     color: #1b5972;
     margin: 10px 5px;
 }
-
-
 /* нижнее меню деталей*/
-
 .bottom-menu{
     display:flex;
     justify-content:space-around;
@@ -118,23 +100,18 @@
     background-color:#1b5972;
     padding:8px 24px;
 }
-
 .bottom-menu-item{
     color:#e4dcc5;
     cursor:pointer;
 }
-
 .bottom-menu-item-selected {
     color:#ffcd00;
 }
-
 .bottom-body {
     border: 2px solid #1b5972;
     padding: 16px;
     background-color: #e4dcc5;
 }
-
-
 /* Сообщения */
 #text{
     width:calc(100% - 105px);
@@ -145,33 +122,25 @@
     background-color:#1b5972;
     color:#ffcd00;
 }
-
 .ed-message-list {
     width: 100%;
 }
-
-
 form{
     margin-bottom:16px;
 }
-
 form label {
     font-size:12px;
 }
-
 #btn-load{
     color:#1b5972;
     cursor:pointer;
     background-color:#0000;
     border:none;
 }
-
 /* **** контейнер приглашений */
-
 .inline{
     display:inline-block;
 }
-
 #over-cont {
     display:none;
     position: fixed;
@@ -184,7 +153,6 @@ form label {
     justify-content: center;
     align-items: center;
 }
-
 .invite-cont{
     margin:auto;
     background-color:#e4dcc5;
@@ -194,19 +162,15 @@ form label {
     flex-direction:column;
     justify-content:start;
 }
-
 .invite-menu{
     padding:8px;
 }
-
 .invite-list{
     flex-basis:1000px;
     overflow-y:auto;
     overflow-x:hidden;
-
     padding:8px;
 }
-
 .invite-item{
     border-top:1px solid #1b5972;
     padding: 8px 0;
@@ -217,11 +181,9 @@ form label {
     object-fit:contain;
     margin-right:16px;
 }
-
 .invite-data{
     flex-basis:400px;
 }
-
 #text {
     width: 100%;
     height:94px;
@@ -230,10 +192,18 @@ form label {
     font-size:12px;
     border:1px solid #1b5972;
 }
-#text:focus{
-    outline:none;
+.ev-d-invite-text {
+    width: 100%;
+    height: 94px;
+    max-width: 100%;
+    padding: 4px 8px;
+    font-size: 12px;
+    border: 1px solid #1b5972;
 }
-    .invite-title > H5{
+.ev-d-invite-text:focus {
+    outline: none;
+}
+.invite-title > H5{
     color:#1b5972;
     font-size:18px;
     margin:4px 16px;
@@ -249,12 +219,9 @@ form label {
 .inv-button:focus{
     outline: none;
 }
-
 .checked-inv{
     background-color:#ffcd00;
-
 }
-
 /* Форма редактирования */
 .content{
     display:inline-block;
@@ -266,7 +233,6 @@ form label {
     width: 100%;
     display:flex;
     justify-content:center;
-    
 }
 #ev-load-more{
     padding:4px;
@@ -276,7 +242,6 @@ form label {
     color:#1b5972;
     cursor:pointer;
 }
-
 /*контейнер отправки ссылки*/
 #ev-over-link {    
     position: fixed;

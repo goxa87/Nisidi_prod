@@ -109,12 +109,21 @@ p{
         max-height:100%;
         object-fit:contain;
     }
-
+.mes-remove-chat {
+    color: #ffcd00;
+    padding: 4px 24px;
+    height: 31px;
+    cursor: pointer;
+    background-image: url('../resourses/cancel.png');
+    background-position: -2px -1px;
+    background-repeat: no-repeat;
+    align-self:flex-start;
+}
 .message-list {
     overflow-y: auto;
     padding: 8px;
-    flex-basis:2000px;
-    background-color:#e4dcc588;
+    flex-basis: 2000px;
+    background-color: #e4dcc588;
 }
 
 

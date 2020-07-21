@@ -63,7 +63,6 @@ $(document).ready(function ()
     }
     // DETAILS
     // Загрузка истории изменений и сообщений автоматически
-    console.log($('#ed-changes'))
     if ($('#ed-changes').length) {
         let eve = $('#event-id').val();
         var user = $('#user-id').val();
@@ -74,7 +73,6 @@ $(document).ready(function ()
             },
             success: (data) => {
                 // Загрузка в изменения
-                console.log(data)
                 let changes = data.filter(e=>e.eventState === true)
                 let block = renderMessage(changes, user);
                 $('#ed-changes').html(block);
@@ -123,7 +121,6 @@ $(document).ready(function ()
         if ($('#chat-id').val() == '0') {
             // создаем чат отправляем сообщение(включает отправку)
             $('.message-item').empty();
-            console.log('Чат не создан.');
         }
         else
         {
@@ -200,6 +197,7 @@ $(document).ready(function ()
                     button.addClass('form-submit');
                     button.text('Подтвердить участие');
                     button.siblings().toggleClass('display-none');
+                    GetNotification('Отметка о визите удалена', 3, 3)
                     // Отписаться.
                 }
                 else {
@@ -207,11 +205,12 @@ $(document).ready(function ()
                     button.addClass('form-search-fade');
                     button.text('Отменить участие');
                     button.siblings().toggleClass('display-none');
+                    GetNotification('Отметка о визите сохранена', 3, 3)
                     // Подписаться.
                 }
             }
             else {
-                alert('Ошибка БД( Событие не найдено.');
+                GetNotification('Внутрення ошибка. Обратитесь в техподдержку.', 1, 3);
             }
 
         });
@@ -237,16 +236,16 @@ $(document).ready(function ()
             $(data).each(function (i, v) {
                 block +=
                     `<div class="invite-item flex-hsbc">
-                <img src="${v.photo}" />
-                <div class="invite-data">
-                    <div class="invite-title flex-hec">
-                        <h5>${v.name}</h5>
-                        <input class="inv-button" type="button" title="Отметить" />
+                        <img src="${v.photo}" />
+                        <div class="invite-data">
+                            <div class="invite-title flex-hec">
+                            <h5>${v.name}</h5>
+                            <input class="inv-button" type="button" title="Отметить" />
+                        </div>
+                        <textarea class="ev-d-invite-text"></textarea>
+                        <input type="hidden" id="friend-id" value="${v.userId}"/>
                     </div>
-                    <textarea id="text"></textarea>
-                    <input type="hidden" id="friend-id" value="${v.userId}"/>
-                </div>
-            </div>`
+                </div>`
             });
             $('.invite-list').html(block);            
         });
@@ -277,9 +276,8 @@ $(document).ready(function ()
     });
     // Скопировать текст приглашения.
     $('#invite-copy').click(function () {
-        let text1 = $('#text:first').val();
-        console.log(text1);
-        alert('not working');
+        let text1 = $('.ev-d-invite-text:first').val();
+        $('.ev-d-invite-text').val(text1);
     });
 
     // Нажатие пригласить в темном контейнере.
@@ -309,7 +307,7 @@ $(document).ready(function ()
             {
                 eventId: eventid,
                 invites:ids
-            }
+            }, success: () => GetNotification('Приглашения отправлены', 3, 3)
         });
 
         $('#over-cont').css('display', 'none');
@@ -317,8 +315,7 @@ $(document).ready(function ()
     });
 
     // Секция Отправить ссылку в чат.
-    $('#btn-details-send-link').click(function () {
-        //$('#ev-over-link').css('display','flex');
+    $('#btn-details-send-link').click(function () { 
         getChats();
     })
     //Запрос и вставка чатов
@@ -330,8 +327,6 @@ $(document).ready(function ()
         req.then(function (data, stat, jqXHR) {
             // сюжа вставить модалку
             if (jqXHR.status == 200) {
-                //$('.ev-chat-list').html('');
-                //$('.ev-chat-list').append(data);
                 let content = `<div class="s-filter-container">
                     <span class="small-label">Фильтр</span>
                     <input id="ev-send-link-filter" class="s-filter" /><img src="/resourses/cancel.png" class="s-filter-clear" />
@@ -375,6 +370,7 @@ $(document).ready(function ()
             }, success: function () {
                 $('#ev-over-link').css('display', 'none');
                 $('.modal-shadow').remove();
+                GetNotification('ССЫЛКА ОТПРАВЛЕНА', 3, 3);
             }, error: () => alert('Что-то пошло не так(') 
         })
     });

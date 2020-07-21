@@ -1,4 +1,5 @@
 ﻿using EventBLib.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,5 +22,12 @@ namespace EventB.Services.MessageServices
         /// <param name="eventId"></param>
         /// <returns></returns>
         public Task<List<Message>> GetEventChatMessages(int eventId);
+
+        /// <summary>
+        /// Удаление чата для пользователя.
+        /// </summary>
+        /// <param name="UserChatId">id чата пользователя</param>
+        /// <returns></returns>
+        public Task<int> DeleteUserChat(int UserChatId);
     }
 }
