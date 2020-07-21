@@ -20,8 +20,12 @@
 
     <label class="form-label" asp-for="Tegs"></label>
     <span asp-validation-for="Tegs"></span><br>
+
     <input class="form-entry-title" type="text" asp-for="Tegs" value="@Model.Tegs" /><br>
     <input type="hidden" asp-for="OldTegs" value="@Model.OldTegs" /><br>
+
+    <label class="form-label" asp-for="PhoneNumber"></label><br>
+    <input class="form-entry-title" type="text" asp-for="PhoneNumber"><br>
 
     <label class="form-label" asp-for="Description"></label>
     <span asp-validation-for="Description"></span><br>

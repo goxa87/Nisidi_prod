@@ -321,7 +321,7 @@ align-items: center;
 }
 
 .identity-cintainer {
-    width:400px;    
+    min-width:340px;    
 }
 
 .form-label {

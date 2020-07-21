@@ -46,6 +46,11 @@ namespace EventB.ViewModels.MyPage
         /// Стары теги.
         /// </summary>
         public string OldTegs { get; set; }
+
+        [DataType(DataType.PhoneNumber)]
+        [Display(Name = "Номер телефона (необязательно)")]
+        public string PhoneNumber { get; set; }
+
         [MaxLength(1000, ErrorMessage = "Максимальная длина 1000 символа")]
         [Display(Name = "Информация о вас(до 1000 символов)")]
         public string Description { get; set; }
@@ -59,7 +64,5 @@ namespace EventB.ViewModels.MyPage
         /// </summary>
         [Display(Name ="Аккаунт могут просмтривать")]
         public AccountVisible Visibility { get; set; }
-        [Display(Name ="Номер телефона")]
-        public string Phone { get; set; }
     }
 }

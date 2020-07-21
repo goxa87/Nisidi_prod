@@ -149,7 +149,7 @@ namespace EventB.Controllers
                 Description = curUser.Description,
                 AlowAnonMessages = curUser.AnonMessages,
                 Visibility = curUser.Visibility,
-                Phone = curUser.PhoneNumber
+                PhoneNumber = curUser.PhoneNumber
             };
 
             return View(VM);
@@ -243,7 +243,7 @@ namespace EventB.Controllers
                 user.Description = model.Description;
                 user.AnonMessages = model.AlowAnonMessages;
                 user.Visibility = model.Visibility;
-                user.PhoneNumber = model.Phone;
+                user.PhoneNumber = model.PhoneNumber;
                 context.Users.Update(user);
                 await context.SaveChangesAsync();
                 return RedirectToAction("Index");

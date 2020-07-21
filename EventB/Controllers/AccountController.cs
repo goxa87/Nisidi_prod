@@ -81,6 +81,10 @@ namespace EventB.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(UserRegistration model)
         {
+            if (!model.AgreePersonalData)
+            {
+                ModelState.AddModelError("AgreePersonalData", "Необходимо согласится на обработку персональных данных");
+            }
             if (ModelState.IsValid)
             {
                 var user = new User() { Email = model.Email,
@@ -89,7 +93,8 @@ namespace EventB.Controllers
                     City = model.City,
                     NormalizedName = model.Name.ToUpper(),
                     NormalizedCity = model.City.ToUpper(),
-                    Description = model.Description
+                    Description = model.Description,
+                    PhoneNumber = model.PhoneNumber
                 };
                 // Сохранение фотографии.
                 string photoPath = "/images/Profileimages/defaultimg.jpg";
