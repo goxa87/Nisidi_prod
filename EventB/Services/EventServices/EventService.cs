@@ -276,7 +276,8 @@ namespace EventB.Services.EventServices
                 {
                     ChatName = curentEv.TitleShort,
                     UserId = user.Id,
-                    ChatId = curentEv.Chat.ChatId
+                    ChatId = curentEv.Chat.ChatId,
+                    ChatPhoto = curentEv.Image
                 };
                 await context.UserChats.AddAsync(newUserChat);
 

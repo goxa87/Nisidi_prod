@@ -32,23 +32,31 @@
     </div>
 
     <div class="right-columnn">
-        <div class="message-header flex-hsc">
+        <div class="message-header flex-hsbc">
 
             @if (Model.Opponent != null)
             {
-                <div class="flex-hcc opponent-photo">
-                    <img src="@Model.Opponent.Photo" />
+                <div class="flex-hsc">
+                    <div class="flex-hcc opponent-photo">
+                        <img src="@Model.Opponent.Photo" />
+                    </div>
+                    <div class="opponent-name" id="header-name">@Model.Opponent.Name</div>
                 </div>
-                <div class="opponent-name" id="header-name">@Model.Opponent.Name</div>
+                <div class="mes-remove-chat">Удалить чат</div>
             }
             else
             {
-                <div class="opponent-photo flex-hcc">
-                    <img />
+                <div class="flex-hsc">
+                    <div class="opponent-photo flex-hcc">
+                        <img />
+                    </div>
+                    <div class="opponent-name" id="header-name"></div>
                 </div>
-                <div class="opponent-name" id="header-name"></div>
+                <div class="mes-remove-chat display-none">Удалить чат</div>
             }
         </div>
+                
+            
            
         <div class="message-list">
             @if (Model.Messages != null)

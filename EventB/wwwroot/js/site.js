@@ -145,3 +145,18 @@ function iensSearchByText(items, selector, textToSearch) {
         }
     });
 }
+
+/**
+ * Вызывает уведомление слева снизу на n секунд
+ * @param {any} text - текст сообщения
+ * @param {any} type - тип окна 0 - белое 1 - красное 2 - желтое 3 - зеленое
+ * @param {any} duration - продолжительность в секундах
+ */
+function GetNotification(text, type, duration = 2) {
+    block = `<div class="s-fixed-notification">${text}</div>`;
+    $('body').append(block);
+    if (type === 1) $('.s-fixed-notification').addClass('s-fixed-notification-red');
+    else if (type === 2) $('.s-fixed-notification').addClass('s-fixed-notification-yellow');
+    else if (type === 3) $('.s-fixed-notification').addClass('s-fixed-notification-green');
+    setTimeout(() => { $('.s-fixed-notification').remove(); }, duration * 1000);
+}

@@ -115,6 +115,8 @@
         $('#chat-id').val(newChat);
         $('#opponent-id').val(newOppId);
 
+        $('.mes-remove-chat').removeClass('display-none');
+
         // загрузить сообщения для этого чата
         $.ajax({
             url: '/Api/GetMessageHistory',
@@ -157,7 +159,27 @@
             iensSearchByText(items, '.opponent-name-value', searchText);
         }
     });
-    
+
+    // Удаление чата
+    // /messages/delete-user-chat
+    $('.mes-remove-chat').click(() => {
+        let chatId = $('#chat-id').val();
+        console.log(chatId);
+        $.ajax({
+            url: '/messages/delete-user-chat',
+            data: {
+                chatId: chatId
+            },
+            success: () => {
+                GetNotification("Вы покинули этот чат", 2, 3);
+                $('#chat-id').val('0');
+            },
+            error: () => {
+                GetNotification("Удаление не удалось", 2, 10);
+            }
+        });
+    });
+
     //[Route("GetNewMessages")]
     //public async Task < List < Message >> GetNewMessages(int chatId, string opponentId)
     // Интервальный запрос на получение новых непрочитанных сообщений для чата. 

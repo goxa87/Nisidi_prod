@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using EventBLib.Models;
 using EventB.ViewModels;
+using Microsoft.AspNetCore.Identity;
+using EventB.Services.MessageServices;
 
 namespace EventB.Controllers
 {
@@ -16,12 +18,18 @@ namespace EventB.Controllers
     public class MessagesController : Controller
     {
         readonly Context context;
+        private readonly UserManager<User> userManager;
         readonly IUserFindService findUser;
+        private readonly IMessageService messagesService;
         public MessagesController(Context _context,
-            IUserFindService _findUser)
+            UserManager<User> _userManager,
+            IUserFindService _findUser,
+            IMessageService _messagesService)
         {
             context = _context;
+            userManager = _userManager;
             findUser = _findUser;
+            messagesService = _messagesService;
         }
 
         public async Task<IActionResult> Index(string opponentId="")
@@ -92,6 +100,20 @@ namespace EventB.Controllers
             }
 
             return View(chatVM);
+        }
+
+        /// <summary>
+        /// Удаляет useerChat пользователя.
+        /// </summary>
+        /// <param name="сhatId">id чата</param>
+        /// <returns></returns>
+        [Route("/messages/delete-user-chat")]
+        public async Task<StatusCodeResult> DeleteUserChat(int chatId)
+        {
+            var user = await userManager.FindByNameAsync(User.Identity.Name);
+            var chat = await context.UserChats.FirstOrDefaultAsync(e => e.ChatId == chatId);
+            var result = await messagesService.DeleteUserChat(chat.UserChatId);
+            return StatusCode(result);
         }
     }
 }
