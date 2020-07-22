@@ -34,7 +34,10 @@ namespace EventB
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<Context>();
+            string connection = Configuration.GetConnectionString("EB1");
+            services.AddDbContext<Context>(options => {
+                options.UseSqlServer(connection);
+            });
             //services.AddScoped<IDataProvider, DbData>();
 
             services.AddIdentity<User, IdentityRole>(
