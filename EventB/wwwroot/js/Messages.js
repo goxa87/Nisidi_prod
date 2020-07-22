@@ -170,9 +170,14 @@
             data: {
                 chatId: chatId
             },
-            success: () => {
-                GetNotification("Вы покинули этот чат", 2, 3);
+            success: () => {                
+                $('.selected-opponent').parent().remove();
+                $('.opponent-photo').children('img').prop('src', '');
+                $('.opponent-name').text('');
+                $('.mes-remove-chat').addClass('display-none');
+                $('.message-list').html('');
                 $('#chat-id').val('0');
+                GetNotification("Вы покинули этот чат", 2, 3);
             },
             error: () => {
                 GetNotification("Удаление не удалось", 2, 10);
