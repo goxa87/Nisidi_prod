@@ -1,11 +1,18 @@
 ﻿/*>******************************* список событий Event - start*/
+/*
+    золотой #ffcd00
+    темный синь #1b5972
+    беж темный #e4dcc5  -  #fff
+    беж светлый #f1ead8   -  #bbb
+
+*/
 .top-line {
     margin-top:8px;
     background-color: #1b5972;
 }
 /* >***************************  контейнер деталей события Event - details*/
 .item-container {
-    background-color: #e4dcc5;
+    background-color: #fff;
     padding: 20px;
     width: 100%;
     border: 2px solid #1b5972;
@@ -80,7 +87,7 @@
     margin-bottom: 16px;
 }
     .page-top-menu a {
-        color: #e4dcc5;
+        color: #fff;
         margin: 0 24px;
     }
         .page-top-menu a:hover {
@@ -101,7 +108,7 @@
     padding:8px 24px;
 }
 .bottom-menu-item{
-    color:#e4dcc5;
+    color:#fff;
     cursor:pointer;
 }
 .bottom-menu-item-selected {
@@ -110,7 +117,7 @@
 .bottom-body {
     border: 2px solid #1b5972;
     padding: 16px;
-    background-color: #e4dcc5;
+    background-color: #fff;
 }
 /* Сообщения */
 #text{
@@ -153,23 +160,23 @@ form label {
     justify-content: center;
     align-items: center;
 }
-.invite-cont{
-    margin:auto;
-    background-color:#e4dcc5;
-    max-width:500px;
-    height:80%;
-    display:flex;
-    flex-direction:column;
-    justify-content:start;
+.invite-cont {
+    margin: auto;
+    background-color: #dee2e6;
+    max-width: 500px;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
 }
 .invite-menu{
     padding:8px;
 }
-.invite-list{
-    flex-basis:1000px;
-    overflow-y:auto;
-    overflow-x:hidden;
-    padding:8px;
+.invite-list {
+    flex-basis: 1000px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 8px;
 }
 .invite-item{
     border-top:1px solid #1b5972;
@@ -256,7 +263,7 @@ form label {
 }
 .ev-link-cont {
     margin: auto;
-    background-color: #e4dcc5;
+    background-color: #fff;
     width: 500px;
     height: 80%;
     max-height:1000px;

@@ -55,9 +55,9 @@ label {
 }
 
 .fr-selector {
-    color: #e4dcc5;
+    color: #dee2e6;
     padding: 0 16px;
-    cursor:pointer;
+    cursor: pointer;
 }
 .fr-checked {
     color: #ffcd00;
@@ -65,6 +65,7 @@ label {
 .ui-botom-content{
     border:2px solid #1b5972;
     padding: 16px;
+    background-color: #fff;
 }
 .fr-filter{
     padding: 4px;

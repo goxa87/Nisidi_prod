@@ -1,13 +1,13 @@
 ﻿/*
     золотой #ffcd00
     темный синь #1b5972
-    беж темный #e4dcc5
-    беж темный #f1ead8
+    беж темный #dee2e6  -  #fff
+    беж светлый #f1ead8   -  #bbb
 
 */
 
 p{
-    color: #e4dcc5;
+    color: #dee2e6;
     margin:0;
 }
 .vertical-trigger{
@@ -32,7 +32,7 @@ p{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: #e4dcc588;
+    background-color: #dee2e688;
 }
 
 .search {
@@ -72,7 +72,7 @@ p{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 0 solid #e4dcc5;
+    border: 0 solid #dee2e6;
 }
     .opponent-container:hover{
         background-color:#fff4;
@@ -123,16 +123,16 @@ p{
     overflow-y: auto;
     padding: 8px;
     flex-basis: 2000px;
-    background-color: #e4dcc588;
+    background-color: #fff;
 }
 
 
 .form-send {
     display: flex;
-    border: 1px solid #1b5972;    
+    border: 1px solid #1b5972; 
+    border-left: none;
 }
     .form-send > input {
-        background-color: #e4dcc5;
         width: calc(100% - 30px);
         padding: 3px;
         border: none;

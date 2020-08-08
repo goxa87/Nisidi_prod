@@ -1,6 +1,7 @@
 ﻿.mp-header {
     display:flex;
     justify-content: left;
+    background-color: #fff;
 }
 
 #btn-edit {
@@ -67,9 +68,10 @@
     display: block;
 }
 
-.details-container{
-    border:2px solid #1b5972;
-    padding:16px;
+.details-container {
+    border: 2px solid #1b5972;
+    padding: 16px;
+    background-color: #fff;
 }
 
 
@@ -107,7 +109,6 @@
     font-size:16px;
     margin-top:16px;
 }
-
 .invite-container {
     border: 2px solid #1b5972;
     display: flex;
@@ -115,7 +116,7 @@
     align-items: start;
     width: 100%;
     padding: 16px;
-    background-color: #e4dcc5;
+    background-color: #dee2e6;
 }
 
 .item-img{

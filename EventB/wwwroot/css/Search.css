@@ -1,11 +1,11 @@
 ﻿
 .eventlist-container {
-    margin-top:8px;
+    margin-top: 8px;
     display: flex;
     justify-content: stretch;
     align-items: center;
     border: 2px solid #1b5972;
-    background-color: #e4dcc5
+    background-color: #dee2e6;
 }
 
 .eventlist-img {
