@@ -101,13 +101,15 @@
 
 /* Отметки пойду */
 /*вынесено в мэйн*/
-
-.invite-header{
-    background-color:#1b5972;
-    color:#ffcd00;
-    padding:8px 24px;
-    font-size:16px;
-    margin-top:16px;
+.total-invite{
+    width: 100%;
+}
+.invite-header {
+    background-color: #1b5972;
+    color: #ffcd00;
+    padding: 8px 24px;
+    font-size: 16px;
+    margin-top: 16px;
 }
 .invite-container {
     border: 2px solid #1b5972;

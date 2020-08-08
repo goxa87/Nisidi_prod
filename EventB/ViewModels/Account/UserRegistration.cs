@@ -41,7 +41,7 @@ namespace EventB.ViewModels.Account
         /// <summary>
         /// город
         /// </summary>
-        [Required, MaxLength(128,ErrorMessage ="Максимальная длина 128 символов")]
+        [Required(ErrorMessage="Введите город"), MaxLength(128,ErrorMessage ="Максимальная длина 128 символов")]
         [Display(Name ="Ваш город(поиск и уведомления будут для этого города , будьте внимательны)")]
         public string City { get; set; }
         /// <summary>

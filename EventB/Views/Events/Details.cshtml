@@ -4,7 +4,7 @@
     ViewData["Style"] = "Event.css";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="top-page-header">@Model.Title</div>
+<div class="top-page-header">Описание события</div>
 <div class="item-container">
     <div class="ev-twin-details">
         <div class="ev-half">
@@ -93,15 +93,18 @@
 
     <!-- посетители-->
     <div class="bottom-page display-none" id="vizitors">
-        @foreach (var e in Model.Vizits)
-        {
-            await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.FriendsVM.SmallFigureFriendVM()
+        <div class="flex-hsbs flex-wr">
+            @foreach (var e in Model.Vizits)
             {
-                Title = e.VizitorName,
-                Link = $"/Friends/UserInfo/UserInfo?userId={e.UserId}",
-                Image = e.VizitirPhoto
-            });
-        }
+                await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.FriendsVM.SmallFigureFriendVM()
+                {
+                    Title = e.VizitorName,
+                    Link = $"/Friends/UserInfo/UserInfo?userId={e.UserId}",
+                    Image = e.VizitirPhoto
+                });
+            }
+        </div>
+       
     </div>
 
 

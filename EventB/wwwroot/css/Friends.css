@@ -19,7 +19,8 @@ label {
 }
 
 .ui-info {
-    margin: 16px 0;
+    padding: 16px 0;
+    background-color: #fff;
 }
 
 @media(max-width:950px) {

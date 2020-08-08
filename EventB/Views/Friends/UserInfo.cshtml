@@ -122,10 +122,19 @@ else
                 <div class="mp-none-content">Друзей пока нет.</div>
             }
             else
-                @foreach (var e in Model.Friends)
-                {
-                    await Html.RenderPartialAsync("_friendBigCardPartial", e);
-                }
+            {
+                <div class="flex-hsac">
+                    @foreach (var e in Model.Friends)
+                    {
+                        await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.FriendsVM.SmallFigureFriendVM()
+                        {
+                            Title = e.UserName,
+                            Link = $"/Friends/UserInfo/UserInfo?userId={e.UserId}",
+                            Image = e.UserPhoto
+                        });
+                    }
+                </div>
+            }
         </div>
         <div class="content photos-content display-none">Фотографии не имплементированы.</div>
 
