@@ -316,6 +316,7 @@ input[type="checkbox"].input-validation-error {
 /*фильтр*/
 .s-filter {
     padding: 4px;
+    flex-basis:1200px;
     font-size: 14px;
     border: 1px solid #1b5972;
     border-radius: 4px 0 0 4px;

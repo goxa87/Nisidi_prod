@@ -47,8 +47,11 @@
     <div class="mp-my-content" id="events-willgo-body">
         <div class="s-filter-container">
             <span class="small-label">Фильтр</span>
-            <input id="mp-vizits-filter" class="s-filter" />
-            <img src="~/resourses/cancel.png" class="s-filter-clear"/>
+            <div class="flex-hsbc">
+                <input id="mp-vizits-filter" class="s-filter" />
+                <img src="~/resourses/cancel.png" class="s-filter-clear" />
+            </div>
+            
         </div>
         <div>Вы пойдете на следующие события:</div>
         <div class="element-square-container">
@@ -79,8 +82,11 @@
     <div class="mp-my-content display-none" id="my-events-body">
         <div class="s-filter-container">
             <span class="small-label">Фильтр</span>
-            <input id="mp-created-ev-filter" class="s-filter" />
-            <img src="~/resourses/cancel.png" class="s-filter-clear" />
+            <div class="flex-hsbc">
+                <input id="mp-created-ev-filter" class="s-filter" />
+                <img src="~/resourses/cancel.png" class="s-filter-clear" />
+            </div>
+            
         </div>
         <div>Созданные события:</div>
         <div class="element-square-container">
@@ -109,7 +115,11 @@
     <div id="invites-body" class="mp-my-content display-none">
         <div class="s-filter-container">
             <span class="small-label">Фильтр</span>
-            <input id="mp-invites-filter" class="s-filter" /><img src="~/resourses/cancel.png" class="s-filter-clear" />
+            <div class="flex-hsbc">
+                <input id="mp-invites-filter" class="s-filter" />
+                <img src="~/resourses/cancel.png" class="s-filter-clear" />
+            </div>
+            
         </div>
         <div class="element-square-container">
             @if (Model.Invites == null || Model.Invites.Count() == 0)

@@ -92,7 +92,7 @@
     </div>
 
     <!-- посетители-->
-    <div class="bottom-page  display-none flex-hsc" id="vizitors">
+    <div class="bottom-page display-none" id="vizitors">
         @foreach (var e in Model.Vizits)
         {
             await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.FriendsVM.SmallFigureFriendVM()
@@ -129,7 +129,10 @@
         <div class="top-page-header">Отправить ссылку</div>        
         <div class="s-filter-container">
             <span class="small-label">Фильтр</span>
-            <input id="ev-send-link-filter" class="s-filter" /><img src="~/resourses/cancel.png" class="s-filter-clear" />
+            <div class="flex-hsbc">
+                <input id="ev-send-link-filter" class="s-filter" />
+                <img src="~/resourses/cancel.png" class="s-filter-clear" />
+            </div>
         </div>
         <div class="ev-chat-list">
 

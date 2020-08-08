@@ -88,7 +88,7 @@ $(document).ready(function ()
         // bottom-menu-item-selected
         $('.bottom-menu-item').removeClass('bottom-menu-item-selected');
         $(this).addClass('bottom-menu-item-selected');
-
+        $('.bottom-page').removeClass('flex-hsc');
         $('.bottom-page').addClass('display-none');
         $('#ed-changes').removeClass('display-none');
     });
@@ -96,7 +96,7 @@ $(document).ready(function ()
         // bottom-menu-item-selected
         $('.bottom-menu-item').removeClass('bottom-menu-item-selected');
         $(this).addClass('bottom-menu-item-selected');
-
+        $('.bottom-page').removeClass('flex-hsc');
         $('.bottom-page').addClass('display-none');
         $('#chat').removeClass('display-none');
     });
@@ -106,7 +106,9 @@ $(document).ready(function ()
         $(this).addClass('bottom-menu-item-selected');
 
         $('.bottom-page').addClass('display-none');
+        $('.bottom-page').removeClass('flex-hsc');
         $('#vizitors').removeClass('display-none');
+        $('#vizitors').addClass('flex-hsc');
     });
           
     // Отправить сообщение.
