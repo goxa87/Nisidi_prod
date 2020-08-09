@@ -21,6 +21,10 @@ $(document).ready(function () {
             $('#menu-voider').css('height', '0');
         }
     });
+    // Узкое меню
+    $('#thin-menu').click(function () {
+        $('.thin-menu-items-container').toggleClass('display-none');
+    });
 
     // Согласиться принять в друзья. моя страница и друзья
     //agree-friend
@@ -46,9 +50,21 @@ $(document).ready(function () {
         });
     });
 
-    // Узкое меню
-    $('#thin-menu').click(function () {
-        $('.thin-menu-items-container').toggleClass('display-none');
+    // динамическая  справка
+    $('body').on('click', '.help-close', function (e) {
+        e.stopPropagation();
+        $(this).parent().first().addClass('display-none');   
+    });
+    $('body').on('click', '.help-btn', function (e) {
+        e.stopPropagation(); 
+        // подвигаем налево если вылазит за пределы
+        let thisFrame = $(this).children();
+        thisFrame.removeClass('display-none');
+        let rightEnd = thisFrame.offset().left + thisFrame.width()
+        if (rightEnd > $(window).width()) {
+            console.log(($(window).width() - thisFrame.width()))
+            thisFrame.offset({ left: ($(window).width() - thisFrame.width()), top: thisFrame.offset().top })
+        }
     });
 });
 
@@ -160,3 +176,5 @@ function GetNotification(text, type, duration = 2) {
     else if (type === 3) $('.s-fixed-notification').addClass('s-fixed-notification-green');
     setTimeout(() => { $('.s-fixed-notification').remove(); }, duration * 1000);
 }
+
+

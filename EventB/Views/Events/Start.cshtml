@@ -7,7 +7,15 @@
 }
 
 <div class="top-page-header">
-    <a asp-controller="Events" asp-action="Add">ДОБАВИТЬ СОБЫТИЕ</a>
+    <a class="top-page-header-a" asp-controller="Events" asp-action="Add">ДОБАВИТЬ СОБЫТИЕ</a>
+    <div class="help-btn help-btn-light">
+        <div class="help-content display-none">
+            <div class="help-close"></div>
+            <p class="help-container">
+                Добавить новое приватное событие. Для добавления публичного события создайте приватное и измените его настройки в личном кабинете на Вашей странице
+            </p>
+        </div>        
+    </div>
 </div>
 <div class="top-page-header" id="header-title">
     <div class="ticket">c: @Model.args.DateSince.ToString("dd.MM.yyyy")</div>
@@ -40,6 +48,14 @@
     <input type="hidden" id="args-skip" value=@Model.args.Skip />
     <input type="hidden" id="args-take" value=@Model.args.Take />
     <input type="hidden" id="flag-dwnl-more" value="true" />
+    <div class="help-btn help-btn-light">
+        <div class="help-content display-none">
+            <div class="help-close"></div>
+            <p class="help-container">
+                Выборка на этой странице производилась по этим параметрам, которые взяты либо из Вашего профиля либо из параметров поиска. Для изменения параметров перейдите на вкладку <a class="a-dark" href="/Search/Index">ПОИСК</a>
+            </p>
+        </div>
+    </div>
 </div>
 <div class="top-page-header display-none" id="header-args">    
 </div>

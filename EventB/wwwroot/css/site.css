@@ -30,7 +30,6 @@ a{
     color:#1b5972;
     text-decoration: none;
 }
-
     a:hover {
         text-decoration:none;
     }
@@ -251,10 +250,10 @@ input[type="checkbox"].input-validation-error {
     align-items:center;
     flex-wrap:wrap;
 }
-    .top-page-header a{
+    .top-page-header-a{
         color:#fff;
     }
-        .top-page-header a:hover{
+        .top-page-header-a:hover{
             color:#ffcd00;
         }
 
@@ -984,4 +983,60 @@ figure img {
 .friend-list-img {
     width: 100%;
     height: 200px;
+}
+/*справка */
+.help-btn {
+    position: absolute;
+    margin: 0 4px;
+    height: 24px;
+    width: 24px;
+    position: relative;
+    max-width: 380px;
+    bottom: 0;
+    left: 0;
+    cursor: pointer;
+}
+
+.help-btn-dark {
+    background-image: url('/resourses/help-d.png');
+    background-position: -1px -1px;
+}
+.help-btn-light {
+    background-image: url('/resourses/help-l.png');
+    background-position: -1px -1px;
+}
+.help-content {
+    cursor:default;
+    position: relative;
+    width: 380px;
+    background-color: #fff;
+    border: 1px solid #000;
+    box-shadow: 0 3px 4px 2px #777;
+    bottom: 0;
+    left: 0;
+    color: black;
+    z-index: 9999;
+    font-size: 12px;
+    padding: 4px;
+}
+    .help-content>p{
+        margin: 0;
+        text-transform:none;
+    }
+
+.help-close {
+    background-color: #1b5972;
+    border-radius: 8px;
+    width: 16px;
+    height: 16px;
+    background-image: url('/resourses/cancel.png');
+    background-position: -8px -9px;
+    float: right;
+    cursor: pointer;
+}
+
+.a-dark {
+    color: #1b5972;
+    font-size: 14px;
+    text-decoration: underline;
 }
