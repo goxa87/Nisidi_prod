@@ -48,6 +48,7 @@ namespace EventB.Services
                 selection = selection.Where(e => e.NormalizedCity == args.City);
             // заголовок
             // Возможно здесь будет тянуть из бд уже в оперативу. (узкое место нужно проверить)
+            // Проверил . Судя по запросу выполняется на сервере. 
             if (!string.IsNullOrWhiteSpace(args.Title))
                 selection = selection.Where(e => e.NormalizedTitle.Contains(args.Title));
 
@@ -70,6 +71,11 @@ namespace EventB.Services
             }            
             selectionLocal = selectionLocal.OrderBy(e => e.Date).Skip(args.Skip).Take(args.Take);
 
+            foreach(var eve in selectionLocal)
+            {
+                eve.Views++;
+            }
+            await context.SaveChangesAsync();
             return await selectionLocal.ToListAsync();
         }
 

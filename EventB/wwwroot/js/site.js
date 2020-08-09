@@ -119,7 +119,7 @@ function getModelWindow(title, okCancel, okCallback, cancelCollback) {
     let mainBlock =`<p>МОДАЛКА ${title}</p>`;
     mainBlock =`<div class="modal-shadow">
                     <div class="modal-content">
-                        <div class="top-page-header"> <span>${title}</span> </div>
+                        <div class="top-page-header flex-hsbc"> <span>${title}</span> <div class="modal-cancel modal-close"></div></div>
                         <div class="modal-body"></div>
                         <div class="modal-my-footer">`;
 

@@ -241,6 +241,7 @@ $(document).ready(function ()
                     </div>
                 </div>`
             });
+
             $('.invite-list').html(block);            
         });
         return rez;

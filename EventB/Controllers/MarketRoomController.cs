@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using EventB.ViewModels.MarketRoom;
 using EventBLib.DataContext;
 using EventBLib.Models.MarketingModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace EventB.Controllers
 {
+    [Authorize]
     public class MarketRoomController : Controller
     {
         readonly Context context;

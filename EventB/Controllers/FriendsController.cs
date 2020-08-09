@@ -197,7 +197,7 @@ namespace EventB.Controllers
             
             // Формирование VM.
             var createdEve = await context.Events.Where(e => e.UserId == userId).ToListAsync();
-            var vizitEve = await context.Vizits.Where(e => e.UserId == userId).ToListAsync();
+            var vizitEve = await context.Vizits.Include(e =>e.Event).Where(e => e.UserId == userId).ToListAsync();
             var friends = await context.Friends.Where(e => e.FriendUserId == userId).ToListAsync();
             var asFriend = await context.Friends.FirstOrDefaultAsync(e => e.FriendUserId == currUser.Id && e.UserId == userId);
             var infoVM = new UserInfoVM();

@@ -23,7 +23,7 @@ hr{
     border-top:1px solid #1b5972;
 }
 p{
-   
+   margin: 0;
 }
 
 a{
@@ -964,8 +964,14 @@ figure img {
     color: #ffcd00;
     cursor: pointer;
 }
-@media(max-width: 700px)
-{
+.modal-close{
+    background-image: url('/resourses/cancel.png');
+    background-position: -8px -8px;
+    width: 20px;
+    height: 20px;
+    float: right;
+}
+@media(max-width: 700px) {
     .modal-content{
         max-width: 94%;
     }
@@ -1026,12 +1032,13 @@ figure img {
 
 .help-close {
     background-color: #1b5972;
+    padding: 2px;
     border-radius: 8px;
     width: 16px;
     height: 16px;
     background-image: url('/resourses/cancel.png');
     background-position: -8px -9px;
-    float: right;
+    float: left;
     cursor: pointer;
 }
 

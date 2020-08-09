@@ -7,11 +7,17 @@
 }
 <div class="top-page-header">Это вы: @Model.Name</div>
 <div class="mp-header">
-    <div class="mp-img">
-        <img src="@Model.Photo" alt="фото">
+    <div>
+        <a class="btn-edit" asp-action="EditProfile">РЕДАКТИРОВАТЬ</a>
+        <a class="btn-edit" asp-action="MarketRoom" asp-controller="MarketRoom">ЛИЧНЫЙ КАБИНЕТ</a>
+        <div class="mp-img">
+            <img src="@Model.Photo" alt="фото">
+        </div>
+
     </div>
+    
     <div class="mp-data">
-        <a id="btn-edit" asp-action="EditProfile">РЕДАКТИРОВАТЬ</a>
+        
         <h3 class="mp-name">@Model.Name</h3>
         <div class="mp-data-label">Электронная почта:</div>
         <div class="mp-data-value">@Model.Email</div>
@@ -33,7 +39,7 @@
         </div>
         <div class="mp-data-label">Пара слов:</div>
         <div>@Model.Description</div>
-        <a asp-action="MarketRoom" asp-controller="MarketRoom"><div>Рекламный кабинет</div></a>
+        
     </div>
 </div>
 
@@ -62,7 +68,7 @@
             else
             {
 
-                @foreach (var e in Model.Vizits)
+                @foreach (var e in Model.Vizits.OrderByDescending(e => e.Event.Date))
                 {
                     <div class="mp-details-figure">
                         @{await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.FriendsVM.SmallFigureFriendVM()
@@ -96,7 +102,7 @@
             }
             else
             {
-                @foreach (var e in Model.MyEvents)
+                @foreach (var e in Model.MyEvents.OrderByDescending(e=>e.Date))
                 {
                     <div class="mp-details-figure">
                         @{await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.FriendsVM.SmallFigureFriendVM()
