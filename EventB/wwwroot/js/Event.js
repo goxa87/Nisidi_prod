@@ -225,7 +225,7 @@ $(document).ready(function ()
         });
         req.then(function (data, stat, jqXHR)
         {
-            // Парс в HTML
+            // Парс в HTML списка друзей доступных для приглашения
             var block = '';
             $(data).each(function (i, v) {
                 block +=
@@ -241,8 +241,17 @@ $(document).ready(function ()
                     </div>
                 </div>`
             });
-
-            $('.invite-list').html(block);            
+            getModelWindow('Пригласить', false);
+            let firstBlock = `
+                <div class="invite-menu">
+                    <div class="form-submit inline" id="invite-copy" title="Скопировть текст из первого сообщения пользователю ко всем пользователям">Скопировать текст</div>
+                    <div class="form-submit inline" id="inv-selectall">Отметить всех</div>
+                    <div class="form-submit inline" id="inv-invite">Пригласить</div>
+                </div>
+                <div class="invite-list">
+                </div>`
+            $('.modal-body').html(firstBlock);
+            $('.invite-list').html(block);         
         });
         return rez;
     }
@@ -250,63 +259,43 @@ $(document).ready(function ()
     $('#btn-invite').click(function ()
     {
         // Получение с сервера InviteOutVM списка.
-        $('#over-cont').css('display', 'flex');
-        let friends = GetFriends();       
+        GetFriends();       
     });
 
-    // Скрытие списка по нажатии на серое поле.
-    $('#over-cont').on('click' ,function (event) {
-        
-        $(this).css('display', 'none');
-    });
-    $('.invite-cont').click(function (e) {
-        e.stopPropagation();
-    });
     // Выбрать всех кнопка.
-    $('#inv-selectall').click(function () {
+    $('body').on('click', '#inv-selectall', function () {
         if ($('.inv-button').hasClass('checked-inv'))
             $('.inv-button').removeClass('checked-inv');
         else
             $('.inv-button').addClass('checked-inv');
     });
     // Скопировать текст приглашения.
-    $('#invite-copy').click(function () {
+    $('body').on('click', '#invite-copy', function () {
         let text1 = $('.ev-d-invite-text:first').val();
         $('.ev-d-invite-text').val(text1);
     });
-
-    // Нажатие пригласить в темном контейнере.
-
     // Кнопка пригласить всех. InviteFriendsIn(int eventId, InviteInVm[] invites)
-    $('#inv-invite').click(function ()
-    {
+    $('body').on('click', '#inv-invite', function () {
         var ids = [];
-
-        $('.checked-inv').each(function (i, v)
-        {
+        $('.checked-inv').each(function (i, v) {
             let id = $(v).parents('.invite-data').children('#friend-id').val();
             let mess = $(v).parents('.invite-data').children('#text').val();
             let inv = { userId: id, message: mess };
-
             ids.push(inv);
         });
-
         let eventid = $('#event-id').val();
-        console.log(eventid);
-        console.log(ids);
-
         $.ajax({
             type: 'post',
             url: '/Events/InviteFriendsIn',
             data:
             {
                 eventId: eventid,
-                invites:ids
-            }, success: () => GetNotification('Приглашения отправлены', 3, 3)
+                invites: ids
+            }, success: () => {
+                GetNotification('Приглашения отправлены', 3, 3)
+                $('.modal-shadow').remove();
+            }                
         });
-
-        $('#over-cont').css('display', 'none');
-
     });
 
     // Секция Отправить ссылку в чат.
@@ -323,8 +312,19 @@ $(document).ready(function ()
             // сюжа вставить модалку
             if (jqXHR.status == 200) {
                 let content = `<div class="s-filter-container">
-                    <span class="small-label">Фильтр</span>
-                    <input id="ev-send-link-filter" class="s-filter" /><img src="/resourses/cancel.png" class="s-filter-clear" />
+                        <span class="small-label">Фильтр</span>
+                        <div class="flex-hsbc">
+                            <div class="help-btn help-btn-dark ">
+                                <div class="help-content display-none">
+                                    <div class="help-close"></div>
+                                    <p class="help-container">
+                                        Вы можете отправить ссылку на собыие собеседнику. В списке отображаются активные приватные чаты. Если вы не видите нужный вам чат, начните его отправив любое сообщение.
+                                    </p>
+                                </div>        
+                            </div>
+                            <input id="ev-send-link-filter" class="s-filter" />
+                            <img src="/resourses/cancel.png" class="s-filter-clear" />
+                        </div>
                     </div>` + data;
                 getModelWindow('Отправить ссылку', false);
                 $('.modal-body').html(content);

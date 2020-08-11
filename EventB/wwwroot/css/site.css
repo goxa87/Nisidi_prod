@@ -57,12 +57,14 @@ label{
 .visible-hidden{
     visibility:hidden;
 }
-
-.central-title{
-    font-size:18px;
-    text-align:center;
-    width:100%;
-    font-weight:600;
+.float-right{
+    float: right;
+}
+.central-title {
+    font-size: 18px;
+    text-align: center;
+    width: 100%;
+    font-weight: 600;
 }
 .action-button{
     text-align:center;
@@ -993,7 +995,7 @@ figure img {
 /*справка */
 .help-btn {
     position: absolute;
-    margin: 0 4px;
+    margin: 0 0px;
     height: 24px;
     width: 24px;
     position: relative;
@@ -1005,11 +1007,9 @@ figure img {
 
 .help-btn-dark {
     background-image: url('/resourses/help-d.png');
-    background-position: -1px -1px;
 }
 .help-btn-light {
     background-image: url('/resourses/help-l.png');
-    background-position: -1px -1px;
 }
 .help-content {
     cursor:default;

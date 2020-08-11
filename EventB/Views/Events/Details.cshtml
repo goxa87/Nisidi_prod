@@ -12,14 +12,14 @@
                 <img src="@Model.Image" class="image-self-back"/>
                 <div class="image-mask"></div>
                 <img src="@Model.Image"  class="image-self-front" />
-            </div>            
+            </div>
         </div>
         <div class="ev-half container-box-shadow">
             <h2>@Model.Title</h2>
             <hr>
             <h3>Когда: @Model.Date.ToString("dd.MM.yyyy hh:mm")</h3>
             <h4>Город: @Model.City</h4>
-            <h4>Где: @Model.Place </h4>            
+            <h4>Где: @Model.Place </h4>
             <p>Интересы: @Model.Tegs</p>
             @if (Model.Tickets)
             {
@@ -86,7 +86,7 @@
             <textarea id="text" ></textarea>
 
         </form>
-        <div class="ed-message-list">   
+        <div class="ed-message-list">
             Загрузка...
         </div>
     </div>
@@ -104,32 +104,15 @@
                 });
             }
         </div>
-       
-    </div>
-
-
-</div>
-
-<!--Блок приглайшений фиксет темный контейнер-->
-<div id="over-cont">
-    <div class="invite-cont">
-        <div class="top-page-header">Пригласить</div>
-        <div class="invite-menu">
-            <div class="form-submit inline" id="invite-copy" title="Скопировть текст из первого сообщения пользователю ко всем пользователям">Скопировать текст</div>
-            <div class="form-submit inline" id="inv-selectall">Отметить всех</div>
-            <div class="form-submit inline" id="inv-invite">Пригласить</div>
-        </div>
-        <div class="invite-list">
-
-        </div>
 
     </div>
-</div>
 
+
+</div> 
 <!--Блок Отправки ссылки на событие темный контейнер-->
 <div id="ev-over-link" class="display-none">
     <div class="ev-link-cont">
-        <div class="top-page-header">Отправить ссылку</div>        
+        <div class="top-page-header">Отправить ссылку</div>
         <div class="s-filter-container">
             <span class="small-label">Фильтр</span>
             <div class="flex-hsbc">

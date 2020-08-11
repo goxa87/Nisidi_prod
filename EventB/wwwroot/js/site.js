@@ -62,8 +62,7 @@ $(document).ready(function () {
         thisFrame.removeClass('display-none');
         let rightEnd = thisFrame.offset().left + thisFrame.width()
         if (rightEnd > $(window).width()) {
-            console.log(($(window).width() - thisFrame.width()))
-            thisFrame.offset({ left: ($(window).width() - thisFrame.width()), top: thisFrame.offset().top })
+            thisFrame.offset({ left: ($(window).width() - thisFrame.width() - 12), top: thisFrame.offset().top })
         }
     });
 });

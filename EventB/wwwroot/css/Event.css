@@ -171,13 +171,11 @@ form label {
     justify-content: start;
 }
 .invite-menu{
-    padding:8px;
 }
 .invite-list {
     flex-basis: 1000px;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 8px;
 }
 .invite-item{
     border-top:1px solid #1b5972;
