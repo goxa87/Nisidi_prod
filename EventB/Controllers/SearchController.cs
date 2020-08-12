@@ -13,6 +13,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventB.Controllers
 {
+    /// <summary>
+    /// Этот контроллер передвет только вью. Форма выполняет из events 
+    /// </summary>
     public class SearchController : Controller
     {
         SignInManager<User> signInManager;
@@ -56,16 +59,6 @@ namespace EventB.Controllers
             };
 
             var list = await eventSelector.GetCostomEventsAsync(args);
-
-            await Task.Factory.StartNew(async ()=>
-                {
-                    foreach (var item in list)
-                    {
-                        item.Views++;
-                    }
-                    context.UpdateRange(list);
-                    await context.SaveChangesAsync();
-                });
             return View(list);
         }
 

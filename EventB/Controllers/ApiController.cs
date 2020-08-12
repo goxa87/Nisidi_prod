@@ -218,16 +218,27 @@ namespace EventB.Controllers
                 ChatPhoto = user.Photo
             };
             var chat = new Chat
-            {
+            {              
+                EventId = null,
                 UserChat = new List<UserChat> 
                 {
                     userChatCurent,
                     userChatopponent
                 }
             };
+            try
+            {
+                await context.Chats.AddAsync(chat);
 
-            await context.Chats.AddAsync(chat);
-            await context.SaveChangesAsync();
+                await context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+                System.Diagnostics.Debug.WriteLine(ex.StackTrace);
+
+            }
+            
             return chat.ChatId;
         }
 

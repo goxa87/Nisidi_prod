@@ -244,7 +244,7 @@ input[type="checkbox"].input-validation-error {
     color:#ffcd00;
     background-color:#1b5972;
     width:100%;
-    padding:8px 24px;
+    padding:8px;
     font-size:18px;
     text-transform:uppercase;
     display:flex;
@@ -944,17 +944,20 @@ figure img {
     justify-content: center;
     align-items: center;
 }
-.modal-content{
+.modal-content {
     min-width: 400px;
-    max-width: 80%;
+    max-width: -moz-max-content;
+    max-width: -webkit-max-content;
+    max-width: max-content;
     min-height: 400px;
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: stretch;
 }
 .modal-body{    
     background-color: #fff;
+    padding: 8px;
 }
 .modal-my-footer{
     display: flex;
@@ -966,11 +969,11 @@ figure img {
     color: #ffcd00;
     cursor: pointer;
 }
-.modal-close{
-    background-image: url('/resourses/cancel.png');
-    background-position: -8px -8px;
-    width: 20px;
-    height: 20px;
+.modal-close {
+    background-image: url(/resourses/cancel.png);
+    background-position: -10px -10px;
+    width: 8px;
+    height: 8px;
     float: right;
 }
 @media(max-width: 700px) {

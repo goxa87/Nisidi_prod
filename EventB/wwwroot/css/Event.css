@@ -53,6 +53,9 @@
         max-width:100%;
         box-sizing:border-box;
     }
+.ev-half-img {
+    width: 48%;
+}
 .ev-half {
     width: 48%;
 }
@@ -73,6 +76,10 @@
     .ev-twin-details {
         width: 100%;
         display: block;
+    }
+    .ev-half-img {
+        width: 100%;
+        height: 400px;
     }
     .ev-half {
         width: 100%;
@@ -180,6 +187,7 @@ form label {
 .invite-item{
     border-top:1px solid #1b5972;
     padding: 8px 0;
+    max-width: 600px
 }
 .invite-item > img {
     max-width:180px;

@@ -113,12 +113,27 @@ function renderMessage(content, userId)
  * @param {any} okCancel Признак наличия кнопки отмена. true - ok cancell  false - ok.
  * @param {any} okCallback Функция, вызываемая принажатии ОК.
  * @param {any} cancelCollback Функция, вызываемая принажатии отмена.
+ * @param {any} helpInTitle Справка, которая отображается в заголовке в виде help элемента
  */
-function getModelWindow(title, okCancel, okCallback, cancelCollback) {
-    let mainBlock =`<p>МОДАЛКА ${title}</p>`;
+function getModelWindow(title, okCancel, okCallback, cancelCollback, helpInTitle) {
+    let mainBlock = `<p>МОДАЛКА ${title}</p>`;
+    let helpBlock = '';
+    //Вы можете отправить ссылку на собыие собеседнику. В списке отображаются активные приватные чаты. Если вы не видите нужный вам чат, начните его отправив любое сообщение.
+    if (helpInTitle && helpInTitle.length > 0) {
+        helpBlock = `
+            <div class="help-btn help-btn-light ">
+                                <div class="help-content display-none">
+                                    <div class="help-close"></div>
+                                    <p class="help-container">
+                                        ${helpInTitle}
+                                    </p>
+                                </div>        
+                            </div>
+        `;
+    }
     mainBlock =`<div class="modal-shadow">
                     <div class="modal-content">
-                        <div class="top-page-header flex-hsbc"> <span>${title}</span> <div class="modal-cancel modal-close"></div></div>
+                        <div class="top-page-header flex-hsbc"> <div class="flex-hsc"></span>${title}</span>${helpBlock}</div> <div class="modal-cancel modal-close"></div></div>
                         <div class="modal-body"></div>
                         <div class="modal-my-footer">`;
 
@@ -131,12 +146,12 @@ function getModelWindow(title, okCancel, okCallback, cancelCollback) {
     $('body ').prepend(mainBlock)
       // нажатие кнопы ОК
     $('.modal-ok').click(() => {
-        if(okCallback !== undefined) okCallback();
+        if (!(okCallback == undefined || okCallback == null)) okCallback();
         $('.modal-shadow').remove();
     });
     // Нажатие отмены.
     $('.modal-cancel').click(() => {
-        if(cancelCollback !== undefined) cancelCollback();
+        if (!(cancelCollback !== undefined || okCallback == null)) cancelCollback();
         $('.modal-shadow').remove();
     });  
 }   

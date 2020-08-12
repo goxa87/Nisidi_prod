@@ -18,7 +18,6 @@ namespace EventBLib.Models
         /// <summary>
         /// Название чата которое будет отражаться в списке чатов.
         /// </summary>
-        [MaxLength(50, ErrorMessage ="Слишком длинное название(макс 50)")]
         public string ChatName { get; set; }
         /// <summary>
         /// Изображение чата.

@@ -232,16 +232,25 @@ $(document).ready(function ()
                     `<div class="invite-item flex-hsbc">
                         <img src="${v.photo}" />
                         <div class="invite-data">
-                            <div class="invite-title flex-hec">
-                            <h5>${v.name}</h5>
-                            <input class="inv-button" type="button" title="Отметить" />
+                            <div class="flex-hsbc">
+                                <div>Текст приглашения</div>
+                                <div class="invite-title flex-hec">
+                                    <h5>${v.name}</h5>
+                                    <input class="inv-button" type="button" title="Отметить" />
+                                </div>
+                            </div>                            
+                            <textarea class="ev-d-invite-text"></textarea>
+                            <input type="hidden" id="friend-id" value="${v.userId}"/>
                         </div>
-                        <textarea class="ev-d-invite-text"></textarea>
-                        <input type="hidden" id="friend-id" value="${v.userId}"/>
-                    </div>
                 </div>`
             });
-            getModelWindow('Пригласить', false);
+            let helpText = `
+В этом окне Вы можете пригласить Ваших друзей на событие. Здесь отображаются только те пользователи, которые подтвердили добавление в друзья.
+Для выбора пользователей, которым будет отправлено приглашение, нажмите на кружок рядом с именем, что бы тот стал жёлтым.
+Вы можете указать текст приглашения длинной до 1000 символов. <br>Также есть возможность скопировать текст приглашения от порвого ко всем остальным пользователям и отметить или снять выделение со всех 
+пользователей, которым будет отправлено приглашение.<hr> Если вы не нашли нужных пользователей, то либо они не приняли вашу заявку в друзья, либо у них уже есть приглашение на это событие.
+`
+            getModelWindow('Пригласить', false, null, null, helpText);
             let firstBlock = `
                 <div class="invite-menu">
                     <div class="form-submit inline" id="invite-copy" title="Скопировть текст из первого сообщения пользователю ко всем пользователям">Скопировать текст</div>
@@ -261,7 +270,10 @@ $(document).ready(function ()
         // Получение с сервера InviteOutVM списка.
         GetFriends();       
     });
-
+    // Нажатие галочки напротив имени.
+    $('body').on('click', '.inv-button', function () {
+        $(this).toggleClass('checked-inv');
+    });
     // Выбрать всех кнопка.
     $('body').on('click', '#inv-selectall', function () {
         if ($('.inv-button').hasClass('checked-inv'))
@@ -309,24 +321,15 @@ $(document).ready(function ()
             url: '/Event/GetAvailableChats'
         });
         req.then(function (data, stat, jqXHR) {
-            // сюжа вставить модалку
             if (jqXHR.status == 200) {
                 let content = `<div class="s-filter-container">
                         <span class="small-label">Фильтр</span>
-                        <div class="flex-hsbc">
-                            <div class="help-btn help-btn-dark ">
-                                <div class="help-content display-none">
-                                    <div class="help-close"></div>
-                                    <p class="help-container">
-                                        Вы можете отправить ссылку на собыие собеседнику. В списке отображаются активные приватные чаты. Если вы не видите нужный вам чат, начните его отправив любое сообщение.
-                                    </p>
-                                </div>        
-                            </div>
+                        <div class="flex-hsbc">                            
                             <input id="ev-send-link-filter" class="s-filter" />
                             <img src="/resourses/cancel.png" class="s-filter-clear" />
                         </div>
                     </div>` + data;
-                getModelWindow('Отправить ссылку', false);
+                getModelWindow('Отправить ссылку', false, null, null, "Вы можете отправить ссылку на собыие собеседнику. В списке отображаются активные приватные чаты. Если вы не видите нужный вам чат, начните его отправив любое сообщение.");
                 $('.modal-body').html(content);
             } else {
                 alert(`Чтото пошло не так . Ошибка ${data}`)
@@ -393,7 +396,4 @@ $(document).ready(function ()
         $(opps).removeClass('display-none');
     };
 });
-// Нажатие галочки напротив имени.
-$('.invite-list').on('click', '.inv-button', function () {
-    $(this).toggleClass('checked-inv');
-});
+

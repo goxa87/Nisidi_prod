@@ -130,9 +130,12 @@ namespace EventB.Controllers
 
         public async Task<IActionResult> SearchEventlist(CostomSelectionArgs args)
         {
+            var user = await userManager.GetUserAsync(User);
+
             args.DateDue = args.DateDue.AddDays(1);
             args.Title = args.Title ?? "";
-            args.City = args.City ?? "";
+
+            args.City = args.City != null ? args.City.ToUpper() : (user!=null ? user.NormalizedCity : "Москва");
             args.Tegs = args.Tegs ?? "";
 
             //var rezult = await eventSelector.GetCostomEventsAsync(args);

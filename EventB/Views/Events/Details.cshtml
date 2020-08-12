@@ -7,7 +7,7 @@
 <div class="top-page-header">Описание события</div>
 <div class="item-container">
     <div class="ev-twin-details">
-        <div class="ev-half">
+        <div class="ev-half-img">
             <div class="image-container">
                 <img src="@Model.Image" class="image-self-back"/>
                 <div class="image-mask"></div>
@@ -109,22 +109,7 @@
 
 
 </div> 
-<!--Блок Отправки ссылки на событие темный контейнер-->
-<div id="ev-over-link" class="display-none">
-    <div class="ev-link-cont">
-        <div class="top-page-header">Отправить ссылку</div>
-        <div class="s-filter-container">
-            <span class="small-label">Фильтр</span>
-            <div class="flex-hsbc">
-                <input id="ev-send-link-filter" class="s-filter" />
-                <img src="~/resourses/cancel.png" class="s-filter-clear" />
-            </div>
-        </div>
-        <div class="ev-chat-list">
 
-        </div>
-    </div>
-</div>
 
 @{ViewData["Script"] = "Event.js";
 }
