@@ -504,10 +504,10 @@ align-items: center;
 }
 /*блоки фигур*/
 .small-figure-figure {
-    padding:2px;
+    padding: 2px;
     width: 268px;
-    min-height:200px;
-    background-color: #1b5972;
+    min-height: 200px;
+    background-color: #383d41;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -880,7 +880,7 @@ figure img {
 }
 
 .my-message {
-    background-color: #f3f3f3;
+    background-color: #1b59723b;
 }
 
 .message-sender {
