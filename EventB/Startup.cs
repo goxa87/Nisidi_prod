@@ -17,6 +17,7 @@ using EventB.Services.MarketKibnetApiServices;
 using Microsoft.VisualStudio.Web.CodeGeneration.Utils.Messaging;
 using EventB.Services.MessageServices;
 using EventB.Services.EventServices;
+using EventB.Hubs;
 
 namespace EventB
 {
@@ -32,7 +33,7 @@ namespace EventB
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            
 
             string connection = Configuration.GetConnectionString("EB1");
             services.AddDbContext<Context>(options => {
@@ -76,7 +77,13 @@ namespace EventB
             services.AddTransient<IMarketKibnetApiServices, MarketKibnetApiServices>();
             services.AddTransient<IMessageService, MessageService>();
             services.AddTransient<IEventService, EventService>();
-            //services.AddScoped<IViewModelFactory,ViewModelFactory>();
+            //services.AddScoped<IViewModelFactory,ViewModelFactory>();\
+
+            services.AddSignalR().AddHubOptions<MessagesHub>(options => {
+                options.EnableDetailedErrors = true;
+            });
+
+            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -104,8 +111,11 @@ namespace EventB
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Events}/{action=Start}/{id?}");
+                    pattern: "{controller=Events}/{action=Start}");
+
+                endpoints.MapHub<MessagesHub>("/chatroom");
             });
+
         }
     }
 }

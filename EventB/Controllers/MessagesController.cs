@@ -32,7 +32,7 @@ namespace EventB.Controllers
             messagesService = _messagesService;
         }
 
-        public async Task<IActionResult> Index(string opponentId="")
+        public async Task<IActionResult> Index(string opponentId=null)
         {
             // Соединения текщего пользователя.
             var user = await context.Users.
@@ -50,41 +50,6 @@ namespace EventB.Controllers
 
             if (!string.IsNullOrWhiteSpace(opponentId))
             {
-                #region гемор с поиском сообщений через UserChat
-                //// Оппонент
-                //var opponent = await context.Users.
-                //Include(e => e.UserChats).
-                //ThenInclude(e => e.Chat).
-                //FirstOrDefaultAsync(e => e.Id == opponentId);
-                //// Ищем общие чаты. Могут быть частные а могут быть и рупповые к событиям.
-                //// Выбираем те которые частные для текущего пользователя и оппонента.
-
-                //// Массив чатов, где участвует текущий.
-                //var chatCurent = context.Chats.
-                //    Include(e => e.UserChat).
-                //    ThenInclude(e => e.User).
-                //    Where(e => e.UserChat.Any(u => u.User == user));
-                //// Массив чатов где участыует оппонент.
-                //var chatOpponent = context.Chats.
-                //    Include(e => e.UserChat).
-                //    ThenInclude(e => e.User).
-                //    Where(e => e.UserChat.Any(u => u.User == opponent));
-                //// Пересечение этих массивов.
-                //var commonChats = chatCurent.Intersect(chatOpponent);
-
-                //if (!commonChats.Any())
-                //{
-                //    // Создать чат
-
-                //}
-                //else
-                //{ 
-                //    // Взять чат из результата.
-                //}
-                ////var commonChats = user.
-                #endregion
-                // Будет несоответствие если подзагрузку делать иначе.
-                // Переделать к общему виду.
                 var messages = await context.Messages.
                     Where( e => (e.PersonId==user.Id && e.ReciverId==opponentId) || (e.PersonId == opponentId && e.ReciverId == user.Id) )
                     .OrderByDescending(e=>e.PostDate)

@@ -1,97 +1,95 @@
-﻿$(document).ready(function () {
-    // для парсинга дат с сервера.
-    var formatter = new Intl.DateTimeFormat("ru", {
-        day: "numeric",
-        month: "numeric",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit"
-    });
+﻿const connection = new signalR.HubConnectionBuilder()
+    .withUrl("/chatroom")
+    .build();
+/**
+ * Добавляет сообщение в список сообщений
+ * @param {any} data
+ * @param {any} senderId
+ */
+function AddRenderedMessages(data, senderId) {
+    let block = renderMessage(data, senderId);
+    $('#vertical-trigger').remove();
+    $('.message-list').append(block);
+    $('.message-list').append('<div id="vertical-trigger"></div>');
+    // Прокрутка лучше не придумал.(( 
+    // Здесь vertical-trigger находится относительно окна а нужно относительно родителя. исправить
+    var list = $('.message-list');
+    list.scrollTop($('#vertical-trigger').offset().top + $(list).height());
+    $('#message').val('');
+}
 
-    // Начальная прокрутка до конца чата.
-    let startoffset = $('#vertical-trigger').offset().top;
-    $('.message-list').scrollTop(startoffset);
-    // Нажатие на кнопу отправить сообщение.
-    $('#btn-send').on('click', function (event) {
-        event.preventDefault();
-        if ($('#message').val() == '') { return; }
-        let currentId = $('#user-id').val();
-        let chatId = $('#chat-id').val();
-        let opponentId = $('#opponent-id').val();
-        if (chatId == '0' || chatId == '') {
-            if (opponentId == '0') {
-                alert('Выбирите собеседника');
-                return;
-            }
-            else {
-                // есть id но чата нет
-                // Создать чат и отправить сообщения (когда новый чат и не было сообщений)
-                createPrivateChat(currentId, opponentId);
-            }
-        }
-        else {
-            // Отправить сообщене в чат
-            // Подразумевается что id чата был найден по id собеседника так что id уже есть.
-            // если прилетело по ссылке.
-            // или выбран вручную из списка.
+/** Отправляет сообщение в хаб*/
+function SendMessage() {
+    let senderId = $('#user-id').val();
+    let opponentId = $('#opponent-id').val();
+    let chat = Number.parseInt($('#chat-id').val());
+    let senderNam = $('#user-name').val();
+    let message = $('#message').val();
+    let date1 = new Date();
+    let DataObject = {
+        personId: senderId,
+        chatId: chat,
+        senderName: senderNam,
+        reciverId: opponentId,
+        text: message,
+        postDate: date1
+    }
+    connection.invoke("SendToChat", DataObject);
+    AddRenderedMessages(DataObject, senderId);
+};
+// Запрос к АПИ на Создание чата с новым собеседником.
+//[Route("CreatePrivateChat")]
+//async Task < int > CreateUserChat(string id, string opponentId) 
+function createPrivateChat(Id, Opponent) {
+    $.ajax({
+        url: '/Api/CreatePrivateChat',
+        data:
+        {
+            id: Id,
+            opponentId: Opponent
+        },
+        complete: function (response) {
+            $('#chat-id').val(response.responseJSON);
             SendMessage();
         }
     });
+};
 
-    // Запрос к АПИ на отправление сообщения.
-    //[Route("SendTo")]
-    //async Task SaveMessage(int chatId, string senderId, string senderName, string text)
-    function SendMessage() {
-        let senderId = $('#user-id').val();
-        let chat = $('#chat-id').val();
-        let senderNam = $('#user-name').val();
-        let opponentId = $('#opponent-id').val();
-        let message = $('#message').val();
-        let date1 = new Date();
-
-        $.ajax({
-            url: '/Api/SendTo',
-            data: {
-                chatId: chat,
-                senderId: senderId,
-                senderName: senderNam,
-                text: message,
-                reciverId: opponentId
-            },
-            success: function () {
-                // Заполнить форму на странице новым сообщением.
-                let data = { personId: senderId, text: message, postDate: date1, eventState: false, eventLink: false }
-                let block = renderMessage(data, senderId);
-                $('#vertical-trigger').remove();
-                $('.message-list').append(block);
-                $('.message-list').append('<div id="vertical-trigger"></div>');
-                // Прокрутка лучше не придумал.(( 
-                // Здесь vertical-trigger находится относительно окна а нужно относительно родителя. исправить
-                var list = $('.message-list');
-                list.scrollTop($('#vertical-trigger').offset().top + $(list).height());
-                $('#message').val('');
-            }
-        });
-    };
-
-    // Запрос к АПИ на Создание чата с новым собеседником.
-    //[Route("CreatePrivateChat")]
-    //async Task < int > CreateUserChat(string id, string opponentId) 
-    function createPrivateChat(Id, Opponent) {
-        $.ajax({
-            url: '/Api/CreatePrivateChat',
-            data:
-            {
-                id: Id,
-                opponentId: Opponent
-            },
-            complete: function (response) {
-                $('#chat-id').val(response.responseJSON);
-                SendMessage();
-            }
-        });
-    };
+// Нажатие на кнопу отправить сообщение.
+$('#btn-send').on('click', function (event) {
+    event.preventDefault();
+    if ($('#message').val() == '') { return; } 
+    let chatId = $('#chat-id').val();
+    let opponentId = $('#opponent-id').val();
+    if (chatId == '0' || chatId == '') {
+        if (opponentId == '0') {
+            GetNotification('Выбирите собеседника',2 , duration = 3)
+            return;
+        }
+        else {
+            // есть id но чата нет
+            // Создать чат и отправить сообщения (когда новый чат и не было сообщений)
+            let currentId = $('#user-id').val();           
+            createPrivateChat(currentId, opponentId);
+        }
+    }
+    else {
+        // Отправить сообщене в чат
+        // Подразумевается что id чата был найден по id собеседника так что id уже есть.
+        // если прилетело по ссылке.
+        // или выбран вручную из списка.
+        SendMessage();
+    }
+});
+// получение сообщения с хаба
+connection.on('ReciveMessageFromHub', function (message) {
+    AddRenderedMessages(message, $('#user-id').val())
+});
+connection.start();
+$(document).ready(function () {
+    // Начальная прокрутка до конца чата.
+    let startoffset = $('#vertical-trigger').offset().top;
+    $('.message-list').scrollTop(startoffset);         
 
     // Выбор собеседника из левой колонки.
     $('.opponent-container').on('click', function () {
@@ -185,34 +183,8 @@
         });
     });
 
-    //[Route("GetNewMessages")]
-    //public async Task < List < Message >> GetNewMessages(int chatId, string opponentId)
-    // Интервальный запрос на получение новых непрочитанных сообщений для чата. 
-    setInterval(function () {
-        // Если нет чата выходим не нагружаем сервер.
-        if ($('#chat-id').val() == 0) { return; }
-        let opponent_Id = $('#opponent-id').val();
-        let chat_Id = $('#chat-id').val();
-        $.ajax({
-            url: '/Api/GetNewMessages',
-            data: {
-                chatId: chat_Id,
-                opponentId: opponent_Id
-            },
-            success: function (rezult) {
-                if (rezult.length != 0) {
-                    let block = renderMessage(rezult);
-                    $('#vertical-trigger').remove();
-                    $('.message-list').append(block);
-                    $('.message-list').append('<div id="vertical-trigger"></div>');
-                    var list = $('.message-list');
-                    let offset = $('#vertical-trigger').offset().top;
-                    list.scrollTop(offset);
-                }                
-            }
-        });
-    }, 5000);
-
+   
+    /*
     // отправка запроса на получение количества новых сообщений в чатах в списке.
     getNewMessageCount();
     setInterval(function () {
@@ -229,15 +201,6 @@
             })
         }
     }
-    function getNewMessageCount() {
-        $.ajax({
-            url: '/Api/GetNewMessagesCount',
-            success: function (rezult) {
-                $(rezult).each(function (i, value) {
-                    displayNewMessageFlag(value.countNew, value.chatId)
-                });
-            }
-        });
-    }
+    */
 });
 

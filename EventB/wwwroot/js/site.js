@@ -66,24 +66,24 @@ $(document).ready(function () {
         }
     });
 });
-
 /**
  * вернет сообщения в виде html
- * @param {ответ с сервера} content 
- * @param {id текущего пользователя} userId 
+ * @param {any} content ответ с сервера
+ * @param {any} userId id текущего пользователя (выбрать со страницы)
  */
 function renderMessage(content, userId)
 {
     // Рендеринг ответа в блоки
     let block = '';
     $(content).each(function (index, value) {
+        console.log(value)
         let date = formatter.format(new Date(value.postDate));
-        if (value.eventState != false) {
+        if (value.eventState && value.eventState != false) {
             block += '<div class="message-item message-item-event"><div class="message-sender-event">' + value.senderName +
                 '</div><div class="message-text-event">' + value.text + '</div ><div class="message-date-event">' + date + '</div >' +
                 '<div class="message-info display-none">' + value.personId + '</div ></div > ';
         }
-        else if( value.eventLink != 0) {
+        else if (value.eventLink && value.eventLink != 0) {
             block += `<a href="https://localhost:44344/Events/Details/${value.eventLink}">
                         <div class="message-item message-item-event message-item-event-link">
                             <img src="${value.eventLinkImage}" class="message-display-inline message-link-img" />
