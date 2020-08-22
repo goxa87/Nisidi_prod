@@ -334,17 +334,13 @@ namespace EventB.Controllers
         {
             // Мне кажется это криво и неэффективно. Нужно отрефакторить.
             var user = await userManager.GetUserAsync(User);
-            var selection = context.UserChats.Where(e => e.UserId == user.Id).Select(e => e.ChatId);
+            var selection = context.UserChats.Include(e=>e.Chat).ThenInclude(e=>e.Messages).Where(e => e.UserId == user.Id).ToList();
             var rezult = new List<NewMessagesVM>();
-
-            await Task.Run(() =>
+            rezult = selection.Select(e => new NewMessagesVM
             {
-                rezult = selection.Select(e => new NewMessagesVM
-                {
-                    ChatId = e,
-                    CountNew = context.Messages.Where(m => m.ChatId == e && m.Read == false && m.PersonId != user.Id).Count()
-                }).ToList();
-            });
+                ChatId = e.ChatId,
+                CountNew = e.Chat.Messages.Where(e=>e.PersonId != user.Id && e.Read == false).Count()
+            }).ToList();
 
             return rezult;
         }

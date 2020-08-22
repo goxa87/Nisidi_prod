@@ -19,7 +19,6 @@ namespace EventB.Controllers
     {
         readonly Context context;
         private readonly UserManager<User> userManager;
-        readonly IUserFindService findUser;
         private readonly IMessageService messagesService;
         public MessagesController(Context _context,
             UserManager<User> _userManager,
@@ -28,7 +27,6 @@ namespace EventB.Controllers
         {
             context = _context;
             userManager = _userManager;
-            findUser = _findUser;
             messagesService = _messagesService;
         }
 

@@ -76,7 +76,6 @@ function renderMessage(content, userId)
     // Рендеринг ответа в блоки
     let block = '';
     $(content).each(function (index, value) {
-        console.log(value)
         let date = formatter.format(new Date(value.postDate));
         if (value.eventState && value.eventState != false) {
             block += '<div class="message-item message-item-event"><div class="message-sender-event">' + value.senderName +

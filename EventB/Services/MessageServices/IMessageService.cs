@@ -1,4 +1,5 @@
-﻿using EventBLib.Models;
+﻿using EventB.ViewModels.MessagesVM;
+using EventBLib.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -29,5 +30,11 @@ namespace EventB.Services.MessageServices
         /// <param name="UserChatId">id чата пользователя</param>
         /// <returns></returns>
         public Task<int> DeleteUserChat(int UserChatId);
+        /// <summary>
+        /// преобразует vmк dto
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
+        public Message ConvertMessageVmToDTO(ChatMessageVM vm);
     }
 }

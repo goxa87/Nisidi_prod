@@ -82,11 +82,55 @@ $('#btn-send').on('click', function (event) {
     }
 });
 // получение сообщения с хаба
-connection.on('ReciveMessageFromHub', function (message) {
-    AddRenderedMessages(message, $('#user-id').val())
+connection.on('reciveChatMessage', function (message) {
+    // Если открыт этот чат добавляем на экран нет то ставим фифорку
+    let chatId = $('#chat-id').val();    
+    if (message.chatId == chatId) {
+        AddRenderedMessages(message, $('#user-id').val())
+    } else {
+        let opponent = $('.opponent-chat-id[value="' + message.chatId + '"]').parent()
+        let curentValue = $(opponent).children('.new-message-flag').text();
+        if (curentValue === '' || curentValue == undefined) {
+            curentValue = '1'
+        } else {
+            curentValue = Number.parseInt(curentValue) + 1;
+        }
+        $(opponent).children('.new-message-flag').text(curentValue);
+        $(opponent).detach().prependTo('.opponents-list');
+    }
 });
 connection.start();
+// Конец хаба
+
 $(document).ready(function () {
+    // Получение значков новых сообщений
+    function displayNewMessageFlag(count, chatId) {
+        if (count > 0) {
+            $('.opponent-chat-id').each((ind, chat) => {
+                if ($(chat).val() == String(chatId)) {
+                    $(chat).parent('.opponent-container').children('.new-message-flag').text(count);
+                    $(chat).parent('.opponent-container').detach().prependTo('.opponents-list');
+                    return true;
+                }
+            })
+        }
+    }
+    function getNewMessageCount() {
+        $.ajax({
+            url: '/Api/GetNewMessagesCount',
+            success: function (rezult) {
+                $(rezult).each(function (i, value) {
+                    console.log(value)
+                    displayNewMessageFlag(value.countNew, value.chatId)
+                });
+            },
+            error: () => {
+                GetNotification('Ошибка загрузки', 3, duration = 3)
+            }
+        });
+    }
+    getNewMessageCount();
+
     // Начальная прокрутка до конца чата.
     let startoffset = $('#vertical-trigger').offset().top;
     $('.message-list').scrollTop(startoffset);         
@@ -183,24 +227,6 @@ $(document).ready(function () {
         });
     });
 
-   
-    /*
-    // отправка запроса на получение количества новых сообщений в чатах в списке.
-    getNewMessageCount();
-    setInterval(function () {
-        getNewMessageCount();
-    }, 7000);
-    function displayNewMessageFlag(count, chatId) {
-        if (count > 0) {
-            $('.opponent-chat-id').each((ind, chat) => {
-                if ($(chat).val() == String(chatId)) {
-                    $(chat).parent('.opponent-container').children('.new-message-flag').text(count);
-                    $(chat).parent('.opponent-container').detach().prependTo('.opponents-list');
-                    return true;
-                }
-            })
-        }
-    }
-    */
+    
 });
 

@@ -1,4 +1,5 @@
-﻿using EventBLib.DataContext;
+﻿using EventB.ViewModels.MessagesVM;
+using EventBLib.DataContext;
 using EventBLib.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -90,5 +91,28 @@ namespace EventB.Services.MessageServices
             await context.SaveChangesAsync();
             return 200;
         }
+
+        /// <summary>
+        /// преобразует vmк dto
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
+        public Message ConvertMessageVmToDTO(ChatMessageVM vm)
+        {
+            return new Message
+            {
+                ChatId = vm.chatId,
+                EventLink = 0,
+                EventLinkImage = null,
+                EventState = false,
+                PersonId = vm.personId,
+                PostDate = vm.postDate,
+                Read = false,
+                ReciverId = null,
+                SenderName = vm.senderName,
+                Text = vm.text
+            };
+        }
+
     }
 }
