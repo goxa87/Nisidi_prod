@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EventB.ViewModels.MessagesVM;
 using Microsoft.AspNetCore.Identity;
+using EventB.ViewModels;
 
 namespace EventB.Controllers
 {
@@ -24,15 +25,34 @@ namespace EventB.Controllers
         readonly UserManager<User> userManager;
         public ApiController(
             Context _context,
-            IUserFindService _userFind,
             UserManager<User> _userManager,
-            ITegSplitter _tegSplitter
+            ITegSplitter _tegSplitter, 
+            IUserFindService _userFind
             )
         {
             tegSplitter = _tegSplitter;
             context = _context;
-            userFind = _userFind;
             userManager = _userManager;
+            userFind = _userFind;
+        }
+
+        /// <summary>
+        /// Вернет обновления для меню
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        [Route("get-updates-for-menu")]
+        public async Task<MenuUpdatesApiVM> GetUpdatesForMenu()
+        {
+            var user = await context.Users.Include(e => e.Invites).Include(e => e.Friends).Include(e => e.UserChats).ThenInclude(e => e.Chat).ThenInclude(e => e.Messages).FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
+            var friends = await context.Friends.Where(e => e.FriendUserId == user.Id).ToListAsync();
+            return new MenuUpdatesApiVM()
+            {
+                HasResult = true,
+                HasNewFriends = friends.Any(e => e.FriendInitiator == false && e.IsConfirmed == false),
+                HasNewInvites = user.Invites.Any(),
+                HasNewMessages = user.UserChats.Any(e=>e.Chat.Messages.Any(y=>y.Read == false && y.PersonId != user.Id))                
+            };
         }
 
         #region Секция ПОДПИСКИ

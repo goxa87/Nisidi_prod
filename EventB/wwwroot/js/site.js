@@ -26,6 +26,33 @@ $(document).ready(function () {
         $('.thin-menu-items-container').toggleClass('display-none');
     });
 
+    // Звездочки в меню
+    function GetUpdates() {
+        $.ajax({
+            url: '/api/get-updates-for-menu',
+            success: (updates => {
+                console.log(updates)
+                if (updates.hasNewFriends == true) {
+                    $('#mm-li-users').removeClass('display-none')
+                    $('#mm-li-users-th').removeClass('display-none')
+                    $('#fr-new-star').removeClass('display-none')
+                }
+                if (updates.hasNewInvites == true) {
+                    $('#mm-li-mypage').removeClass('display-none')
+                    $('#mm-li-mypage-th').removeClass('display-none')
+                    $('#mp-invites-star').removeClass('display-none')
+                }
+                if (updates.hasNewMessages == true) {
+                    $('#mm-li-messages').removeClass('display-none')
+                    $('#mm-li-messages-th').removeClass('display-none')
+                }
+            }),
+            error: (ex) => console.error('при получении обновлений для меню:', ex)
+        });
+    }
+
+    GetUpdates();
+
     // Согласиться принять в друзья. моя страница и друзья
     //agree-friend
     $('.agree-friend').click(function () {

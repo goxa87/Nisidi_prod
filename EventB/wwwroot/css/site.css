@@ -94,19 +94,36 @@ label{
     font-size: 10px;
     color: #0009;
 }
-/*Оповещение внизу*/
-.s-fixed-notification {
-    max-width: 400px;
-    max-height: 200px;
-    padding: 8px;
-    text-align: center;
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    border-radius: 0 4px 0 0;
-    font-size: 16px;
-    z-index:10;
+/*звездочки*/
+.s-star16{
+    background-image:url('../resourses/star32.png');
+    background-repeat:no-repeat;
+    background-position: -7px -8px;
+    min-width: 20px;
+    min-height: 20px;
+    
 }
+.s-star16-inline{
+    position:relative;
+}
+.s-star16-formenu {
+    position: absolute;
+    top: 7px;
+    right: 0;
+}
+    /*Оповещение внизу*/
+    .s-fixed-notification {
+        max-width: 400px;
+        max-height: 200px;
+        padding: 8px;
+        text-align: center;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        border-radius: 0 4px 0 0;
+        font-size: 16px;
+        z-index: 10;
+    }
 .s-fixed-notification-red {
     background-color: #e60026;
     color: white;
@@ -182,7 +199,7 @@ input[type="checkbox"].input-validation-error {
     }
 
         #main-menu-li li a {
-            padding: 4px 8px;
+            padding: 4px 16px;
             display: block;
             color: #1b5972;
             line-height: 40px;
@@ -288,7 +305,12 @@ input[type="checkbox"].input-validation-error {
     .thin-menu-items-container li{
         list-style:none;
     }
-@media(max-width: 750px) {
+@media(max-width: 800px) {
+    .s-star16-formenu {
+        position:initial;
+        top: 0;
+        left: 0;
+    }
     #main-menu-li{
     display:none;        
     }

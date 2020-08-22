@@ -46,7 +46,11 @@
 <div class="mp-details-header">
     <span id="events-willgo" class="mp-my-selector selected-label">Я пойду</span>
     <span id="my-events" class="mp-my-selector">Мои события</span>
-    <span id="invites" class="mp-my-selector">Приглашения(@Model.Invites.Count())</span>
+    <div>
+        <span id="mp-invites-star" class="s-star16 s-star16-inline display-none"></span>
+        <span id="invites" class="mp-my-selector">Приглашения(@Model.Invites.Count())</span>
+    </div>
+    
 </div>
 <div class="details-container">
 

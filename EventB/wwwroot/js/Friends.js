@@ -95,14 +95,16 @@
             }
         });
     });
-
+    function clearSearch() {
+        $('#fr-filter').val('');
+    }
     // Нажатие на кнопку заявки.
     $('.orders').click(function ()
     {
         if ($(this).text() == 'заявки') {
             $('.friend-list-container').slideUp();
             $(this).text('все');
-            $('#agree-friend').parents('.friend-list-container').slideDown();
+            $('.agree-friend').parents('.friend-list-container').slideDown();
             clearSearch();
         }
         else {

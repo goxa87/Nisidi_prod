@@ -40,19 +40,31 @@
                         <a asp-controller="Events" asp-action="Start">СОБЫТИЯ</a>
                     </li>
                     <li>
-                        <a asp-controller="Search" asp-action="Index">ПОИСК</a>
+                        <a asp-controller="Search" asp-action="Index">ПОИСК</a>                        
                     </li>
                     <li>
-                        <a asp-controller="Friends" asp-action="List">ПОЛЬЗОВАТЕЛИ</a>
+                        <div>
+                            <a asp-controller="Friends" asp-action="List">ПОЛЬЗОВАТЕЛИ</a>
+                            <div id="mm-li-users" class="s-star16 display-none s-star16-formenu "></div>
+                        </div>
+                        
                     </li>
                     <li>
-                        <a asp-controller="MyPage" asp-action="Index">МОЯ СТРАНИЦА</a>
+                        <div>
+                            <a asp-controller="MyPage" asp-action="Index">МОЯ СТРАНИЦА</a>
+                            <div id="mm-li-mypage" class="s-star16 display-none s-star16-formenu "></div>
+                        </div>
+                        
                     </li>
                     <li>
-                        <a asp-controller="Messages" asp-action="Index">СООБЩЕНИЯ</a>
+                        <div>
+                            <a asp-controller="Messages" asp-action="Index">СООБЩЕНИЯ</a>
+                            <div id="mm-li-messages" class="s-star16 display-none s-star16-formenu "></div>
+                        </div>
+                        
                     </li>
                     <li>
-                        <a asp-action="MarketRoom" asp-controller="MarketRoom">ПОМОЩЬ</a>
+                        <a asp-action="MarketRoom" asp-controller="MarketRoom ">ПОМОЩЬ</a>
                     </li>
                 </ul>
                 <div class="main-menu-thin">
@@ -66,13 +78,22 @@
                             <a asp-controller="Search" asp-action="Index">ПОИСК</a>
                         </li>
                         <li>
-                            <a asp-controller="Friends" asp-action="List">ПОЛЬЗОВАТЕЛИ</a>
+                            <div class="flex-hec">
+                                <a asp-controller="Friends" asp-action="List">ПОЛЬЗОВАТЕЛИ</a>
+                                <div id="mm-li-users-th" class="s-star16 display-none s-star16-formenu "></div>
+                            </div>                            
                         </li>
                         <li>
-                            <a asp-controller="MyPage" asp-action="Index">МОЯ СТРАНИЦА</a>
+                            <div class="flex-hec">
+                                <a asp-controller="MyPage" asp-action="Index">МОЯ СТРАНИЦА</a>
+                                <div id="mm-li-mypage-th" class="s-star16 display-none s-star16-formenu "></div>
+                            </div>                            
                         </li>
                         <li>
-                            <a asp-controller="Messages" asp-action="Index">СООБЩЕНИЯ</a>
+                            <div class="flex-hec">
+                                <a asp-controller="Messages" asp-action="Index">СООБЩЕНИЯ</a>
+                                <div id="mm-li-messages-th" class="s-star16 display-none s-star16-formenu "></div>
+                            </div>                            
                         </li>
                         <li>
                             <a asp-action="MarketRoom" asp-controller="MarketRoom">ПОМОЩЬ</a>

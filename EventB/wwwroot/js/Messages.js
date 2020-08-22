@@ -120,7 +120,6 @@ $(document).ready(function () {
             url: '/Api/GetNewMessagesCount',
             success: function (rezult) {
                 $(rezult).each(function (i, value) {
-                    console.log(value)
                     displayNewMessageFlag(value.countNew, value.chatId)
                 });
             },
