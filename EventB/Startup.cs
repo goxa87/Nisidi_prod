@@ -111,7 +111,7 @@ namespace EventB
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Events}/{action=Start}");
+                    pattern: "{controller=Events}/{action=Start}/{id?}");
 
                 endpoints.MapHub<MessagesHub>("/chatroom");
             });

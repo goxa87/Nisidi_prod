@@ -585,6 +585,9 @@ figure img {
 .flex-wr {
     flex-wrap: wrap;
 }
+.flex-wr-reverse {
+    flex-wrap: wrap-reverse;
+}
 .flex-hsbc{
     display:flex;
     justify-content:space-between;

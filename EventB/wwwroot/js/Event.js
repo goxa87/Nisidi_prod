@@ -232,7 +232,7 @@ $(document).ready(function ()
                     `<div class="invite-item flex-hsbc">
                         <img src="${v.photo}" />
                         <div class="invite-data">
-                            <div class="flex-hsbc">
+                            <div class="flex-hsbc flex-wr-reverse">
                                 <div>Текст приглашения</div>
                                 <div class="invite-title flex-hec">
                                     <h5>${v.name}</h5>
