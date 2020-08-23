@@ -18,16 +18,18 @@ using Microsoft.VisualStudio.Web.CodeGeneration.Utils.Messaging;
 using EventB.Services.MessageServices;
 using EventB.Services.EventServices;
 using EventB.Hubs;
+using EventB.Services.Logger;
 
 namespace EventB
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment _hostEnvironment)
         {
             Configuration = configuration;
+            hostEnvironment = _hostEnvironment;
         }
-
+        public IWebHostEnvironment hostEnvironment { get; }
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -70,13 +72,13 @@ namespace EventB
                     options.SlidingExpiration = true;
                 });
             });
-
+            services.AddTransient<ILogger>(sp => new Logger($"{hostEnvironment.WebRootPath}/{Configuration.GetSection("LogPath").Value}"));
             services.AddTransient<ITegSplitter, TegSplitter>();
             services.AddTransient<IUserFindService, UserFindService>();
             services.AddScoped<IEventSelectorService, EventSelectorService>();
             services.AddTransient<IMarketKibnetApiServices, MarketKibnetApiServices>();
             services.AddTransient<IMessageService, MessageService>();
-            services.AddTransient<IEventService, EventService>();
+            services.AddTransient<IEventService, EventService>();           
             //services.AddScoped<IViewModelFactory,ViewModelFactory>();\
 
             services.AddSignalR().AddHubOptions<MessagesHub>(options => {

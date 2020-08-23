@@ -1,4 +1,5 @@
-﻿using EventB.Services.MessageServices;
+﻿using EventB.Services.Logger;
+using EventB.Services.MessageServices;
 using EventB.ViewModels;
 using EventB.ViewModels.EventsVM;
 using EventBLib.DataContext;
@@ -26,13 +27,14 @@ namespace EventB.Services.EventServices
         private readonly ITegSplitter tegSplitter;
         private readonly IWebHostEnvironment environment;
         private readonly UserManager<User> userManager;
-
+        private readonly ILogger logger;
 
         public EventService(Context _context,
             IMessageService _messageService,
             ITegSplitter _tegSplitter,
             IWebHostEnvironment _environment,
-            UserManager<User> _userManager
+            UserManager<User> _userManager,
+            ILogger _logger
         )
         {
             context = _context;
@@ -40,6 +42,7 @@ namespace EventB.Services.EventServices
             tegSplitter = _tegSplitter;
             environment = _environment;
             userManager = _userManager;
+            logger = _logger;
         }
         /// <summary>
         /// Добавление нового события.
@@ -49,7 +52,9 @@ namespace EventB.Services.EventServices
         /// <returns></returns>
         public async Task<Event> AddEvent(AddEventViewModel model, string userName)
         {
+            await logger.LogStringToFile("Начало создания события");
             // Значение картинки если ее нет.
+
             string src = "/images/defaultimg.jpg";
             if (model.MainPicture != null)
             {
@@ -131,7 +136,8 @@ namespace EventB.Services.EventServices
 
             await context.Events.AddAsync(eve);
             await context.SaveChangesAsync();
-
+            await logger.LogObjectToFile("Создано событие ", eve);
+            await logger.LogStringToFile($"Окончание создания события с номером {eve.EventId}");
             return eve;
         }
 
