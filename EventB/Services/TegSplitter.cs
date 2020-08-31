@@ -13,7 +13,7 @@ namespace EventB.Services
         public List<string> GetEnumerable(string input)
         {
             if (!string.IsNullOrWhiteSpace(input))
-                return input.ToUpper().Split(new char[]{ ' ', ',', '.', '/', ':', '*', '+', '-', '@','?','!','='}, StringSplitOptions.RemoveEmptyEntries).Distinct().ToList();
+                return input.ToUpper().Split(new char[]{ ' ', ',', '.', '/', ':', '*', '+', '-', '@','?','!','=','>','<', '(', ')'}, StringSplitOptions.RemoveEmptyEntries).Distinct().ToList();
             else 
                 return null;
         }

@@ -71,9 +71,9 @@ $(document).ready(function ()
             data: {
                 eventId: eve
             },
-            success: (data) => {
+            success: function(data){
                 // Загрузка в изменения
-                let changes = data.filter(e=>e.eventState === true)
+                let changes = data.filter(function (e) { e.eventState === true })
                 let block = renderMessage(changes, user);
                 $('#ed-changes').html(block);
                 // Загрузка в комментарии

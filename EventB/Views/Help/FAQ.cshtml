@@ -1,0 +1,96 @@
+﻿@{
+    ViewData["Title"] = "Справка";
+    ViewData["Style"] = "Help.css";
+    ViewData["Script"] = "Help.js";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="flex-hss">
+        <div class="h-left-menu">
+            <div class="h-menu-holder">
+                <div class="h-menu-unit ">
+                    <a href="/Help/Manual">Руководство</a>
+
+                </div>
+                <div class="h-menu-unit h-menu-selected">
+                    <a href="/Help/FAQ">Вопросы</a>
+                    <a href="#email" class="h-menu-item">Мне не приходит письмо с ссылкой для подтверждения регистрации</a>
+                    <a href="#nocontent" class="h-menu-item">На главной странице нет ни одного события</a>
+                    <a href="#toglobal" class="h-menu-item">Я создал событие, но не вижу его на главной странице</a>
+                    <a href="#registration" class="h-menu-item">Регистрация</a>
+                    <a href="#registration" class="h-menu-item">Регистрация</a>
+                    <a href="#registration" class="h-menu-item">Регистрация</a>
+                    <a href="#registration" class="h-menu-item">Регистрация</a>
+
+
+                </div>
+                <div class="h-menu-unit">
+                    <a href="/Help/Contacts">Обратная связь</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="h-right-body">
+            <a name="email">
+                <hr>
+            </a>
+            <h3>Мне не приходит письмо с ссылкой для подтверждения регистрации</h3>
+            <p>Перейдите по ссылке отправить письмо повторно и снова проверьте почтовый ящик.</p>
+            <p>Проверьте правильность написания адреса электронной почты.</p>
+            <p>Если вы видите ошибку </p>
+            <img src="~/resourses/helpimages/emailconfirm.jpg" alt="email" />
+            <p>это значит что данный почтовый ящик используется. </p>
+
+            <a name="nocontent">
+                <hr>
+            </a>
+            <h3>На главной странице нет ни одного события</h3>
+            <p>Если Вы зашли как неавторизованный пользователь, то попробуйте изменить дату и город на странице ПОИСК</p>
+            <p>Если Вы вошли в систему по своему логину и паролю и не видите событий, то мы рекомендуем Вам:</p>
+            <ul>
+                <li>Воспользоваться вкладкой ПОИСК и выбрать другой промежуток дат</li>
+                <li>Проверить правильность написания города в вашем личном профиле</li>
+                <li>Добавить более обобщенные теги</li>
+                <li>Попробовать найти других пользователей и просмотреть созданные ими события</li>
+            </ul>
+
+            <a name="toglobal">
+                <hr>
+            </a>
+            <h3>Я создал событие, но не вижу его на главной странице</h3>
+            <p>На главной странице отображаются события, которые находятся в статусе GLOBAL. Это значит что они могут быть видны всем пользователям и учавствуют в поиске.</p>
+            <p>Чтобы перевести событие в статус GLOBAL перейдите по ссылке "ЛИЧНЫЙ КАБИНЕТ" на моей странице, найдите нужное событие, нажмите на кнопку "СМЕНИТЬ СТАТУС" и следуйте инструкциям</p>
+            <img src="~/resourses/helpimages/changestat.jpg" alt="статус" />
+
+            <a name="friendsearch">
+                <hr>
+            </a>
+            <h3>Регистрация</h3>
+
+            <a name="registration">
+                <hr>
+            </a>
+            <h3>Регистрация</h3>
+
+            <a name="registration">
+                <hr>
+            </a>
+            <h3>Регистрация</h3>
+
+            <a name="registration">
+                <hr>
+            </a>
+            <h3>Регистрация</h3>
+
+            <a name="registration">
+                <hr>
+            </a>
+            <h3>Регистрация</h3>
+
+            <a name="registration">
+                <hr>
+            </a>
+            <h3>Регистрация</h3>
+
+        </div>
+    </div>

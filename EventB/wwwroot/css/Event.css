@@ -52,6 +52,7 @@
         word-wrap: break-word;
         max-width:100%;
         box-sizing:border-box;
+        white-space:pre-wrap;
     }
 .ev-half-img {
     width: 48%;

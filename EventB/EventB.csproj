@@ -27,6 +27,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\images\EventImages\" />
     <Folder Include="wwwroot\images\Profileimages\" />
+    <Folder Include="wwwroot\resourses\helpimages\" />
   </ItemGroup>
 
   <ItemGroup>    

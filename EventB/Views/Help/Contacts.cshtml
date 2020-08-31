@@ -1,0 +1,26 @@
+﻿@{ 
+   ViewData["Title"] = "Справка";
+    ViewData["Style"] = "Help.css";
+    ViewData["Script"] = "Help.js";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="flex-hss">
+    <div class="h-left-menu">
+        <div class="h-menu-holder">
+            <div class="h-menu-unit ">
+                <a href="/Help/Manual">Руководдство</a>
+            </div>
+            <div class="h-menu-unit">
+                <a href="/Help/FAQ">Вопросы</a>
+            </div>
+            <div class="h-menu-unit h-menu-selected">
+                <a href="/Help/Contacts">Обратная связь</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="h-right-body">
+        контент
+    </div>
+</div>

@@ -133,12 +133,12 @@ p{
     border: 1px solid #1b5972; 
     border-left: none;
 }
-    .form-send > input {
+    .form-send > input, textarea {
         width: calc(100% - 30px);
         padding: 3px;
         border: none;
     }
-        .form-send > input:focus{
+        .form-send > input, textarea:focus{
             outline:none;
         }
 
@@ -151,7 +151,9 @@ p{
         background-repeat: no-repeat;
         background-position: -5px -8px;
     }
-
+textarea{
+    resize:none;
+}
 .hidden{
     display:none;
 }

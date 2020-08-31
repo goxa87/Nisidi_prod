@@ -30,7 +30,7 @@ $(document).ready(function () {
     function GetUpdates() {
         $.ajax({
             url: '/api/get-updates-for-menu',
-            success: (updates => {
+            success: (function (updates) {
                 console.log(updates)
                 if (updates.hasNewFriends == true) {
                     $('#mm-li-users').removeClass('display-none')
@@ -47,7 +47,7 @@ $(document).ready(function () {
                     $('#mm-li-messages-th').removeClass('display-none')
                 }
             }),
-            error: (ex) => console.error('при получении обновлений для меню:', ex)
+            error: function (ex) { console.error('при получении обновлений для меню:', ex); }
         });
     }
 
@@ -121,12 +121,12 @@ function renderMessage(content, userId)
         } 
         else if(userId == value.personId){
             block += '<div class="message-item  my-message"><div class="message-sender">' + 'ВЫ' +
-                '</div><div class="message-text">' + value.text + '</div ><div class="message-date">' + date + '</div >' +
+                '</div><div class="message-text formatted-body">' + value.text + '</div ><div class="message-date">' + date + '</div >' +
                 '<div class="message-info display-none">' + value.personId + '</div ></div > ';
         } 
         else {
             block += '<div class="message-item"><div class="message-sender">' + value.senderName +
-            '</div><div class="message-text">' + value.text + '</div ><div class="message-date">' + date + '</div >' +
+            '</div><div class="message-text formatted-body">' + value.text + '</div ><div class="message-date">' + date + '</div >' +
             '<div class="message-info display-none">' + value.personId + '</div ></div > ';
         }
     });

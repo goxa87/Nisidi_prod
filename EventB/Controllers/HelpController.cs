@@ -7,10 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 namespace EventB.Controllers
 {
     public class HelpController : Controller
-    {
-        
-
-        public IActionResult Index()
+    {      
+        public IActionResult Manual()
+        {
+            return View();
+        }
+        public IActionResult FAQ()
+        {
+            return View();
+        }
+        public IActionResult Contacts()
         {
             return View();
         }

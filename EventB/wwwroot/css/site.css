@@ -94,14 +94,16 @@ label{
     font-size: 10px;
     color: #0009;
 }
+.formatted-body{
+    white-space: pre-wrap;
+}
 /*звездочки*/
-.s-star16{
-    background-image:url('../resourses/star32.png');
-    background-repeat:no-repeat;
+.s-star16 {
+    background-image: url('../resourses/star32.png');
+    background-repeat: no-repeat;
     background-position: -7px -8px;
     min-width: 20px;
     min-height: 20px;
-    
 }
 .s-star16-inline{
     position:relative;

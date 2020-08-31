@@ -29,7 +29,7 @@
         </div>
     </div>
     <hr>
-    <p>@Model.Body</p>
+    <p class="formatted-body">@Model.Body</p>
     <hr>
     <div id="come-block">
         @if (Model.Vizits.Where(e => e.UserId == ViewData["UserId"].ToString()).Any())
