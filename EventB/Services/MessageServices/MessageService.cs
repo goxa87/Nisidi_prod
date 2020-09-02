@@ -27,8 +27,9 @@ namespace EventB.Services.MessageServices
         /// <returns></returns>
         public async Task<List<Message>> GetEventChangesMessages(int eventId)
         {
-            var eve = await context.Events.Include(e => e.Chat).FirstOrDefaultAsync(e => e.EventId == eventId);
-            return await context.Messages.Where(e => e.ChatId == eve.Chat.ChatId && e.EventState == true).ToListAsync();
+            var eve = await context.Events.Include(e => e.Chat).ThenInclude(e=>e.Messages).FirstOrDefaultAsync(e => e.EventId == eventId);
+            var chat = await context.Chats.Include(e => e.Messages).FirstOrDefaultAsync(e => e.EventId == eventId);
+            return chat.Messages.Where(e =>e.EventState == true).ToList();
         }
         /// <summary>
         /// Чат события последние 30 сообщений.

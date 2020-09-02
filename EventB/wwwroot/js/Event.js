@@ -73,7 +73,9 @@ $(document).ready(function ()
             },
             success: function(data){
                 // Загрузка в изменения
-                let changes = data.filter(function (e) { e.eventState === true })
+                console.log(data)
+                let changes = data.filter(e=> e.eventState == true )
+                console.log(changes)
                 let block = renderMessage(changes, user);
                 $('#ed-changes').html(block);
                 // Загрузка в комментарии

@@ -29,13 +29,13 @@
         font-weight: bold;
         text-transform: uppercase;
         margin-top: 8px;
-        min-height:4rem;
     }
     .item-container h3 {
         font-size: 18px;
         margin: 5px 0;
         font-weight: bold;
-        min-height: 2rem;
+        text-align: justify;
+        text-indent: 2em;
     }
     .item-container h4 {
         padding: 5px 0;
@@ -43,16 +43,17 @@
         font-size: 16px;
         font-weight: bold;
         padding-right: 30px;
-        min-height: 2rem;
+        text-align: justify;
+        text-indent: 2em;
     }
     .item-container p {
-        font-size: 18px;
         padding: 10px 0;
         margin: 0;
-        word-wrap: break-word;
         max-width:100%;
         box-sizing:border-box;
         white-space:pre-wrap;
+        text-align: justify;
+        text-indent: 2em;
     }
 .ev-half-img {
     width: 48%;

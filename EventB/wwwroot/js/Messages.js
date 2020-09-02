@@ -55,21 +55,36 @@ function createPrivateChat(Id, Opponent) {
     });
 };
 
-// Нажатие на кнопу отправить сообщение.
-$('#btn-send').on('click', function (event) {
-    event.preventDefault();
-    if ($('#message').val() == '') { return; } 
+// Перенос строки шифт энтер
+function getCaret(el) {
+    if (el.selectionStart) {
+        return el.selectionStart;
+    } else if (document.selection) {
+        el.focus();
+        var r = document.selection.createRange();
+        if (r == null) {
+            return 0;
+        }
+        var re = el.createTextRange(), rc = re.duplicate();
+        re.moveToBookmark(r.getBookmark());
+        rc.setEndPoint('EndToStart', re);
+        return rc.text.length;
+    }
+    return 0;
+}
+function MessageSender() {
+    if ($('#message').val() == '') { return; }
     let chatId = $('#chat-id').val();
     let opponentId = $('#opponent-id').val();
     if (chatId == '0' || chatId == '') {
         if (opponentId == '0') {
-            GetNotification('Выбирите собеседника',2 , duration = 3)
+            GetNotification('Выбирите собеседника', 2, duration = 3)
             return;
         }
         else {
             // есть id но чата нет
             // Создать чат и отправить сообщения (когда новый чат и не было сообщений)
-            let currentId = $('#user-id').val();           
+            let currentId = $('#user-id').val();
             createPrivateChat(currentId, opponentId);
         }
     }
@@ -80,7 +95,26 @@ $('#btn-send').on('click', function (event) {
         // или выбран вручную из списка.
         SendMessage();
     }
+}
+// Нажатие энетра
+$('#message').keyup(function (event) {
+    if (event.keyCode == 13) {
+        var content = this.value;
+        var caret = getCaret(this);
+        if (event.shiftKey) {
+            this.value = content.substring(0, caret - 1) + "\n" + content.substring(caret, content.length);
+            event.stopPropagation();
+        } else {
+            MessageSender();
+        }
+    }
 });
+// Нажатие на кнопу отправить сообщение.
+$('#btn-send').on('click', function (event) {
+    event.preventDefault();
+    MessageSender();
+});
+
 // получение сообщения с хаба
 connection.on('reciveChatMessage', function (message) {
     // Если открыт этот чат добавляем на экран нет то ставим фифорку

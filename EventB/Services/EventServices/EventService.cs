@@ -151,6 +151,7 @@ namespace EventB.Services.EventServices
             return( await context.Events.
                      Include(e => e.Creator).
                      Include(e => e.Chat).
+                     ThenInclude(e =>e.Messages).
                      Include(e => e.EventTegs).
                      Include(e => e.Vizits).
                      FirstOrDefaultAsync(e => e.EventId == id));
@@ -163,11 +164,15 @@ namespace EventB.Services.EventServices
         /// <returns></returns>
         public async Task<List<Message>> GetEventMessages(int EventId)
         {
-            var changes = await messageService.GetEventChangesMessages(EventId);
-            var chtMess = await messageService.GetEventChatMessages(EventId);
+            //var changes = await messageService.GetEventChangesMessages(EventId);
+            //var chtMess = await messageService.GetEventChatMessages(EventId);
+            var chat = await context.Chats.Include(e => e.Messages).Where(e => e.EventId == EventId).FirstOrDefaultAsync();
+
+            return await context.Messages.Where(e => e.ChatId == chat.ChatId).Take(40).Union(context.Messages.Where(e => e.ChatId == chat.ChatId && e.EventState == true)).OrderByDescending(e => e.PostDate).ToListAsync();
+            
 
 
-            return changes.Union(chtMess).OrderByDescending(e=>e.PostDate).ToList();
+            //return changes.Union(chtMess).OrderByDescending(e=>e.PostDate).ToList();
         }
 
 

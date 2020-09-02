@@ -53,6 +53,12 @@ namespace EventB.Controllers
             if (ModelState.IsValid)
             {
                 var user = await (userManager.FindByEmailAsync(model.LoginProp));
+                if(user == null)
+                {
+                    ModelState.AddModelError("", "Пользователь не найден или неверный пароль");
+                    return View(model);
+                }
+
                 if (!await userManager.IsEmailConfirmedAsync(user))
                     return View("ConfirmEmail", model.LoginProp);
 
