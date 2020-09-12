@@ -271,6 +271,17 @@ namespace EventB.Services.EventServices
             else
             {
                 // Его нет. Добавить в список, добавить чат.
+                if(!curentEv.Chat.UserChat.Any(e=>e.UserId == user.Id))
+                {
+                    var newUserChat = new UserChat
+                    {
+                        ChatName = curentEv.TitleShort,
+                        UserId = user.Id,
+                        ChatId = curentEv.Chat.ChatId,
+                        ChatPhoto = curentEv.Image
+                    };
+                    await context.UserChats.AddAsync(newUserChat);
+                }
                 var newVizit = new Vizit
                 {
                     UserId = user.Id,
@@ -282,16 +293,6 @@ namespace EventB.Services.EventServices
                 curentEv.Vizits.Add(newVizit);
                 curentEv.WillGo++;
                 context.Events.Update(curentEv);
-
-                var newUserChat = new UserChat
-                {
-                    ChatName = curentEv.TitleShort,
-                    UserId = user.Id,
-                    ChatId = curentEv.Chat.ChatId,
-                    ChatPhoto = curentEv.Image
-                };
-                await context.UserChats.AddAsync(newUserChat);
-
             }
             await context.SaveChangesAsync();
             return 200;

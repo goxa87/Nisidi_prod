@@ -22,25 +22,6 @@ namespace EventB
 
         }
 
-
-        //public static void CreateDbIfNotExist(IHost host)
-        //{
-        //    using (var scope = host.Services.CreateScope())
-        //    {
-        //        var services = scope.ServiceProvider;
-        //        try
-        //        {
-        //            var context = services.GetRequiredService<DataContext.DataContext>();
-        //            context.Database.EnsureCreated();
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            var logger = services.GetRequiredService<ILogger<Program>>();
-        //            logger.LogError(ex, "Ошибка при создании БД");
-        //        }
-        //    }
-        //}
-
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>

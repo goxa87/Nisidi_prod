@@ -293,11 +293,13 @@ $(document).ready(function ()
         var ids = [];
         $('.checked-inv').each(function (i, v) {
             let id = $(v).parents('.invite-data').children('#friend-id').val();
-            let mess = $(v).parents('.invite-data').children('#text').val();
+            let mess = $(v).parents('.invite-data').children('.ev-d-invite-text').val();
+            console.log(mess)
             let inv = { userId: id, message: mess };
             ids.push(inv);
         });
         let eventid = $('#event-id').val();
+        console.log('ids', ids)
         $.ajax({
             type: 'post',
             url: '/Events/InviteFriendsIn',
