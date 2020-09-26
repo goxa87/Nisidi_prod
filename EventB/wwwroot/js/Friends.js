@@ -149,60 +149,30 @@
         let nameThis = $('#fr-search-name').val();
         let cityThis = $('#fr-search-city').val();
         let tegThis = $('#fr-search-teg').val();
-        // Запрос
-        $.ajax({
-            url: '/Friends/SearchFriend',
-            data: {
-                name: nameThis,
-                city: cityThis,
-                teg: tegThis
-            }, success: (data) => {
-                // Рендеринг
-                displayFriendSearch(data)
-            }
-        });
+        let url = `/Friends/SearchFriend?name=${nameThis}&city=${cityThis}&teg=${tegThis}`;
+        window.location.replace(url);
+        
     }
 
     // Поиск из недрузей глобально
     $('.fr-search-modal').click(function () {
-        if ($(this).text() === 'ПОИСК') {
-            
-            let content =`
-                <div>
-                    <label class="form-label">Имя:</label><br>
-                    <input id="fr-search-name" class="form-entry-title" type="text" /><br>
+        let content =`
+            <div>
+                <label class="form-label">Имя:</label><br>
+                <input id="fr-search-name" class="form-entry-title" type="text" /><br>
 
-                    <label class="form-label">Теги (если несколько, то поиск только для первого):</label><br>
-                    <input id="fr-search-teg" class="form-entry-title" type="text"/><br>
+                <label class="form-label">Теги (если несколько, то поиск только для первого):</label><br>
+                <input id="fr-search-teg" class="form-entry-title" type="text"/><br>
 
-                    <label class="form-label">Город (полностью, если не указан, будет поиск для вашего города)</label><br>
-                    <input id=" fr-search-city" class="form-entry-title" type="text"/><br>
-                </div>  
-                `
-            ;
-            getModelWindow('Параметры для поиска пользователей', true, getUsersFriends, cancelModal);
-            $('.modal-body').html(content);
-        } else {
-            $(this).text('ПОИСК');
-            $('.fr-current-friends').removeClass('display-none');
-            $('.fr-current-friends').addClass('flex-hsac');
-            $('.fr-filter-container').removeClass('display-none');
-            $('.fr-search-list').addClass('display-none');
-            $('.fr-search-list').removeClass('flex-hsc');
-        }
-
+                <label class="form-label">Город (полностью, если не указан, будет поиск для вашего города)</label><br>
+                <input id="fr-search-city" class="form-entry-title" type="text"/><br>
+            </div>  
+            `
+        ;
+        getModelWindow('Параметры для поиска пользователей', true, getUsersFriends, null, "Поиск среди всех пользователей.");
+        $('.modal-body').html(content);
+        
     });
-    // Вставка результата запроса
-    function displayFriendSearch(friends) {
-        $('.fr-current-friends').addClass('display-none');
-        $('.fr-current-friends').removeClass('flex-hsac');
-        $('.fr-filter-container').addClass('display-none');
-        $('.fr-search-list').removeClass('display-none');
-        $('.fr-search-list').addClass('flex-hsc');
-        $('.fr-search-list').html(friends);
-    }
-    function cancelModal() {
-        $(this).text('ПОИСК');
-    }
+    
 
 });

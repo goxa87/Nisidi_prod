@@ -71,7 +71,7 @@ namespace EventB.Controllers
         [HttpGet]
         [Authorize]
         [Route("/Friends/SearchFriend")]
-        public async Task<PartialViewResult> SearchFriend(string name, string teg, string city)
+        public async Task<ActionResult> SearchFriend(string name, string teg, string city)
         {
             IEnumerable<User> users;
             var curUser = await context.Users.Include(e=>e.Friends).FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
@@ -110,7 +110,7 @@ namespace EventB.Controllers
                 Title = e.Name
             }).ToList();
 
-            return PartialView("_friendListSmallPartial", usersResult);
+            return View("SearchFriend", usersResult);
         }
         /// <summary>
         /// Это неактувльно делается на фронте.
