@@ -332,7 +332,11 @@ namespace EventB.Controllers
                 Place = eve.Place,
                 OldPlace = eve.Place,
                 MainPicture = eve.Image,
-                EventId = eve.EventId
+                EventId = eve.EventId,
+                Tickets = eve.TicketsDesc,
+                OldTickets = eve.TicketsDesc,
+                Phone = eve.Phone,
+                AgeRest = eve.AgeRestrictions
             };
             ViewBag.EventType = eve.Type;
             return View(model);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,7 +41,7 @@ namespace EventBLib.Models
         /// Заголовок.
         /// </summary>
         [Required]
-        [StringLength(300), Display(Name = "Заголовок")]
+        [StringLength(1000), Display(Name = "Заголовок")]
         public string Title { get; set; }
         /// <summary>
         /// Возвращает короткое название.
@@ -60,53 +61,33 @@ namespace EventBLib.Models
         /// <summary>
         /// Нормлизованный заголовок.
         /// </summary>
-        [StringLength(300)]
+        [StringLength(1000)]
         public string NormalizedTitle { get; set; }
-
-        /// <summary>
-        /// Ключи для поиска.
-        /// </summary>
-        public List<EventTeg> EventTegs { get; set; }
-        /// <summary>
-        /// Теги в строку.
-        /// </summary>
-        public string Tegs
-        {
-            // Склеивает теги в 1 строку. незабывать что нужно загружать теги чтоб это работало.
-            get 
-            {
-                if (EventTegs == null || EventTegs.Count == 0)
-                    return "нет тегов или не загружено";
-
-                var SB = new StringBuilder();
-                foreach (var teg in EventTegs)
-                {
-                    SB.Append(teg.Teg);
-                    SB.Append(" ");
-                }
-
-                return SB.ToString();
-            }
-        }
+       
         /// <summary>
         /// Адрес картинки.
         /// </summary>
+        [MaxLength(1000)]
         public string Image { get; set; }
         /// <summary>
         /// Описание события.
         /// </summary>
+        [MaxLength(4000)]
         public string Body { get; set; }
         /// <summary>
         /// Город проведения.
         /// </summary>
+        [MaxLength(100)]
         public string City { get; set; }
         /// <summary>
         /// Нормализованный город.
         /// </summary>
+        [MaxLength(100)]
         public string NormalizedCity { get; set; }
         /// <summary>
         /// Мето проведения.
         /// </summary>
+        [MaxLength(1000)]
         public string Place { get; set; }
         /// <summary>
         /// Дата начала события .
@@ -127,19 +108,12 @@ namespace EventBLib.Models
         /// <summary>
         /// Описание билетов.
         /// </summary>
+        [MaxLength(1000)]
         public string TicketsDesc { get; set; }
-        /// <summary>
-        /// Количество оценок нравится.
-        /// </summary>
-        public int Likes { get; set; }
         /// <summary>
         /// Количество просмотров.
         /// </summary>
         public int Views { get; set; }
-        /// <summary>
-        /// Количество отметок поделиться.
-        /// </summary>
-        public int Shares { get; set; }
         /// <summary>
         /// Количество отметок пойду.
         /// </summary>
@@ -149,8 +123,19 @@ namespace EventBLib.Models
         /// </summary>
         public int AgeRestrictions { get; set; }
         /// <summary>
+        /// Строчное представление ограничения
+        /// </summary>
+        [NotMapped]
+        public string AgeRestString {
+            get
+            {
+                return $"{AgeRestrictions}+";
+            }
+        }
+        /// <summary>
         /// Контактный телефон к событию.
         /// </summary>
+        [MaxLength(25)]
         public string Phone { get; set; }        
 
         /// <summary>
@@ -159,5 +144,31 @@ namespace EventBLib.Models
         public List<Vizit> Vizits { get; set; }        
                
         public Chat Chat { get; set; }
+
+        /// <summary>
+        /// Ключи для поиска.
+        /// </summary>
+        public List<EventTeg> EventTegs { get; set; }
+        /// <summary>
+        /// Теги в строку.
+        /// </summary>
+        public string Tegs
+        {
+            // Склеивает теги в 1 строку. незабывать что нужно загружать теги чтоб это работало.
+            get
+            {
+                if (EventTegs == null || EventTegs.Count == 0)
+                    return "нет тегов или не загружено";
+
+                var SB = new StringBuilder();
+                foreach (var teg in EventTegs)
+                {
+                    SB.Append(teg.Teg);
+                    SB.Append(" ");
+                }
+
+                return SB.ToString();
+            }
+        }
     }
 }

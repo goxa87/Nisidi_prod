@@ -123,16 +123,22 @@ namespace EventB.Services.EventServices
                 Place = model.Place,
                 Date = model.Date,
                 Type = EventType.Private,
-                Likes = 0,
                 Views = 0,
-                Shares = 0,
                 WillGo = 1,
                 Creator = creator,
                 Image = src,
                 CreationDate = DateTime.Now,
                 Vizits = vizits,
-                Chat = chat
+                Chat = chat,
+                Phone = model.Phone,
+                AgeRestrictions = model.AgeRestrictions
             };
+
+            if (!string.IsNullOrWhiteSpace(model.TicketsDesc))
+            {
+                eve.TicketsDesc = model.TicketsDesc;
+                eve.Tickets = true;
+            }
 
             await context.Events.AddAsync(eve);
             await context.SaveChangesAsync();
@@ -465,6 +471,20 @@ namespace EventB.Services.EventServices
                 eve.Place = model.Place;
                 chatMessage += $"<p><span>Новое место: </span>{model.Place}</p>";
             }
+            if(model.Tickets != model.OldTickets)
+            {
+                if (!string.IsNullOrWhiteSpace(model.Tickets))
+                {
+                    eve.TicketsDesc = model.Tickets;
+                    chatMessage += $"<p><span>Билеты: </span>{model.Tickets}</p>";
+                    eve.Tickets = true;
+                }
+                else
+                {
+                    eve.TicketsDesc = model.Tickets;
+                    eve.Tickets = false;
+                }
+            }
             if (model.City != model.OldCity)
             {
                 eve.City = model.City;
@@ -477,7 +497,7 @@ namespace EventB.Services.EventServices
                 chatMessage += $"<p><span>Новое время: </span>{model.Date.ToString("dd.MM.yy hh:mm")}</p>";
             }
             var user = await userManager.FindByNameAsync(userName);
-            if (chatMessage != "<br>")
+            if (chatMessage != "Изменения в событии:<br>")
             {
                 eve.Chat.Messages.Add(new Message
                 {
@@ -488,6 +508,8 @@ namespace EventB.Services.EventServices
                     Text = chatMessage
                 });
             }
+            eve.Phone = model.Phone;
+            eve.AgeRestrictions = model.AgeRest;
             context.Events.Update(eve);
             await context.SaveChangesAsync();
             return eve;

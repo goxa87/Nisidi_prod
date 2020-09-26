@@ -40,9 +40,19 @@ namespace EventB.ViewModels.EventsVM
 
         [Display(Name = "Место проведения")]
         [Required(ErrorMessage = "Поле Место проведения не заполнено")]
-        [MaxLength(200, ErrorMessage = "Длинна этого поля не должна быть больше 200 символов")]
+        [MaxLength(1000, ErrorMessage = "Длинна этого поля не должна быть больше 200 символов")]
         public string Place { get; set; }
         public string OldPlace { get; set; }
+
+        [Display(Name = "Билеты")]
+        [MaxLength(1000, ErrorMessage = "Длинна этого поля не должна быть больше 1000 символов")]
+        public string Tickets { get; set; }
+        public string OldTickets { get; set; }
+
+        [MaxLength(25), Display(Name = "Телефон для связи (НЕОБЯЗАТЕЛЬНО)")]
+        public string Phone { get; set; }
+        [Display(Name ="Возрастные ограничения")]
+        public int AgeRest { get; set; }
 
         [Display(Name = "Изображение")]
         public string MainPicture { get; set; }

@@ -45,8 +45,29 @@ else
     <input class="form-entry-title" type="text" asp-for="Place" /><br>
     <input type="hidden" asp-for="OldPlace" value="@Model.OldPlace" />
 
+    <label class="form-label" asp-for="Tickets"></label>
+    <span asp-validation-for="Tickets"></span><br>
+    <textarea class="form-entry-body" type="text" asp-for="Tickets"></textarea><br>
+    <input type="hidden" asp-for="OldTickets" value="@Model.OldTickets" />
+
+    <label class="form-label" asp-for="Phone"></label>
+    <span asp-validation-for="Phone"></span><br>
+    <input class="form-entry-title" type="text" asp-for="Phone" /><br>
+
+    <label class="form-label" asp-for="AgeRest"></label>
+    <span asp-validation-for="AgeRest"></span>
+    <select asp-for="AgeRest">
+        <option value="0">0+</option>
+        <option value="6">6+</option>
+        <option value="12">12+</option>
+        <option value="16">16+</option>
+        <option value="18">18+</option>
+    </select><br>
+
     <label class="form-label" asp-for="Date"></label>
     <span asp-validation-for="Date"></span><br>
+
+
 
     @if (ViewBag.EventType == EventType.Private)
     {

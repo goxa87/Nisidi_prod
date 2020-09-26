@@ -9,9 +9,9 @@
     <div class="ev-twin-details">
         <div class="ev-half-img">
             <div class="image-container">
-                <img src="@Model.Image" class="image-self-back"/>
+                <img src="@Model.Image" class="image-self-back" />
                 <div class="image-mask"></div>
-                <img src="@Model.Image"  class="image-self-front" />
+                <img src="@Model.Image" class="image-self-front" />
             </div>
         </div>
         <div class="ev-half container-box-shadow">
@@ -21,15 +21,24 @@
             <h4>Город: @Model.City</h4>
             <h4>Где: @Model.Place </h4>
             <p>Интересы: @Model.Tegs</p>
-            @if (Model.Tickets)
+            @if (!string.IsNullOrWhiteSpace(Model.Phone))
             {
-                <p>Билеты: @Model.TicketsDesc</p>
+                <p>Контактный телефон: @Model.Phone</p>
             }
-            <p>Выложил: @Model.Creator.Name</p>
+            @if (Model.AgeRestrictions != 0)
+            {
+                <p>Возрастные ограничения: @Model.AgeRestString</p>
+            }
+        <p>Выложил: <a href="/Friends/UserInfo?userId=@Model.Creator.Id">@Model.Creator.Name</a></p>
         </div>
     </div>
     <hr>
     <p class="formatted-body">@Model.Body</p>
+    @if (Model.Tickets)
+    {
+        <label>Билеты:</label>
+    }
+    <p class="formatted-body">@Model.TicketsDesc</p>
     <hr>
     <div id="come-block">
         @if (Model.Vizits.Where(e => e.UserId == ViewData["UserId"].ToString()).Any())
@@ -45,11 +54,12 @@
     </div>
     <div id="btn-invite" class="form-submit">Пригласить на это событие</div>
     <div id="btn-details-send-link" class="form-submit">Отправить ссылку на событие</div>
+    <!--
     @if (Model.Tickets)
     {
         <div id="btn-buy-tikets" class="form-submit">Купить билеты</div>
     }
-
+    -->
     <hr>
 </div>
 

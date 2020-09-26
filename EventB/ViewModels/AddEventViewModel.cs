@@ -10,8 +10,8 @@ namespace EventB.ViewModels
     public class AddEventViewModel
     {
         [Display(Name = "Заголовок события")]
-        [Required(ErrorMessage ="Поле Заголовок не заполнено")]
-        [MaxLength(1000,ErrorMessage ="Длинна этого поля не должна быть больше 1000 символов")]
+        [Required(ErrorMessage = "Поле Заголовок не заполнено")]
+        [MaxLength(1000, ErrorMessage = "Длинна этого поля не должна быть больше 1000 символов")]
         public string Title { get; set; }
 
         [Display(Name = "Теги тобытия")]
@@ -33,8 +33,17 @@ namespace EventB.ViewModels
 
         [Display(Name = "Место проведения")]
         [Required(ErrorMessage = "Поле Место проведения не заполнено")]
-        [MaxLength(200, ErrorMessage = "Длинна этого поля не должна быть больше 200 символов")]
+        [MaxLength(1000, ErrorMessage = "Длинна этого поля не должна быть больше 200 символов")]
         public string Place { get; set; }
+
+        [MaxLength(1000, ErrorMessage = "Слишком длинное, попробуйте до 1000 символов"), Display(Name = "Если нужны билеты, опишите что и как")]
+        public string TicketsDesc { get; set; }
+
+        [MaxLength(25), Display(Name ="Телефон для связи (НЕОБЯЗАТЕЛЬНО)")]
+        public string Phone { get; set; }
+
+        [Display(Name = "Возрастные ограничения мероприятия (Обязательно для публичных мероприятий)")]
+        public int AgeRestrictions { get; set; }
 
         [Display(Name = "Изображение")]
         public IFormFile MainPicture { get; set; } 
