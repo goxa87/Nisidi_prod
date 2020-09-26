@@ -431,7 +431,8 @@ namespace EventB.Services.EventServices
                 context.Vizits.UpdateRange(vizits);
             }
             // Здесь подправить разметку чтобы отображать абзацами
-            string chatMessage = "Изменения в событии:<br>";
+            string messageTemplate = "Изменения в событии:<br>";
+            string chatMessage = messageTemplate;
             // При внесении изменений в теги.
             if (model.Tegs != eve.Tegs)
             {
@@ -497,7 +498,7 @@ namespace EventB.Services.EventServices
                 chatMessage += $"<p><span>Новое время: </span>{model.Date.ToString("dd.MM.yy hh:mm")}</p>";
             }
             var user = await userManager.FindByNameAsync(userName);
-            if (chatMessage != "Изменения в событии:<br>")
+            if (chatMessage != messageTemplate)
             {
                 eve.Chat.Messages.Add(new Message
                 {

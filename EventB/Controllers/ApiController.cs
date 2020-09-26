@@ -217,12 +217,43 @@ namespace EventB.Controllers
             // 2 потому-что для каждого из собеседников.
             var user = await userFind.GetUserByIdAsync(id);
             var opponent = await userFind.GetUserByIdAsync(opponentId);
-
+            
             if (user == null || opponent == null)
             {
                 Response.StatusCode = 204;
                 return 0;
             }
+
+            // здесь добавлять userChat если его нет.
+            var createdUserChat = await context.UserChats.Include(e => e.Chat).Where(e => (e.UserId == user.Id && e.OpponentId == opponentId) || (e.UserId == opponentId && e.OpponentId == user.Id)).ToListAsync();
+            if (createdUserChat.Count > 0)
+            {
+                if(createdUserChat.Count == 2) return createdUserChat[0].Chat.ChatId;
+                UserChat newUCh;
+                if (createdUserChat.Any(e => e.UserId == user.Id && e.OpponentId == opponentId)){
+                    newUCh = new UserChat
+                    {
+                        UserId = opponentId,
+                        ChatName = opponent.Name,
+                        OpponentId = id,
+                        ChatPhoto = opponent.Photo
+                    };
+                }
+                else
+                {
+                    newUCh = new UserChat
+                    {
+                        UserId = id,
+                        ChatName = opponent.Name,
+                        OpponentId = opponentId,
+                        ChatPhoto = opponent.Photo
+                    };
+                }
+                createdUserChat[0].Chat.UserChat.Add(newUCh);
+                await context.SaveChangesAsync();
+                return createdUserChat[0].Chat.ChatId;
+            }
+
             var userChatCurent = new UserChat
             {
                 UserId = id,
