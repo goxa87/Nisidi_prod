@@ -341,3 +341,4 @@ healthchecksdb
 /EventB/wwwroot/images/EventImages
 /EventB/wwwroot/images/Profileimages
 /EventB/wwwroot/logs
+/EventBLib/Migrations/20200927073443_addSupportChats2.Designer.cs

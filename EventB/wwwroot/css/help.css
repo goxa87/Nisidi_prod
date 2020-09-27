@@ -52,3 +52,22 @@ p{
     text-indent: 2em;
     text-align:justify;
 }
+/*Support*/
+.h-fixed-height {
+    height: calc(100vh - 160px);
+    display:flex;
+    flex-direction:column;
+
+}
+.h-support-content {
+    background-color: #fff;
+    overflow-y: scroll;
+    flex-basis: 1000px;
+}
+.h-message-textarea {
+    flex-basis:100%;
+    background-color: #fff;
+}
+.h-message-send{
+    
+}

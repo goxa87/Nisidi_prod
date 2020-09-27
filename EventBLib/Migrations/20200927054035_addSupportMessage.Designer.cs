@@ -4,14 +4,16 @@ using EventBLib.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EventBLib.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20200927054035_addSupportMessage")]
+    partial class addSupportMessage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -362,26 +364,6 @@ namespace EventBLib.Migrations
                     b.ToTable("Messages");
                 });
 
-            modelBuilder.Entity("EventBLib.Models.SupportChat", b =>
-                {
-                    b.Property<int>("SupportChatId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ClientId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("SupportChatId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("SupportChats");
-                });
-
             modelBuilder.Entity("EventBLib.Models.SupportMessage", b =>
                 {
                     b.Property<int>("SupportMessageId")
@@ -401,9 +383,6 @@ namespace EventBLib.Migrations
                     b.Property<DateTime>("MessageDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("SupportChatId")
-                        .HasColumnType("int");
-
                     b.Property<string>("SupportPersonId")
                         .HasColumnType("nvarchar(max)");
 
@@ -414,8 +393,6 @@ namespace EventBLib.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("SupportMessageId");
-
-                    b.HasIndex("SupportChatId");
 
                     b.HasIndex("UserId");
 
@@ -792,21 +769,8 @@ namespace EventBLib.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("EventBLib.Models.SupportChat", b =>
-                {
-                    b.HasOne("EventBLib.Models.User", "SupportPerson")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("EventBLib.Models.SupportMessage", b =>
                 {
-                    b.HasOne("EventBLib.Models.SupportChat", null)
-                        .WithMany("Messages")
-                        .HasForeignKey("SupportChatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("EventBLib.Models.User", "Client")
                         .WithMany()
                         .HasForeignKey("UserId");

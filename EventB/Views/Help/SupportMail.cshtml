@@ -1,0 +1,74 @@
+﻿@model IEnumerable<SupportMessage>
+@{
+    ViewData["Title"] = "Справка";
+    ViewData["Style"] = "Help.css";
+    ViewData["Script"] = "Help.js";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="flex-hss">
+    <div class="h-left-menu">
+        <div class="h-menu-holder">
+            <div class="h-menu-unit ">
+                <a href="/Help/Manual">Руководство</a>
+            </div>
+            <div class="h-menu-unit ">
+                <a href="/Help/FAQ">Вопросы</a>
+            </div>
+            <div class="h-menu-unit">
+                <a href="/Help/Contacts">Обратная связь</a>
+            </div>
+            <div class="h-menu-unit h-menu-selected">
+                <a href="/Help/SupportMail">Техподдержка</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="h-right-body h-fixed-height">
+        <h3>Техподдержка</h3>
+        <p>Здесь вы можете задать интересующие вас вопросы и мы попробуем на них ответить.</p>
+        <div id="h-support-content" class="h-support-content">
+            @if (Model.Count() == 0)
+            {
+                <div>Сообщений нет</div>
+            }
+
+            @foreach (var mes in Model)
+            {
+                if (!string.IsNullOrWhiteSpace(mes.SupportPersonId))
+                {
+                    <div class="message-item">
+                        <div class="message-sender">
+                            Техподдержка
+                        </div>
+                        <div class="message-text formatted-body">@mes.Text</div>
+                        <div class="message-date">
+                            @mes.MessageDate.ToString("dd.MM.yy hh:mm")
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="message-item my-message">
+                        <div class="message-sender ">
+                            Техподдержка
+                        </div>
+                        <div class="message-text formatted-body">@mes.Text</div>
+                        <div class="message-date">
+                            @mes.MessageDate.ToString("dd.MM.yy hh:mm")
+                        </div>
+                    </div>
+                }
+            }
+            <div id="vertical-trigger"></div>
+        </div>
+        <div class="flex-hss">
+            <input id="userId" type="hidden" name="userId" value="@ViewBag.UserId" />
+            <textarea id="h-message-text" class="h-message-textarea"></textarea>
+            <button id="h-message-send" class="action-button">Отправить</button>
+        </div>
+
+
+    </div>
+</div>
+

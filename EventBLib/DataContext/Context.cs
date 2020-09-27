@@ -42,6 +42,14 @@ namespace EventBLib.DataContext
         /// </summary>
         public DbSet<Message> Messages { get; set; }
         /// <summary>
+        /// Сообщения в техподдержку
+        /// </summary>
+        public DbSet<SupportMessage> SupportMessages { get; set; }
+        /// <summary>
+        /// Чаты поддержки
+        /// </summary>
+        public DbSet<SupportChat> SupportChats { get; set; }
+        /// <summary>
         /// Строковые представления интересов пользователя.
         /// </summary>
         public DbSet<Interes> Intereses { get; set; }
