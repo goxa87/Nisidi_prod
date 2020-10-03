@@ -183,11 +183,11 @@ namespace EventB.Controllers
         {
             if (id.HasValue)
             {
-                var eve = await eventService.Details(id.Value);
+                var user = await userManager.FindByNameAsync(User.Identity.Name);
+                var eve = await eventService.Details(id.Value, user.Id);
                
                 if (!string.IsNullOrWhiteSpace(User.Identity.Name))
-                {
-                    var user = await userManager.FindByNameAsync(User.Identity?.Name);
+                {                    
                     ViewData["UserId"] = user.Id;
                     ViewData["UserName"] = user.Name;
                 }

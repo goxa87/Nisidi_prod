@@ -133,6 +133,10 @@ connection.on('reciveChatMessage', function (message) {
         $(opponent).detach().prependTo('.opponents-list');
     }
 });
+
+connection.on('responceForBlockUser', function (message) {
+    GetNotification(message, 1, 5);
+});
 connection.start();
 // Конец хаба
 
@@ -171,7 +175,6 @@ $(document).ready(function () {
     // Выбор собеседника из левой колонки.
     $('.opponent-container').on('click', function () {
         // Картинку и имя в заголовок.
-
         $('.opponent-photo').children('img').prop('src', $(this).children('.opponent-photo-value').val());
         $('.opponent-name').text($(this).children('.opponent-name-value').text());
 
@@ -183,6 +186,18 @@ $(document).ready(function () {
         $('.message-list').empty();
         // убрать количество новых сообщений
         $(this).children('.new-message-flag').text('');
+        // Сделать неактивной если чат недоступен
+
+        if ($(this).children('.opponent-is-blocked-chat').val() == 1) {
+            $('#btn-send').attr('disabled', true);
+            $('#message').attr('disabled', true);
+            $('#message').val('заблокировано');
+        }
+        else {
+            $('#btn-send').attr('disabled', false);
+            $('#message').attr('disabled', false);
+            $('#message').val('');
+        }
 
         // скопировать значения id b chat id в форму
         let newChat = $(this).children('.opponent-chat-id').val();

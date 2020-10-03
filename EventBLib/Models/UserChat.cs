@@ -43,7 +43,10 @@ namespace EventBLib.Models
         /// Чат.
         /// </summary>
         public Chat Chat { get; set; }
-
+        /// <summary>
+        /// Сигнализирует о том что пользователь заблокирован в чате
+        /// </summary>
+        public bool IsBlockedInChat { get; set; }
 
     }
 }

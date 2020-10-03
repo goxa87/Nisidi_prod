@@ -152,15 +152,19 @@ namespace EventB.Services.EventServices
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<Event> Details(int id)
+        public async Task<Event> Details(int id, string userId)
         {
-            return( await context.Events.
+            // Берем юзер чат  для пользователя для отображения заблокированности
+            var eve = await context.Events.
                      Include(e => e.Creator).
                      Include(e => e.Chat).
-                     ThenInclude(e =>e.Messages).
+                     ThenInclude(e => e.Messages).
                      Include(e => e.EventTegs).
                      Include(e => e.Vizits).
-                     FirstOrDefaultAsync(e => e.EventId == id));
+                     FirstOrDefaultAsync(e => e.EventId == id);
+            var userChat = await context.UserChats.Where(e => e.ChatId == eve.Chat.ChatId && e.UserId == userId).ToListAsync();
+            eve.Chat.UserChat = userChat;
+            return eve;
         }
 
         /// <summary>
@@ -201,7 +205,10 @@ namespace EventB.Services.EventServices
 
             var userChat = await context.UserChats.
                 FirstOrDefaultAsync(e => e.UserId == userId && e.ChatId == chatId);
-
+            if (userChat.IsBlockedInChat)
+            {
+                return 403;
+            }
             if (userChat == null)
             {
                 try

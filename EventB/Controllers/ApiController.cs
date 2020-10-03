@@ -308,6 +308,14 @@ namespace EventB.Controllers
         {
             if (senderId == "" || reciverId == "" || text == "")
                 return;
+
+            var userChat = await context.UserChats.FirstOrDefaultAsync(e => e.ChatId == chatId && e.UserId == senderId);
+            if (userChat.IsBlockedInChat)
+            {
+                HttpContext.Response.StatusCode = 403;
+                return;
+            }
+
             var message = new Message
             {
                 ChatId = chatId,

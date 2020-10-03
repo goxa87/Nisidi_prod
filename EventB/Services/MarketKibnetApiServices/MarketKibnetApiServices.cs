@@ -1,4 +1,5 @@
-﻿using EventBLib.DataContext;
+﻿using EventB.ViewModels.MarketRoom;
+using EventBLib.DataContext;
 using EventBLib.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -86,6 +87,46 @@ namespace EventB.Services.MarketKibnetApiServices
 
             await context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<List<EventUserChatMembersVM>> GetEventUserChats(int eventId)
+        {
+            var eve = await context.Events.Include(e => e.Chat).ThenInclude(e => e.UserChat).ThenInclude(e => e.User).FirstOrDefaultAsync(e => e.EventId == eventId);
+            var chatMembers = eve.Chat.UserChat.Select(e => new EventB.ViewModels.MarketRoom.EventUserChatMembersVM() 
+                {
+                    UserId = e.UserId,
+                    UserName = e.User.Name,
+                    UserPhoto = e.User.Photo,
+                    UserChatId = e.UserChatId,
+                    IsBlocked = e.IsBlockedInChat
+                }).ToList();
+            return chatMembers;
+        }
+
+        /// <summary>
+        /// блокировка пользователей в чатах
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="userChatId"></param>
+        /// <param name="curentUserName"></param>
+        /// <returns></returns>
+        public async Task<int> SwitchUserChatBlock(int eventId, int userChatId, string curentUserName)
+        {
+            var user = await userManager.FindByNameAsync(curentUserName);
+            var eve = await context.Events.FirstOrDefaultAsync(e => e.EventId == eventId);
+            if (eve == null)
+                return 404;
+
+            if(eve.UserId != user.Id)
+            {
+                return 401;
+            }
+            var userChat = await context.UserChats.FirstOrDefaultAsync(e => e.UserChatId == userChatId);
+            if (userChat == null)
+                return 400;
+            userChat.IsBlockedInChat = !userChat.IsBlockedInChat;
+            await context.SaveChangesAsync();
+            return 200;
         }
     }
 }

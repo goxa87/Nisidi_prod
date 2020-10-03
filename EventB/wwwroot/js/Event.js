@@ -110,7 +110,7 @@ $(document).ready(function ()
     {
         event.preventDefault();
         if ($('#user-id').val() == '0') {
-            alert('Авторизуйтесь для отправки сооsбщений');
+            alert('Авторизуйтесь для отправки сообщений');
             return;
         }
 
@@ -147,6 +147,9 @@ $(document).ready(function ()
             success: function () {
                 $('#text').val('');
                 AddMessageToListMessage(messageText)
+            },
+            error: function () {
+                GetNotification('Отправка сообщений в этот чат заблокирована администратором чата', 1, 3);
             }
         });
 

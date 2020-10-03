@@ -53,3 +53,24 @@
 hr{
     margin-bottom: 24px;
 }
+/* модалка блокировка пользователей*/
+
+.lk-block-user-name{
+    font-weight:300;
+}
+.lk-block-user-ava{
+    max-height:46px;
+    max-width:46px;
+}
+.lk-block-user-btn-block{
+    border: 1px solid #55f222;
+    color: green;
+    cursor: pointer;
+    padding: 0 4px;
+}
+.lk-block-user-btn-unblock {
+    border: 1px solid #f25522;
+    color: red;
+    cursor: pointer;
+    padding: 0 4px;
+}

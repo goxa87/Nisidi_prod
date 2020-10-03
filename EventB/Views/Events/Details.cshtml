@@ -87,13 +87,17 @@
     <!--чат-->
     <div class="bottom-page display-none" id="chat">
         <form>
-            <label>Сообщение</label><br>
+
             <input type="hidden" id="user-id" value="@ViewData["UserId"]" />
             <input type="hidden" id="user-name" value="@ViewData["UserName"]" />
             <input type="hidden" id="event-id" value="@Model.EventId" />
             <input type="hidden" id="chat-id" value="@Model.Chat.ChatId" />
-            <button type="submit" id="btn-send">Отправить</button>
-            <textarea id="text" ></textarea>
+            @if (Model.Chat.UserChat.Count > 0 && !Model.Chat.UserChat[0].IsBlockedInChat)
+            {
+                <label>Сообщение</label><br>
+                <button type="submit" id="btn-send">Отправить</button>
+                <textarea id="text"></textarea>
+            }
         </form>
         <div class="ed-message-list">
             Загрузка...

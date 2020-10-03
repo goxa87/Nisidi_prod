@@ -45,7 +45,7 @@
     });
 
     // Нажате на кнопку НЕпойду в контейнере приглашения.
-    $('#mp-will-notgo').click(function () {
+    $('.mp-will-notgo').click(function () {
         let invId = $(this).parent().children('#inviteId').val();
         $.ajax({
             url: '/MyPage/RefuseInvite',

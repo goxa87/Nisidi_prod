@@ -57,6 +57,13 @@ namespace EventB.Hubs
         /// <returns></returns>
         public async Task SendToChat(ChatMessageVM dataObject)
         {
+            var curentuserChat = await context.UserChats.FirstOrDefaultAsync(e => e.ChatId == dataObject.chatId && e.UserId == dataObject.personId);
+            if (curentuserChat.IsBlockedInChat)
+            {
+                await this.Clients.Caller.SendAsync("responceForBlockUser", "Отправка сообщений в этот чат заблокирована адитнтстратором чата.");
+                return;
+            }
+
             var messageDTO = messageService.ConvertMessageVmToDTO(dataObject);
             context.Messages.Add(messageDTO);
             await context.SaveChangesAsync();

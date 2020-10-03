@@ -151,8 +151,11 @@ p{
         background-repeat: no-repeat;
         background-position: -5px -8px;
     }
-textarea{
-    resize:none;
+    .form-send > button:disabled{
+        background-color: #fff6;
+    }
+textarea {
+    resize: none;
 }
 .hidden{
     display:none;

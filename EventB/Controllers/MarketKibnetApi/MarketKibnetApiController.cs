@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EventB.Services.MarketKibnetApiServices;
+using EventB.ViewModels.MarketRoom;
+using EventBLib.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
@@ -46,6 +48,27 @@ namespace EventB.Controllers.MarketKibnetApi
                 return Ok();
             else
                 return StatusCode(401);
+        }
+
+        /// <summary>
+        /// Удаление события.
+        /// </summary>
+        /// <param name="EventId"></param>
+        /// <returns></returns>
+        [Route("get-event-chat-users"), HttpGet]
+        public async Task<List<EventUserChatMembersVM>> GetEventUserChats(int EventId)
+        {
+            return await kibnetApiServices.GetEventUserChats(EventId);
+        }
+        /// <summary>
+        /// блокировка пользователя в чате
+        /// </summary>
+        /// <param name="EventId"></param>
+        /// <returns></returns>
+        [Route("switch-user-chat-block"), HttpGet]
+        public async Task<StatusCodeResult> SwitchUserChatBlock(int EventId, int userChatId)
+        {
+            return StatusCode(await kibnetApiServices.SwitchUserChatBlock(EventId, userChatId, User.Identity.Name));
         }
     }
 }

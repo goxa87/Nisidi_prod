@@ -14,7 +14,7 @@ namespace EventB.Services.EventServices
 
         Task<Event> AddEvent(AddEventViewModel model, string userName);
 
-        Task<Event> Details(int id);
+        Task<Event> Details(int id, string userId);
 
         Task<int> SendMessage(string userId, string userName, int chatId, string text);
         /// <summary>

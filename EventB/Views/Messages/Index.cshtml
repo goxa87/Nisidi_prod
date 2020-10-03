@@ -20,6 +20,14 @@
             {
                 <div class="mes-opponent-container">
                     <div class="opponent-container">
+                        @if (opponent.IsBlockedInChat)
+                        {
+                            <input type="hidden" class="opponent-is-blocked-chat" value="1">
+                        }
+                        else
+                        {
+                            <input type="hidden" class="opponent-is-blocked-chat" value="0">
+                        }
                         <input class="opponent-chat-id" type="hidden" value="@opponent.ChatId" />
                         <input class="opponent-photo-value" type="hidden" value="@opponent.ChatPhoto" />
                         <div class="opponent-name-value">@opponent.ChatName</div>
