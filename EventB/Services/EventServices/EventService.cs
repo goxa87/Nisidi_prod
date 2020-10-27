@@ -298,7 +298,7 @@ namespace EventB.Services.EventServices
                 var newVizit = new Vizit
                 {
                     UserId = user.Id,
-                    EventTitle = curentEv.TitleShort,
+                    EventTitle = curentEv.Title,
                     EventPhoto = curentEv.Image,
                     VizitorName = user.Name,
                     VizitirPhoto = user.Photo
