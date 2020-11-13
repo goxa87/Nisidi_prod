@@ -182,17 +182,19 @@ namespace EventB.Controllers
         public async Task<ActionResult> Details(int? id)
         {
             if (id.HasValue)
-            {
-                var user = await userManager.FindByNameAsync(User.Identity.Name);
-                var eve = await eventService.Details(id.Value, user.Id);
+            {               
+                Event eve;
                
-                if (!string.IsNullOrWhiteSpace(User.Identity.Name))
-                {                    
+                if (!string.IsNullOrWhiteSpace(User?.Identity?.Name))
+                {
+                    var user = await userManager.FindByNameAsync(User.Identity.Name);
+                    eve = await eventService.Details(id.Value, user.Id);
                     ViewData["UserId"] = user.Id;
                     ViewData["UserName"] = user.Name;
                 }
                 else
                 {
+                    eve = await eventService.Details(id.Value, null);
                     ViewData["UserId"] = "0";
                     ViewData["UserName"] = "Неавторизован";
                 }

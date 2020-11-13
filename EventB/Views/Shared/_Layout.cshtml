@@ -7,6 +7,8 @@
     <!--https://google.github.io/material-design-icons/-->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/20.1.8/css/dx.common.css">
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/20.1.8/css/dx.light.css">
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/@ViewData["Style"]" />
 </head>
@@ -38,28 +40,28 @@
                         <a asp-controller="Events" asp-action="Start">СОБЫТИЯ</a>
                     </li>
                     <li>
-                        <a asp-controller="Search" asp-action="Index">ПОИСК</a>                        
+                        <a asp-controller="Search" asp-action="Index">ПОИСК</a>
                     </li>
                     <li>
                         <div>
                             <a asp-controller="Friends" asp-action="List">ПОЛЬЗОВАТЕЛИ</a>
                             <div id="mm-li-users" class="s-star16 display-none s-star16-formenu "></div>
                         </div>
-                        
+
                     </li>
                     <li>
                         <div>
                             <a asp-controller="MyPage" asp-action="Index">МОЯ СТРАНИЦА</a>
                             <div id="mm-li-mypage" class="s-star16 display-none s-star16-formenu "></div>
                         </div>
-                        
+
                     </li>
                     <li>
                         <div>
                             <a asp-controller="Messages" asp-action="Index">СООБЩЕНИЯ</a>
                             <div id="mm-li-messages" class="s-star16 display-none s-star16-formenu "></div>
                         </div>
-                        
+
                     </li>
                     <li>
                         <a asp-action="Manual" asp-controller="Help">ПОМОЩЬ</a>
@@ -68,7 +70,7 @@
                 <div class="main-menu-thin">
                     <span id="thin-menu">Меню</span>
                     <ul class="thin-menu-items-container display-none">
-                        
+
                         <li>
                             <a asp-controller="Events" asp-action="Start">СОБЫТИЯ</a>
                         </li>
@@ -79,24 +81,24 @@
                             <div class="flex-hec">
                                 <a asp-controller="Friends" asp-action="List">ПОЛЬЗОВАТЕЛИ</a>
                                 <div id="mm-li-users-th" class="s-star16 display-none s-star16-formenu "></div>
-                            </div>                            
+                            </div>
                         </li>
                         <li>
                             <div class="flex-hec">
                                 <a asp-controller="MyPage" asp-action="Index">МОЯ СТРАНИЦА</a>
                                 <div id="mm-li-mypage-th" class="s-star16 display-none s-star16-formenu "></div>
-                            </div>                            
+                            </div>
                         </li>
                         <li>
                             <div class="flex-hec">
                                 <a asp-controller="Messages" asp-action="Index">СООБЩЕНИЯ</a>
                                 <div id="mm-li-messages-th" class="s-star16 display-none s-star16-formenu "></div>
-                            </div>                            
+                            </div>
                         </li>
                         <li>
                             <a asp-action="Manual" asp-controller="Help">ПОМОЩЬ</a>
                         </li>
-                                               
+
                     </ul>
                 </div>
 
@@ -111,10 +113,10 @@
     </div>
 
     <footer class="footer">
-        
     </footer>
     <script src="~/js/jquery-3.4.1.min.js"></script>
     <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
+    <script type="text/javascript" src="https://cdn3.devexpress.com/jslib/20.1.8/js/dx.all.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/@ViewData["Script"]" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)

@@ -97,6 +97,9 @@ label{
 .formatted-body{
     white-space: pre-wrap;
 }
+.calender-width{
+    width: 300px;
+}
 /*звездочки*/
 .s-star16 {
     background-image: url('../resourses/star32.png');

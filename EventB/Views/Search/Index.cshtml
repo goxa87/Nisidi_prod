@@ -21,15 +21,16 @@
     <input class="form-entry-title" type="text" name="Tegs"><br>
 
     <label class="form-label">Дата начала С:</label><br>
-    <input class="form-date" type="date" name="DateSince"><br>
+    <input id="ser-date-since" type="hidden" name="DateSince">
+    <div class="calender-width" id="dateSinseDE"></div>
 
     <label class="form-label">Дата начала ПО:</label><br>
-    <input class="form-date" type="date" name="DateDue"><br>
+    <input id="ser-date-due" class="form-date" type="hidden" name="DateDue">
+    <div class="calender-width" id="dateDueDE"></div>
 
     <input type="hidden" name="Skip" value="0" />
     <input type="hidden" name="Take" value="12" />
 
     <input class="form-submit" type="submit" name="f" value="Найти событие"><br><br>
 </form>
-
 @{ ViewData["Script"] = "Search.js";}
