@@ -71,8 +71,9 @@ else
 
     @if (ViewBag.EventType == EventType.Private)
     {
-        <div class="content">@Model.Date.ToString("dd.MM.yyyy hh:mm") изменить на </div>
-        <input class="form-date" type="datetime-local" value="@Model.Date" asp-for="Date" /><br>
+        <div class="content">@Model.Date.ToString("dd.MM.yyyy HH:mm") изменить на </div>
+        <input type="hidden" value="@Model.Date" asp-for="Date" /><br>
+        <div class="calender-width" id="eve-edit-date"></div>
     }
     else
     {
@@ -80,7 +81,6 @@ else
     }
     <label class="form-label" asp-for="MainPicture"></label>
     <img class="img-100" src="@Model.MainPicture">
-    <span asp-validation-for="Date"></span><br>
     <div class="content">изменить на</div>
     <input class="form-date" type="file" asp-for="NewPicture" /><br>
 

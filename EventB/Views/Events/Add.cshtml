@@ -2,7 +2,7 @@
 @{
     ViewData["Style"] = "Forms.css";
     ViewData["Title"] = "Добавить";
-
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="top-page-header">Вы добавляете событие</div>
 
@@ -32,7 +32,9 @@
     <!--Переделать селектами-->
     <label class="form-label" asp-for="Date"></label>
     <span asp-validation-for="Date"></span>
-    <input class="form-date" type="datetime-local" asp-for="Date" /><br>
+    <input id="eve-date" class="form-date" type="hidden" asp-for="Date" />
+    <div class="calender-width" id="dateEvent"></div>
+    <br>
 
     <label class="form-label" asp-for="TicketsDesc"></label>
     <span asp-validation-for="TicketsDesc"></span>
@@ -57,5 +59,4 @@
 
     <input class="form-submit" type="submit" value="Сохранить" />
 </form>
-
-@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+@{ ViewData["Script"] = "Event.js";}

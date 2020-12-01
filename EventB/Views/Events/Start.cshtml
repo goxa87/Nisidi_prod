@@ -40,8 +40,8 @@
     @if (Model.args.Title != "" || Model.args.Title == null)
     {<div class="ticket">@Model.args.Title</div>}
 
-    <input type="hidden" id="args-date-s" value="@Model.args.DateSince.ToString("MM.dd.yyyy hh:mm:ss")" />
-    <input type="hidden" id="args-date-e" value="@Model.args.DateDue.ToString("MM.dd.yyyy hh:mm:ss")" />
+    <input type="hidden" id="args-date-s" value="@Model.args.DateSince.ToString("MM.dd.yyyy HH:mm:ss")" />
+    <input type="hidden" id="args-date-e" value="@Model.args.DateDue.ToString("MM.dd.yyyy HH:mm:ss")" />
     <input type="hidden" id="args-city" value="@Model.args.City" />
     <input type="hidden" id="args-teg" value="@Model.args.Tegs" />
     <input type="hidden" id="args-title" value="@Model.args.Title" />

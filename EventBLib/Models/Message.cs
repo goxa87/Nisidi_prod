@@ -41,7 +41,7 @@ namespace EventBLib.Models
         /// Дата публикации сообщения.
         /// </summary>
         [Required]
-        [DataType(DataType.DateTime), DisplayFormat(DataFormatString ="{0:dd.MM.yy hh.mm}",ApplyFormatInEditMode =true)]
+        [DataType(DataType.DateTime), DisplayFormat(DataFormatString ="{0:dd.MM.yy HH.mm}",ApplyFormatInEditMode =true)]
         public DateTime PostDate { get; set; }
         /// <summary>
         /// Cимвол прочитанности.

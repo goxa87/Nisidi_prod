@@ -1,4 +1,29 @@
-﻿// Начало исполнения
+﻿$(function () {
+    $("#dateEvent").dxDateBox({
+        type: "datetime",
+        displayFormat: "dd.MM.yyyy HH:mm",
+        dateSerializationFormat: "yyyy-MM-ddTHH:mm:ss",
+        showClearButton: true,
+        onValueChanged: function (e) {
+            $('#eve-date').val(e.value);
+        }
+    });
+});
+
+$(function () {
+    $("#eve-edit-date").dxDateBox({
+        type: "datetime",
+        displayFormat: "dd.MM.yyyy HH:mm",
+        dateSerializationFormat: "yyyy-MM-ddTHH:mm:ss",
+        showClearButton: true,
+        onValueChanged: function (e) {
+            console.log(e)
+            $('#Date').val(e.value);
+        }
+    });
+});
+
+// Начало исполнения
 $(document).ready(function ()
 {    
     // Флаг прекращения загрузки.

@@ -429,7 +429,7 @@ namespace EventB.Services.EventServices
             {
                 string src = "/images/defaultimg.jpg";
                 // Формирование строки имени картинки.
-                string fileName = String.Concat(DateTime.Now.ToString("dd-MM-yy_hh-mm"), "_", model.NewPicture.FileName);
+                string fileName = String.Concat(DateTime.Now.ToString("dd-MM-yy_HH-mm"), "_", model.NewPicture.FileName);
                 src = String.Concat("/images/EventImages/", fileName);
                 // Запись на диск.
                 using (var FS = new FileStream(environment.WebRootPath + src, FileMode.Create))
@@ -509,7 +509,7 @@ namespace EventB.Services.EventServices
             if (model.Date != model.OldDate && eve.Type == EventType.Private)
             {
                 eve.Date = model.Date;
-                chatMessage += $"<p><span>Новое время: </span>{model.Date.ToString("dd.MM.yy hh:mm")}</p>";
+                chatMessage += $"<p><span>Новое время: </span>{model.Date.ToString("dd.MM.yy HH:mm")}</p>";
             }
             var user = await userManager.FindByNameAsync(userName);
             if (chatMessage != messageTemplate)
