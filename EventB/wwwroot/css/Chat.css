@@ -29,6 +29,7 @@ p{
 
 .right-columnn {
     width: 100%;
+    height: calc(100vh - 130px);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -123,7 +124,7 @@ p{
 .message-list {
     overflow-y: auto;
     padding: 8px;
-    flex-basis: 2000px;
+    flex-basis: 1000px;
     background-color: #fff;
 }
 
@@ -159,4 +160,42 @@ textarea {
 }
 .hidden{
     display:none;
+}
+#ch-small-menu-btn {
+    background: url('../resourses/smallmenu.png');
+    background-position: 2px 2px;
+    border-radius: 5px;
+    width: 32px;
+    height: 32px;
+    z-index: 100;
+}
+/*узкий*/
+@media(min-width: 801px) {
+    #ch-small-menu-btn{
+       display:none;
+    }
+}
+@media(max-width: 800px){
+    .chat-frame{
+        display: block;
+        position: relative;
+    }
+
+    .left-column {
+        height: calc(100vh - 100px);
+        position: absolute;
+        top: 0;
+        left: 0;
+        visibility: hidden;
+        z-index: 50;
+    }
+    .ch-hide-menu{
+        visibility:visible;
+    }
+
+    #ch-small-menu-btn {
+        position: absolute;
+        top: -20px;
+        left: 0;
+    }
 }

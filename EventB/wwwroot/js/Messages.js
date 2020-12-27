@@ -218,7 +218,10 @@ $(document).ready(function () {
                 buildMessagesContent(rezult);
             }
         });
-
+        // Прячем узкое меню если оно есть
+        if ($('.left-column').hasClass('ch-hide-menu')) {
+            $('.left-column').toggleClass('ch-hide-menu');
+        }
     });
 
     // Построение результатов запроса в блок content - List<Message>
@@ -275,6 +278,9 @@ $(document).ready(function () {
         });
     });
 
-    
+    // узкое меню
+    $('body').on('click', '#ch-small-menu-btn', function () {
+        $('.left-column').toggleClass('ch-hide-menu');
+    });
 });
 
