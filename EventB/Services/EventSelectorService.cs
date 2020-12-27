@@ -42,6 +42,7 @@ namespace EventB.Services
             var selection = context.Events.
                 Include(e=>e.EventTegs).
                 Include(e=>e.Creator).
+                Include(e => e.Vizits).
                 Where(e => e.Date > dateStart && e.Date < dateEnd && e.Type == EventType.Global);
             // город
             if (!string.IsNullOrWhiteSpace(args.City))
@@ -58,12 +59,15 @@ namespace EventB.Services
             {
                 var tegs = tegSplitter.GetEnumerable(args.Tegs);
                 // Просто чтоб получить инстанцированный экземпляр IQueryable.
-                IQueryable<Event> tegSelection = context.Events.Include(e => e.Creator).Include(e=>e.EventTegs).Where(e=>e.EventId==0);
+                IQueryable<Event> tegSelection = context.Events.Include(e => e.Creator).Include(e=>e.EventTegs).Include(e => e.Vizits).Where(e=>e.EventId==0);
                 foreach (var teg in tegs)
                 {
                     var tempSelection = context.EventTegs.Include(e=>e.Event).ThenInclude(e => e.Creator).
-                        Include(e => e.Event).ThenInclude(e=>e.EventTegs).
-                        Where(e => e.Teg == teg).Select(e=>e.Event);
+                        Include(e => e.Event)
+                        .ThenInclude(e=>e.EventTegs)
+                        .Include(e => e.Event)
+                        .ThenInclude(e => e.Vizits)
+                        .Where(e => e.Teg == teg).Select(e=>e.Event);
                     tegSelection = tegSelection.Union(tempSelection);
                 } 
 
