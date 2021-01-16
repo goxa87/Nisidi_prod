@@ -169,11 +169,19 @@ namespace EventB.Controllers
             }
             else
             {
+                // Сдесь всю шляпу получать за раз что нужно менять. 
                 var user = await userManager.GetUserAsync(HttpContext.User);
-                
-                List<Friend> inFriends=null;
-                List<Invite> inInvites=null;
-                List<Vizit> inVizits=null;
+                user = await context.Users.Include(e => e.Friends)
+                    .Include(e => e.Invites)
+                    .Include(e => e.Vizits)
+                    .Include(e => e.UserChats).ThenInclude(e => e.Chat).ThenInclude(e => e.Messages)
+                    .Include(e => e.UserChats).ThenInclude(e => e.Chat).ThenInclude(e => e.UserChat)
+                    .FirstOrDefaultAsync(e => e.UserName == HttpContext.User.Identity.Name);
+                List<Friend> inFriends=user.Friends;
+                List<Invite> inInvites= await context.Invites.Where(e => e.InviterId == user.Id).ToListAsync();
+                List<Vizit> inVizits=user.Vizits;
+                // Это юзер чаты в которых участвует, но привязвны к другим пользователям (Приватые). 
+                List<UserChat> inUserChats = await context.UserChats.Where(e => e.OpponentId == user.Id).ToListAsync();
                 if (model.newPhoto != null)
                 {
                     var path = string.Concat("/images/Profileimages/", DateTime.Now.ToString("dd_MM_yy_mm_ss"), model.newPhoto.FileName)
@@ -184,21 +192,23 @@ namespace EventB.Controllers
                     }
                     user.Photo = path;
                     // Изменить в друзьях, визиторах.
-                    inFriends = await context.Friends.Where(e => e.UserId == user.Id).ToListAsync();
                     foreach (var e in inFriends)
                     {
                         e.UserPhoto = path;
                     }
-                    inInvites = await context.Invites.Where(e => e.InviterId == user.Id).ToListAsync();
                     foreach (var e in inInvites)
                     {
                         e.InviterPhoto = path;
                     }
-                    inVizits = await context.Vizits.Where(e => e.UserId == user.Id).ToListAsync();
                     foreach (var e in inVizits)
                     {
                         e.VizitirPhoto = path;
                     }
+                    foreach(var e in inUserChats)
+                    {
+                        e.ChatPhoto = path;
+                    }
+                    // фото к чату
                     context.Friends.UpdateRange(inFriends);
                     context.Invites.UpdateRange(inInvites);
                     context.Vizits.UpdateRange(inVizits);
@@ -208,24 +218,26 @@ namespace EventB.Controllers
                 {
                     user.Name = model.Name;
                     user.NormalizedName = model.Name.ToUpper();
-                    inFriends = inFriends != null ? inFriends : await context.Friends.Where(e => e.UserId == user.Id).ToListAsync();
                     foreach (var e in inFriends)
                     {
                         e.UserName = model.Name;
                     }
-                    inInvites = inInvites != null ? inInvites : await context.Invites.Where(e => e.UserId == user.Id).ToListAsync();
                     foreach (var e in inInvites)
                     {
                         e.InviterName = model.Name;
                     }
-                    inVizits = inVizits != null ? inVizits : await context.Vizits.Where(e => e.UserId == user.Id).ToListAsync();
-                    foreach (var e in inVizits ?? await context.Vizits.Where(e => e.UserId == user.Id).ToListAsync())
+                    foreach (var e in inVizits)
                     {
                         e.VizitorName = model.Name;
+                    }                 
+                    foreach(var e in inUserChats)
+                    {
+                        e.ChatName = model.Name;
                     }
-                    context.Friends.UpdateRange(inFriends);
-                    context.Invites.UpdateRange(inInvites);
-                    context.Vizits.UpdateRange(inVizits);
+                    foreach(var e in await context.Messages.Where(e=>e.PersonId == user.Id).ToListAsync())
+                    {
+                        e.SenderName = model.Name;
+                    }
                 }
                 // Изменение интересов.
                 if (model.Tegs != model.OldTegs)
