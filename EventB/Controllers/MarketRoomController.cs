@@ -23,7 +23,7 @@ namespace EventB.Controllers
 
         public async Task<IActionResult> MarketRoom()
         {
-            var user = await context.Users.Include(e=>e.MarketKibnet).Include(e=>e.MyEvents)
+            var user = await context.Users.Include(e=>e.MarketKibnet).Include(e=>e.MyEvents).ThenInclude(e=>e.Vizits)
                 .FirstOrDefaultAsync(e=>e.UserName == HttpContext.User.Identity.Name);
 
             var model = new MarketRoomVM { 
