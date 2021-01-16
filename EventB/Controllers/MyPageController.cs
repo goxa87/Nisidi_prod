@@ -174,8 +174,6 @@ namespace EventB.Controllers
                 user = await context.Users.Include(e => e.Friends)
                     .Include(e => e.Invites)
                     .Include(e => e.Vizits)
-                    .Include(e => e.UserChats).ThenInclude(e => e.Chat).ThenInclude(e => e.Messages)
-                    .Include(e => e.UserChats).ThenInclude(e => e.Chat).ThenInclude(e => e.UserChat)
                     .FirstOrDefaultAsync(e => e.UserName == HttpContext.User.Identity.Name);
                 List<Friend> inFriends=user.Friends;
                 List<Invite> inInvites= await context.Invites.Where(e => e.InviterId == user.Id).ToListAsync();
