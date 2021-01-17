@@ -228,7 +228,17 @@ namespace EventB.Controllers
             var createdUserChat = await context.UserChats.Include(e => e.Chat).Where(e => (e.UserId == user.Id && e.OpponentId == opponentId) || (e.UserId == opponentId && e.OpponentId == user.Id)).ToListAsync();
             if (createdUserChat.Count > 0)
             {
-                if(createdUserChat.Count == 2) return createdUserChat[0].Chat.ChatId;
+                if (createdUserChat.Count == 2)
+                {
+                    foreach(var e in createdUserChat)
+                    {
+                        e.IsDeleted = false;
+                    }
+                    await context.SaveChangesAsync();
+                    return createdUserChat[0].Chat.ChatId;
+                }
+                // с новой системой получится так что этого никогда не произойдет
+                // Чаты не удаляются и там всегда будет 2 
                 UserChat newUCh;
                 if (createdUserChat.Any(e => e.UserId == user.Id && e.OpponentId == opponentId)){
                     newUCh = new UserChat

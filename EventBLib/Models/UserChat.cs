@@ -47,6 +47,9 @@ namespace EventBLib.Models
         /// Сигнализирует о том что пользователь заблокирован в чате
         /// </summary>
         public bool IsBlockedInChat { get; set; }
-
+        /// <summary>
+        /// сигнализирует о том, что пользователь покинул чат
+        /// </summary>
+        public bool IsDeleted { get; set; }
     }
 }

@@ -47,48 +47,29 @@ namespace EventB.Services.MessageServices
         /// </summary>
         /// <param name="UserChatId"></param>
         /// <returns></returns>
-        public async Task<int> DeleteUserChat(int UserChatId)
+        public async Task<int> DeleteUserChat(int ChatId, string userId)
         {
             var userChat = await context.UserChats
                 .Include(e => e.Chat).ThenInclude(e => e.Messages)
-                .Include(e => e.Chat).ThenInclude(e => e.UserChat)
-                .FirstOrDefaultAsync(e=>e.UserChatId == UserChatId);
+                .Include(e=>e.User)
+                .FirstOrDefaultAsync(e=>e.ChatId == ChatId && e.UserId == userId);
             if(userChat == null)
             {
                 return 400;
             }
 
-            if (!userChat.Chat.EventId.HasValue)
+            var message = new Message
             {
-                var usersCount = await context.UserChats.CountAsync(e => e.ChatId == userChat.ChatId);
-
-                // это не групповой чат отправляем уведомление если в чате еще есть пользователи.
-                if(usersCount > 1)
-                {
-                    var message = new Message
-                    {
-                        ChatId = userChat.Chat.ChatId,
-                        PersonId = userChat.UserId,
-                        SenderName = userChat.User.Name,
-                        Text = "Пользователь покинул чат",
-                        PostDate = DateTime.Now,
-                        Read = false
-                    };
-                    await context.Messages.AddAsync(message);
-                    var userChatForDeletion = await context.UserChats.FirstOrDefaultAsync(e => e.UserChatId == UserChatId);
-                    context.UserChats.Remove(userChatForDeletion);
-                }
-                else
-                {
-                    // удаляем чат совсем
-                    context.Chats.Remove(userChat.Chat);
-                }          
-            }
-            else
-            {
-                var userChatForDeletion = await context.UserChats.FirstOrDefaultAsync(e => e.UserChatId == UserChatId);
-                context.UserChats.Remove(userChatForDeletion);
-            }
+                ChatId = userChat.ChatId,
+                PersonId = userChat.UserId,
+                SenderName = userChat.User.Name,
+                Text = "Пользователь покинул чат",
+                PostDate = DateTime.Now,
+                Read = false
+            };
+            await context.Messages.AddAsync(message);
+            userChat.IsDeleted = true;
+            
             await context.SaveChangesAsync();
             return 200;
         }

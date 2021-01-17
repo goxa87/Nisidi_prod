@@ -29,7 +29,7 @@ namespace EventB.Services.MessageServices
         /// </summary>
         /// <param name="UserChatId">id чата пользователя</param>
         /// <returns></returns>
-        public Task<int> DeleteUserChat(int UserChatId);
+        public Task<int> DeleteUserChat(int UserChatId, string userId);
         /// <summary>
         /// преобразует vmк dto
         /// </summary>

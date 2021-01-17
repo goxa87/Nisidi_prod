@@ -11,7 +11,7 @@ namespace EventB.ViewModels
         /// <summary>
         /// UserChats для пользователя в которых информация для списка собеседников.
         /// </summary>
-        public List<UserChat> userChats { get; set; } = new List<UserChat>();
+        public List<UserChat> UserChats { get; set; } = new List<UserChat>();
         /// <summary>
         /// Список сообщений если чат под пользователя.
         /// </summary>

@@ -181,15 +181,11 @@ namespace EventB.Services.EventServices
         /// <returns></returns>
         public async Task<List<Message>> GetEventMessages(int EventId)
         {
-            //var changes = await messageService.GetEventChangesMessages(EventId);
-            //var chtMess = await messageService.GetEventChatMessages(EventId);
             var chat = await context.Chats.Include(e => e.Messages).Where(e => e.EventId == EventId).FirstOrDefaultAsync();
 
-            return await context.Messages.Where(e => e.ChatId == chat.ChatId).Take(40).Union(context.Messages.Where(e => e.ChatId == chat.ChatId && e.EventState == true)).OrderByDescending(e => e.PostDate).ToListAsync();
-            
-
-
-            //return changes.Union(chtMess).OrderByDescending(e=>e.PostDate).ToList();
+            return await context.Messages.Where(e => e.ChatId == chat.ChatId)
+                .Take(40)
+                .Union(context.Messages.Where(e => e.ChatId == chat.ChatId && e.EventState == true)).OrderByDescending(e => e.PostDate).ToListAsync();
         }
 
 
@@ -203,16 +199,17 @@ namespace EventB.Services.EventServices
         /// <returns></returns>
         public async Task<int> SendMessage(string userId, string userName, int chatId, string text)
         {
-            var chat = await context.Chats.Include(e => e.Event).
-                FirstOrDefaultAsync(e => e.ChatId == chatId);
+            var chat = await context.Chats.Include(e => e.Event)
+                .Include(e=>e.UserChat)
+                .FirstOrDefaultAsync(e => e.ChatId == chatId);
             if (chat == null)
             {
                 return 204;
             }
 
-            var userChat = await context.UserChats.
-                FirstOrDefaultAsync(e => e.UserId == userId && e.ChatId == chatId);
-            if (userChat.IsBlockedInChat)
+            var userChat = chat.UserChat.
+                FirstOrDefault(e => e.UserId == userId);
+            if (userChat != null && userChat.IsBlockedInChat)
             {
                 return 403;
             }
@@ -236,6 +233,13 @@ namespace EventB.Services.EventServices
                     Debug.Write("Создание чата для события", ex.ToString());
                 }                
             }
+            else
+            {
+                if (userChat.IsDeleted)
+                {
+                    userChat.IsDeleted = false;
+                }
+            }
 
             Message message = new Message
             {
@@ -249,7 +253,6 @@ namespace EventB.Services.EventServices
             };
             await context.Messages.AddAsync(message);
             await context.SaveChangesAsync();
-            //task1.Wait();
             return 200;
         }
 

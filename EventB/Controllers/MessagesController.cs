@@ -39,7 +39,7 @@ namespace EventB.Controllers
             var opponent = await context.Users.FirstOrDefaultAsync(e => e.Id == opponentId);
             var chatVM = new MessagesViewModel
             {
-                userChats=user.UserChats,
+                UserChats=user.UserChats.Where(e=>e.IsDeleted == false).ToList(),
                 CurrentUserId = user.Id,
                 CurrentUserName = user.Name,
                 Opponent = opponent,
@@ -74,8 +74,7 @@ namespace EventB.Controllers
         public async Task<StatusCodeResult> DeleteUserChat(int chatId)
         {
             var user = await userManager.FindByNameAsync(User.Identity.Name);
-            var chat = await context.UserChats.FirstOrDefaultAsync(e => e.ChatId == chatId);
-            var result = await messagesService.DeleteUserChat(chat.UserChatId);
+            var result = await messagesService.DeleteUserChat(chatId, user.Id);
             return StatusCode(result);
         }
     }

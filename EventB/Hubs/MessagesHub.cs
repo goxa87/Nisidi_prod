@@ -57,18 +57,28 @@ namespace EventB.Hubs
         /// <returns></returns>
         public async Task SendToChat(ChatMessageVM dataObject)
         {
-            var curentuserChat = await context.UserChats.FirstOrDefaultAsync(e => e.ChatId == dataObject.chatId && e.UserId == dataObject.personId);
+            var chat = await context.Chats.Include(e => e.UserChat).ThenInclude(e => e.User).FirstOrDefaultAsync(e => e.ChatId == dataObject.chatId);
+            var curentuserChat = chat.UserChat.FirstOrDefault(e => e.UserId == dataObject.personId);
             if (curentuserChat.IsBlockedInChat)
             {
                 await this.Clients.Caller.SendAsync("responceForBlockUser", "Отправка сообщений в этот чат заблокирована адитнтстратором чата.");
                 return;
             }
 
+            dataObject.postDate = DateTime.Now;
             var messageDTO = messageService.ConvertMessageVmToDTO(dataObject);
             context.Messages.Add(messageDTO);
+
+            
+            if(!chat.EventId.HasValue && chat.UserChat.Any(e=>e.IsDeleted == true))
+            {
+                foreach(var e in chat.UserChat.Where(e => e.IsDeleted).ToList())
+                {
+                    e.IsDeleted = false;
+                }
+            }
             await context.SaveChangesAsync();
 
-            var chat = await context.Chats.Include(e => e.UserChat).ThenInclude(e=>e.User).FirstOrDefaultAsync(e => e.ChatId == dataObject.chatId);
             var usersForSending = chat.UserChat.Select(e => e.User.UserName);
 
             foreach(var userName in usersForSending)
