@@ -16,7 +16,7 @@ p{
 .chat-frame {
     background-color: #fff;
     width: 100%;
-    height: calc(100vh - 160px);
+    height: calc(100vh - 130px);
     display: flex;
     align-items: stretch;
 }

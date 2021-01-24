@@ -51,7 +51,7 @@ namespace EventB.Services
             // Возможно здесь будет тянуть из бд уже в оперативу. (узкое место нужно проверить)
             // Проверил . Судя по запросу выполняется на сервере. 
             if (!string.IsNullOrWhiteSpace(args.Title))
-                selection = selection.Where(e => e.NormalizedTitle.Contains(args.Title));
+                selection = selection.Where(e => EF.Functions.Like(e.Title, $"%{args.Title}%"));
 
             var selectionLocal = selection;
             // теги
