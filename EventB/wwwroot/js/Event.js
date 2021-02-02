@@ -1,4 +1,5 @@
-﻿$(function () {
+﻿DevExpress.localization.locale("ru");
+$(function () {
     $("#dateEvent").dxDateBox({
         type: "datetime",
         displayFormat: "dd.MM.yyyy HH:mm",

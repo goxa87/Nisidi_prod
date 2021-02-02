@@ -1,4 +1,4 @@
-﻿
+﻿DevExpress.localization.locale("ru");
 $(function () {
     $("#dateSinseDE").dxDateBox({
         type: "date",
