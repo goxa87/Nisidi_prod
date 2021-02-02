@@ -13,8 +13,7 @@ function AddRenderedMessages(data, senderId) {
     $('.message-list').append('<div id="vertical-trigger"></div>');
     // Прокрутка лучше не придумал.(( 
     // Здесь vertical-trigger находится относительно окна а нужно относительно родителя. исправить
-    var list = $('.message-list');
-    list.scrollTop($('#vertical-trigger').offset().top + $(list).height());
+    scrollDown();
     $('#message').val('');
 }
 
@@ -168,9 +167,23 @@ $(document).ready(function () {
     }
     getNewMessageCount();
 
-    // Начальная прокрутка до конца чата.
-    let startoffset = $('#vertical-trigger').offset().top;
-    $('.message-list').scrollTop(startoffset);         
+    let curentChatId = $('#chat-id').val();
+    console.log(curentChatId)
+    if (curentChatId && curentChatId != '0') {
+        $.ajax({
+            url: '/Api/GetMessageHistory',
+            data: {
+                chatId: curentChatId
+            },
+            success: function (rezult) {
+                console.log('rezult', rezult)
+                buildMessagesContent(rezult);
+                scrollDown(); 
+            }
+        });
+    }
+
+    scrollDown();
 
     // Выбор собеседника из левой колонки.
     $('.opponent-container').on('click', function () {
@@ -233,9 +246,7 @@ $(document).ready(function () {
         $('#vertical-trigger').remove();
         $('.message-list').html(block);
         $('.message-list').append('<div id="vertical-trigger"></div>');
-        var list = $('.message-list'); 
-        let offset = $('#vertical-trigger').offset().top;
-        list.scrollTop(offset);
+        scrollDown();
     };    
 
     // Клик на кнопке Отчистить.
@@ -284,3 +295,8 @@ $(document).ready(function () {
     });
 });
 
+
+function scrollDown() {
+    let position = $('#vertical-trigger').position();
+    $('.message-list').scrollTop(position.top + 2000);
+}

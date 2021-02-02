@@ -48,18 +48,9 @@ namespace EventB.Controllers
 
             if (!string.IsNullOrWhiteSpace(opponentId))
             {
-                var messages = await context.Messages.
-                    Where( e => (e.PersonId==user.Id && e.ReciverId==opponentId) || (e.PersonId == opponentId && e.ReciverId == user.Id) )
-                    .OrderByDescending(e=>e.PostDate)
-                    .Take(30)
-                    .OrderBy(e=>e.PostDate)
-                    .ToListAsync();
-                chatVM.Messages = messages;
-                
-                if (messages.Any())
-                {
-                    chatVM.CurrentChatId = messages.First().ChatId;
-                }
+                var userChat = await context.UserChats.Include(e=>e.Chat).ThenInclude(e=>e.Messages).FirstOrDefaultAsync(e => e.OpponentId == opponentId);
+                chatVM.CurrentChatId = userChat?.ChatId;
+                chatVM.Messages = userChat != null ? userChat.Chat.Messages : new List<Message>();
             }
 
             return View(chatVM);
