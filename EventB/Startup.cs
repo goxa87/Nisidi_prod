@@ -38,8 +38,8 @@ namespace EventB
             
 
             string connection = Configuration.GetConnectionString("EB1");
-            services.AddDbContext<Context>(options => {
-                options.UseSqlServer(connection);
+            services.AddDbContext<Context>(options=> {
+                options.UseMySql(connection);
             });
             //services.AddScoped<IDataProvider, DbData>();
 

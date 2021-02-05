@@ -342,3 +342,5 @@ healthchecksdb
 /EventB/wwwroot/images/Profileimages
 /EventB/wwwroot/logs
 /EventBLib/Migrations/20200927073443_addSupportChats2.Designer.cs
+appsettings.json
+appsettings.Development.json
