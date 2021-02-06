@@ -1,5 +1,4 @@
-﻿using EventBLib.Migrations;
-using EventBLib.Models;
+﻿using EventBLib.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

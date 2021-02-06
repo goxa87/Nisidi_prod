@@ -55,32 +55,21 @@ namespace EventB.Services
 
             var selectionLocal = selection;
             // теги
+            
             if (!string.IsNullOrWhiteSpace(args.Tegs))
             {
                 var tegs = tegSplitter.GetEnumerable(args.Tegs);
-                // Просто чтоб получить инстанцированный экземпляр IQueryable.
-                IQueryable<Event> tegSelection = context.Events.Include(e => e.Creator).Include(e=>e.EventTegs).Include(e => e.Vizits).Where(e=>e.EventId==0);
-                foreach (var teg in tegs)
-                {
-                    var tempSelection = context.EventTegs.Include(e=>e.Event).ThenInclude(e => e.Creator).
-                        Include(e => e.Event)
-                        .ThenInclude(e=>e.EventTegs)
-                        .Include(e => e.Event)
-                        .ThenInclude(e => e.Vizits)
-                        .Where(e => e.Teg == teg).Select(e=>e.Event);
-                    tegSelection = tegSelection.Union(tempSelection);
-                } 
+                selection = selection.Where(e => e.EventTegs.Any(x=> tegs.Contains(x.Teg)));
+            }     
+            
+            var selectionLocalList = await selection.OrderBy(e => e.Date).Skip(args.Skip).Take(args.Take).ToListAsync();
 
-                selectionLocal = selectionLocal.Intersect(tegSelection);
-            }            
-            selectionLocal = selectionLocal.OrderBy(e => e.Date).Skip(args.Skip).Take(args.Take);
-
-            foreach(var eve in selectionLocal)
+            foreach(var eve in selectionLocalList)
             {
                 eve.Views++;
             }
             await context.SaveChangesAsync();
-            return await selectionLocal.ToListAsync();
+            return selectionLocalList;
         }
 
         /// <summary>

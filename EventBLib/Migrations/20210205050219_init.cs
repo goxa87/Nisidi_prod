@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EventBLib.Migrations
@@ -41,11 +42,14 @@ namespace EventBLib.Migrations
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
+                    NormalizedName = table.Column<string>(nullable: true),
                     City = table.Column<string>(maxLength: 50, nullable: true),
+                    NormalizedCity = table.Column<string>(maxLength: 50, nullable: true),
                     Photo = table.Column<string>(nullable: true),
                     AnonMessages = table.Column<bool>(nullable: false),
                     Visibility = table.Column<int>(nullable: false),
-                    Description = table.Column<string>(maxLength: 1000, nullable: true)
+                    Description = table.Column<string>(maxLength: 1000, nullable: true),
+                    IsBlockedUser = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -57,7 +61,7 @@ namespace EventBLib.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -78,7 +82,7 @@ namespace EventBLib.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -163,22 +167,24 @@ namespace EventBLib.Migrations
                 columns: table => new
                 {
                     EventId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Type = table.Column<int>(nullable: false),
                     UserId = table.Column<string>(nullable: false),
-                    Title = table.Column<string>(maxLength: 300, nullable: false),
-                    Image = table.Column<string>(nullable: true),
-                    Body = table.Column<string>(nullable: true),
-                    City = table.Column<string>(nullable: true),
-                    Place = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(maxLength: 1000, nullable: false),
+                    NormalizedTitle = table.Column<string>(maxLength: 1000, nullable: true),
+                    Image = table.Column<string>(maxLength: 1000, nullable: true),
+                    Body = table.Column<string>(maxLength: 4000, nullable: true),
+                    City = table.Column<string>(maxLength: 100, nullable: true),
+                    NormalizedCity = table.Column<string>(maxLength: 100, nullable: true),
+                    Place = table.Column<string>(maxLength: 1000, nullable: true),
                     Date = table.Column<DateTime>(nullable: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     Tickets = table.Column<bool>(nullable: false),
-                    TicketsDesc = table.Column<string>(nullable: true),
-                    Likes = table.Column<int>(nullable: false),
+                    TicketsDesc = table.Column<string>(maxLength: 1000, nullable: true),
                     Views = table.Column<int>(nullable: false),
-                    Shares = table.Column<int>(nullable: false),
-                    WillGo = table.Column<int>(nullable: false)
+                    WillGo = table.Column<int>(nullable: false),
+                    AgeRestrictions = table.Column<int>(nullable: false),
+                    Phone = table.Column<string>(maxLength: 25, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -196,7 +202,7 @@ namespace EventBLib.Migrations
                 columns: table => new
                 {
                     FriendId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     FriendUserId = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true),
                     UserName = table.Column<string>(nullable: true),
@@ -222,7 +228,7 @@ namespace EventBLib.Migrations
                 columns: table => new
                 {
                     InteresId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<string>(nullable: true),
                     Value = table.Column<string>(nullable: true)
                 },
@@ -238,11 +244,53 @@ namespace EventBLib.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MarketKibnets",
+                columns: table => new
+                {
+                    MarketKibnetId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<string>(nullable: true),
+                    PaymentAccountBalance = table.Column<double>(nullable: false),
+                    TotalMarcetCompanyCount = table.Column<int>(nullable: false),
+                    MarketState = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MarketKibnets", x => x.MarketKibnetId);
+                    table.ForeignKey(
+                        name: "FK_MarketKibnets_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SupportChats",
+                columns: table => new
+                {
+                    SupportChatId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<string>(nullable: true),
+                    ClientId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SupportChats", x => x.SupportChatId);
+                    table.ForeignKey(
+                        name: "FK_SupportChats_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Chats",
                 columns: table => new
                 {
                     ChatId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Type = table.Column<int>(nullable: false),
                     EventId = table.Column<int>(nullable: true)
                 },
@@ -262,7 +310,7 @@ namespace EventBLib.Migrations
                 columns: table => new
                 {
                     EventTegId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     EventId = table.Column<int>(nullable: false),
                     Teg = table.Column<string>(nullable: true)
                 },
@@ -282,7 +330,7 @@ namespace EventBLib.Migrations
                 columns: table => new
                 {
                     InviteId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     EventId = table.Column<int>(nullable: false),
                     UserId = table.Column<string>(nullable: false),
                     InviterId = table.Column<string>(nullable: false),
@@ -304,7 +352,7 @@ namespace EventBLib.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -312,7 +360,7 @@ namespace EventBLib.Migrations
                 columns: table => new
                 {
                     VizitId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<string>(nullable: true),
                     EventId = table.Column<int>(nullable: false),
                     EventTitle = table.Column<string>(nullable: true),
@@ -338,11 +386,74 @@ namespace EventBLib.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MarkListCards",
+                columns: table => new
+                {
+                    MarkListCardId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    MarketKibnetId = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    ImageLink = table.Column<string>(nullable: true),
+                    AHref = table.Column<string>(nullable: true),
+                    IsPayed = table.Column<bool>(nullable: false),
+                    PaymentAccount = table.Column<double>(nullable: false),
+                    CreationDate = table.Column<DateTime>(nullable: false),
+                    PayedDate = table.Column<DateTime>(nullable: false),
+                    PublicedSince = table.Column<DateTime>(nullable: false),
+                    PublicedDue = table.Column<DateTime>(nullable: false),
+                    ShawnQuantity = table.Column<int>(nullable: false),
+                    TirnTrigger = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MarkListCards", x => x.MarkListCardId);
+                    table.ForeignKey(
+                        name: "FK_MarkListCards_MarketKibnets_MarketKibnetId",
+                        column: x => x.MarketKibnetId,
+                        principalTable: "MarketKibnets",
+                        principalColumn: "MarketKibnetId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SupportMessages",
+                columns: table => new
+                {
+                    SupportMessageId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Text = table.Column<string>(nullable: true),
+                    MessageDate = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    ClientName = table.Column<string>(nullable: true),
+                    IsReadClient = table.Column<bool>(nullable: false),
+                    SupportPersonId = table.Column<string>(nullable: true),
+                    IsReadSupport = table.Column<bool>(nullable: false),
+                    SupportChatId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SupportMessages", x => x.SupportMessageId);
+                    table.ForeignKey(
+                        name: "FK_SupportMessages_SupportChats_SupportChatId",
+                        column: x => x.SupportChatId,
+                        principalTable: "SupportChats",
+                        principalColumn: "SupportChatId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SupportMessages_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Messages",
                 columns: table => new
                 {
                     MessageId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     ChatId = table.Column<int>(nullable: false),
                     PersonId = table.Column<string>(nullable: false),
                     SenderName = table.Column<string>(nullable: true),
@@ -350,7 +461,9 @@ namespace EventBLib.Migrations
                     Text = table.Column<string>(nullable: true),
                     PostDate = table.Column<DateTime>(nullable: false),
                     Read = table.Column<bool>(nullable: false),
-                    EventState = table.Column<bool>(nullable: false)
+                    EventState = table.Column<bool>(nullable: false),
+                    EventLink = table.Column<int>(nullable: false),
+                    EventLinkImage = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -368,11 +481,14 @@ namespace EventBLib.Migrations
                 columns: table => new
                 {
                     UserChatId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ChatName = table.Column<string>(maxLength: 50, nullable: true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ChatName = table.Column<string>(nullable: true),
+                    ChatPhoto = table.Column<string>(nullable: true),
                     OpponentId = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true),
-                    ChatId = table.Column<int>(nullable: false)
+                    ChatId = table.Column<int>(nullable: false),
+                    IsBlockedInChat = table.Column<bool>(nullable: false),
+                    IsDeleted = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -400,8 +516,7 @@ namespace EventBLib.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -427,15 +542,13 @@ namespace EventBLib.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Chats_EventId",
                 table: "Chats",
                 column: "EventId",
-                unique: true,
-                filter: "[EventId] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Events_UserId",
@@ -468,9 +581,35 @@ namespace EventBLib.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_MarketKibnets_UserId",
+                table: "MarketKibnets",
+                column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MarkListCards_MarketKibnetId",
+                table: "MarkListCards",
+                column: "MarketKibnetId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Messages_ChatId",
                 table: "Messages",
                 column: "ChatId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SupportChats_UserId",
+                table: "SupportChats",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SupportMessages_SupportChatId",
+                table: "SupportMessages",
+                column: "SupportChatId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SupportMessages_UserId",
+                table: "SupportMessages",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserChats_ChatId",
@@ -523,7 +662,13 @@ namespace EventBLib.Migrations
                 name: "Invites");
 
             migrationBuilder.DropTable(
+                name: "MarkListCards");
+
+            migrationBuilder.DropTable(
                 name: "Messages");
+
+            migrationBuilder.DropTable(
+                name: "SupportMessages");
 
             migrationBuilder.DropTable(
                 name: "UserChats");
@@ -533,6 +678,12 @@ namespace EventBLib.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "MarketKibnets");
+
+            migrationBuilder.DropTable(
+                name: "SupportChats");
 
             migrationBuilder.DropTable(
                 name: "Chats");

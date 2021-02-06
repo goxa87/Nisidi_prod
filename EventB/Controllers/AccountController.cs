@@ -133,8 +133,8 @@ namespace EventB.Controllers
                     context.Users.Update(user);
                     await context.SaveChangesAsync();
 
-                    await SendEmailConfirmationAsync(model.Email);
-                    return View("ConfirmEmail", model.Email);
+                    //await SendEmailConfirmationAsync(model.Email);
+                    return RedirectToAction("Login");
 
                     // надо както его прилепить к пользователю
                     // await signInManager.SignInAsync(user, false);

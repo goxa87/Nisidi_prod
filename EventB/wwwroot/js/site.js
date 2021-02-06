@@ -111,7 +111,7 @@ function renderMessage(content, userId)
                 '<div class="message-info display-none">' + value.personId + '</div ></div > ';
         }
         else if (value.eventLink && value.eventLink != 0) {
-            block += `<a href="https://localhost:44344/Events/Details/${value.eventLink}">
+            block += `<a href="/Events/Details/${value.eventLink}">
                         <div class="message-item message-item-event message-item-event-link">
                             <img src="${value.eventLinkImage}" class="message-display-inline message-link-img" />
                             <div class="message-text-event message-display-inline">${value.text}</div>
