@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 using EventB.Services.SenderServices;
 using System.Diagnostics;
 using EventBLib.Models.MarketingModels;
+using EventB.Services.Logger;
 
 namespace EventB.Controllers
 {
@@ -26,13 +27,14 @@ namespace EventB.Controllers
         readonly IWebHostEnvironment environment;
 
         private readonly ITegSplitter tegSplitter;
-
+        private readonly ILogger logger;
 
         public AccountController(UserManager<User> UM,
             SignInManager<User> SIM,
             ITegSplitter TS,
             Context Context,
-            IWebHostEnvironment _environment
+            IWebHostEnvironment _environment,
+            ILogger _logger
             )
         {
             userManager = UM;
@@ -40,6 +42,7 @@ namespace EventB.Controllers
             tegSplitter = TS;
             context = Context;
             environment = _environment;
+            logger = _logger;
         }
 
         public  IActionResult Login(string returnUrl)
@@ -132,9 +135,15 @@ namespace EventB.Controllers
                     user.MarketKibnet = new MarketKibnet { MarketState = MarketState.common, PaymentAccountBalance = 0 , TotalMarcetCompanyCount =0};
                     context.Users.Update(user);
                     await context.SaveChangesAsync();
-
-                    //await SendEmailConfirmationAsync(model.Email);
-                    return RedirectToAction("Login");
+                    try
+                    {
+                        await SendEmailConfirmationAsync(model.Email);
+                        return View("ConfirmEmail", model.Email);
+                    }
+                    catch(Exception ex)
+                    {
+                        await logger.LogObjectToFile("RegisterAccount", ex);
+                    }                  
 
                     // надо както его прилепить к пользователю
                     // await signInManager.SignInAsync(user, false);
@@ -162,14 +171,14 @@ namespace EventB.Controllers
             var user = await userManager.FindByEmailAsync(email);
             var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
             var url = Url.Action("FinishConfirmEmail", "Account", new { token = token, userId = user.Id }, HttpContext.Request.Scheme);
-            string message = $"<p>Внимаение! Этот адрес был указан при регистрации на сайте EventBuilder.ru. </p>" +
+            string message = $"<p>Внимаение! Этот адрес был указан при регистрации на сайте nisidi.ru. </p>" +
                 $"<p>Для подтвердения адреса перейдите по ссылке нажав <a href=\"{url}\">ЗДЕСЬ</a>.</p>" +
                 $"<p>Это письмо создано автоматически, пожалуйста не отвечайте на него.</p>" +
                 $"<p>Если вы не регистрировались на сайте, то просто проигнорируйте это сообщение.</p>";
 
             var mailSender = new MailSender();
 
-            await mailSender.SendEmailAsync(email, "Подтверждение электронной почты на сайте EventBuilder.", message);
+            await mailSender.SendEmailAsync(email, "Подтверждение электронной почты на сайте nisidi.ru.", message);
         }
         /// <summary>
         /// Повторная отправка подтверждения почты.
@@ -270,8 +279,13 @@ namespace EventB.Controllers
                 ModelState.AddModelError("", "Не указан адрес электронной почты");
             }
             var user = await userManager.FindByNameAsync(email);
-            if(user==null || !(await userManager.IsEmailConfirmedAsync(user)))
-                return View("PasswordRecoveryConfirm");
+            var isConfirmed = !(await userManager.IsEmailConfirmedAsync(user));
+            if (user==null || isConfirmed)
+            {
+                ViewBag.IsUserNull = user == null ? true: false;
+                ViewBag.IsNotConfirmed = isConfirmed ? true: false;
+                return View("PasswordRecoweryBadModel");
+            }                
 
             var code = await userManager.GeneratePasswordResetTokenAsync(user);
             var url = Url.Action("PasswordRecoveryPage", "Account", new {userId= user.Id, code = code }, HttpContext.Request.Scheme);
