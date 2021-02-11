@@ -292,6 +292,7 @@ namespace EventB.Controllers
         /// <returns></returns>
         public async Task InviteFriendsIn(int eventId, InviteInVm[] invites)
         {
+            // Вставить проверку на то что чел друг а не левый
             await eventService.InviteFriendsIn(eventId, User.Identity.Name, invites);
         }
         #endregion

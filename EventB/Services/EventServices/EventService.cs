@@ -363,23 +363,20 @@ namespace EventB.Services.EventServices
         {
             var curUser = await userManager.FindByNameAsync(userName);
             // не оздавать приглашения для тех, кто уже пойдет или имеет приглашение
-
-            var friends = await context.Friends.Where(e => e.FriendUserId == curUser.Id
-                && e.IsBlocked == false
-                && e.IsConfirmed == true).
+            
+            var friends = await context.Friends
+                .Include(e=>e.User).ThenInclude(e=>e.Invites)
+                .Include(e=>e.User).ThenInclude(e=>e.Vizits)
+                .Where(e => e.FriendUserId == curUser.Id && e.IsBlocked == false && e.IsConfirmed == true &&
+                    !e.User.Vizits.Any(x=>x.EventId == eventId) && !e.User.Invites.Any(x=>x.EventId == eventId)).
                 Select(e => new InviteOutVM
                 {
                     UserId = e.UserId,
                     Name = e.UserName,
                     Photo = e.UserPhoto
                 }).ToListAsync();
-            // Вычесть тех , которые уже пойдут на событие. 
-            var willGoId = context.Vizits.Where(e => e.EventId == eventId).Select(e => e.UserId);
-            var alreadyHaveinvite = context.Invites.Where(e => e.EventId == eventId).Select(e => e.UserId);
-            var allId = context.Users.Select(e => e.Id);
-            var willWillNot = await allId.Except(willGoId).Except(alreadyHaveinvite).ToListAsync();
-            var rezult = friends.Join(willWillNot, f => f.UserId, w => w, (f, w) => f).ToList();
-            return rezult;
+
+            return friends;
         }
 
         /// <summary>
@@ -391,11 +388,13 @@ namespace EventB.Services.EventServices
         /// <returns></returns>
         public async Task InviteFriendsIn(int eventId, string user, InviteInVm[] invites)
         {
-            var curUser = await userManager.FindByNameAsync(user);
+            var curUser = await context.Users.Include(e=>e.Friends).FirstOrDefaultAsync(e=>e.UserName == user);
+            var friends = await context.Friends.Where(e => e.FriendUserId == curUser.Id).ToListAsync();
             var newInv = new List<Invite>();
 
             foreach (var id in invites)
             {
+                if (!friends.Any(e => e.UserId == id.userId)) continue;
                 // не оздавать приглашения для тех, кто уже пойдет или имеет приглашение
                 var newItm = new Invite
                 {
