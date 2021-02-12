@@ -5,6 +5,7 @@
     ViewData["Style"] = "Friends.css";
     ViewData["Script"] = "Friends.js";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = Model.User.Name;
 }
 
 @if (Model == null)

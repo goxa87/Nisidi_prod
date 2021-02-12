@@ -4,6 +4,7 @@
     ViewData["Style"] = "MarketRoom.css";
     ViewData["Script"] = "MarketRoom.js";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "личный кабинет";
 }
 
 <div class="top-page-header">ваш личный кабинет</div>
@@ -41,32 +42,32 @@
                         <input id="lk-eve-filter" class="s-filter" />
                         <img src="~/resourses/cancel.png" class="s-filter-clear" id="lk-eve-filter-clear" />
                     </div>
-                    
+
                 </div>
 
                 foreach (var ev in Model.Events)
                 {
-                <div class="lk-eve-item">
-                    <div class="lk-event">
-                        <div>
-                            @{await Html.RenderPartialAsync("~/Views/Shared/_eventItemPartial.cshtml", ev);}
+                    <div class="lk-eve-item">
+                        <div class="lk-event">
+                            <div>
+                                @{await Html.RenderPartialAsync("~/Views/Shared/_eventItemPartial.cshtml", ev);}
+                            </div>
+                            <div class="margin-8px">
+                                <input class="kibnet-event-id" type="hidden" value="@ev.EventId" />
+                                <div class="action-button lk-event-state">Статус: @ev.Type</div>
+                                @if (ev.Type == EventType.Private)
+                                {
+                                    <div class="action-button lk-change-event-status">Сменить статус</div>
+                                }
+                                <a asp-action="EventEdit" asp-controller="Events" asp-route-eventId="@ev.EventId"><div class="action-button">Редактировать</div></a>
+                                <div class="action-button">Статистика</div>
+                                <div class="lk-delete-event action-button">Удалить</div>
+                                <div class="lk-block-users-chat action-button">Заблокировать пользователей в чате события</div>
+                            </div>
                         </div>
-                        <div class="margin-8px">
-                            <input class="kibnet-event-id" type="hidden" value="@ev.EventId" />
-                            <div class="action-button lk-event-state">Статус: @ev.Type</div>
-                            @if (ev.Type == EventType.Private)
-                            {
-                                <div class="action-button lk-change-event-status">Сменить статус</div>
-                            }
-                            <a asp-action="EventEdit" asp-controller="Events" asp-route-eventId="@ev.EventId"><div class="action-button">Редактировать</div></a>
-                            <div class="action-button">Статистика</div>
-                            <div class="lk-delete-event action-button">Удалить</div>
-                            <div class="lk-block-users-chat action-button">Заблокировать пользователей в чате события</div>
-                        </div>
+                        <hr>
                     </div>
-                    <hr>
-                 </div>    
-                    
+
                 }
             }
             else
@@ -74,18 +75,18 @@
                 <p class="info-p">Пока событий нет.</p>
             }
         </div>
-        
+
         <div id="lk-cards-page" class="lk-page display-none">
             <div class="lk-header">Карточки:</div>
             <div class="info-p">Всего: </div>
             <div class="info-p">Активных: </div>
-            @if(Model.ListCards == null || Model.ListCards.Count() == 0)
+            @if (Model.ListCards == null || Model.ListCards.Count() == 0)
             {
                 <div class="info-p">Карточек пока нет.</div>
             }
             else
             {
-                foreach(var e in Model.ListCards)
+                foreach (var e in Model.ListCards)
                 {
                     <div>@e.AHref</div>
                 }
