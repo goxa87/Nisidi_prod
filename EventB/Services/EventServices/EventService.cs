@@ -253,6 +253,9 @@ namespace EventB.Services.EventServices
             };
             await context.Messages.AddAsync(message);
             await context.SaveChangesAsync();
+
+            // ВНИМАНИЕ ! Здесь нужно организовать отправку сообщения через хаб всем подключенным клиентам
+
             return 200;
         }
 
@@ -421,10 +424,12 @@ namespace EventB.Services.EventServices
         /// <returns></returns>
         public async Task<Event> EventEdit(string userName, EventEditVM model)
         {
+            var user = await userManager.FindByNameAsync(userName);
             var eve = await context.Events.Include(e => e.EventTegs)
                     .Include(e => e.Chat).ThenInclude(e => e.Messages)
                     .Include(e => e.Chat).ThenInclude(e => e.UserChat)
                     .FirstOrDefaultAsync(e => e.EventId == model.EventId);
+            if (eve.UserId != user.Id) throw new Exception("Запрещено");
             List<Vizit> vizits = null;
             // Значение картинки если ее нет.
             if (model.NewPicture != null)
@@ -513,7 +518,7 @@ namespace EventB.Services.EventServices
                 eve.Date = model.Date;
                 chatMessage += $"<p><span>Новое время: </span>{model.Date.ToString("dd.MM.yy HH:mm")}</p>";
             }
-            var user = await userManager.FindByNameAsync(userName);
+            
             if (chatMessage != messageTemplate)
             {
                 eve.Chat.Messages.Add(new Message
@@ -549,7 +554,7 @@ namespace EventB.Services.EventServices
 
             if (user.Id != eve.UserId)
             {
-                return 400;
+                return 401;
             }
 
             context.Remove(eve);

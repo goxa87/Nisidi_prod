@@ -51,7 +51,7 @@ namespace EventB.Controllers.MarketKibnetApi
         }
 
         /// <summary>
-        /// Удаление события.
+        /// Вернет список участников события
         /// </summary>
         /// <param name="EventId"></param>
         /// <returns></returns>

@@ -225,7 +225,8 @@ namespace EventB.Controllers
         [Route("/Events/SendMessage")]
         public async Task<StatusCodeResult> SendMessage(string userId, string userName, int chatId, string text)
         {
-            var result = await eventService.SendMessage(userId, userName, chatId, text);
+            var user = await context.Users.FirstAsync(e => e.Name == User.Identity.Name);
+            var result = await eventService.SendMessage(user.Id, user.Name, chatId, text);
             return StatusCode(result);
         }
 
@@ -377,7 +378,7 @@ namespace EventB.Controllers
         {
             var result = await eventService.DeleteEvent(User.Identity.Name, eventId);
             if(result == 200) return RedirectToAction("Index", "MyPage");
-            else return BadRequest();
+            else return StatusCode(result);
         }
         #endregion
     }

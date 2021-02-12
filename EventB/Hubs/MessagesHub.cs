@@ -57,8 +57,10 @@ namespace EventB.Hubs
         /// <returns></returns>
         public async Task SendToChat(ChatMessageVM dataObject)
         {
+            var userName = this.Context.User.Identity.Name;
+            var sender = await context.Users.FirstOrDefaultAsync(e => e.UserName == userName);
             var chat = await context.Chats.Include(e => e.UserChat).ThenInclude(e => e.User).FirstOrDefaultAsync(e => e.ChatId == dataObject.chatId);
-            var curentuserChat = chat.UserChat.FirstOrDefault(e => e.UserId == dataObject.personId);
+            var curentuserChat = chat.UserChat.FirstOrDefault(e => e.UserId == sender.Id);
             if (curentuserChat.IsBlockedInChat)
             {
                 await this.Clients.Caller.SendAsync("responceForBlockUser", "Отправка сообщений в этот чат заблокирована адитнтстратором чата.");
@@ -66,6 +68,8 @@ namespace EventB.Hubs
             }
 
             dataObject.postDate = DateTime.Now;
+            dataObject.personId = sender.Id;
+            dataObject.senderName = sender.Name;
             var messageDTO = messageService.ConvertMessageVmToDTO(dataObject);
             context.Messages.Add(messageDTO);
 
@@ -81,10 +85,10 @@ namespace EventB.Hubs
 
             var usersForSending = chat.UserChat.Select(e => e.User.UserName);
 
-            foreach(var userName in usersForSending)
+            foreach(var user in usersForSending)
             {
-                if(userName!=Context.User.Identity.Name)
-                    await this.Clients.Group(userName).SendAsync("reciveChatMessage", dataObject);
+                if(user!=Context.User.Identity.Name)
+                    await this.Clients.Group(user).SendAsync("reciveChatMessage", dataObject);
             }
 
         }
