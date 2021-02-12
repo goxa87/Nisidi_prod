@@ -225,7 +225,7 @@ namespace EventB.Controllers
         [Route("/Events/SendMessage")]
         public async Task<StatusCodeResult> SendMessage(string userId, string userName, int chatId, string text)
         {
-            var user = await context.Users.FirstAsync(e => e.Name == User.Identity.Name);
+            var user = await context.Users.FirstAsync(e => e.UserName == User.Identity.Name);
             var result = await eventService.SendMessage(user.Id, user.Name, chatId, text);
             return StatusCode(result);
         }
