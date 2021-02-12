@@ -169,9 +169,8 @@ namespace EventB.Controllers
             }
             else
             {
-                // Сдесь всю шляпу получать за раз что нужно менять. 
-                var user = await userManager.GetUserAsync(HttpContext.User);
-                user = await context.Users.Include(e => e.Friends)
+                // Сдесь всю шляпу получать за раз что нужно менять
+                var user = await context.Users.Include(e => e.Friends)
                     .Include(e => e.Invites)
                     .Include(e => e.Vizits)
                     .FirstOrDefaultAsync(e => e.UserName == HttpContext.User.Identity.Name);
@@ -182,12 +181,13 @@ namespace EventB.Controllers
                 List<UserChat> inUserChats = await context.UserChats.Where(e => e.OpponentId == user.Id).ToListAsync();
                 if (model.newPhoto != null)
                 {
-                    var path = string.Concat("/images/Profileimages/", DateTime.Now.ToString("dd_MM_yy_mm_ss"), model.newPhoto.FileName)
+                    var path = string.Concat("/images/Profileimages/", DateTime.Now.ToString("dd_MM_yy_mm_ss"), user.UserName)
                         .Replace(" ", "");
                     using (var FS = new FileStream(environment.WebRootPath + path, FileMode.Create))
                     {
                         await model.newPhoto.CopyToAsync(FS);
                     }
+                    System.IO.File.Delete(environment.WebRootPath + user.Photo);
                     user.Photo = path;
                     // Изменить в друзьях, визиторах.
                     foreach (var e in inFriends)

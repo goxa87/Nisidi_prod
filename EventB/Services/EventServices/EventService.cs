@@ -443,6 +443,8 @@ namespace EventB.Services.EventServices
                 {
                     await model.NewPicture.CopyToAsync(FS);
                 }
+                var oldPicImage = eve.Image;
+                File.Delete(environment.WebRootPath + oldPicImage);
                 vizits = await context.Vizits.Where(e => e.EventId == eve.EventId).ToListAsync();
                 foreach (var e in vizits)
                 {
