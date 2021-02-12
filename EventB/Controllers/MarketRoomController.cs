@@ -30,7 +30,7 @@ namespace EventB.Controllers
 
             var model = new MarketRoomVM { 
                 MarketKibnet = user.MarketKibnet,
-                Events = user.MyEvents,
+                Events = user.MyEvents.OrderByDescending(e=>e.CreationDate).ToList(),
                 Banner = new List<MarketBanner>() 
             };
 
