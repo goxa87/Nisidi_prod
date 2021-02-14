@@ -51,7 +51,7 @@ namespace EventB.Controllers
                 HasResult = true,
                 HasNewFriends = friends.Any(e => e.FriendInitiator == false && e.IsConfirmed == false),
                 HasNewInvites = user.Invites.Any(),
-                HasNewMessages = user.UserChats.Any(e=>e.Chat.Messages.Any(y=>y.Read == false && y.PersonId != user.Id))                
+                HasNewMessages = user.UserChats.Any(e=>e.IsDeleted == false && e.Chat.Messages.Any(y=>y.Read == false && y.PersonId != user.Id))                
             };
         }
 

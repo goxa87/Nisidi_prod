@@ -13,8 +13,7 @@ function AddRenderedMessages(data, senderId) {
     $('.message-list').append('<div id="vertical-trigger"></div>');
     // Прокрутка лучше не придумал.(( 
     // Здесь vertical-trigger находится относительно окна а нужно относительно родителя. исправить
-    scrollDown();
-    $('#message').val('');
+    scrollDown();    
 }
 
 /** Отправляет сообщение в хаб*/
@@ -35,6 +34,7 @@ function SendMessage() {
     }
     connection.invoke("SendToChat", DataObject);
     AddRenderedMessages(DataObject, senderId);
+    $('#message').val('');
 };
 // Запрос к АПИ на Создание чата с новым собеседником.
 //[Route("CreatePrivateChat")]
