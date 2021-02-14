@@ -181,7 +181,10 @@ namespace EventB.Controllers
                 List<UserChat> inUserChats = await context.UserChats.Where(e => e.OpponentId == user.Id).ToListAsync();
                 if (model.newPhoto != null)
                 {
-                    var path = string.Concat("/images/Profileimages/", DateTime.Now.ToString("dd_MM_yy_mm_ss"), user.UserName)
+                    var path = string.Concat("/images/Profileimages/"
+                        , DateTime.Now.ToString("dd_MM_yy_mm_ss")
+                        , user.UserName.Replace(".","_")
+                        , model.newPhoto.FileName.Substring(model.newPhoto.FileName.LastIndexOf(".")))
                         .Replace(" ", "");
                     using (var FS = new FileStream(environment.WebRootPath + path, FileMode.Create))
                     {
