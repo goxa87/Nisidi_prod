@@ -1031,8 +1031,11 @@ figure img {
     float: right;
 }
 @media(max-width: 700px) {
-    .modal-content{
+    .modal-content {
         max-width: 94%;
+        max-height: 90%;
+        overflow-y: auto;
+        margin-top: 38px;
     }
 }
 /* карточка друга*/
