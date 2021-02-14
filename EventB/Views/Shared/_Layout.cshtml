@@ -64,50 +64,66 @@
 
                     </li>
                     <li>
-                        <a asp-action="Manual" asp-controller="Help">ПОМОЩЬ</a>
+                        <div>
+                            <a class="menu-link" asp-action="Manual" asp-controller="Help">ПОМОЩЬ</a>
+                            <div id="mm-li-manual" class="s-star16 display-none s-star16-formenu "></div>
+                        </div>
                     </li>
                 </ul>
                 <div class="main-menu-thin">
-                    <span id="thin-menu">Меню</span>
-                    <ul class="thin-menu-items-container display-none">
+                    <div id="menu-left-container"></div>
+                    <div class="flex-vsc">
+                        <span id="thin-menu">Меню</span>
+                        <ul class="thin-menu-items-container display-none">
 
-                        <li>
-                            <a asp-controller="Events" asp-action="Start">СОБЫТИЯ</a>
-                        </li>
-                        <li>
-                            <a asp-controller="Search" asp-action="Index">ПОИСК</a>
-                        </li>
-                        <li>
-                            <div class="flex-hec">
-                                <a asp-controller="Friends" asp-action="List">ПОЛЬЗОВАТЕЛИ</a>
-                                <div id="mm-li-users-th" class="s-star16 display-none s-star16-formenu "></div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="flex-hec">
-                                <a asp-controller="MyPage" asp-action="Index">МОЯ СТРАНИЦА</a>
-                                <div id="mm-li-mypage-th" class="s-star16 display-none s-star16-formenu "></div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="flex-hec">
-                                <a asp-controller="Messages" asp-action="Index">СООБЩЕНИЯ</a>
-                                <div id="mm-li-messages-th" class="s-star16 display-none s-star16-formenu "></div>
-                            </div>
-                        </li>
-                        <li>
-                            <a asp-action="Manual" asp-controller="Help">ПОМОЩЬ</a>
-                        </li>
-
-                    </ul>
+                            <li>
+                                <a class="menu-link" asp-controller="Events" asp-action="Start">СОБЫТИЯ</a>
+                            </li>
+                            <li>
+                                <a class="menu-link" asp-controller="Search" asp-action="Index">ПОИСК</a>
+                            </li>
+                            <li>
+                                <div class="flex-hcc">
+                                    <a class="menu-link" asp-controller="Friends" asp-action="List">ПОЛЬЗОВАТЕЛИ</a>
+                                    <div id="mm-li-users-th" class="s-star16 display-none s-star16-formenu "></div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="flex-hcc">
+                                    <a class="menu-link" asp-controller="MyPage" asp-action="Index">МОЯ СТРАНИЦА</a>
+                                    <div id="mm-li-mypage-th" class="s-star16 display-none s-star16-formenu "></div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="flex-hcc">
+                                    <a class="menu-link" asp-controller="Messages" asp-action="Index">СООБЩЕНИЯ</a>
+                                    <div id="mm-li-messages-th" class="s-star16 display-none s-star16-formenu "></div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="flex-hcc">
+                                    <a class="menu-link" asp-action="Manual" asp-controller="Help">ПОМОЩЬ</a>
+                                    <div id="mm-li-manual-th" class="s-star16 display-none s-star16-formenu "></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    @{if (User.Identity.IsAuthenticated)
+                        {
+                            <a asp-action="Exit" asp-controller="Account"><div id="menu-thin-quit"></div></a>
+                        }
+                        else
+                        {
+                            <a asp-action="Login" asp-controller="Account"><div id="menu-thin-login"></div></a>
+                        }
+                    }
                 </div>
-
             </div>
         </div>
 
     </header>
     <div class="the-container">
-        <main role="main" class="pb-3">
+        <main role="main">
             @RenderBody()
         </main>
     </div>

@@ -9,7 +9,6 @@ for details on configuring this project to bundle and minify static web assets. 
 
 */
 body {
-    margin: 0 5px;
     padding: 0;
     padding-bottom:24px;
     font-family: sans-serif;
@@ -178,7 +177,7 @@ input[type="checkbox"].input-validation-error {
     position: fixed;
     top: 0;
     max-width: 1140px;
-    width:calc(100% - 10px);
+    width:100%;
     margin: 0 auto;
     box-sizing:border-box;
 }
@@ -299,11 +298,6 @@ input[type="checkbox"].input-validation-error {
     cursor:pointer;
     position:relative;
 }
-    #thin-menu:hover {
-        color: #ffcd00;
-        background-color: #1b5972;
-        text-decoration: none;
-    }
 .thin-menu-items-container {
    font-size:12px;
 }
@@ -311,28 +305,57 @@ input[type="checkbox"].input-validation-error {
         list-style:none;
     }
 @media(max-width: 800px) {
+    .menu-link{
+        font-size: 14px; 
+        padding: 2px;
+    }
     .s-star16-formenu {
-        position:initial;
+        position: initial;
         top: 0;
         left: 0;
     }
     #main-menu-li{
-    display:none;        
+        display:none;
+    }
+    #title-container{
+        display: none;
     }
     .main-menu-thin {
         display: flex;
-        justify-content:space-between;
+        justify-content: space-between;
+        align-items: flex-start;
     }
     .thin-menu-items-container{
         left:0;
         padding:4px 10px;
-        text-align:right;
+        text-align:center;
+        top: 15px;
     }
         .thin-menu-items-container li>a:hover {
             color: #ffcd00;
             background-color: #1b5972;
             text-decoration: none;
         }
+    #menu-left-container {
+        display: inline-block;
+        width: 32px;
+        height: 32px;
+        margin: 8px 0 0 12px;
+    }
+    #menu-thin-quit {
+        display: inline-block;
+        width: 32px;
+        height: 32px;
+        background-image: url('/resourses/quit.png');
+        margin: 8px 12px 0 0;
+    }
+    #menu-thin-login {
+        display: inline-block;
+        width: 32px;
+        height: 32px;
+        background-image: url('/resourses/login.png');
+        margin: 8px 12px 0 0;
+    }
 }
 @media(max-width: 450px) {
     #thin-menu {
@@ -680,7 +703,7 @@ figure img {
 }
 /*Карточка события */
 #event-list {
-    margin: 0 -5px;
+    /*margin: 0 -5px;*/
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -700,9 +723,10 @@ figure img {
     width: 360px;
 }
 
-    .eventlist-container:hover {
-        box-shadow: 2px 2px 5px 5px;
-    }
+
+.eventlist-container:hover {
+    box-shadow: 2px 2px 5px 5px;
+}
 .event-a{
     color: #333;
 }
@@ -975,7 +999,7 @@ figure img {
     align-items: center;
 }
 .modal-content {
-    min-width: 400px;
+    min-width: 320px;
     max-width: -moz-max-content;
     max-width: -webkit-max-content;
     max-width: max-content;
@@ -1079,4 +1103,32 @@ figure img {
     color: #1b5972;
     font-size: 14px;
     text-decoration: underline;
+}
+
+/*MEDIA*/
+@media(max-width: 380px) {
+    .eventlist-container {
+        align-self: flex-start;
+        border: 1px solid #1b5972;
+        border-radius: 4px 4px 0 0;
+        margin: 8px 5px 0 5px;
+        background-color: #fff;
+        box-shadow: 0 0 2px 2px;
+        width: calc(100vw - 10px);
+    }
+
+    .help-content {
+        cursor: default;
+        position: relative;
+        width: 300px;
+        background-color: #fff;
+        border: 1px solid #000;
+        box-shadow: 0 3px 4px 2px #777;
+        bottom: 0;
+        left: 0;
+        color: black;
+        z-index: 9999;
+        font-size: 12px;
+        padding: 4px;
+    }
 }

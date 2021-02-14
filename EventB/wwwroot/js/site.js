@@ -10,7 +10,9 @@
 $(document).ready(function () {    
     // Передвижение меню при скролле.
     $(window).scroll(function () {       
-        if ($(window).scrollTop() > $('#title-container').height() + 16) {           
+        //if ($(window).scrollTop() > $('#title-container').height() + 16) { 
+        let X = $('body').width() > 783 ? ($('#title-container').height() + 16) : 0;
+        if ($(window).scrollTop() > X) {           
             $('#menu-voider').removeClass('display-none');
             $('#menu-voider').css('height', $('.main-menu-container').height());
             $('.main-menu-container').addClass('float-menu');

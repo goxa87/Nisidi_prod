@@ -16,7 +16,7 @@ p{
 .chat-frame {
     background-color: #fff;
     width: 100%;
-    height: calc(100vh - 130px);
+    height: calc(100vh - 100px);
     display: flex;
     align-items: stretch;
 }
@@ -29,7 +29,7 @@ p{
 
 .right-columnn {
     width: 100%;
-    height: calc(100vh - 130px);
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -69,7 +69,7 @@ p{
     max-height: calc(100% - 30px);
 }
 .opponent-container {
-    padding: 8px;
+    padding: 4px 4px 4px 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -80,16 +80,21 @@ p{
         cursor:pointer;
     }
 
-    .opponent-name-value, .opponent-name {
-        color: #ffcd00;
-        font-weight: bold;
-    }
-.new-message-flag{
+.opponent-name-value{
+    color: #ffcd00;
+    font-weight: bold;
+}
+.opponent-name {
+    color: #ffcd00;
+    font-weight: bold;
+    margin-left: 16px;
+}
+.new-message-flag {
     background-color: #fff4;
     border-radius: 6px;
     padding: 0 5px;
-    color:#fff;
-    font-size:14px;
+    color: #fff;
+    font-size: 14px;
 }
 
 .selected-opponent{
@@ -98,6 +103,7 @@ p{
 
 .message-header{
     background-color:#1b5972;    
+    border-bottom: 1px solid #ffcd00;
 }
 
 .opponent-photo{
@@ -124,7 +130,7 @@ p{
 .message-list {
     overflow-y: auto;
     padding: 8px;
-    flex-basis: 1000px;
+    flex-basis: 2000px;
     background-color: #fff;
 }
 
@@ -162,23 +168,25 @@ textarea {
     display:none;
 }
 #ch-small-menu-btn {
-    background: url('../resourses/smallmenu.png');
+    background: url('../resourses/chats.png');
     background-position: 2px 2px;
-    border-radius: 5px;
+    z-index: 100;
     width: 32px;
     height: 32px;
-    z-index: 100;
+    display: inline-block;
+    background-repeat: no-repeat;
 }
 /*узкий*/
-@media(min-width: 801px) {
+@media(min-width: 800px) {
     #ch-small-menu-btn{
        display:none;
-    }
+    }    
 }
 @media(max-width: 800px){
-    .chat-frame{
+    .chat-frame {
         display: block;
         position: relative;
+        height: calc(100vh - 65px);
     }
 
     .left-column {
@@ -194,8 +202,17 @@ textarea {
     }
 
     #ch-small-menu-btn {
-        position: absolute;
-        top: -20px;
-        left: 0;
+        position: relative;
+        bottom: 2px;
+        left: -1px;
+    }
+    .opponent-photo {
+        width: 0px;
+        height: 0px;
+        border-radius: 30px;
+        margin: 0;
+    }
+    .opponent-photo > img{
+        display:none;
     }
 }

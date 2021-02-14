@@ -140,31 +140,9 @@ connection.start();
 // Конец хаба
 
 $(document).ready(function () {
-    // Получение значков новых сообщений
-    function displayNewMessageFlag(count, chatId) {
-        if (count > 0) {
-            $('.opponent-chat-id').each((ind, chat) => {
-                if ($(chat).val() == String(chatId)) {
-                    $(chat).parent('.opponent-container').children('.new-message-flag').text(count);
-                    $(chat).parent('.opponent-container').detach().prependTo('.opponents-list');
-                    return true;
-                }
-            })
-        }
-    }
-    function getNewMessageCount() {
-        $.ajax({
-            url: '/Api/GetNewMessagesCount',
-            success: function (rezult) {
-                $(rezult).each(function (i, value) {
-                    displayNewMessageFlag(value.countNew, value.chatId)
-                });
-            },
-            error: () => {
-                GetNotification('Ошибка загрузки', 3, duration = 3)
-            }
-        });
-    }
+    let btnHtml = '<div id="ch-small-menu-btn"></div>';
+    $('#menu-left-container').append(btnHtml);
+
     getNewMessageCount();
 
     let curentChatId = $('#chat-id').val();
@@ -299,4 +277,30 @@ $(document).ready(function () {
 function scrollDown() {
     let position = $('#vertical-trigger').position();
     $('.message-list').scrollTop(position.top + 2000);
+}
+
+// Получение значков новых сообщений
+function displayNewMessageFlag(count, chatId) {
+    if (count > 0) {
+        $('.opponent-chat-id').each((ind, chat) => {
+            if ($(chat).val() == String(chatId)) {
+                $(chat).parent('.opponent-container').children('.new-message-flag').text(count);
+                $(chat).parent('.opponent-container').detach().prependTo('.opponents-list');
+                return true;
+            }
+        })
+    }
+}
+function getNewMessageCount() {
+    $.ajax({
+        url: '/Api/GetNewMessagesCount',
+        success: function (rezult) {
+            $(rezult).each(function (i, value) {
+                displayNewMessageFlag(value.countNew, value.chatId)
+            });
+        },
+        error: () => {
+            GetNotification('Ошибка загрузки', 3, duration = 3)
+        }
+    });
 }
