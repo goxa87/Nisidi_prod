@@ -5,20 +5,7 @@
 
 }
 .mp-data {
-    margin-top: 16px;
-}
-@media(max-width: 850px){
-    .mp-header {
-        display: flex;
-        flex-direction:column;
-        align-items:center;
-        background-color: #fff;
-    }
-    .mp-data {
-        margin-top: 16px;
-        margin: 16px;
-        max-width: 700px;
-    }
+    padding: 16px;
 }
 .btn-edit {
     color: #444;
@@ -32,7 +19,6 @@
 }
 
 .mp-img {
-    margin: 0 16px 16px 0;
 }
 
     .mp-img img {
@@ -40,7 +26,8 @@
         max-height:400px;
         max-width:400px;
     }
-
+.btn-area {
+}
 .mp-data-label {
     font-size: 14px;
     color: #1b5972bb;
@@ -180,5 +167,35 @@
         max-width: 400px;
         max-height: 400px;
         align-self: center;
+    }
+}
+@media(max-width:440px) {
+    .item-img {
+        max-width: 100%;
+        max-height: 100%;
+        align-self: center;
+    }
+    .mp-img {
+        max-width: 100%;
+    }
+}
+
+@media(max-width: 850px) {
+    .mp-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        background-color: #fff;
+    }
+    .mp-img{
+        max-width: 400px;
+    }
+        .mp-img img{
+            width: 100%;
+        }
+    .mp-data {
+        padding: 8px;
+        width: 100%;
     }
 }

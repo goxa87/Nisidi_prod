@@ -9,26 +9,35 @@
 <div class="top-page-header">Это вы: @Model.Name</div>
 <div class="mp-header">
     <div>
-        <a class="btn-edit" asp-action="EditProfile">РЕДАКТИРОВАТЬ</a>
-        <a class="btn-edit" asp-action="MarketRoom" asp-controller="MarketRoom">ЛИЧНЫЙ КАБИНЕТ</a>
         <div class="mp-img">
             <img src="@Model.Photo" alt="фото">
         </div>
-
+        <div class="btn-area">
+            <a asp-action="EditProfile">
+                <div class="action-button width100 btn-submit">РЕДАКТИРОВАТЬ</div>
+            </a>
+            <a asp-action="MarketRoom" asp-controller="MarketRoom">
+                <div class="action-button width100 btn-submit">ЛИЧНЫЙ КАБИНЕТ</div>
+            </a>
+        </div>        
     </div>
     
     <div class="mp-data">
-        
+
         <h3 class="mp-name">@Model.Name</h3>
         <div class="mp-data-label">Электронная почта:</div>
         <div class="mp-data-value">@Model.Email</div>
-        <div class="mp-data-label">Телефон:</div>
-        <div class="mp-data-value">@Model.PhoneNumber</div>
+        @if (!string.IsNullOrWhiteSpace(Model.PhoneNumber))
+        {
+            <div class="mp-data-label">Телефон:</div>
+            <div class="mp-data-value">@Model.PhoneNumber</div>
+        }
+
         <div class="mp-data-label">Ccылка на страницу:</div>
         <div class="mp-data-value">Отправить</div>
-        <div class="mp-data-label">Поиск событий для локации:</div>
+        <div class="mp-data-label">Поиск событий для:</div>
         <div class="mp-data-value">@Model.City</div>
-        <div class="mp-data-label">Мои теги:</div>
+        <div class="mp-data-label">Интересы:</div>
         <div class="mp-data-tegs">
             @if (Model.Intereses != null)
             {
@@ -38,9 +47,9 @@
                 }
             }
         </div>
-        <div class="mp-data-label">Пара слов:</div>
+        <div class="mp-data-label">О себе:</div>
         <div>@Model.Description</div>
-        
+
     </div>
 </div>
 
