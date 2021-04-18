@@ -141,16 +141,6 @@
         }
     });
 
-    function getUsersFriends() {
-        // Собирание данных
-        let nameThis = $('#fr-search-name').val();
-        let cityThis = $('#fr-search-city').val();
-        let tegThis = $('#fr-search-teg').val();
-        let url = `/Friends/SearchFriend?name=${nameThis}&city=${cityThis}&teg=${tegThis}`;
-        window.location.replace(url);
-        
-    }
-
     // Поиск из недрузей глобально
     $('.fr-search-modal').click(function () {
         let content =`
@@ -170,6 +160,14 @@
         $('.modal-body').html(content);
         
     });
-    
+
+    function getUsersFriends() {
+        // Собирание данных
+        let nameThis = $('#fr-search-name').val();
+        let cityThis = $('#fr-search-city').val();
+        let tegThis = $('#fr-search-teg').val();
+        let url = `/Friends/SearchFriend?name=${nameThis}&city=${cityThis}&teg=${tegThis}`;
+        window.location.replace(url);
+    }
 
 });

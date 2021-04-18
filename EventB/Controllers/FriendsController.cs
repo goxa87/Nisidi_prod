@@ -19,18 +19,16 @@ namespace EventB.Controllers
     {
         readonly Context context;
         readonly IUserFindService userFind;
-        readonly ITegSplitter tegSplitter;
         readonly IFriendService friendService;
         readonly UserManager<User> userManager;
         public FriendsController(Context _context,
             IUserFindService _userFind,
-            ITegSplitter _tegSplitter,
+            
             IFriendService _friendService,
-             UserManager<User> _userManager)
+            UserManager<User> _userManager)
         {
             context = _context;
             userFind = _userFind;
-            tegSplitter = _tegSplitter;
             friendService = _friendService;
             userManager = _userManager;
         }
@@ -68,7 +66,7 @@ namespace EventB.Controllers
             //}
             return View(null);
         }
-        // это похоже решено на стороне клиента
+
         /// <summary>
         /// 
         /// </summary>
@@ -80,45 +78,10 @@ namespace EventB.Controllers
         [Route("/Friends/SearchFriend")]
         public async Task<ActionResult> SearchFriend(string name, string teg, string city)
         {
-            IEnumerable<User> users;
-            var curUser = await context.Users.Include(e=>e.Friends).FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
-            // город
-            if (!string.IsNullOrWhiteSpace(city))
-            {
-                city = city.Trim().ToUpper();
-                users = context.Users.Where(e => e.NormalizedCity == city.ToUpper()).ToList();
-            }
-            else
-            {
-                users = context.Users.Where(e => e.NormalizedCity == curUser.NormalizedCity).ToList();
-            }
-            // тег
-            if (!string.IsNullOrWhiteSpace(teg))
-            {
-                var arr = tegSplitter.GetEnumerable(teg.ToUpper()).ToArray();
-
-                var usersWith = context.Intereses.Include(e => e.User).Where(e => e.Value == teg).Select(e => e.User).ToList();
-                users = users.Intersect(usersWith);
-            }
-            // имя (вконце потомучто контейнс (выполняется в памяти))
-            var usersRez = users;
-            if (!string.IsNullOrWhiteSpace(name))
-            {
-                name = name.ToUpper();
-                usersRez = usersRez.Where(e => e.NormalizedName.Contains(name)).ToList();
-            }
-            // Друзья пользователя.
-            var isFriendFromSelect = usersRez.Join(curUser.Friends, rez => rez.Id, fr => fr.FriendUserId, (rez, fr) => rez).ToList();
-            isFriendFromSelect.Add(curUser);
-            // Вычесть друзей пользователя и себя.
-            var usersResult = usersRez.Except(isFriendFromSelect).Select(e => new SmallFigureFriendVM() {
-                Image = e.Photo,
-                Link = $"/Friends/UserInfo?userId={e.Id}",
-                Title = e.Name
-            }).ToList();
-
+            var usersResult = await friendService.SearchFriend(name, teg, city, User.Identity.Name);
             return View("SearchFriend", usersResult);
         }
+
         /// <summary>
         /// Это неактувльно делается на фронте.
         /// </summary>

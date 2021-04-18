@@ -16,5 +16,11 @@ namespace EventB.Services.FriendService
         /// <param name="curentUser">Текущий пользователь</param>
         /// <returns></returns>
         Task<UserInfoVM> GetFriendInfo(string userId, User curentUser);
+
+        /// <summary>
+        /// Получит список моделей для поиска друзей
+        /// </summary>
+        /// <returns></returns>
+        Task<List<SmallFigureFriendVM>> SearchFriend(string name, string teg, string city, string currentUserAppName);
     }
 }

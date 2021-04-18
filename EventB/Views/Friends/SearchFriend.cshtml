@@ -12,7 +12,7 @@
 { 
     <div>Пользователей не найдено</div>
 }
-<div class="flex-hsc">
+<div class="flex-hsbc flex-wrap">
     @foreach (var user in Model)
     {
         await Html.RenderPartialAsync("_smallFigure", user);
