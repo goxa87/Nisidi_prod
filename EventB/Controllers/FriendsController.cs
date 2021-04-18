@@ -44,35 +44,13 @@ namespace EventB.Controllers
             ViewBag.userId = user.Id;
             return View(selection);                        
         }
-         
-        /// <summary>
-        /// Поиск пользователей. 
-        /// </summary>
-        /// <param name="search">Фрагмент имени пользователя.</param>
-        /// <returns></returns>
-        public async Task<ActionResult> SearchCurrentFriend(string search)
-        {
-            //Переделать
-            //var owner =await userFind.GetCurrentUserAsync(User.Identity.Name);
-
-            //List<Friend> friends = await context.Users.Where(e => e.Name.ToLower().Contains(search.ToLower())).
-            //    Select(e => new Friend { UserId = owner.Id, UserName = e.Name, UserPhoto = e.Photo, FriendUserId = e.Id}).
-            //    ToListAsync();
-            //// удаляем себя как друга иначе будут коллизии.
-            //var ownerAsFriend = friends.FirstOrDefault(e => e.UserId == owner.Id);
-            //if (ownerAsFriend != null)
-            //{
-            //    friends.Remove(ownerAsFriend);
-            //}
-            return View(null);
-        }
 
         /// <summary>
-        /// 
+        /// Поиск друзей
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="teg"></param>
-        /// <param name="city"></param>
+        /// <param name="name">Часть имени</param>
+        /// <param name="teg">интересы пользователя полностью</param>
+        /// <param name="city">город(по-умолчанию тот что в настройках профиля того что ищет)</param>
         /// <returns></returns>
         [HttpGet]
         [Route("/Friends/SearchFriend")]
@@ -80,50 +58,6 @@ namespace EventB.Controllers
         {
             var usersResult = await friendService.SearchFriend(name, teg, city, User.Identity.Name);
             return View("SearchFriend", usersResult);
-        }
-
-        /// <summary>
-        /// Это неактувльно делается на фронте.
-        /// </summary>
-        /// <param name="friendId"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task AddFriend(string friendId) 
-        {
-            // !!! исключить тех, кто уже является другом. как то?
-
-            var friend = await context.Users.FirstOrDefaultAsync(e => e.Id == friendId);
-            if (friend == null)
-            {
-                return;
-            }
-            var user = await context.Users.FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
-            
-            await context.Friends.AddAsync(new Friend 
-            {
-                UserId = user.Id,
-                FriendUserId = friendId,
-                UserName = user.Name,
-                UserPhoto = user.Photo,
-                IsBlocked =false,
-                IsConfirmed = false, 
-                FriendInitiator = false
-
-            });
-            // Обратный объект друга для оппонента
-            await context.Friends.AddAsync(new Friend
-            {
-                UserId = friend.Id,
-                FriendUserId = user.Id,
-                UserName = friend.Name,
-                UserPhoto = friend.Photo,
-                IsBlocked = false,
-                IsConfirmed = false,
-                FriendInitiator = true
-            });            
-
-            await context.SaveChangesAsync();
-            RedirectToAction("List");
         }
 
         #region детали пользователя
