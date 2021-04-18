@@ -139,9 +139,6 @@
         if (selector == 'friends') {
             $('.friends-content').removeClass('display-none');
         }
-        if (selector == 'photos') {
-            $('.photos-content').removeClass('display-none');
-        }
     });
 
     function getUsersFriends() {
