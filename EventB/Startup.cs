@@ -37,7 +37,7 @@ namespace EventB
         {
             string connection = Configuration.GetConnectionString("EB1");
             services.AddDbContext<Context>(options=> {
-                options.UseMySql(connection);
+                options.UseSqlServer(connection);
             });
             //services.AddScoped<IDataProvider, DbData>();
 
