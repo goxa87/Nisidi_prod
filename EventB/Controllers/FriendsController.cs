@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EventB.Services;
+using EventB.Services.FriendService;
 using EventB.ViewModels.FriendsVM;
 using EventBLib.DataContext;
 using EventBLib.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,13 +20,19 @@ namespace EventB.Controllers
         readonly Context context;
         readonly IUserFindService userFind;
         readonly ITegSplitter tegSplitter;
+        readonly IFriendService friendService;
+        readonly UserManager<User> userManager;
         public FriendsController(Context _context,
             IUserFindService _userFind,
-            ITegSplitter _tegSplitter)
+            ITegSplitter _tegSplitter,
+            IFriendService _friendService,
+             UserManager<User> _userManager)
         {
             context = _context;
             userFind = _userFind;
             tegSplitter = _tegSplitter;
+            friendService = _friendService;
+            userManager = _userManager;
         }
 
         /// <summary>
@@ -69,7 +77,6 @@ namespace EventB.Controllers
         /// <param name="city"></param>
         /// <returns></returns>
         [HttpGet]
-        [Authorize]
         [Route("/Friends/SearchFriend")]
         public async Task<ActionResult> SearchFriend(string name, string teg, string city)
         {
@@ -118,7 +125,6 @@ namespace EventB.Controllers
         /// <param name="friendId"></param>
         /// <returns></returns>
         [HttpPost]
-        [Authorize]
         public async Task AddFriend(string friendId) 
         {
             // !!! исключить тех, кто уже является другом. как то?
@@ -165,55 +171,11 @@ namespace EventB.Controllers
         /// <returns></returns>
         public async Task<IActionResult> UserInfo(string userId)
         {
-            var currUser = await userFind.GetCurrentUserAsync(User.Identity.Name);
-            var user = await context.Users.
-                Include(e=>e.Intereses).
-                Include(e=>e.Friends).
-                FirstOrDefaultAsync(e => e.Id == userId);
-            if (user == null)
-            {
-                Response.StatusCode = 400;
-                return View(null);
-            }
-            // Если это собственно сам, то редирект на мою страницу.
-            if (currUser == user)
-            {
-                return RedirectToAction("Index", "MyPage");
-            }
+            var currentUser = await userManager.FindByNameAsync(User.Identity.Name);
+            if (currentUser.Id == userId) RedirectToAction("Index", "MyPage");
+            var model = await friendService.GetFriendInfo(userId, currentUser);
 
-            // Если пользователь заблокировал показ всем
-            if (user.Visibility == AccountVisible.Unvisible)
-            {
-                return View(null);
-            }
-            // Если показ только для друзей
-            var friend = await context.Friends.FirstOrDefaultAsync(e => e.FriendUserId == userId && e.UserId == currUser.Id);
-            if (user.Visibility == AccountVisible.FriendsOnly && friend == null)
-            {
-                return View(null);
-            }
-            if (friend!=null && friend.IsBlocked && friend.BlockInitiator)
-                return View(null);
-            
-            // Формирование VM.
-            var createdEve = await context.Events.Where(e => e.UserId == userId).ToListAsync();
-            var vizitEve = await context.Vizits.Include(e =>e.Event).Where(e => e.UserId == userId).ToListAsync();
-            var friends = await context.Friends.Where(e => e.FriendUserId == userId).ToListAsync();
-            var asFriend = await context.Friends.FirstOrDefaultAsync(e => e.FriendUserId == currUser.Id && e.UserId == userId);
-            var infoVM = new UserInfoVM();
-            infoVM.User = user;
-            infoVM.Friend = asFriend;
-            infoVM.CreatedEvents = createdEve;
-            infoVM.WillGoEvents = vizitEve;
-            infoVM.Friends = friends;
-            if (friend != null)
-                infoVM.IsFriend = true;
-            else
-                infoVM.IsFriend = false;
-
-            // Подставить вычисление.
-            
-            return View(infoVM);
+            return View(model);
         }
         #endregion
     }

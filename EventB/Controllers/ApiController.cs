@@ -367,7 +367,7 @@ namespace EventB.Controllers
             await context.SaveChangesAsync();
             return messages;
         }
-
+        
         /// <summary>
         /// Отправка клиенту непрочитанных сообщений.
         /// </summary>

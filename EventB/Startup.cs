@@ -19,6 +19,7 @@ using EventB.Services.MessageServices;
 using EventB.Services.EventServices;
 using EventB.Hubs;
 using EventB.Services.Logger;
+using EventB.Services.FriendService;
 
 namespace EventB
 {
@@ -76,8 +77,8 @@ namespace EventB
             services.AddScoped<IEventSelectorService, EventSelectorService>();
             services.AddTransient<IMarketKibnetApiServices, MarketKibnetApiServices>();
             services.AddTransient<IMessageService, MessageService>();
-            services.AddTransient<IEventService, EventService>();           
-            //services.AddScoped<IViewModelFactory,ViewModelFactory>();\
+            services.AddTransient<IEventService, EventService>();
+            services.AddTransient<IFriendService, FriendService>();
 
             services.AddSignalR().AddHubOptions<MessagesHub>(options => {
                 options.EnableDetailedErrors = true;
@@ -86,7 +87,6 @@ namespace EventB
             services.AddControllersWithViews();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -96,7 +96,6 @@ namespace EventB
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
