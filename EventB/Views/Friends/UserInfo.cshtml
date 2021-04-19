@@ -29,11 +29,11 @@ else
                 }
                 @if (Model.Friend == null)
                 {
-                    <div class="action-button width100 btn-submit">Добавить в друзья</div>
+                    <div class="action-button width100 btn-submit add-as-friend">Добавить в друзья</div>
                 }
                 else if (Model.Friend != null && (!Model.Friend.IsConfirmed && !Model.Friend.FriendInitiator))
                 {
-                    <div class="action-button width100 agree-friend">Добавить в друзья</div>
+                    <div class="action-button width100 agree-friend">Добавить в друзья +</div>
                 }
                 else if (Model.Friend != null && !Model.Friend.IsBlocked)
                 {

@@ -30,11 +30,50 @@ namespace EventB.Services.FriendService
             userManager = _userManager;
         }
 
+        public async Task<int> AddUserAsFriend(string userId, User currentUser)
+        {
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+               
+                // Если есть такая запись о друзьях уже есть просто возвратить статус.
+                if (context.Friends.Where(e => e.UserId == userId && e.FriendUserId == currentUser.Id).Any())
+                {
+                    return 204;
+                }
+                var friend = await userFind.GetUserByIdAsync(userId);
+                // Создание новых записей (прямой и обратный друг). 
+                var userFriend = new Friend
+                {
+                    UserId = friend.Id,
+                    FriendUserId = currentUser.Id,
+                    UserName = friend.Name,
+                    UserPhoto = friend.Photo,
+                    FriendInitiator = true
+                };
+                var userFriendReverce = new Friend
+                {
+                    UserId = currentUser.Id,
+                    FriendUserId = friend.Id,
+                    UserName = currentUser.Name,
+                    UserPhoto = currentUser.Photo
+                };
+
+                await context.Friends.AddAsync(userFriend);
+                await context.Friends.AddAsync(userFriendReverce);
+                await context.SaveChangesAsync();
+
+                return 200;
+            }
+            else
+            {
+                return 404;
+            }
+        }
+
         public async Task<UserInfoVM> GetFriendInfo(string userId, User curentUser)
         {
             var user = await context.Users.
                 Include(e => e.Intereses).
-                Include(e => e.Friends).
                 Include(e=>e.MyEvents).
                 Include(e=>e.Vizits).ThenInclude(e=>e.Event).
                 FirstOrDefaultAsync(e => e.Id == userId);
@@ -48,8 +87,12 @@ namespace EventB.Services.FriendService
             {
                 return null;
             }
-            // Если показ только для друзей
-            var friend = user.Friends.FirstOrDefault(e => e.FriendUserId == userId && e.UserId == curentUser.Id);
+            // Если показ только для друзей (Выберем 1 раз)
+            var allRelatedVisits = await context.Friends.Where(e => 
+                (e.FriendUserId == curentUser.Id && e.UserId == user.Id) 
+                || (e.FriendUserId == user.Id && e.UserId == curentUser.Id)
+                || (e.FriendUserId == userId)).ToListAsync();
+            var friend = allRelatedVisits.FirstOrDefault(e => e.FriendUserId == curentUser.Id && e.UserId == user.Id);
             if (user.Visibility == AccountVisible.FriendsOnly && friend == null)
             {
                 return null;
@@ -61,7 +104,8 @@ namespace EventB.Services.FriendService
             infoVM.User = user;
             infoVM.CreatedEvents = user.MyEvents;
             infoVM.WillGoEvents = user.Vizits;
-            infoVM.Friends = await context.Friends.Where(e => e.FriendUserId == userId).ToListAsync();
+            infoVM.Friends = allRelatedVisits.Where(e => e.FriendUserId == userId).ToList();
+            infoVM.Friend = friend;
             if (friend != null)
                 infoVM.IsFriend = true;
             else
@@ -111,6 +155,21 @@ namespace EventB.Services.FriendService
                 Title = e.Name
             }).ToList();
             return usersResult;
+        }
+
+        public async Task<int> SubmitFriend(string friendId, User currentUser)
+        {
+            var entitys = await context.Friends.Where(e =>(e.UserId == friendId && e.FriendUserId == currentUser.Id) || (e.UserId == currentUser.Id && e.FriendUserId == friendId)).ToListAsync();
+            if (entitys.Count == 0)
+            {
+                return 400;
+            }
+            foreach(var e in entitys)
+            {
+                e.IsConfirmed = true;
+            }
+            await context.SaveChangesAsync();
+            return 200;
         }
     }
 }

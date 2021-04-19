@@ -59,11 +59,11 @@ $(document).ready(function () {
     // Согласиться принять в друзья. моя страница и друзья
     //agree-friend
     $('.agree-friend').click(function () {
-        let id = $(this).parents('.friend-list-container').children('#friend-entity-id').val();
+        let id = $(this).siblings('#friend-entity-id').val();
         let button = $(this);
 
         let req = $.ajax({
-            url: '/Api/SubmitFriend',
+            url: '/Friends/SubmitFriend',
             data: {
                 friendId: id
             }

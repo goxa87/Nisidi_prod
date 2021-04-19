@@ -15,7 +15,7 @@ namespace EventB.ViewModels.FriendsVM
         public User User { get; set; }
 
         /// <summary>
-        /// Сведения о дружбе.
+        /// Сведения о дружбе (запись с Friends у текущего пользователя)
         /// </summary>
         public Friend Friend { get; set; }
         /// <summary>
@@ -27,7 +27,7 @@ namespace EventB.ViewModels.FriendsVM
         /// </summary>
         public List<Vizit> WillGoEvents { get; set; }
         /// <summary>
-        /// Друзья рользователя.
+        /// Друзья рользователя для показа в списке у кого он друг 
         /// </summary>
         public List<Friend> Friends { get; set; }
         /// <summary>

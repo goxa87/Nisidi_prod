@@ -34,6 +34,18 @@ namespace EventB.Controllers
         }
 
         /// <summary>
+        /// Добавит пользователся в друзья
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<StatusCodeResult> AddFriend(string userId)
+        {
+            var currentUser = await userManager.FindByNameAsync(User.Identity.Name);
+            var result = await friendService.AddUserAsFriend(userId, currentUser);
+            return StatusCode(result);
+        }
+
+        /// <summary>
         /// Начальная страница раздела. Выводит список друзей пользователя.
         /// </summary>
         /// <returns></returns>
@@ -60,6 +72,17 @@ namespace EventB.Controllers
             return View("SearchFriend", usersResult);
         }
 
+        /// <summary>
+        /// Подтвердит заявку в друзья
+        /// </summary>
+        /// <param name="friendId"></param>
+        /// <returns></returns>
+        public async Task<StatusCodeResult> SubmitFriend(string friendId)
+        {
+            var currentUser = await userManager.FindByNameAsync(User.Identity.Name);
+            var result = await friendService.SubmitFriend(friendId, currentUser);
+            return StatusCode(result);
+        }
         #region детали пользователя
         /// <summary>
         /// Подробная страница пользователя.

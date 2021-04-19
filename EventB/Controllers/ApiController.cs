@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using EventB.ViewModels.MessagesVM;
 using Microsoft.AspNetCore.Identity;
 using EventB.ViewModels;
+using EventB.Services.FriendService;
 
 namespace EventB.Controllers
 {
@@ -23,17 +24,20 @@ namespace EventB.Controllers
         readonly Context context;
         readonly IUserFindService userFind;
         readonly UserManager<User> userManager;
+        readonly IFriendService friendService;
         public ApiController(
             Context _context,
             UserManager<User> _userManager,
             ITegSplitter _tegSplitter, 
-            IUserFindService _userFind
+            IUserFindService _userFind,
+            IFriendService _friendService
             )
         {
             tegSplitter = _tegSplitter;
             context = _context;
             userManager = _userManager;
             userFind = _userFind;
+            friendService = _friendService;
         }
 
         /// <summary>
@@ -56,76 +60,6 @@ namespace EventB.Controllers
         }
 
         #region Секция ПОДПИСКИ
-        /// <summary>
-        /// Добавление Пользователя в друзья.
-        /// </summary>
-        /// <param name="userId">ID пользователя, который должен быть добавлен в друзья.</param>
-        /// <returns></returns>
-        [Route("AddFriend")]
-        [Authorize]
-        public async Task<StatusCodeResult> AddAsFriend(string userId)
-        {           
-            // Здесь появились новые поял для класса Friend/ добавить инициализацию.
-            if (!string.IsNullOrWhiteSpace(userId))
-            {
-                var currentUser = await userFind.GetCurrentUserAsync(User.Identity.Name);
-                var friend = await userFind.GetUserByIdAsync(userId);
-                // Если есть такая запись о друзьях уже есть просто возвратить статус.
-                if (context.Friends.Where(e => e.UserId == friend.Id && e.FriendUserId == currentUser.Id).Any())
-                {
-                    return StatusCode(204);
-                }
-                // Создание новых записей (прямой и обратный друг). 
-                var userFriend = new Friend
-                {
-                    UserId = friend.Id,
-                    FriendUserId = currentUser.Id,
-                    UserName = friend.Name,
-                    UserPhoto = friend.Photo,
-                    FriendInitiator=true
-                };
-                var userFriendReverce = new Friend
-                {
-                    UserId = currentUser.Id,
-                    FriendUserId = friend.Id,
-                    UserName = currentUser.Name,
-                    UserPhoto = currentUser.Photo
-                };
-
-                await context.Friends.AddAsync(userFriend);
-                await context.Friends.AddAsync(userFriendReverce);
-                await context.SaveChangesAsync();
-
-                return StatusCode(200);
-            }
-            else
-            {
-                return StatusCode(404);
-            }           
-        }
-        /// <summary>
-        /// Подтверждение для друга.
-        /// </summary>
-        /// <param name="friendEntityId">id записи в бд</param>
-        /// <returns></returns>
-        [Route("SubmitFriend")]
-        [Authorize]
-        public async Task<StatusCodeResult> SubmitFriend(string friendId)
-        {
-            var user = await userManager.FindByNameAsync(User.Identity.Name);
-            var entity = await context.Friends.FirstOrDefaultAsync(e => e.UserId == friendId && e.FriendUserId == user.Id);
-            var entityOpponent =  await context.Friends.FirstOrDefaultAsync(e => e.UserId == user.Id && e.FriendUserId == friendId);
-            if (entity == null)
-            {
-                return StatusCode(204);
-            }
-            entity.IsConfirmed = true;
-            entityOpponent.IsConfirmed = true;
-            context.Friends.Update(entity);
-            context.Friends.Update(entityOpponent);
-            await context.SaveChangesAsync();
-            return StatusCode(200);
-        }
         /// <summary>
         /// Блокировать пользователя.
         /// </summary>

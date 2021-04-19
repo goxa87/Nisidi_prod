@@ -1,12 +1,12 @@
 ﻿$(document).ready(function ()
 {
     // добавить друга.
-    $('.btn-submit').on('click', function () {
+    $('.add-as-friend').on('click', function () {
         let friendId = $(this).parent().children('input').val();
         console.log(friendId);
 
         $.ajax({
-            url: '/Api/AddFriend',
+            url: '/Friends/AddFriend',
             data: {
                 userId: friendId
             },
@@ -141,7 +141,7 @@
         }
     });
 
-    // Поиск из недрузей глобально
+    // Поиск из недрузей глобально (модальное окно)
     $('.fr-search-modal').click(function () {
         let content =`
             <div>

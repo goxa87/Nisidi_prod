@@ -5,6 +5,12 @@ using System.Threading.Tasks;
 
 namespace EventBLib.Models
 {
+    /*
+     * В общем суть в том что здесь нужно сделать ссылку на туже таблицу. 
+     * UserId User это тот, кто является другом по отношению к тому кто записан в FriendUserId
+     * Тоесть если мы ищем для текущего пользователя друзей, то нам нужно выбирать FriendUserId == CurrentUserId (a не userId)
+     */
+
     public class Friend
     {
         /// <summary>

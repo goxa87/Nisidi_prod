@@ -22,5 +22,21 @@ namespace EventB.Services.FriendService
         /// </summary>
         /// <returns></returns>
         Task<List<SmallFigureFriendVM>> SearchFriend(string name, string teg, string city, string currentUserAppName);
+
+        /// <summary>
+        /// Добавит пользователя в друзья
+        /// </summary>
+        /// <param name="userId">ИД того кого добавляем</param>
+        /// <param name="curentUser">текущий пользователь</param>
+        /// <returns></returns>
+        Task<int> AddUserAsFriend(string userId, User curentUser);
+
+        /// <summary>
+        /// Подтвердит друга для пользователя
+        /// </summary>
+        /// <param name="friendId">ИД друга</param>
+        /// <param name="currentUser">текущий пользователь</param>
+        /// <returns></returns>
+        Task<int> SubmitFriend(string friendId, User currentUser);
     }
 }
