@@ -31,7 +31,7 @@ namespace EventB.Services.SenderServices
             {
                 using (var client = new SmtpClient())
                 {
-                    await client.ConnectAsync("localhost.nisidi.ru", 25, false);
+                    await client.ConnectAsync("127.0.0.1", 25, false);
                     await client.SendAsync(emailMessage);
                     await client.DisconnectAsync(true);
                 }

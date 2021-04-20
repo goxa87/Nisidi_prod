@@ -198,11 +198,6 @@ $(document).ready(function ()
     {
         let id = $('#event-id').val();
 
-        let user = $('#user-id').val();
-        console.log(`event ${id} user ${user}`);
-
-        //[Route("/Event/SubmitToEvent")]
-        // public async Task < StatusCodeResult > SubmitToEvent(int eventId)
         let req = $.ajax({
             url: '/Event/SubmitToEvent',
             data:

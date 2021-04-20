@@ -306,7 +306,7 @@ namespace EventB.Services.EventServices
                         ChatId = curentEv.Chat.ChatId,
                         ChatPhoto = curentEv.Image
                     };
-                    await context.UserChats.AddAsync(newUserChat);
+                    context.UserChats.Add(newUserChat);
                 }
                 var newVizit = new Vizit
                 {
