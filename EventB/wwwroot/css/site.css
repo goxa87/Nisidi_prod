@@ -552,6 +552,16 @@ align-items: center;
     font-weight:600;
     font-size:16px;
 }
+/*Элементы дизайна*/
+.label-foregrounded-dark {
+    display: inline-block;
+    background-color: #1e404e;
+    color: #ffcd00;
+    padding: 4px;
+    margin-bottom: 4px;
+    border-radius: 2px;
+}
+
 /*блоки фигур*/
 .small-figure-figure {
     padding: 2px;

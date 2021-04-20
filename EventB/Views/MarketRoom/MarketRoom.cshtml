@@ -9,30 +9,15 @@
 
 <div class="top-page-header">ваш личный кабинет</div>
 
-<div class="market-frame flex-hss">
-    <div class="lk-left-column">
-        <div class="lk-menu-block">
-            <div id="lk-kibnet-selector" class="lk-selector selected-selector">Кабинет</div>
-            <div id="lk-event-selector" class="lk-selector">События</div>
-            <div id="lk-cards-selector" class="lk-selector">Карточки</div>
-            <div id="lk-banners-selector" class="lk-selector">Баннеры</div>
-        </div>
-    </div>
+<div class="market-frame">
     <div class="right-columnn">
-        <div id="lk-kibnet-page" class="lk-page">
-            <div class="lk-header">СТАТИСТИКА:</div>
-            <div class="info-p">Статус кабинета: @Model.MarketKibnet.MarketState</div>
-            <div class="info-p">Баланс: @Model.MarketKibnet.PaymentAccountBalance</div>
-            <div class="info-p">Общее количество рекламных компаний: @Model.MarketKibnet.TotalMarcetCompanyCount</div>
-        </div>
-        <div id="lk-event-page" class="lk-page display-none">
+        <div id="lk-event-page" class="lk-page">
             <div class="lk-header">
                 События:
                 <span class="lk-info-p">Всего: @Model.Events.Count()</span>
                 <span class="lk-info-p">Активных: @Model.Events.Where(e => e.Date > DateTime.Now).Count()</span>
                 <span class="lk-info-p">Публичных: @Model.Events.Where(e => e.Type == EventType.Global).Count()</span>
             </div>
-
 
             @if (Model.Events.Count() > 0)
             {
@@ -54,13 +39,13 @@
                             </div>
                             <div class="margin-8px">
                                 <input class="kibnet-event-id" type="hidden" value="@ev.EventId" />
-                                <div class="action-button lk-event-state">Статус: @ev.Type</div>
+                                <div class="label-foregrounded-dark lk-event-state">Статус: @ev.Type</div>
                                 @if (ev.Type == EventType.Private)
                                 {
                                     <div class="action-button lk-change-event-status">Сменить статус</div>
                                 }
                                 <a asp-action="EventEdit" asp-controller="Events" asp-route-eventId="@ev.EventId"><div class="action-button">Редактировать</div></a>
-                                <div class="action-button">Статистика</div>
+                                <!--<div class="action-button">Статистика</div>-->
                                 <div class="lk-delete-event action-button">Удалить</div>
                                 <div class="lk-block-users-chat action-button">Заблокировать пользователей в чате события</div>
                             </div>
@@ -72,31 +57,8 @@
             }
             else
             {
-                <p class="info-p">Пока событий нет.</p>
+                <p class="info-p">Cобытий нет.</p>
             }
-        </div>
-
-        <div id="lk-cards-page" class="lk-page display-none">
-            <div class="lk-header">Карточки:</div>
-            <div class="info-p">Всего: </div>
-            <div class="info-p">Активных: </div>
-            @if (Model.ListCards == null || Model.ListCards.Count() == 0)
-            {
-                <div class="info-p">Карточек пока нет.</div>
-            }
-            else
-            {
-                foreach (var e in Model.ListCards)
-                {
-                    <div>@e.AHref</div>
-                }
-            }
-
-        </div>
-        <div id="lk-banners-page" class="lk-page display-none">
-            <div class="lk-header">Баннеры:</div>
-            <div class="info-p">Всего: </div>
-            <div class="info-p">Активных: </div>
         </div>
     </div>
 </div>
