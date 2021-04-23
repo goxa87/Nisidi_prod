@@ -205,7 +205,13 @@ namespace EventB.Controllers
             var user = await userManager.FindByIdAsync(userId);
             var rezult = await userManager.ConfirmEmailAsync(user, token);
             Debug.WriteLine("regisration email confirm errors:", rezult.Errors);
-            return RedirectToAction("Login");
+            if (rezult.Succeeded)
+            {
+                await signInManager.SignInAsync(user, true);
+                return RedirectToAction("Start", "Events");
+            }
+            else
+                return RedirectToAction("Login");
         }
 
         /// <summary>
