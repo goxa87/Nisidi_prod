@@ -31,10 +31,6 @@ namespace EventB.Controllers
         {
             return View();
         }
-        public IActionResult Contacts()
-        {
-            return View();
-        }
         [Authorize]
         public async Task<IActionResult> SupportMail()
         {

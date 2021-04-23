@@ -5,16 +5,15 @@ function ScrollToEnd() {
 }
 
 $(document).ready(() => {
-    //передвижение левого меню
-    $(window).scroll(() => {
-        if ($(window).scrollTop() > $('#title-container').height() + 16) {
-            $('.h-menu-holder').css('margin-top', $(window).scrollTop() - $('#title-container').height())
-        }
-        if ($(window).scrollTop() < 25) {
-            $('.h-menu-holder').css('margin-top', 4)
-        }
-    });
+    let btnHtml = '<div id="h-small-menu-btn"></div>';
+    $('#menu-left-container').append(btnHtml);
 
+    $('body').on('click', '#h-small-menu-btn', function () {
+        $('.h-left-menu').toggleClass('h-hide-menu');
+    });
+    $('body').on('click', '.h-menu-item', function () {
+        $('.h-left-menu').toggleClass('h-hide-menu');
+    });
     // Начальная прокрутка до конца чата.
     ScrollToEnd();
 

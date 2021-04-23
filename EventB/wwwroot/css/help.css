@@ -1,5 +1,63 @@
-﻿.h-left-menu{
+﻿.h-left-menu {
     flex-basis: 350px;
+}
+#h-small-menu-btn {
+    background: url('../resourses/dark_menu.png');
+    background-position: 2px 2px;
+    z-index: 100;
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+.h-menu-holder {
+    border-radius: 2px;
+    margin: 4px;
+    padding: 4px;
+    background-color: white;
+    width: 280px;
+}
+@media(min-width: 801px) {
+    #h-small-menu-btn {
+        display: none;
+    }
+    .h-menu-holder{
+        border-radius: 2px;
+        margin: 4px;
+        padding: 4px;
+        background-color: white;
+    }
+}
+@media(max-width: 800px)
+{
+    #h-small-menu-btn {
+        position: relative;
+        bottom: 2px;
+        left: -1px;
+    }
+    .h-left-menu {
+        height: calc(100vh - 100px);
+        position: absolute;
+        top: 50px;
+        left: 0;
+        visibility: hidden;
+        z-index: 50;
+    }
+    .h-menu-holder {
+        border: 1px solid #1b3272;
+        border-radius: 2px;
+        margin: 4px;
+        padding: 4px;
+        background-color: white;
+        position: fixed;
+        top: 50px;
+    }
+}
+
+
+.h-hide-menu {
+    visibility: visible;
 }
 
 .h-right-body {
@@ -7,23 +65,8 @@
     background-color: white;
     padding: 18px;
 }
-.h-menu-holder {
-    border: 1px solid #1b3272;
-    border-radius: 2px;
-    margin: 4px;
-    padding: 4px;
-    background-color: white;
-}
-.h-menu-holder-float {
-    border: 1px solid #1b3272;
-    border-radius: 2px;
-    margin: 4px;
-    padding: 4px;
-    background-color: white;
-    position: fixed;
-    top: 32px;
-    flex-basis:350px;
-}
+
+
 .h-menu-selected {
     font-weight: 600;
 }
@@ -49,6 +92,7 @@ h3{
     margin-top:32px;
 }
 p{
+    margin-top: 1em;
     text-indent: 2em;
     text-align:justify;
 }
