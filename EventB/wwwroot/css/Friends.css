@@ -39,7 +39,7 @@ label {
     }
     .info-area {
         padding: 0 16px;
-        width: 432px;
+        width: 95%;
         flex-basis: 100px;
     }
 }
@@ -52,7 +52,7 @@ label {
 
 .ui-photo {
     max-height: 500px;
-    max-width: 400px;
+    max-width: 100%;
     margin: 0  0 16px 0;
 }
 .btn-area{
