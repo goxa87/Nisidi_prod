@@ -1,4 +1,5 @@
-﻿using EventB.Services.Logger;
+﻿using EventB.Services.ImageService;
+using EventB.Services.Logger;
 using EventB.Services.MessageServices;
 using EventB.ViewModels;
 using EventB.ViewModels.EventsVM;
@@ -28,13 +29,15 @@ namespace EventB.Services.EventServices
         private readonly IWebHostEnvironment environment;
         private readonly UserManager<User> userManager;
         private readonly ILogger logger;
+        private readonly IImageService imageService;
 
         public EventService(Context _context,
             IMessageService _messageService,
             ITegSplitter _tegSplitter,
             IWebHostEnvironment _environment,
             UserManager<User> _userManager,
-            ILogger _logger
+            ILogger _logger,
+            IImageService _imageService
         )
         {
             context = _context;
@@ -43,6 +46,7 @@ namespace EventB.Services.EventServices
             environment = _environment;
             userManager = _userManager;
             logger = _logger;
+            imageService = _imageService;
         }
         /// <summary>
         /// Добавление нового события.
@@ -55,17 +59,23 @@ namespace EventB.Services.EventServices
             await logger.LogStringToFile("Начало создания события");
             // Значение картинки если ее нет.
 
-            string src = "/images/defaultimg.jpg";
+            string srcSourse = "/images/defaultimg.jpg";
+            string srcMedium = "/images/Mini/defaultimg.jpg";
+            string srcMini = "/images/Mini/defaultimg.jpg";
             if (model.MainPicture != null)
             {
                 // Формирование строки имени картинки.
-                string fileName = String.Concat(DateTime.Now.ToString("dd-MM-yy_hh-mm"), "_", model.MainPicture.FileName);
-                src = String.Concat("/images/EventImages/", fileName);
-                // Запись на диск.
-                using (var FS = new FileStream(environment.WebRootPath + src, FileMode.Create))
-                {
-                    await model.MainPicture.CopyToAsync(FS);
-                }
+                var newPicId = Guid.NewGuid().ToString();
+                var nameSuffix = model.MainPicture.FileName.Split('.')[^1];
+                string fileName = String.Concat(newPicId);//, ".", nameSuffix);
+                srcSourse = String.Concat("/images/EventImages/", fileName);
+                srcMedium = String.Concat("/images/EventImages/Mini/", "M" + fileName);
+                srcMini = String.Concat("/images/EventImages/Mini/", "m" + fileName);
+                // Запись оригинал в jpeg
+                var createOrigin = await imageService.SaveImageWithoutResizing(model.MainPicture, environment.WebRootPath + srcSourse);
+                // Создаем миниатюры
+                var createResultMedium = await imageService.SaveResizedImage(environment.WebRootPath + srcSourse, environment.WebRootPath + srcMedium, 360);
+                var createResult = await imageService.SaveResizedImage(environment.WebRootPath + srcSourse, environment.WebRootPath + srcMini, 100); 
             }
             // Пользователь который выложил.
             var creator = await userManager.FindByNameAsync(userName);
@@ -74,7 +84,7 @@ namespace EventB.Services.EventServices
             {
                 User = creator,
                 EventTitle = model.Title,
-                EventPhoto = src,
+                EventPhoto = srcMedium,
                 VizitorName = creator.Name,
                 VizitirPhoto = creator.Photo
             };
@@ -108,7 +118,7 @@ namespace EventB.Services.EventServices
             {
                 UserId = creator.Id,
                 ChatName = model.Title.Length > 25 ? model.Title.Remove(25) + "..." : model.Title,
-                ChatPhoto = src
+                ChatPhoto = srcMini
             };
             chat.UserChat.Add(userChat);
             // Итоговое формирование события.
@@ -126,7 +136,7 @@ namespace EventB.Services.EventServices
                 Views = 0,
                 WillGo = 1,
                 Creator = creator,
-                Image = src,
+                Image = srcSourse,
                 CreationDate = DateTime.Now,
                 Vizits = vizits,
                 Chat = chat,

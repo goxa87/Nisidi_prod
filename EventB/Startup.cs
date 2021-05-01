@@ -20,6 +20,7 @@ using EventB.Services.EventServices;
 using EventB.Hubs;
 using EventB.Services.Logger;
 using EventB.Services.FriendService;
+using EventB.Services.ImageService;
 
 namespace EventB
 {
@@ -74,11 +75,13 @@ namespace EventB
             services.AddTransient<ILogger>(sp => new Logger($"{hostEnvironment.WebRootPath}/{Configuration.GetSection("LogPath").Value}"));
             services.AddTransient<ITegSplitter, TegSplitter>();
             services.AddTransient<IUserFindService, UserFindService>();
-            services.AddScoped<IEventSelectorService, EventSelectorService>();
             services.AddTransient<IMarketKibnetApiServices, MarketKibnetApiServices>();
             services.AddTransient<IMessageService, MessageService>();
             services.AddTransient<IEventService, EventService>();
             services.AddTransient<IFriendService, FriendService>();
+
+            services.AddScoped<IImageService, ImageService>();
+            services.AddScoped<IEventSelectorService, EventSelectorService>();
 
             services.AddSignalR().AddHubOptions<MessagesHub>(options => {
                 options.EnableDetailedErrors = true;
