@@ -1016,8 +1016,7 @@ figure img {
     max-width: -webkit-max-content;
     max-width: max-content;
     min-height: 400px;
-    max-height: calc(100vh - 75px);
-    overflow-y: auto;
+    max-height: calc(100vh - 95px);
     display: inline-flex;
     flex-direction: column;
     justify-content: space-between;
@@ -1026,6 +1025,7 @@ figure img {
 .modal-body{    
     background-color: #fff;
     padding: 8px;
+    overflow-y: auto;
 }
 .modal-my-footer{
     display: flex;
@@ -1047,8 +1047,6 @@ figure img {
 @media(max-width: 700px) {
     .modal-content {
         max-width: 94%;
-        max-height: 90%;
-        overflow-y: auto;
         margin-top: 38px;
         max-height: calc(100vh - 45px);
     }

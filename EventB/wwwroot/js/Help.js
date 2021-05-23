@@ -1,10 +1,4 @@
-﻿/** Прокрутит до конца списка сообщений */
-function ScrollToEnd() {
-    let startoffset = $('#vertical-trigger').offset().top;
-    $('#h-support-content').scrollTop(startoffset);
-}
-
-$(document).ready(() => {
+﻿$(document).ready(() => {
     let btnHtml = '<div id="h-small-menu-btn"></div>';
     $('#menu-left-container').append(btnHtml);
 
@@ -30,9 +24,7 @@ $(document).ready(() => {
             success: function () {
                 let date1 = new Date();
                 let data = { personId: userId, text: text, postDate: date1, eventState: false, eventLink: false }
-                console.log(data)
                 let block = renderMessage(data, userId);
-                console.log(block)
                 var triger = $('#vertical-trigger');
                 $('#h-support-content').remove(triger);
                 $('#h-support-content').append(block);
@@ -46,3 +38,9 @@ $(document).ready(() => {
         });
     });
 });
+
+/** Прокрутит до конца списка сообщений */
+function ScrollToEnd() {
+    let startoffset = $('#vertical-trigger').offset().top;
+    $('#h-support-content').scrollTop(startoffset);
+}в

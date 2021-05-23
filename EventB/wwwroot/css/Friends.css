@@ -21,7 +21,6 @@ label {
 .ui-info {
     display: flex;
     justify-content: flex-start;
-    padding: 16px 0;
     background-color: #fff;
 }
 
@@ -51,13 +50,10 @@ label {
 }
 
 .ui-photo {
-    max-height: 500px;
-    max-width: 100%;
-    margin: 0  0 16px 0;
+    max-height: 400px;
+    max-width: 400px;
 }
 .btn-area{
-    min-width: 250px;
-    max-width: 320px;
 }
 .btn-area div {
     width: 100%;
