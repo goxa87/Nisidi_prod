@@ -6,6 +6,7 @@ using EventB.ViewModels.EventsVM;
 using EventBLib.DataContext;
 using EventBLib.Models;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Schema;
@@ -25,6 +26,7 @@ namespace EventB.Services.EventServices
     {
 
         private string IMAGE_SUFFIX = ".jpeg";
+        private string DEFAULT_IMG_PATH = "/images/defaultimg.jpg";
 
         private readonly Context context;
         private readonly IMessageService messageService;
@@ -61,34 +63,40 @@ namespace EventB.Services.EventServices
         {
             await logger.LogStringToFile("Начало создания события");
             // Значение картинки если ее нет.
+            var fileName = Guid.NewGuid().ToString();
+            string imgSourse = String.Concat("/images/EventImages/", fileName);
+            string imgMedium = String.Concat("/images/EventImages/Medium/", "M" + fileName);
+            string imgMini = String.Concat("/images/EventImages/Mini/", "m" + fileName);
 
-            string srcSourse = "/images/defaultimg.jpg";
-            string srcMedium = "/images/Medium/defaultimg.jpg";
-            string srcMini = "/images/Mini/defaultimg.jpg";
             if (model.MainPicture != null)
             {
-                bool? createOriginImageResult =null, createImageResultMedium = null, createImageResultMini = null;
                 try
                 {
-                    // Формирование строки имени картинки.
-                    var fileName = Guid.NewGuid().ToString();
-                    srcSourse = String.Concat("/images/EventImages/", fileName);
-                    srcMedium = String.Concat("/images/EventImages/Medium/", "M" + fileName);
-                    srcMini = String.Concat("/images/EventImages/Mini/", "m" + fileName);
-                    // Запись оригинал в jpeg
-                    createOriginImageResult = await imageService.SaveImageWithoutResizing(model.MainPicture, environment.WebRootPath + srcSourse, IMAGE_SUFFIX);
-                    // Создаем миниатюры
-                    createImageResultMedium = await imageService.SaveResizedImage(environment.WebRootPath + srcSourse + IMAGE_SUFFIX, environment.WebRootPath + srcMedium, 360, IMAGE_SUFFIX);
-                    createImageResultMini = await imageService.SaveResizedImage(environment.WebRootPath + srcSourse + IMAGE_SUFFIX, environment.WebRootPath + srcMini, 100, IMAGE_SUFFIX);
+                    var newImagesDict = new Dictionary<int, string>();
+
+                    newImagesDict.Add(0, imgSourse);
+                    newImagesDict.Add(360, imgMedium);
+                    newImagesDict.Add(100, imgMini);
+
+                    newImagesDict = await imageService.SaveOriginAndResizedImagesByInputedSizes(model.MainPicture, IMAGE_SUFFIX, newImagesDict);
+
+                    imgSourse = newImagesDict[0];
+                    imgMedium = newImagesDict[360];
+                    imgMini = newImagesDict[100];
                 }
                 catch(Exception ex)
                 {
-                    if (!createOriginImageResult.HasValue) srcSourse = "/images/defaultimg.jpg";
-                    if (!createImageResultMedium.HasValue) srcMedium = "/images/Medium/defaultimg.jpg";
-                    if (!createImageResultMini.HasValue) srcMini = "/images/Mini/defaultimg.jpg";
-
                     await logger.LogStringToFile($"Ошибка создания картинок для события : {ex.Message}");
                 }
+            }
+            else
+            {
+                await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgSourse, 800, IMAGE_SUFFIX);
+                imgSourse += IMAGE_SUFFIX;
+                await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgMedium, 360, IMAGE_SUFFIX);
+                imgMedium += IMAGE_SUFFIX;
+                await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgMini, 100, IMAGE_SUFFIX);
+                imgMini += IMAGE_SUFFIX;
             }
             // Пользователь который выложил.
             var creator = await userManager.FindByNameAsync(userName);
@@ -97,7 +105,7 @@ namespace EventB.Services.EventServices
             {
                 User = creator,
                 EventTitle = model.Title,
-                EventPhoto = srcMedium + IMAGE_SUFFIX,
+                EventPhoto = imgMedium,
                 VizitorName = creator.Name,
                 VizitirPhoto = creator.Photo
             };
@@ -131,7 +139,7 @@ namespace EventB.Services.EventServices
             {
                 UserId = creator.Id,
                 ChatName = model.Title.Length > 25 ? model.Title.Remove(25) + "..." : model.Title,
-                ChatPhoto = srcMini + IMAGE_SUFFIX
+                ChatPhoto = imgMini
             };
             chat.UserChat.Add(userChat);
             // Итоговое формирование события.
@@ -149,12 +157,14 @@ namespace EventB.Services.EventServices
                 Views = 0,
                 WillGo = 1,
                 Creator = creator,
-                Image = srcSourse + IMAGE_SUFFIX,
+                Image = imgSourse,
                 CreationDate = DateTime.Now,
                 Vizits = vizits,
                 Chat = chat,
                 Phone = model.Phone,
-                AgeRestrictions = model.AgeRestrictions
+                AgeRestrictions = model.AgeRestrictions,
+                MediumImage = imgMedium,
+                MiniImage = imgMini
             };
 
             if (!string.IsNullOrWhiteSpace(model.TicketsDesc))
@@ -245,7 +255,7 @@ namespace EventB.Services.EventServices
                         ChatName = chat.Event.TitleShort,
                         UserId = userId,
                         ChatId = chatId,
-                        ChatPhoto = chat.Event.Image,
+                        ChatPhoto = chat.Event.MiniImage,
                         OpponentId = "0"                        
                     };
                     await context.UserChats.AddAsync(newUserChat);
@@ -327,7 +337,7 @@ namespace EventB.Services.EventServices
                         ChatName = curentEv.TitleShort,
                         UserId = user.Id,
                         ChatId = curentEv.Chat.ChatId,
-                        ChatPhoto = curentEv.Image
+                        ChatPhoto = curentEv.MiniImage
                     };
                     context.UserChats.Add(newUserChat);
                 }
@@ -335,7 +345,7 @@ namespace EventB.Services.EventServices
                 {
                     UserId = user.Id,
                     EventTitle = curentEv.Title,
-                    EventPhoto = curentEv.Image,
+                    EventPhoto = curentEv.MediumImage,
                     VizitorName = user.Name,
                     VizitirPhoto = user.Photo
                 };
@@ -371,7 +381,7 @@ namespace EventB.Services.EventServices
                 EventState = false,
                 EventLink = eventId,
                 Text = eve.Title,
-                EventLinkImage = eve.Image
+                EventLinkImage = eve.MediumImage
             };
 
             await context.Messages.AddAsync(message);
@@ -455,26 +465,16 @@ namespace EventB.Services.EventServices
             if (eve.UserId != user.Id) throw new Exception("Запрещено");
             List<Vizit> vizits = null;
             // Значение картинки если ее нет.
+            // Рефакторинг
             if (model.NewPicture != null)
             {
-                string src = "/images/defaultimg.jpg";
-                // Формирование строки имени картинки.
-                string fileName = String.Concat(DateTime.Now.ToString("dd-MM-yy_HH-mm"), "_", model.NewPicture.FileName);
-                src = String.Concat("/images/EventImages/", fileName);
-                // Запись на диск.
-                using (var FS = new FileStream(environment.WebRootPath + src, FileMode.Create))
-                {
-                    await model.NewPicture.CopyToAsync(FS);
-                }
-                var oldPicImage = eve.Image;
-                File.Delete(environment.WebRootPath + oldPicImage);
-                vizits = await context.Vizits.Where(e => e.EventId == eve.EventId).ToListAsync();
-                foreach (var e in vizits)
-                {
-                    e.EventPhoto = src;
-                }
-                eve.Image = src;
-                context.Vizits.UpdateRange(vizits);
+                var eveImgDict = new Dictionary<int, string>();
+                eveImgDict.Add(0, TrimSuffix(eve.Image));
+                eveImgDict.Add(360, TrimSuffix(eve.MediumImage));
+                eveImgDict.Add(100, TrimSuffix(eve.MiniImage));
+
+                await imageService.SaveOriginAndResizedImagesByInputedSizes(model.NewPicture, IMAGE_SUFFIX, eveImgDict);
+
             }
             // Здесь подправить разметку чтобы отображать абзацами
             string messageTemplate = "Изменения в событии:<br>";
@@ -560,7 +560,6 @@ namespace EventB.Services.EventServices
             context.Events.Update(eve);
             await context.SaveChangesAsync();
             return eve;
-
         }
 
         /// <summary>
@@ -587,5 +586,17 @@ namespace EventB.Services.EventServices
             return 200;
 
         }
+
+        #region private
+        /// <summary>
+        /// Вернет строчку без расширения файла
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private string TrimSuffix(string path)
+        {
+            return path.Substring(0, path.LastIndexOf('.'));
+        } 
+        #endregion
     }
 }

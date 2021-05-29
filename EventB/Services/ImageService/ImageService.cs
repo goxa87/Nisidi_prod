@@ -5,12 +5,72 @@ using System.Linq;
 using System.Threading.Tasks;
 using SkiaSharp;
 using System.IO;
+using EventB.Services.Logger;
+using Microsoft.AspNetCore.Hosting;
 
 namespace EventB.Services.ImageService
 {
     public class ImageService : IImageService
     {
         const int RESIZE_COMPRESS_QUALITY = 90;
+        const string DEFAULT_IMAGE_PATH = "/images/defaultimg.jpg";
+
+        private readonly ILogger logger;
+        private readonly IWebHostEnvironment environment;
+
+        public ImageService(ILogger logger,
+            IWebHostEnvironment _environment)
+        {
+            this.logger = logger;
+            environment = _environment;
+        }
+        
+        public async Task<Dictionary<int, string>> SaveOriginAndResizedImagesByInputedSizes(IFormFile originFile, string suffix, Dictionary<int, string> requiredSizesWithPaths)
+        {
+            var result = new Dictionary<int, string>();
+            //Сначала надо сохранить оригиал и отнего ресайзить
+            var inputHasOriginPath = requiredSizesWithPaths.TryGetValue(0, out string originPath);
+            if(!inputHasOriginPath)
+            {
+                originPath = $"{environment.WebRootPath}/images/tempimg{DateTime.Now.Millisecond}";
+            }
+            try
+            {
+                await SaveImageWithoutResizing(originFile, environment.WebRootPath + originPath, suffix);
+                if (inputHasOriginPath)
+                {
+                    result.Add(0, originPath + suffix);
+                }
+            }
+            catch(Exception ex)
+            {
+                await logger.LogStringToFile($"Ошибка создания картинок для события : {ex.Message}");
+            }
+
+            // Сохраняем остальные взяв за основу исходник
+            foreach (var image in requiredSizesWithPaths)
+            {
+                try
+                {
+                    if(image.Key != 0)
+                    {
+                        await SaveResizedImage(environment.WebRootPath + originPath + suffix, environment.WebRootPath + image.Value , image.Key, suffix);
+                        result.Add(image.Key, requiredSizesWithPaths[image.Key] + suffix);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    await logger.LogStringToFile($"Ошибка создания картинок для события : {ex.Message}");
+                    await SaveResizedImage(environment.WebRootPath + DEFAULT_IMAGE_PATH + suffix, environment.WebRootPath + image.Value, image.Key, suffix);
+                    result.Add(image.Key, requiredSizesWithPaths[image.Key] + suffix);
+                }
+            }
+            if (!inputHasOriginPath)
+            {
+                await DeleteImage(originPath);
+            }
+            return result;
+        }
 
         public async Task<bool> DeleteImage(string filePath)
         {

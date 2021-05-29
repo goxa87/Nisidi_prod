@@ -123,7 +123,7 @@
                             {
                                 Title = e.TitleShort,
                                 Link = $"/Events/Details/{e.EventId}",
-                                Image = e.Image
+                                Image = e.MediumImage
                             });
                         }
                     </div>                                  
@@ -155,7 +155,7 @@
 
                         <div class="invite-container">
                             <a asp-action="Details" asp-controller="Events" asp-route-id="@inv.EventId">
-                                <img class="item-img" src="@inv.Event.Image">
+                                <img class="item-img" src="@inv.Event.MediumImage">
                             </a>
                             <div class="inv-content">
                                 <a asp-action="Details" asp-controller="Events" asp-route-id="@inv.EventId">

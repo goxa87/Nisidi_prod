@@ -31,5 +31,16 @@ namespace EventB.Services.ImageService
         /// <param name="filePath">путь к файлу</param>
         /// <returns></returns>
         Task<bool> DeleteImage(string filePath);
+
+        /// <summary>
+        /// Запишет в тот же словарь с путями к файлам с ресайзингом и оигиналом. Конвертирует в заданный формат.
+        /// в ответе ключ 0 это путь к оригинальному изображению с заданным суффиксм
+        /// цифровые ключи не 0 - это пути к ресайженым изображениям
+        /// </summary>
+        /// <param name="originFile"></param>
+        /// <param name="suffix"></param>
+        /// <param name="requiredSizesWithPaths">Словарь: размер - путь куда сохранять картинки</param>
+        /// <returns> 0 путь с оригиналом другие не с оригиналом</returns>
+        Task<Dictionary<int, string>> SaveOriginAndResizedImagesByInputedSizes(IFormFile originFile, string suffix, Dictionary<int, string> requiredSizesWithPaths);
     }
 }
