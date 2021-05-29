@@ -11,14 +11,21 @@ namespace EventB.Services.ImageService
     public class ImageService : IImageService
     {
         const int RESIZE_COMPRESS_QUALITY = 90;
-        public async Task<bool> SaveImageWithoutResizing(IFormFile file, string path)
+
+        public async Task<bool> DeleteImage(string filePath)
         {
-            using (var FS = new FileStream(path, FileMode.Create))
+            File.Delete(filePath);
+            return true;
+        }
+
+        public async Task<bool> SaveImageWithoutResizing(IFormFile sourceFile, string outputPath, string suffix = ".jpeg")
+        {
+            using (var FS = new FileStream(outputPath, FileMode.Create))
             {
-                await file.CopyToAsync(FS);
+                await sourceFile.CopyToAsync(FS);
                 FS.Close();
             }
-            using (var input = File.OpenRead(path))
+            using (var input = File.OpenRead(outputPath))
             {
                 using (var inputStream = new SKManagedStream(input))
                 {
@@ -26,18 +33,20 @@ namespace EventB.Services.ImageService
                     {
                         using (var image = SKImage.FromBitmap(original))
                         {
-                            using (var output = File.OpenWrite(path))
+                            using (var output = File.OpenWrite(outputPath + suffix))
                             {
                                 image.Encode(SKEncodedImageFormat.Jpeg, 100).SaveTo(output);
                             }
-                            return true;
+                            
                         }
                     }
                 }
             }
+            File.Delete(outputPath);
+            return true;
         }
 
-        public async Task<bool> SaveResizedImage(string originPath, string outputPath, int newSize)
+        public async Task<bool> SaveResizedImage(string originPath, string outputPath, int newSize, string suffix = ".jpeg")
         {
             var size = newSize;
             const int quality = RESIZE_COMPRESS_QUALITY;
@@ -65,7 +74,7 @@ namespace EventB.Services.ImageService
 
                             using (var image = SKImage.FromBitmap(resized))
                             {
-                                using (var output = File.OpenWrite(outputPath))
+                                using (var output = File.OpenWrite(outputPath + suffix))
                                 {
                                     image.Encode(SKEncodedImageFormat.Jpeg, quality).SaveTo(output);
                                 }

@@ -23,6 +23,9 @@ namespace EventB.Services.EventServices
     /// </summary>
     public class EventService : IEventService
     {
+
+        private string IMAGE_SUFFIX = ".jpeg";
+
         private readonly Context context;
         private readonly IMessageService messageService;
         private readonly ITegSplitter tegSplitter;
@@ -60,22 +63,32 @@ namespace EventB.Services.EventServices
             // Значение картинки если ее нет.
 
             string srcSourse = "/images/defaultimg.jpg";
-            string srcMedium = "/images/Mini/defaultimg.jpg";
+            string srcMedium = "/images/Medium/defaultimg.jpg";
             string srcMini = "/images/Mini/defaultimg.jpg";
             if (model.MainPicture != null)
             {
-                // Формирование строки имени картинки.
-                var newPicId = Guid.NewGuid().ToString();
-                var nameSuffix = model.MainPicture.FileName.Split('.')[^1];
-                string fileName = String.Concat(newPicId);//, ".", nameSuffix);
-                srcSourse = String.Concat("/images/EventImages/", fileName);
-                srcMedium = String.Concat("/images/EventImages/Mini/", "M" + fileName);
-                srcMini = String.Concat("/images/EventImages/Mini/", "m" + fileName);
-                // Запись оригинал в jpeg
-                var createOrigin = await imageService.SaveImageWithoutResizing(model.MainPicture, environment.WebRootPath + srcSourse);
-                // Создаем миниатюры
-                var createResultMedium = await imageService.SaveResizedImage(environment.WebRootPath + srcSourse, environment.WebRootPath + srcMedium, 360);
-                var createResult = await imageService.SaveResizedImage(environment.WebRootPath + srcSourse, environment.WebRootPath + srcMini, 100); 
+                bool? createOriginImageResult =null, createImageResultMedium = null, createImageResultMini = null;
+                try
+                {
+                    // Формирование строки имени картинки.
+                    var fileName = Guid.NewGuid().ToString();
+                    srcSourse = String.Concat("/images/EventImages/", fileName);
+                    srcMedium = String.Concat("/images/EventImages/Medium/", "M" + fileName);
+                    srcMini = String.Concat("/images/EventImages/Mini/", "m" + fileName);
+                    // Запись оригинал в jpeg
+                    createOriginImageResult = await imageService.SaveImageWithoutResizing(model.MainPicture, environment.WebRootPath + srcSourse, IMAGE_SUFFIX);
+                    // Создаем миниатюры
+                    createImageResultMedium = await imageService.SaveResizedImage(environment.WebRootPath + srcSourse + IMAGE_SUFFIX, environment.WebRootPath + srcMedium, 360, IMAGE_SUFFIX);
+                    createImageResultMini = await imageService.SaveResizedImage(environment.WebRootPath + srcSourse + IMAGE_SUFFIX, environment.WebRootPath + srcMini, 100, IMAGE_SUFFIX);
+                }
+                catch(Exception ex)
+                {
+                    if (!createOriginImageResult.HasValue) srcSourse = "/images/defaultimg.jpg";
+                    if (!createImageResultMedium.HasValue) srcMedium = "/images/Medium/defaultimg.jpg";
+                    if (!createImageResultMini.HasValue) srcMini = "/images/Mini/defaultimg.jpg";
+
+                    await logger.LogStringToFile($"Ошибка создания картинок для события : {ex.Message}");
+                }
             }
             // Пользователь который выложил.
             var creator = await userManager.FindByNameAsync(userName);
@@ -84,7 +97,7 @@ namespace EventB.Services.EventServices
             {
                 User = creator,
                 EventTitle = model.Title,
-                EventPhoto = srcMedium,
+                EventPhoto = srcMedium + IMAGE_SUFFIX,
                 VizitorName = creator.Name,
                 VizitirPhoto = creator.Photo
             };
@@ -101,16 +114,16 @@ namespace EventB.Services.EventServices
             var chat = new Chat
             {
                 Messages = new List<Message>
+                {
+                    new Message
                     {
-                        new Message
-                        {
-                            PersonId = creator.Id,
-                            PostDate = DateTime.Now,
-                            SenderName = creator.Name,
-                            Text = "Событие создано!",
-                            EventState = true
-                        }
-                    },
+                        PersonId = creator.Id,
+                        PostDate = DateTime.Now,
+                        SenderName = creator.Name,
+                        Text = "Событие создано!",
+                        EventState = true
+                    }
+                },
                 UserChat = new List<UserChat>()
             };
 
@@ -118,7 +131,7 @@ namespace EventB.Services.EventServices
             {
                 UserId = creator.Id,
                 ChatName = model.Title.Length > 25 ? model.Title.Remove(25) + "..." : model.Title,
-                ChatPhoto = srcMini
+                ChatPhoto = srcMini + IMAGE_SUFFIX
             };
             chat.UserChat.Add(userChat);
             // Итоговое формирование события.
@@ -136,7 +149,7 @@ namespace EventB.Services.EventServices
                 Views = 0,
                 WillGo = 1,
                 Creator = creator,
-                Image = srcSourse,
+                Image = srcSourse + IMAGE_SUFFIX,
                 CreationDate = DateTime.Now,
                 Vizits = vizits,
                 Chat = chat,
