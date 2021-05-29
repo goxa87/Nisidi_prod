@@ -41,34 +41,42 @@ namespace EventBLib.DataContext
         /// Сообщение.
         /// </summary>
         public DbSet<Message> Messages { get; set; }
+
         /// <summary>
         /// Сообщения в техподдержку
         /// </summary>
         public DbSet<SupportMessage> SupportMessages { get; set; }
+
         /// <summary>
         /// Чаты поддержки
         /// </summary>
         public DbSet<SupportChat> SupportChats { get; set; }
+
         /// <summary>
         /// Строковые представления интересов пользователя.
         /// </summary>
         public DbSet<Interes> Intereses { get; set; }
+
         /// <summary>
         /// Список друзей для пользователей.
         /// </summary>
         public DbSet<Friend> Friends { get; set; }
+
         /// <summary>
         /// Список тегов событий.
         /// </summary>
         public DbSet<EventTeg> EventTegs { get; set; }
+
         /// <summary>
         /// Приглашения на события.
         /// </summary>
         public DbSet<Invite> Invites { get; set; }
+
         /// <summary>
         /// Личный кабиент пользователя.
         /// </summary>
         public DbSet<MarketKibnet> MarketKibnets { get; set; }
+
         /// <summary>
         /// Рекламные карточки (пока не добавляем в проект . нет бизнес схемы.)
         /// </summary>

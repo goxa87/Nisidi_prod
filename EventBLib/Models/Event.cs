@@ -18,6 +18,7 @@ namespace EventBLib.Models
     /// </summary>
     public class Event
     {
+        #region PROPS
         /// <summary>
         /// Идентификатор записи события.
         /// </summary>
@@ -27,6 +28,7 @@ namespace EventBLib.Models
         /// Тип события из EventType (платное публичное, частное по приглашению , специальное).
         /// </summary>
         public EventType Type { get; set; }
+
         /// <summary>
         /// ID автора события.
         /// </summary>
@@ -37,12 +39,14 @@ namespace EventBLib.Models
         /// Свойство связзи с создателем сообщения.
         /// </summary>
         public User Creator { get; set; }
+
         /// <summary>
         /// Заголовок.
         /// </summary>
         [Required]
         [StringLength(1000), Display(Name = "Заголовок")]
         public string Title { get; set; }
+
         /// <summary>
         /// Возвращает короткое название.
         /// </summary>
@@ -58,6 +62,7 @@ namespace EventBLib.Models
                     return Title;
             }
         }
+
         /// <summary>
         /// Нормлизованный заголовок.
         /// </summary>
@@ -69,59 +74,83 @@ namespace EventBLib.Models
         /// </summary>
         [MaxLength(1000)]
         public string Image { get; set; }
+
         /// <summary>
         /// Описание события.
         /// </summary>
         [MaxLength(4000)]
         public string Body { get; set; }
+
         /// <summary>
         /// Город проведения.
         /// </summary>
         [MaxLength(100)]
         public string City { get; set; }
+
         /// <summary>
         /// Нормализованный город.
         /// </summary>
         [MaxLength(100)]
         public string NormalizedCity { get; set; }
+
         /// <summary>
-        /// Мето проведения.
+        /// Меcто проведения.
         /// </summary>
         [MaxLength(1000)]
         public string Place { get; set; }
+
         /// <summary>
         /// Дата начала события .
         /// </summary>
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd.MM.yy hh.mm}", ApplyFormatInEditMode = true)]
         public DateTime Date { get; set; }
+
         /// <summary>
         /// Дата публикации события.
         /// </summary>
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString ="{0:dd.MM.yy}", ApplyFormatInEditMode =true)]
         public DateTime CreationDate { get; set; }
+
         /// <summary>
         /// Признак наличия билетов на мероприятие.
         /// </summary>
         public bool Tickets { get; set; }
+
         /// <summary>
-        /// Описание билетов.
+        /// Описание того как будут реализоваываться билеты.
         /// </summary>
         [MaxLength(1000)]
         public string TicketsDesc { get; set; }
+
         /// <summary>
         /// Количество просмотров.
         /// </summary>
         public int Views { get; set; }
+
         /// <summary>
         /// Количество отметок пойду.
         /// </summary>
         public int WillGo { get; set; }
+
         /// <summary>
         /// Возрастные ограничения.
         /// </summary>
         public int AgeRestrictions { get; set; }
+
+        /// <summary>
+        /// Адрес изображения в среднем формате
+        /// </summary>
+        [MaxLength(124)]
+        public string MediumImage { get; set; }
+
+        /// <summary>
+        /// Изображение в маленьком формате
+        /// </summary>
+        [MaxLength(124)]
+        public string MiniImage { get; set; }
+
         /// <summary>
         /// Строчное представление ограничения
         /// </summary>
@@ -132,11 +161,15 @@ namespace EventBLib.Models
                 return $"{AgeRestrictions}+";
             }
         }
+
         /// <summary>
         /// Контактный телефон к событию.
         /// </summary>
         [MaxLength(25)]
-        public string Phone { get; set; }        
+        public string Phone { get; set; }
+
+        #endregion
+        #region Navigation
 
         /// <summary>
         /// Список пользователей с отметкой пойду.
@@ -149,6 +182,7 @@ namespace EventBLib.Models
         /// Ключи для поиска.
         /// </summary>
         public List<EventTeg> EventTegs { get; set; }
+
         /// <summary>
         /// Теги в строку.
         /// </summary>
@@ -170,5 +204,7 @@ namespace EventBLib.Models
                 return SB.ToString();
             }
         }
+
+        #endregion
     }
 }
