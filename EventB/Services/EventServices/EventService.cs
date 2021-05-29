@@ -1,4 +1,5 @@
-﻿using EventB.Services.Logger;
+﻿using EventB.Services.ImageService;
+using EventB.Services.Logger;
 using EventB.Services.MessageServices;
 using EventB.ViewModels;
 using EventB.ViewModels.EventsVM;
@@ -22,19 +23,24 @@ namespace EventB.Services.EventServices
     /// </summary>
     public class EventService : IEventService
     {
+
+        private string IMAGE_SUFFIX = ".jpeg";
+
         private readonly Context context;
         private readonly IMessageService messageService;
         private readonly ITegSplitter tegSplitter;
         private readonly IWebHostEnvironment environment;
         private readonly UserManager<User> userManager;
         private readonly ILogger logger;
+        private readonly IImageService imageService;
 
         public EventService(Context _context,
             IMessageService _messageService,
             ITegSplitter _tegSplitter,
             IWebHostEnvironment _environment,
             UserManager<User> _userManager,
-            ILogger _logger
+            ILogger _logger,
+            IImageService _imageService
         )
         {
             context = _context;
@@ -43,6 +49,7 @@ namespace EventB.Services.EventServices
             environment = _environment;
             userManager = _userManager;
             logger = _logger;
+            imageService = _imageService;
         }
         /// <summary>
         /// Добавление нового события.
@@ -55,16 +62,32 @@ namespace EventB.Services.EventServices
             await logger.LogStringToFile("Начало создания события");
             // Значение картинки если ее нет.
 
-            string src = "/images/defaultimg.jpg";
+            string srcSourse = "/images/defaultimg.jpg";
+            string srcMedium = "/images/Medium/defaultimg.jpg";
+            string srcMini = "/images/Mini/defaultimg.jpg";
             if (model.MainPicture != null)
             {
-                // Формирование строки имени картинки.
-                string fileName = String.Concat(DateTime.Now.ToString("dd-MM-yy_hh-mm"), "_", model.MainPicture.FileName);
-                src = String.Concat("/images/EventImages/", fileName);
-                // Запись на диск.
-                using (var FS = new FileStream(environment.WebRootPath + src, FileMode.Create))
+                bool? createOriginImageResult =null, createImageResultMedium = null, createImageResultMini = null;
+                try
                 {
-                    await model.MainPicture.CopyToAsync(FS);
+                    // Формирование строки имени картинки.
+                    var fileName = Guid.NewGuid().ToString();
+                    srcSourse = String.Concat("/images/EventImages/", fileName);
+                    srcMedium = String.Concat("/images/EventImages/Medium/", "M" + fileName);
+                    srcMini = String.Concat("/images/EventImages/Mini/", "m" + fileName);
+                    // Запись оригинал в jpeg
+                    createOriginImageResult = await imageService.SaveImageWithoutResizing(model.MainPicture, environment.WebRootPath + srcSourse, IMAGE_SUFFIX);
+                    // Создаем миниатюры
+                    createImageResultMedium = await imageService.SaveResizedImage(environment.WebRootPath + srcSourse + IMAGE_SUFFIX, environment.WebRootPath + srcMedium, 360, IMAGE_SUFFIX);
+                    createImageResultMini = await imageService.SaveResizedImage(environment.WebRootPath + srcSourse + IMAGE_SUFFIX, environment.WebRootPath + srcMini, 100, IMAGE_SUFFIX);
+                }
+                catch(Exception ex)
+                {
+                    if (!createOriginImageResult.HasValue) srcSourse = "/images/defaultimg.jpg";
+                    if (!createImageResultMedium.HasValue) srcMedium = "/images/Medium/defaultimg.jpg";
+                    if (!createImageResultMini.HasValue) srcMini = "/images/Mini/defaultimg.jpg";
+
+                    await logger.LogStringToFile($"Ошибка создания картинок для события : {ex.Message}");
                 }
             }
             // Пользователь который выложил.
@@ -74,7 +97,7 @@ namespace EventB.Services.EventServices
             {
                 User = creator,
                 EventTitle = model.Title,
-                EventPhoto = src,
+                EventPhoto = srcMedium + IMAGE_SUFFIX,
                 VizitorName = creator.Name,
                 VizitirPhoto = creator.Photo
             };
@@ -91,16 +114,16 @@ namespace EventB.Services.EventServices
             var chat = new Chat
             {
                 Messages = new List<Message>
+                {
+                    new Message
                     {
-                        new Message
-                        {
-                            PersonId = creator.Id,
-                            PostDate = DateTime.Now,
-                            SenderName = creator.Name,
-                            Text = "Событие создано!",
-                            EventState = true
-                        }
-                    },
+                        PersonId = creator.Id,
+                        PostDate = DateTime.Now,
+                        SenderName = creator.Name,
+                        Text = "Событие создано!",
+                        EventState = true
+                    }
+                },
                 UserChat = new List<UserChat>()
             };
 
@@ -108,7 +131,7 @@ namespace EventB.Services.EventServices
             {
                 UserId = creator.Id,
                 ChatName = model.Title.Length > 25 ? model.Title.Remove(25) + "..." : model.Title,
-                ChatPhoto = src
+                ChatPhoto = srcMini + IMAGE_SUFFIX
             };
             chat.UserChat.Add(userChat);
             // Итоговое формирование события.
@@ -126,7 +149,7 @@ namespace EventB.Services.EventServices
                 Views = 0,
                 WillGo = 1,
                 Creator = creator,
-                Image = src,
+                Image = srcSourse + IMAGE_SUFFIX,
                 CreationDate = DateTime.Now,
                 Vizits = vizits,
                 Chat = chat,
