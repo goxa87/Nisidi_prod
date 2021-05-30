@@ -16,16 +16,20 @@ using EventB.Services.SenderServices;
 using System.Diagnostics;
 using EventBLib.Models.MarketingModels;
 using EventB.Services.Logger;
+using EventB.Services.ImageService;
 
 namespace EventB.Controllers
 {
     public class AccountController : Controller
     {
+        private const string DEFAULT_IMG_PATH = "/images/defaultimg.jpg";
+        private const string IMAGE_SUFFIX = ".jpeg";
+
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly Context context;
         readonly IWebHostEnvironment environment;
-
+        private readonly IImageService imageService;
         private readonly ITegSplitter tegSplitter;
         private readonly ILogger logger;
 
@@ -34,7 +38,8 @@ namespace EventB.Controllers
             ITegSplitter TS,
             Context Context,
             IWebHostEnvironment _environment,
-            ILogger _logger
+            ILogger _logger,
+            IImageService _imageService
             )
         {
             userManager = UM;
@@ -43,6 +48,7 @@ namespace EventB.Controllers
             context = Context;
             environment = _environment;
             logger = _logger;
+            imageService = _imageService;
         }
 
         public  IActionResult Login(string returnUrl)
@@ -105,18 +111,46 @@ namespace EventB.Controllers
                     Description = model.Description,
                     PhoneNumber = model.PhoneNumber
                 };
-                // Сохранение фотографии.
-                string photoPath = "/images/Profileimages/defaultimg.jpg";
+
+                var fileName = Guid.NewGuid().ToString();
+                string imgSourse = String.Concat("/images/Profileimages/", fileName);
+                string imgMedium = String.Concat("/images/Profileimages/Medium/", "M" + fileName);
+                string imgMini = String.Concat("/images/Profileimages/Mini/", "m" + fileName);
+
                 if (model.Photo != null)
                 {
-                    photoPath = string.Concat("/images/Profileimages/",DateTime.Now.ToString("dd_MM_yy_mm_ss"), model.Photo.FileName).Replace(" ","");
-                    using (var FS = new FileStream(environment.WebRootPath + photoPath, FileMode.Create))
+                    try
                     {
-                        await model.Photo.CopyToAsync(FS);
+                        var newImagesDict = new Dictionary<int, string>();
+
+                        newImagesDict.Add(0, imgSourse);
+                        newImagesDict.Add(360, imgMedium);
+                        newImagesDict.Add(100, imgMini);
+
+                        newImagesDict = await imageService.SaveOriginAndResizedImagesByInputedSizes(model.Photo, IMAGE_SUFFIX, newImagesDict);
+
+                        imgSourse = newImagesDict[0];
+                        imgMedium = newImagesDict[360];
+                        imgMini = newImagesDict[100];
+                    }
+                    catch (Exception ex)
+                    {
+                        await logger.LogStringToFile($"Ошибка создания картинок для события : {ex.Message}");
                     }
                 }
-                
-                user.Photo = photoPath;
+                else
+                {
+                    await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgSourse, 800, IMAGE_SUFFIX);
+                    imgSourse += IMAGE_SUFFIX;
+                    await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgMedium, 360, IMAGE_SUFFIX);
+                    imgMedium += IMAGE_SUFFIX;
+                    await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgMini, 100, IMAGE_SUFFIX);
+                    imgMini += IMAGE_SUFFIX;
+                }
+
+                user.Photo = imgSourse;
+                user.MediumImage = imgMedium;
+                user.MiniImage = imgMini;
 
                 var createResult = await userManager.CreateAsync(user, model.Password);
 
@@ -143,11 +177,7 @@ namespace EventB.Controllers
                     catch(Exception ex)
                     {
                         await logger.LogObjectToFile("RegisterAccount", ex);
-                    }                  
-
-                    // надо както его прилепить к пользователю
-                    // await signInManager.SignInAsync(user, false);
-                    //return RedirectToAction("Start", "Events");
+                    }
                 }
                 else//иначе
                 {

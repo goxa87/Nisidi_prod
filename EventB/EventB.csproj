@@ -30,7 +30,8 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\images\EventImages\Medium\" />
-    <Folder Include="wwwroot\images\Profileimages\ProfileImagesMini\" />
+    <Folder Include="wwwroot\images\Profileimages\Mini\" />
+    <Folder Include="wwwroot\images\Profileimages\Medium\" />
     <Folder Include="wwwroot\resourses\helpimages\" />
   </ItemGroup>
 

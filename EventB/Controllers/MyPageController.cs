@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using EventB.Services;
+using EventB.Services.ImageService;
 using EventB.ViewModels.MyPage;
 using EventBLib.DataContext;
 using EventBLib.Models;
@@ -22,19 +23,26 @@ namespace EventB.Controllers
     [Authorize]
     public class MyPageController : Controller
     {
+        private const string IMAGE_SUFFIX = ".jpeg";
+
         readonly Context context;
         readonly UserManager<User> userManager;
         readonly ITegSplitter tegSplitter;
         readonly IWebHostEnvironment environment;
+        private readonly IImageService imageService;
+
+
         public MyPageController(Context _context,
             UserManager<User> _userManager,
             ITegSplitter _tegSplitter,
-            IWebHostEnvironment _environment)
+            IWebHostEnvironment _environment,
+            IImageService _imageService)
         {
             context = _context;
             userManager = _userManager;
             tegSplitter = _tegSplitter;
             environment = _environment;
+            imageService = _imageService;
         }
         /// <summary>
         /// Страница профиля.
@@ -174,46 +182,22 @@ namespace EventB.Controllers
                     .Include(e => e.Invites)
                     .Include(e => e.Vizits)
                     .FirstOrDefaultAsync(e => e.UserName == HttpContext.User.Identity.Name);
-                List<Friend> inFriends=user.Friends;
-                List<Invite> inInvites= await context.Invites.Where(e => e.InviterId == user.Id).ToListAsync();
-                List<Vizit> inVizits=user.Vizits;
+                List<Friend> inFriends = user.Friends;
+                List<Invite> inInvites = await context.Invites.Where(e => e.InviterId == user.Id).ToListAsync();
+                List<Vizit> inVizits = user.Vizits;
                 // Это юзер чаты в которых участвует, но привязвны к другим пользователям (Приватые). 
                 List<UserChat> inUserChats = await context.UserChats.Where(e => e.OpponentId == user.Id).ToListAsync();
+
                 if (model.newPhoto != null)
                 {
-                    var path = string.Concat("/images/Profileimages/"
-                        , DateTime.Now.ToString("dd_MM_yy_mm_ss")
-                        , user.UserName.Replace(".","_")
-                        , model.newPhoto.FileName.Substring(model.newPhoto.FileName.LastIndexOf(".")))
-                        .Replace(" ", "");
-                    using (var FS = new FileStream(environment.WebRootPath + path, FileMode.Create))
-                    {
-                        await model.newPhoto.CopyToAsync(FS);
-                    }
-                    System.IO.File.Delete(environment.WebRootPath + user.Photo);
-                    user.Photo = path;
-                    // Изменить в друзьях, визиторах.
-                    foreach (var e in inFriends)
-                    {
-                        e.UserPhoto = path;
-                    }
-                    foreach (var e in inInvites)
-                    {
-                        e.InviterPhoto = path;
-                    }
-                    foreach (var e in inVizits)
-                    {
-                        e.VizitirPhoto = path;
-                    }
-                    foreach(var e in inUserChats)
-                    {
-                        e.ChatPhoto = path;
-                    }
-                    // фото к чату
-                    context.Friends.UpdateRange(inFriends);
-                    context.Invites.UpdateRange(inInvites);
-                    context.Vizits.UpdateRange(inVizits);
-                }                
+                    var userImgDict = new Dictionary<int, string>();
+                    userImgDict.Add(0, TrimSuffix(user.Photo));
+                    userImgDict.Add(360, TrimSuffix(user.MediumImage));
+                    userImgDict.Add(100, TrimSuffix(user.MiniImage));
+
+                    await imageService.SaveOriginAndResizedImagesByInputedSizes(model.newPhoto, IMAGE_SUFFIX, userImgDict);
+                } 
+
                 // Изменения имени в таблицах.
                 if (model.Name != model.OldName)
                 {
@@ -262,5 +246,17 @@ namespace EventB.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+        #region private
+        /// <summary>
+        /// Вернет строчку без расширения файла
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private string TrimSuffix(string path)
+        {
+            return path.Substring(0, path.LastIndexOf('.'));
+        }
+        #endregion
     }
 }

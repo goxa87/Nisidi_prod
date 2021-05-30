@@ -464,8 +464,7 @@ namespace EventB.Services.EventServices
                     .FirstOrDefaultAsync(e => e.EventId == model.EventId);
             if (eve.UserId != user.Id) throw new Exception("Запрещено");
             List<Vizit> vizits = null;
-            // Значение картинки если ее нет.
-            // Рефакторинг
+
             if (model.NewPicture != null)
             {
                 var eveImgDict = new Dictionary<int, string>();
@@ -474,8 +473,8 @@ namespace EventB.Services.EventServices
                 eveImgDict.Add(100, TrimSuffix(eve.MiniImage));
 
                 await imageService.SaveOriginAndResizedImagesByInputedSizes(model.NewPicture, IMAGE_SUFFIX, eveImgDict);
-
             }
+
             // Здесь подправить разметку чтобы отображать абзацами
             string messageTemplate = "Изменения в событии:<br>";
             string chatMessage = messageTemplate;
