@@ -180,7 +180,7 @@ namespace EventB.Controllers
                         UserId = opponentId,
                         ChatName = opponent.Name,
                         OpponentId = id,
-                        ChatPhoto = opponent.Photo
+                        ChatPhoto = opponent.MiniImage
                     };
                 }
                 else
@@ -190,7 +190,7 @@ namespace EventB.Controllers
                         UserId = id,
                         ChatName = opponent.Name,
                         OpponentId = opponentId,
-                        ChatPhoto = opponent.Photo
+                        ChatPhoto = opponent.MiniImage
                     };
                 }
                 createdUserChat[0].Chat.UserChat.Add(newUCh);
@@ -203,14 +203,14 @@ namespace EventB.Controllers
                 UserId = id,
                 ChatName = opponent.Name,
                 OpponentId = opponentId,
-                ChatPhoto = opponent.Photo
+                ChatPhoto = opponent.MiniImage
             };
             var userChatopponent = new UserChat
             {
                 UserId = opponentId,
                 ChatName = user.Name,
                 OpponentId = id,
-                ChatPhoto = user.Photo
+                ChatPhoto = user.MiniImage
             };
             var chat = new Chat
             {              

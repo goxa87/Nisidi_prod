@@ -95,16 +95,16 @@ namespace EventB.Controllers
                 UserId = curUser.Id,
                 EventId = eve.EventId,
                 EventTitle = eve.TitleShort,
-                EventPhoto = eve.Image,
+                EventPhoto = eve.MediumImage,
                 VizitorName = curUser.Name,
-                VizitirPhoto = curUser.Photo
+                VizitirPhoto = curUser.MediumImage
             };
             context.Vizits.Add(newVizit);
             var userChat = new UserChat
             {
                 ChatId = eve.Chat.ChatId,
                 ChatName = eve.TitleShort,
-                ChatPhoto = eve.Image,
+                ChatPhoto = eve.MiniImage,
                 UserId = curUser.Id
             };
             context.UserChats.Add(userChat);

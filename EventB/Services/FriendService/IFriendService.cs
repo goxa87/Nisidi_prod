@@ -18,7 +18,7 @@ namespace EventB.Services.FriendService
         Task<UserInfoVM> GetFriendInfo(string userId, User curentUser);
 
         /// <summary>
-        /// Получит список моделей для поиска друзей
+        /// Получит список потенциальных друзей
         /// </summary>
         /// <returns></returns>
         Task<List<SmallFigureFriendVM>> SearchFriend(string name, string teg, string city, string currentUserAppName);

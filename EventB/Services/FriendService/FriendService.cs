@@ -47,7 +47,7 @@ namespace EventB.Services.FriendService
                     UserId = friend.Id,
                     FriendUserId = currentUser.Id,
                     UserName = friend.Name,
-                    UserPhoto = friend.Photo,
+                    UserPhoto = friend.MediumImage,
                     FriendInitiator = true
                 };
                 var userFriendReverce = new Friend
@@ -55,7 +55,7 @@ namespace EventB.Services.FriendService
                     UserId = currentUser.Id,
                     FriendUserId = friend.Id,
                     UserName = currentUser.Name,
-                    UserPhoto = currentUser.Photo
+                    UserPhoto = currentUser.MediumImage
                 };
 
                 await context.Friends.AddAsync(userFriend);
@@ -115,46 +115,31 @@ namespace EventB.Services.FriendService
 
         public async Task<List<SmallFigureFriendVM>> SearchFriend(string name, string teg, string city, string currentUserAppName)
         {
-            var currentUser = await context.Users.Include(e => e.Friends).FirstAsync(e => e.UserName == currentUserAppName);
-            IQueryable<User> users;
-            // город
-            if (!string.IsNullOrWhiteSpace(city))
-            {
-                city = city.Trim().ToUpper();
-                users = context.Users.Where(e => e.NormalizedCity == city.ToUpper());
-            }
-            else
-            {
-                users = context.Users.Where(e => e.NormalizedCity == currentUser.NormalizedCity);
-            }
-            // тег
-            if (!string.IsNullOrWhiteSpace(teg))
-            {
-                var arr = tegSplitter.GetEnumerable(teg.ToUpper()).ToArray();
+            var currentUser = await userManager.FindByNameAsync(currentUserAppName);
 
-                var usersWithTegs = context.Intereses.Include(e => e.User).Where(e => e.Value == teg).Select(e => e.User);
-                users = users.Intersect(usersWithTegs);
+            city = city?.Trim().ToUpper() ?? currentUser.NormalizedCity;
+            var result = context.Users.Include(e => e.Intereses).Where(e => e.NormalizedCity == city
+                  && e.Visibility == AccountVisible.Visible
+                  && e.UserName != currentUserAppName);
+            
+            var splittedTegs = tegSplitter.GetEnumerable(teg);
+            if (splittedTegs != null)
+            {
+                result = result.Where(e => e.Intereses.Any(x => splittedTegs.Contains(x.Value)));
             }
-            // имя (из тех что уже выбраны)
-            var usersRes = users;
+
+            name = name?.Trim();
             if (!string.IsNullOrWhiteSpace(name))
             {
-                name = name.ToUpper();
-                usersRes = usersRes.Where(e => EF.Functions.Like(e.Name, $"%{name}%"));
+                result = result.Where(e => EF.Functions.Like(e.Name, $"%{name}%"));
             }
-            var localUsersRes = await usersRes.Intersect(users).ToListAsync();
 
-            // Вычесть друзей пользователя и себя из тех что попали в выборку.
-            var isFriendFromSelect = localUsersRes.Join(currentUser.Friends, rez => rez.Id, fr => fr.FriendUserId, (rez, fr) => rez).ToList();
-            isFriendFromSelect.Add(currentUser);
-
-            var usersResult = localUsersRes.Except(isFriendFromSelect).Select(e => new SmallFigureFriendVM()
+            return result.Select(e=> new SmallFigureFriendVM()
             {
-                Image = e.Photo,
+                Image = e.MediumImage,
                 Link = $"/Friends/UserInfo?userId={e.Id}",
                 Title = e.Name
             }).ToList();
-            return usersResult;
         }
 
         public async Task<int> SubmitFriend(string friendId, User currentUser)

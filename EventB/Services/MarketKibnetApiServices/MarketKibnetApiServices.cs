@@ -74,6 +74,7 @@ namespace EventB.Services.MarketKibnetApiServices
             context.Messages.RemoveRange(await context.Messages.Where(e => e.ChatId == eve.Chat.ChatId).ToListAsync());
             context.Chats.Remove(eve.Chat);
 
+            // TODO Удалять все картинки
             var photoPath = environment.WebRootPath + "/" + eve.Image;
             Debug.WriteLine("image path: ", photoPath);
 
@@ -96,7 +97,7 @@ namespace EventB.Services.MarketKibnetApiServices
                 {
                     UserId = e.UserId,
                     UserName = e.User.Name,
-                    UserPhoto = e.User.Photo,
+                    UserPhoto = e.User.MediumImage,
                     UserChatId = e.UserChatId,
                     IsBlocked = e.IsBlockedInChat
                 }).ToList();

@@ -107,7 +107,7 @@ namespace EventB.Services.EventServices
                 EventTitle = model.Title,
                 EventPhoto = imgMedium,
                 VizitorName = creator.Name,
-                VizitirPhoto = creator.Photo
+                VizitirPhoto = creator.MediumImage
             };
 
             var vizits = new List<Vizit> { vizit };
@@ -347,7 +347,7 @@ namespace EventB.Services.EventServices
                     EventTitle = curentEv.Title,
                     EventPhoto = curentEv.MediumImage,
                     VizitorName = user.Name,
-                    VizitirPhoto = user.Photo
+                    VizitirPhoto = user.MediumImage
                 };
                 curentEv.Vizits.Add(newVizit);
                 curentEv.WillGo++;
@@ -403,8 +403,11 @@ namespace EventB.Services.EventServices
             var friends = await context.Friends
                 .Include(e=>e.User).ThenInclude(e=>e.Invites)
                 .Include(e=>e.User).ThenInclude(e=>e.Vizits)
-                .Where(e => e.FriendUserId == curUser.Id && e.IsBlocked == false && e.IsConfirmed == true &&
-                    !e.User.Vizits.Any(x=>x.EventId == eventId) && !e.User.Invites.Any(x=>x.EventId == eventId)).
+                .Where(e => e.FriendUserId == curUser.Id 
+                    && e.IsBlocked == false 
+                    && e.IsConfirmed == true 
+                    && !e.User.Vizits.Any(x=>x.EventId == eventId) 
+                    && !e.User.Invites.Any(x=>x.EventId == eventId)).
                 Select(e => new InviteOutVM
                 {
                     UserId = e.UserId,
@@ -438,7 +441,7 @@ namespace EventB.Services.EventServices
                     UserId = id.userId,
                     InviterId = curUser.Id,
                     InviterName = curUser.Name,
-                    InviterPhoto = curUser.Photo,
+                    InviterPhoto = curUser.MediumImage,
                     InviteDescription = id.message
                 };
                 newInv.Add(newItm);
