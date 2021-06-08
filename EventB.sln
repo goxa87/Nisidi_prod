@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBLib", "EventBLib\Even
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBTests", "EventBTests\EventBTests.csproj", "{5F6733A7-4F92-4563-BDB8-B370852FB568}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Admin", "Admin\Admin.csproj", "{1D622698-3FE2-4380-B914-8006AE385C96}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{5F6733A7-4F92-4563-BDB8-B370852FB568}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F6733A7-4F92-4563-BDB8-B370852FB568}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F6733A7-4F92-4563-BDB8-B370852FB568}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D622698-3FE2-4380-B914-8006AE385C96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D622698-3FE2-4380-B914-8006AE385C96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D622698-3FE2-4380-B914-8006AE385C96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D622698-3FE2-4380-B914-8006AE385C96}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
