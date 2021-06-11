@@ -1,0 +1,12 @@
+﻿.acc-menu{
+    background-color: lightgray;
+}
+
+.acc-danger {
+    font-weight: 300;
+    color: tomato;
+}
+.acc-validation-error{
+    color: tomato;
+    font-size: 13px;
+}

@@ -1,0 +1,37 @@
+﻿@model Admin.Models.ViewModels.Account.CreateUserVM
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Style"] = "account.css";
+}
+
+<h3>Создание пользователя</h3>
+
+<div>
+    <form asp-action="CreateUser" asp-controller="Account" asp-antiforgery="true" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <span class="acc-validation-error" asp-validation-for="Email"></span>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Email</span>
+            </div>
+            <input asp-for="Email" type="email" class="form-control .width" aria-label="Username" aria-describedby="basic-addon1" />
+        </div>
+        <span class="acc-validation-error" asp-validation-for="Password"></span>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Пароль</span>
+            </div>
+            <input asp-for="Password" type="text" class="form-control .width" aria-label="Username" aria-describedby="basic-addon1" />
+        </div>
+        <span class="acc-validation-error" asp-validation-for="AppName"></span>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Имя в системе</span>
+            </div>
+            <input asp-for="AppName" type="text" class="form-control .width" aria-label="Username" aria-describedby="basic-addon1" />
+        </div>
+
+        <input type="submit" class="btn btn-info" value="Создать" />
+    </form>
+</div>

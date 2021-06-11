@@ -1,4 +1,11 @@
-﻿
+﻿@model List<EventBLib.Models.User>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Style"] = "account.css";
 }
+<h3>Пользователи NISIDI</h3>
+<div class="flex-hsc acc-menu">
+    <a asp-action="CreateUser" asp-controller="Account">
+        <div class="btn btn-success">Добавить</div>
+    </a>
+</div>

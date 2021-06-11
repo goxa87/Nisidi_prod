@@ -179,7 +179,7 @@ namespace EventB.Controllers
                         await logger.LogObjectToFile("RegisterAccount", ex);
                     }
                 }
-                else//иначе
+                else
                 {
                     foreach (var identityError in createResult.Errors)
                     {

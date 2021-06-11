@@ -17,14 +17,18 @@ namespace Admin.Controllers
         private readonly UserManager<AdminUser> _userManager;
         private readonly SignInManager<AdminUser> _signInManager;
         private readonly AdminContext _adminContext;
+        private readonly RoleManager<IdentityRole> _roleManager;
+
 
         public AccountController(UserManager<AdminUser> userManager, 
             SignInManager<AdminUser> signInManager,
-            AdminContext adminContext)
+            AdminContext adminContext,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _adminContext = adminContext;
+            _roleManager = roleManager;
         }
 
 
@@ -50,7 +54,7 @@ namespace Admin.Controllers
                             {
                                 return Redirect(model.ReturnUrl);
                             }
-                            return RedirectToAction("Index", "Home");
+                            return RedirectToAction("Statistic", "Home");
                         }
                     }
                     else
@@ -75,7 +79,7 @@ namespace Admin.Controllers
                     {
                         return Redirect(model.ReturnUrl);
                     }
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Statistic", "Home");
                 }
             }
 
@@ -91,6 +95,39 @@ namespace Admin.Controllers
             return RedirectToAction("Login");
         }
 
+        [HttpGet]
+        [Authorize]
+        public IActionResult CreateUser()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateUser(CreateUserVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                var createResult = await CreateNewUser(model.Email, model.Password, !string.IsNullOrEmpty(model.AppName) ? model.AppName : null);
+                if (createResult.Succeeded)
+                {
+                    return RedirectToAction("List");
+                }
+                else
+                {
+                    foreach(var error in createResult.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                    return View(model);
+                }
+            }
+            else
+            {
+                return View(model);
+            }
+        }
 
         #region PRIVATE
 
@@ -99,19 +136,22 @@ namespace Admin.Controllers
             return await _adminContext.Users.AnyAsync();
         }
 
-        private async Task<IdentityResult> CreateNewUser(string login, string password)
+        private async Task<IdentityResult> CreateNewUser(string login, string password, string appName = "New User")
         {
 
             var user = new AdminUser()
             {
                 UserName = login,
-                Email = login
+                Email = login,
+                UserFio = appName
             };
             return await _userManager.CreateAsync(user, password);
         }
 
-
-
+        private async Task CreateRolesIfNeed()
+        {
+            //Rolem
+        }
         #endregion
     }
 }
