@@ -1,5 +1,25 @@
-﻿@{ 
-    //Layout = "~/Views/Shared/_Layout.cshtml";
+﻿@model Admin.Models.ViewModels.Account.LoginVM
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Login</h1>
+<div class="flex-vsc width100" >
+    <h3 >Войти</h3>
+    <form method="post" asp-action="Login" asp-antiforgery="true">
+        <div asp-validation-summary="ModelOnly" class="acc-danger "></div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">E-mail</span>
+            </div>
+            <input asp-for="Login" type="text" class="form-control min-width400" aria-label="Username" aria-describedby="basic-addon1" />
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Пароль</span>
+            </div>
+            <input asp-for="Password" type="password" class="form-control min-width400" aria-label="Username" />
+        </div>
+        <input type="submit" class="btn btn-info"/>
+    </form>
+</div>
+

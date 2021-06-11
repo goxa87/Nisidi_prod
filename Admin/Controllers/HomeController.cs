@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 namespace Admin.Controllers
 {
     [Authorize]
-    public class HomeController : AppControllerBase
+    public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger) :base()
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
         }

@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 namespace Admin.Controllers
 {
     [Authorize]
-    public class EventsController : AppControllerBase
+    public class EventsController : Controller
     {
 
-        public EventsController() : base()
+        public EventsController()
         {
 
         }
