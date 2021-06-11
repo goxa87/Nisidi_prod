@@ -20,12 +20,12 @@ namespace Admin.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Statistic()
         {
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult FAQ()
         {
             return View();
         }
