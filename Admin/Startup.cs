@@ -47,7 +47,9 @@ namespace Admin
                    opt.Password.RequireDigit = false;
 
                }
-               ).AddEntityFrameworkStores<AdminContext>().AddDefaultTokenProviders();
+               ).AddEntityFrameworkStores<AdminContext>()
+               .AddRoles<IdentityRole>()
+               .AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>
             {
