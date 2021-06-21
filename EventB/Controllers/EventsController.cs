@@ -160,6 +160,7 @@ namespace EventB.Controllers
 
         [HttpPost]
         [Authorize]
+        [Route("Events/Add")]
         public async Task<IActionResult> Add(AddEventViewModel model)
         {
             if (ModelState.IsValid)
@@ -305,6 +306,7 @@ namespace EventB.Controllers
         /// <param name="eventId">Id события</param>
         /// <returns>Вид.</returns>
         [Authorize]
+        [Route("Events/EventEdit")]
         public async Task<IActionResult> EventEdit(int eventId)
         {
             var curUser = await context.Users.FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
@@ -353,6 +355,7 @@ namespace EventB.Controllers
         /// <returns>редирект к деталям события</returns>
         [Authorize]
         [HttpPost]
+        [Route("Events/EventEdit")]
         public async Task<IActionResult> EventEdit(EventEditVM model)
         {
             // Валидация.
@@ -374,6 +377,7 @@ namespace EventB.Controllers
         /// <param name="eventId"></param>
         /// <returns></returns>
         [Authorize]
+        [Route("Events/DeleteEvent")]
         public async Task<IActionResult> DeleteEvent(int eventId)
         {
             var result = await eventService.DeleteEvent(User.Identity.Name, eventId);

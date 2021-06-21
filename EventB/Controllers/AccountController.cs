@@ -57,6 +57,7 @@ namespace EventB.Controllers
         }
 
         [ValidateAntiForgeryToken, HttpPost]
+        [Route("Account/Login")]
         public async Task<IActionResult> Login(UserLogin model)
         {
             if (ModelState.IsValid)
@@ -93,101 +94,111 @@ namespace EventB.Controllers
             return View();
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(UserRegistration model)
+        [ValidateAntiForgeryToken, HttpPost]
+        [Route("Account/Register")]
+        public async Task<IActionResult> Register(UserRegistration model)
         {
-            if (!model.AgreePersonalData)
+            try
             {
-                ModelState.AddModelError("AgreePersonalData", "Необходимо согласится на обработку персональных данных");
-            }
-            if (ModelState.IsValid)
-            {
-                var user = new User() { Email = model.Email,
-                    UserName = model.Email,
-                    Name = model.Name,
-                    City = model.City,
-                    NormalizedName = model.Name.ToUpper(),
-                    NormalizedCity = model.City.ToUpper(),
-                    Description = model.Description,
-                    PhoneNumber = model.PhoneNumber
-                };
-
-                var fileName = Guid.NewGuid().ToString();
-                string imgSourse = String.Concat("/images/Profileimages/", fileName);
-                string imgMedium = String.Concat("/images/Profileimages/Medium/", "M" + fileName);
-                string imgMini = String.Concat("/images/Profileimages/Mini/", "m" + fileName);
-
-                if (model.Photo != null)
+                if (!model.AgreePersonalData)
                 {
-                    try
-                    {
-                        var newImagesDict = new Dictionary<int, string>();
-
-                        newImagesDict.Add(0, imgSourse);
-                        newImagesDict.Add(360, imgMedium);
-                        newImagesDict.Add(100, imgMini);
-
-                        newImagesDict = await imageService.SaveOriginAndResizedImagesByInputedSizes(model.Photo, IMAGE_SUFFIX, newImagesDict);
-
-                        imgSourse = newImagesDict[0];
-                        imgMedium = newImagesDict[360];
-                        imgMini = newImagesDict[100];
-                    }
-                    catch (Exception ex)
-                    {
-                        await logger.LogStringToFile($"Ошибка создания картинок для события : {ex.Message}");
-                    }
+                    ModelState.AddModelError("AgreePersonalData", "Необходимо согласится на обработку персональных данных");
                 }
-                else
+                if (ModelState.IsValid)
                 {
-                    await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgSourse, 800, IMAGE_SUFFIX);
-                    imgSourse += IMAGE_SUFFIX;
-                    await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgMedium, 360, IMAGE_SUFFIX);
-                    imgMedium += IMAGE_SUFFIX;
-                    await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgMini, 100, IMAGE_SUFFIX);
-                    imgMini += IMAGE_SUFFIX;
-                }
-
-                user.Photo = imgSourse;
-                user.MediumImage = imgMedium;
-                user.MiniImage = imgMini;
-
-                var createResult = await userManager.CreateAsync(user, model.Password);
-
-                if (createResult.Succeeded)
-                {
-                    var interests = new List<Interes>();
-                    var splitted = tegSplitter.GetEnumerable(model.Tegs);
-                    if (splitted != null)
+                    var user = new User()
                     {
-                        foreach (var inter in splitted)
+                        Email = model.Email,
+                        UserName = model.Email,
+                        Name = model.Name,
+                        City = model.City,
+                        NormalizedName = model.Name.ToUpper(),
+                        NormalizedCity = model.City.ToUpper(),
+                        Description = model.Description,
+                        PhoneNumber = model.PhoneNumber
+                    };
+
+                    var fileName = Guid.NewGuid().ToString();
+                    string imgSourse = String.Concat("/images/Profileimages/", fileName);
+                    string imgMedium = String.Concat("/images/Profileimages/Medium/", "M" + fileName);
+                    string imgMini = String.Concat("/images/Profileimages/Mini/", "m" + fileName);
+
+                    if (model.Photo != null)
+                    {
+                        try
                         {
-                            interests.Add(new Interes { Value = inter });
-                        }                    
-                        user.Intereses = interests;
+                            var newImagesDict = new Dictionary<int, string>();
+
+                            newImagesDict.Add(0, imgSourse);
+                            newImagesDict.Add(360, imgMedium);
+                            newImagesDict.Add(100, imgMini);
+
+                            newImagesDict = await imageService.SaveOriginAndResizedImagesByInputedSizes(model.Photo, IMAGE_SUFFIX, newImagesDict);
+
+                            imgSourse = newImagesDict[0];
+                            imgMedium = newImagesDict[360];
+                            imgMini = newImagesDict[100];
+                        }
+                        catch (Exception ex)
+                        {
+                            await logger.LogStringToFile($"Ошибка создания картинок для события : {ex.Message}");
+                        }
                     }
-                    user.MarketKibnet = new MarketKibnet { MarketState = MarketState.common, PaymentAccountBalance = 0 , TotalMarcetCompanyCount =0};
-                    context.Users.Update(user);
-                    await context.SaveChangesAsync();
-                    try
+                    else
                     {
-                        await SendEmailConfirmationAsync(model.Email);
-                        return View("ConfirmEmail", model.Email);
+                        await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgSourse, 800, IMAGE_SUFFIX);
+                        imgSourse += IMAGE_SUFFIX;
+                        await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgMedium, 360, IMAGE_SUFFIX);
+                        imgMedium += IMAGE_SUFFIX;
+                        await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgMini, 100, IMAGE_SUFFIX);
+                        imgMini += IMAGE_SUFFIX;
                     }
-                    catch(Exception ex)
+
+                    user.Photo = imgSourse;
+                    user.MediumImage = imgMedium;
+                    user.MiniImage = imgMini;
+
+                    var createResult = await userManager.CreateAsync(user, model.Password);
+
+                    if (createResult.Succeeded)
                     {
-                        await logger.LogObjectToFile("RegisterAccount", ex);
+                        var interests = new List<Interes>();
+                        var splitted = tegSplitter.GetEnumerable(model.Tegs);
+                        if (splitted != null)
+                        {
+                            foreach (var inter in splitted)
+                            {
+                                interests.Add(new Interes { Value = inter });
+                            }
+                            user.Intereses = interests;
+                        }
+                        user.MarketKibnet = new MarketKibnet { MarketState = MarketState.common, PaymentAccountBalance = 0, TotalMarcetCompanyCount = 0 };
+                        context.Users.Update(user);
+                        await context.SaveChangesAsync();
+                        try
+                        {
+                            await SendEmailConfirmationAsync(model.Email);
+                            return View("ConfirmEmail", model.Email);
+                        }
+                        catch (Exception ex)
+                        {
+                            await logger.LogObjectToFile("RegisterAccount", ex);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var identityError in createResult.Errors)
+                        {
+                            ModelState.AddModelError("", identityError.Description);
+                        }
                     }
                 }
-                else
-                {
-                    foreach (var identityError in createResult.Errors)
-                    {
-                        ModelState.AddModelError("", identityError.Description);
-                    }
-                }
+                return View(model); 
             }
-            return View(model);
+            catch(Exception ex)
+            {
+                await logger.LogStringToFile($"reg post error {ex.Message} {ex.StackTrace}");
+            }
         }
 
         /// <summary>
@@ -206,7 +217,7 @@ namespace EventB.Controllers
                 $"<p>Это письмо создано автоматически, пожалуйста не отвечайте на него.</p>" +
                 $"<p>Если вы не регистрировались на сайте, то просто проигнорируйте это сообщение.</p>";
 
-            var mailSender = new MailSender();
+            var mailSender = new MailSender(logger);
 
             await mailSender.SendEmailAsync(email, "Подтверждение электронной почты на сайте nisidi.ru.", message);
         }
@@ -325,7 +336,7 @@ namespace EventB.Controllers
 
             var code = await userManager.GeneratePasswordResetTokenAsync(user);
             var url = Url.Action("PasswordRecoveryPage", "Account", new {userId= user.Id, code = code }, HttpContext.Request.Scheme);
-            MailSender mailSender = new MailSender();
+            MailSender mailSender = new MailSender(logger);
             await mailSender.SendEmailAsync(email, "Восстановление пароля", $"<a href={url}>Нажмите для восстановления</a>");
             return View("PasswordRecoveryConfirm");
         }

@@ -84,7 +84,7 @@ namespace EventBLib.Models
         /// <summary>
         /// Город проведения.
         /// </summary>
-        [MaxLength(100)]
+        [MaxLength(1000)]
         public string City { get; set; }
 
         /// <summary>

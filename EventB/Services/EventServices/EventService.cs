@@ -61,67 +61,69 @@ namespace EventB.Services.EventServices
         /// <returns></returns>
         public async Task<Event> AddEvent(AddEventViewModel model, string userName)
         {
-            await logger.LogStringToFile("Начало создания события");
-            // Значение картинки если ее нет.
-            var fileName = Guid.NewGuid().ToString();
-            string imgSourse = String.Concat("/images/EventImages/", fileName);
-            string imgMedium = String.Concat("/images/EventImages/Medium/", "M" + fileName);
-            string imgMini = String.Concat("/images/EventImages/Mini/", "m" + fileName);
-
-            if (model.MainPicture != null)
+            try
             {
-                try
+                await logger.LogStringToFile("Начало создания события");
+
+                var fileName = Guid.NewGuid().ToString();
+                string imgSourse = String.Concat("/images/EventImages/", fileName);
+                string imgMedium = String.Concat("/images/EventImages/Medium/", "M" + fileName);
+                string imgMini = String.Concat("/images/EventImages/Mini/", "m" + fileName);
+
+                if (model.MainPicture != null)
                 {
-                    var newImagesDict = new Dictionary<int, string>();
+                    try
+                    {
+                        var newImagesDict = new Dictionary<int, string>();
 
-                    newImagesDict.Add(0, imgSourse);
-                    newImagesDict.Add(360, imgMedium);
-                    newImagesDict.Add(100, imgMini);
+                        newImagesDict.Add(0, imgSourse);
+                        newImagesDict.Add(360, imgMedium);
+                        newImagesDict.Add(100, imgMini);
 
-                    newImagesDict = await imageService.SaveOriginAndResizedImagesByInputedSizes(model.MainPicture, IMAGE_SUFFIX, newImagesDict);
+                        newImagesDict = await imageService.SaveOriginAndResizedImagesByInputedSizes(model.MainPicture, IMAGE_SUFFIX, newImagesDict);
 
-                    imgSourse = newImagesDict[0];
-                    imgMedium = newImagesDict[360];
-                    imgMini = newImagesDict[100];
+                        imgSourse = newImagesDict[0];
+                        imgMedium = newImagesDict[360];
+                        imgMini = newImagesDict[100];
+                    }
+                    catch (Exception ex)
+                    {
+                        await logger.LogStringToFile($"Ошибка создания картинок для события : {ex.Message}");
+                    }
                 }
-                catch(Exception ex)
+                else
                 {
-                    await logger.LogStringToFile($"Ошибка создания картинок для события : {ex.Message}");
+                    await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgSourse, 800, IMAGE_SUFFIX);
+                    imgSourse += IMAGE_SUFFIX;
+                    await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgMedium, 360, IMAGE_SUFFIX);
+                    imgMedium += IMAGE_SUFFIX;
+                    await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgMini, 100, IMAGE_SUFFIX);
+                    imgMini += IMAGE_SUFFIX;
                 }
-            }
-            else
-            {
-                await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgSourse, 800, IMAGE_SUFFIX);
-                imgSourse += IMAGE_SUFFIX;
-                await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgMedium, 360, IMAGE_SUFFIX);
-                imgMedium += IMAGE_SUFFIX;
-                await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgMini, 100, IMAGE_SUFFIX);
-                imgMini += IMAGE_SUFFIX;
-            }
-            // Пользователь который выложил.
-            var creator = await userManager.FindByNameAsync(userName);
-            // Добавляем в посетителей автора.
-            var vizit = new Vizit
-            {
-                User = creator,
-                EventTitle = model.Title,
-                EventPhoto = imgMedium,
-                VizitorName = creator.Name,
-                VizitirPhoto = creator.MediumImage
-            };
+                
+                var creator = await userManager.FindByNameAsync(userName);
+                
+                var vizit = new Vizit
+                {
+                    User = creator,
+                    EventTitle = model.Title,
+                    EventPhoto = imgMedium,
+                    VizitorName = creator.Name,
+                    VizitirPhoto = creator.MediumImage
+                };
 
-            var vizits = new List<Vizit> { vizit };
+                var vizits = new List<Vizit> { vizit };
 
-            var tegs = tegSplitter.GetEnumerable(model.Tegs.ToUpper()).ToList();
-            List<EventTeg> eventTegs = new List<EventTeg>();
-            foreach (var teg in tegs)
-            {
-                eventTegs.Add(new EventTeg { Teg = teg });
-            }
-            // Создание чата к событию.
-            var chat = new Chat
-            {
-                Messages = new List<Message>
+                var tegs = tegSplitter.GetEnumerable(model.Tegs.ToUpper()).ToList();
+                List<EventTeg> eventTegs = new List<EventTeg>();
+                foreach (var teg in tegs)
+                {
+                    eventTegs.Add(new EventTeg { Teg = teg });
+                }
+                
+                var chat = new Chat
+                {
+                    Messages = new List<Message>
                 {
                     new Message
                     {
@@ -132,52 +134,58 @@ namespace EventB.Services.EventServices
                         EventState = true
                     }
                 },
-                UserChat = new List<UserChat>()
-            };
+                    UserChat = new List<UserChat>()
+                };
 
-            UserChat userChat = new UserChat
-            {
-                UserId = creator.Id,
-                ChatName = model.Title.Length > 25 ? model.Title.Remove(25) + "..." : model.Title,
-                ChatPhoto = imgMini
-            };
-            chat.UserChat.Add(userChat);
-            // Итоговое формирование события.
-            var eve = new Event
-            {
-                Title = model.Title,
-                NormalizedTitle = model.Title.ToUpper(),
-                Body = model.Body,
-                EventTegs = eventTegs,
-                City = model.City,
-                NormalizedCity = model.City.ToUpper(),
-                Place = model.Place,
-                Date = model.Date,
-                Type = EventType.Private,
-                Views = 0,
-                WillGo = 1,
-                Creator = creator,
-                Image = imgSourse,
-                CreationDate = DateTime.Now,
-                Vizits = vizits,
-                Chat = chat,
-                Phone = model.Phone,
-                AgeRestrictions = model.AgeRestrictions,
-                MediumImage = imgMedium,
-                MiniImage = imgMini
-            };
+                UserChat userChat = new UserChat
+                {
+                    UserId = creator.Id,
+                    ChatName = model.Title.Length > 25 ? model.Title.Remove(25) + "..." : model.Title,
+                    ChatPhoto = imgMini
+                };
+                chat.UserChat.Add(userChat);
+                
+                var eve = new Event
+                {
+                    Title = model.Title,
+                    NormalizedTitle = model.Title.ToUpper(),
+                    Body = model.Body,
+                    EventTegs = eventTegs,
+                    City = model.City,
+                    NormalizedCity = model.City.ToUpper(),
+                    Place = model.Place,
+                    Date = model.Date,
+                    Type = EventType.Private,
+                    Views = 0,
+                    WillGo = 1,
+                    Creator = creator,
+                    Image = imgSourse,
+                    CreationDate = DateTime.Now,
+                    Vizits = vizits,
+                    Chat = chat,
+                    Phone = model.Phone,
+                    AgeRestrictions = model.AgeRestrictions,
+                    MediumImage = imgMedium,
+                    MiniImage = imgMini
+                };
 
-            if (!string.IsNullOrWhiteSpace(model.TicketsDesc))
-            {
-                eve.TicketsDesc = model.TicketsDesc;
-                eve.Tickets = true;
+                if (!string.IsNullOrWhiteSpace(model.TicketsDesc))
+                {
+                    eve.TicketsDesc = model.TicketsDesc;
+                    eve.Tickets = true;
+                }
+
+                await context.Events.AddAsync(eve);
+                await context.SaveChangesAsync();
+                await logger.LogObjectToFile("Создано событие ", eve);
+                await logger.LogStringToFile($"Окончание создания события с номером {eve.EventId}");
+                return eve;
             }
-
-            await context.Events.AddAsync(eve);
-            await context.SaveChangesAsync();
-            await logger.LogObjectToFile("Создано событие ", eve);
-            await logger.LogStringToFile($"Окончание создания события с номером {eve.EventId}");
-            return eve;
+            catch(Exception Ex)
+            {
+                await logger.LogStringToFile($"Событие не сохранено по причине: {Ex.Message}: {Ex.StackTrace}");
+                throw Ex;
+            }            
         }
 
         /// <summary>

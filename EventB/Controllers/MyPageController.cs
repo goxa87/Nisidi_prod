@@ -137,6 +137,7 @@ namespace EventB.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [Route("MyPage/EditProfile")]
         public async Task<IActionResult> EditProfile()
         {
             var curUser = await userManager.GetUserAsync(HttpContext.User);
@@ -168,6 +169,7 @@ namespace EventB.Controllers
         /// <param name="model">VM от пользователя.</param>
         /// <returns>Редирект к моей странице.</returns>
         [HttpPost]
+        [Route("MyPage/EditProfile")]
         public async Task<IActionResult> EditProfile(EditProfileVM model)
         {
             if (string.IsNullOrWhiteSpace(model.Name) || string.IsNullOrWhiteSpace(model.City))

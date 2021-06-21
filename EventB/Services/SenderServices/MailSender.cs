@@ -1,4 +1,5 @@
-﻿using MailKit.Net.Smtp;
+﻿using EventB.Services.Logger;
+using MailKit.Net.Smtp;
 using MimeKit;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,13 @@ namespace EventB.Services.SenderServices
 {
     public class MailSender
     {
+
+        private readonly ILogger _logger;
+        public MailSender( ILogger logger)
+        {
+            _logger = logger;
+        }
+
         /// <summary>
         /// Это нужно от ложить и попробовать после того как сайт окажется на сервере. нужен ссл сертификат.
         /// </summary>
@@ -20,7 +28,7 @@ namespace EventB.Services.SenderServices
         {
             var emailMessage = new MimeMessage();
 
-            emailMessage.From.Add(new MailboxAddress("mail@nisidi.ru"));
+            emailMessage.From.Add(new MailboxAddress("support@stable-nisidi.ru"));
             emailMessage.To.Add(new MailboxAddress(email));
             emailMessage.Subject = target;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
@@ -31,14 +39,14 @@ namespace EventB.Services.SenderServices
             {
                 using (var client = new SmtpClient())
                 {
-                    await client.ConnectAsync("127.0.0.1", 25, false);
+                    await client.ConnectAsync("mail.hosting.reg.ru", 465, true);
                     await client.SendAsync(emailMessage);
                     await client.DisconnectAsync(true);
                 }
             }
             catch(Exception ex)
             {
-                
+                await _logger.LogStringToFile($"Отправка произошла ошибка {ex.Message}\n{ex.StackTrace}");
             }            
         }
     }

@@ -1,6 +1,5 @@
 ﻿@model EventB.ViewModels.Account.UserLogin
 @{
-    ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Войти";
 }
@@ -8,7 +7,7 @@
     <div class="top-page-header">Войти</div>
 
     <div class="identity-cintainer">
-        <form asp-action="Login" asp-antiforgery="true" method="post">
+        <form asp-controller="Account" asp-action="Login" asp-antiforgery="true" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ReturnUrl" />
 
