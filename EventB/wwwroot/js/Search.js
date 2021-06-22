@@ -15,13 +15,7 @@ $(function () {
         dateSerializationFormat: "yyyy-MM-dd",
         showClearButton: true,
         onValueChanged: function (e) {
-            var date = Date.parse(e.value);
-            console.log(date);
-            date = new Date(date += (1 * 24 * 60 * 60 * 1000));
-            console.log(date.toDateString());
-            let dateStr = `${date.getFullYear()}-${(date.getMonth() + 1) < 10 ? ('0' + date.getMonth() + 1) : (date.getMonth() + 1)}-${(date.getDate()) < 10 ? ('0' + date.getDate()) : (date.getDate())}`;
-            console.log(dateStr)
-            $('#ser-date-due').val(dateStr);
+            $('#ser-date-due').val(e.value);
         }
     });
 });
