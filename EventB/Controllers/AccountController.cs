@@ -198,6 +198,8 @@ namespace EventB.Controllers
             catch(Exception ex)
             {
                 await logger.LogStringToFile($"reg post error {ex.Message} {ex.StackTrace}");
+                ModelState.AddModelError("", ex.Message);
+                return View(model);
             }
         }
 

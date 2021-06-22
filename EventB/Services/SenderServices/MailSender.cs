@@ -4,6 +4,8 @@ using MimeKit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+//using System.Net.Mail;
 using System.Threading.Tasks;
 
 namespace EventB.Services.SenderServices
@@ -26,6 +28,7 @@ namespace EventB.Services.SenderServices
         /// <returns></returns>
         public async Task SendEmailAsync(string email, string target, string message)
         {
+            
             var emailMessage = new MimeMessage();
 
             emailMessage.From.Add(new MailboxAddress("support@stable-nisidi.ru"));
@@ -35,14 +38,32 @@ namespace EventB.Services.SenderServices
             {
                 Text = message
             };
+            
             try
             {
+                
                 using (var client = new SmtpClient())
                 {
                     await client.ConnectAsync("mail.hosting.reg.ru", 465, true);
+                    await client.AuthenticateAsync(new NetworkCredential("support@stable-nisidi.ru", "utjhubqrhen456*+"));
+                    
                     await client.SendAsync(emailMessage);
                     await client.DisconnectAsync(true);
                 }
+                
+                /*
+                MailAddress from = new MailAddress("support@stable-nisidi.ru", "NISIDI.RU");
+                MailAddress to = new MailAddress(email);
+                MailMessage m = new MailMessage(from, to);
+                m.Subject = target;
+                m.Body = message;
+                System.Net.Mail.SmtpClient smtp = new SmtpClient("mail.hosting.reg.ru", 465);
+                smtp.Credentials = new NetworkCredential("support@stable-nisidi.ru", "utjhubqrhen456*+");
+                smtp.EnableSsl = true;
+                await smtp.SendMailAsync(m);
+                //Console.WriteLine("Письмо отправлено");
+                await _logger.LogStringToFile($"Письмо отправлено на {email} с темой {target}");
+                */
             }
             catch(Exception ex)
             {
