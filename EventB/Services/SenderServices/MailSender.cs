@@ -41,33 +41,18 @@ namespace EventB.Services.SenderServices
             
             try
             {
-                
                 using (var client = new SmtpClient())
                 {
-                    await client.ConnectAsync("mail.hosting.reg.ru", 465, true);
+                    await client.ConnectAsync("wpl42.hosting.reg.ru", 587, false);
                     await client.AuthenticateAsync(new NetworkCredential("support@stable-nisidi.ru", "utjhubqrhen456*+"));
                     
                     await client.SendAsync(emailMessage);
                     await client.DisconnectAsync(true);
                 }
-                
-                /*
-                MailAddress from = new MailAddress("support@stable-nisidi.ru", "NISIDI.RU");
-                MailAddress to = new MailAddress(email);
-                MailMessage m = new MailMessage(from, to);
-                m.Subject = target;
-                m.Body = message;
-                System.Net.Mail.SmtpClient smtp = new SmtpClient("mail.hosting.reg.ru", 465);
-                smtp.Credentials = new NetworkCredential("support@stable-nisidi.ru", "utjhubqrhen456*+");
-                smtp.EnableSsl = true;
-                await smtp.SendMailAsync(m);
-                //Console.WriteLine("Письмо отправлено");
-                await _logger.LogStringToFile($"Письмо отправлено на {email} с темой {target}");
-                */
             }
             catch(Exception ex)
             {
-                await _logger.LogStringToFile($"Отправка произошла ошибка {ex.Message}\n{ex.StackTrace}");
+                await _logger.LogStringToFile($"Новый Отправка произошла ошибка {ex.Message}\n{ex.StackTrace}");
             }            
         }
     }
