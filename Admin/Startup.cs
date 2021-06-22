@@ -19,8 +19,14 @@ namespace Admin
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostEnvironment environment)
         {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(environment.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
+            this.Configuration = builder.Build();
             Configuration = configuration;
         }
 
@@ -30,12 +36,12 @@ namespace Admin
         {
             string connection = Configuration.GetConnectionString("EB1");
             services.AddDbContext<Context>(options => {
-                options.UseMySql(connection);
+                options.UseSqlServer(connection);
             });
 
             string adminConnection = Configuration.GetConnectionString("Admin");
             services.AddDbContext<AdminContext>(options => {
-                options.UseMySql(adminConnection);
+                options.UseSqlServer(adminConnection);
             });
 
             services.AddIdentity<AdminUser, IdentityRole>(
