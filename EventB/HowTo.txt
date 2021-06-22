@@ -5,3 +5,11 @@ REG.RU
 Остановить процесс на сервере, иначе он скажет что дллки заняты другим процессом. 
 для локальной разработки использовать бд стэйбла . Указать в конфигк айпишник
 для публикации на стэйбл использовать localhost
+
+
+БД
+add-migration init -Context AdminContext - добавить миграцию с таким то именем
+update-database -Context AdminContext - обновить (выбрать контекст)
+$env:ASPNETCORE_ENVIRONMENT='Stable' - изменить окружение среды 
+Get-DbContext -Context AdminContext - вывестив консоль описание текущего контекста
+
