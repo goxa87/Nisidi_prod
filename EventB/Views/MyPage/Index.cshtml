@@ -43,7 +43,12 @@
             {
                 @foreach (var e in Model.Intereses)
                 {
-                    <span class="mp-teg">@e.Value</span>
+                    var tegData = new EventB.ViewModels.SharedViews.TegColoredLink()
+                    {
+                        TegValue = e.Value,
+                        City = Model.City
+                    };
+                    await Html.RenderPartialAsync("~/Views/Shared/_tegColoredLink.cshtml", tegData);
                 }
             }
         </div>

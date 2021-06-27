@@ -128,6 +128,7 @@ namespace EventB.Controllers
                 return StatusCode(204);
         }
 
+        [Route("/Events/SearchEventlist")]
         public async Task<IActionResult> SearchEventlist(CostomSelectionArgs args)
         {
             var user = await userManager.GetUserAsync(User);

@@ -1,0 +1,9 @@
+﻿@model EventB.ViewModels.SharedViews.TegColoredLink
+    @{ 
+        var link = $"/Events/SearchEventlist?City={Model.City}&Tegs={Model.TegValue}&Skip=0&Take=20";
+    }
+<a href="@link" class="teg-colored-link">
+    <div class="teg-colored-content">
+        @Model.TegValue
+    </div>
+</a>

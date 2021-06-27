@@ -18,6 +18,17 @@
         <div class="ev-half">
             <h2>@Model.Title</h2>
             <hr>
+            <div class="ev-teg-placeholder">
+                @foreach(var teg in Model.EventTegs)
+                {
+                    var tegData = new EventB.ViewModels.SharedViews.TegColoredLink()
+                    {
+                        TegValue = teg.Teg,
+                        City = Model.City
+                    };
+                    await Html.RenderPartialAsync("~/Views/Shared/_tegColoredLink.cshtml", tegData);
+                }
+            </div>
             <h3>Когда: @Model.Date.ToString("dd.MM.yyyy HH:mm")</h3>
             <h4>Город: @Model.City</h4>
             <h4>Где: @Model.Place </h4>

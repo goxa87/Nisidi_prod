@@ -1120,7 +1120,22 @@ figure img {
     font-size: 14px;
     text-decoration: underline;
 }
-
+.teg-colored-link:hover,
+.teg-colored-link:active,
+.teg-colored-link {
+    padding: 4px;
+    border-radius: 4px;
+    border: 1px solid #333;
+    color: #ffcd00;
+    margin: 4px;
+    background-color: #2b6982;
+}
+    .teg-colored-link:nth-child(even) {
+        background-color: #0b4962;
+    }
+.teg-colored-content{
+    line-height: 1em;
+}
 /*MEDIA*/
 @media(max-width: 380px) {
     .eventlist-container {
