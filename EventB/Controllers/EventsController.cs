@@ -95,7 +95,7 @@ namespace EventB.Controllers
                     DateSince = DateTime.Now,
                     DateDue = DateTime.Now.AddDays(31),
                     Title = "",
-                    City = "МОСКВА",
+                    City = "СТАВРОПОЛЬ",
                     Tegs = "",
                     IsTegsFromProfile = false,
                     Skip = 0,
@@ -135,7 +135,7 @@ namespace EventB.Controllers
             args.DateDue = args.DateDue.AddDays(1);
             args.Title = args.Title ?? "";
 
-            args.City = args.City != null ? args.City.ToUpper() : (user!=null ? user.NormalizedCity : "Москва");
+            args.City = args.City != null ? args.City.ToUpper() : (user!=null ? user.NormalizedCity : "СТАВРОПОЛЬ");
             args.Tegs = args.Tegs ?? "";
 
             //var rezult = await eventSelector.GetCostomEventsAsync(args);

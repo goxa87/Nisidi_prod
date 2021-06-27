@@ -117,11 +117,14 @@ namespace EventB.Services.FriendService
         {
             var currentUser = await userManager.FindByNameAsync(currentUserAppName);
 
-            city = city?.Trim().ToUpper() ?? currentUser.NormalizedCity;
-            var result = context.Users.Include(e => e.Intereses).Where(e => e.NormalizedCity == city
-                  && e.Visibility == AccountVisible.Visible
-                  && e.UserName != currentUserAppName);
             
+            var result = context.Users.Include(e => e.Intereses).Where(e => e.Visibility == AccountVisible.Visible && e.UserName != currentUserAppName);
+
+            if (!string.IsNullOrWhiteSpace(city))
+            {
+                result = result.Where(e => e.NormalizedCity == city.Trim().ToUpper());
+            }
+
             var splittedTegs = tegSplitter.GetEnumerable(teg);
             if (splittedTegs != null)
             {
