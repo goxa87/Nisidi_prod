@@ -342,6 +342,7 @@ namespace EventB.Controllers
                 Tickets = eve.TicketsDesc,
                 OldTickets = eve.TicketsDesc,
                 Phone = eve.Phone,
+                OldPhone = eve.Phone,
                 AgeRest = eve.AgeRestrictions
             };
             ViewBag.EventType = eve.Type;

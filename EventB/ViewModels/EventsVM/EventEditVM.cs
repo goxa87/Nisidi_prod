@@ -51,6 +51,7 @@ namespace EventB.ViewModels.EventsVM
 
         [MaxLength(25), Display(Name = "Телефон для связи (НЕОБЯЗАТЕЛЬНО)")]
         public string Phone { get; set; }
+        public string OldPhone { get; set; }
         [Display(Name ="Возрастные ограничения")]
         public int AgeRest { get; set; }
 

@@ -497,19 +497,7 @@ namespace EventB.Services.EventServices
             // Здесь подправить разметку чтобы отображать абзацами
             string messageTemplate = "Изменения в событии:<br>";
             string chatMessage = messageTemplate;
-            // При внесении изменений в теги.
-            if (model.Tegs != eve.Tegs)
-            {
-                var tegs = tegSplitter.GetEnumerable(model.Tegs.ToUpper()).ToList();
-                List<EventTeg> eventTegs = new List<EventTeg>();
-                foreach (var teg in tegs)
-                {
-                    eventTegs.Add(new EventTeg { Teg = teg });
-                }
-                eve.EventTegs = eventTegs;
-                chatMessage += $"<p><span>Новые теги: </span>{model.Tegs}</p>";
-            }
-            // При внесении изменений в назавание.
+
             if (model.Title != model.OldTitle)
             {
                 eve.Title = model.Title;
@@ -526,16 +514,50 @@ namespace EventB.Services.EventServices
                 context.Vizits.UpdateRange(vizits);
                 chatMessage += $"<p><span>Новое название: </span>{model.Title}</p>";
             }
-            if (model.Body != model.OldBody)
-            {
-                eve.Body = model.Body;
-                chatMessage += $"<p>Изменено описание.</p>";
-            }
+
             if (model.Place != model.OldPlace)
             {
                 eve.Place = model.Place;
                 chatMessage += $"<p><span>Новое место: </span>{model.Place}</p>";
+            }            
+
+            if (model.Date != model.OldDate && eve.Type == EventType.Private)
+            {
+                eve.Date = model.Date;
+                chatMessage += $"<p><span>Новое время: </span>{model.Date.ToString("dd.MM.yy HH:mm")}</p>";
             }
+
+            if (model.City != model.OldCity)
+            {
+                eve.City = model.City;
+                eve.NormalizedCity = model.City.ToUpper();
+                chatMessage += $"<p><span>Новый город: </span>{model.City}</p>";
+            }
+
+            if (model.Tegs != eve.Tegs)
+            {
+                var tegs = tegSplitter.GetEnumerable(model.Tegs.ToUpper()).ToList();
+                List<EventTeg> eventTegs = new List<EventTeg>();
+                foreach (var teg in tegs)
+                {
+                    eventTegs.Add(new EventTeg { Teg = teg });
+                }
+                eve.EventTegs = eventTegs;
+                chatMessage += $"<p><span>Новые теги: </span>{model.Tegs}</p>";
+            }
+
+            if (model.OldPhone != model.Phone)
+            {
+                eve.Phone = model.Phone;
+                chatMessage += $"<p><span>Новый контактный телефон: </span>{model.Phone}</p>";
+            }
+
+            if (model.Body != model.OldBody)
+            {
+                eve.Body = model.Body;
+                chatMessage += $"<p>Изменено описание.</p>";
+            }            
+            
             if(model.Tickets != model.OldTickets)
             {
                 if (!string.IsNullOrWhiteSpace(model.Tickets))
@@ -550,17 +572,8 @@ namespace EventB.Services.EventServices
                     eve.Tickets = false;
                 }
             }
-            if (model.City != model.OldCity)
-            {
-                eve.City = model.City;
-                eve.NormalizedCity = model.City.ToUpper();
-                chatMessage += $"<p><span>Новый город: </span>{model.City}</p>";
-            }
-            if (model.Date != model.OldDate && eve.Type == EventType.Private)
-            {
-                eve.Date = model.Date;
-                chatMessage += $"<p><span>Новое время: </span>{model.Date.ToString("dd.MM.yy HH:mm")}</p>";
-            }
+
+            eve.AgeRestrictions = model.AgeRest;
             
             if (chatMessage != messageTemplate)
             {
@@ -573,8 +586,7 @@ namespace EventB.Services.EventServices
                     Text = chatMessage
                 });
             }
-            eve.Phone = model.Phone;
-            eve.AgeRestrictions = model.AgeRest;
+
             context.Events.Update(eve);
             await context.SaveChangesAsync();
             return eve;
