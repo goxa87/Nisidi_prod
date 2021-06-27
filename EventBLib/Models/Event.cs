@@ -179,6 +179,11 @@ namespace EventBLib.Models
         public Chat Chat { get; set; }
 
         /// <summary>
+        /// Приглашения на это событие
+        /// </summary>
+        public List<Invite> Invites { get; set; }
+
+        /// <summary>
         /// Ключи для поиска.
         /// </summary>
         public List<EventTeg> EventTegs { get; set; }

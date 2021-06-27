@@ -315,6 +315,7 @@ namespace EventB.Services.EventServices
             var curentEv = await context.Events.
                 Include(e => e.Vizits).ThenInclude(e => e.User).
                 Include(e => e.Chat).ThenInclude(e => e.UserChat).
+                Include(e=>e.Invites).
                 FirstOrDefaultAsync(e => e.EventId == eventId);
             // Если не найдено событие.
             if (curentEv == null)
@@ -337,8 +338,15 @@ namespace EventB.Services.EventServices
             }
             else
             {
+                // Удалить приглашение если оно есть
+                var invitie = curentEv.Invites.FirstOrDefault(e => e.UserId == user.Id);
+                if(invitie != null)
+                {
+                    context.Invites.Remove(invitie);
+                }
+
                 // Его нет. Добавить в список, добавить чат.
-                if(!curentEv.Chat.UserChat.Any(e=>e.UserId == user.Id))
+                if (!curentEv.Chat.UserChat.Any(e=>e.UserId == user.Id))
                 {
                     var newUserChat = new UserChat
                     {

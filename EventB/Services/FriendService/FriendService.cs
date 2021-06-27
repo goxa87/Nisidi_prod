@@ -115,10 +115,8 @@ namespace EventB.Services.FriendService
 
         public async Task<List<SmallFigureFriendVM>> SearchFriend(string name, string teg, string city, string currentUserAppName)
         {
-            var currentUser = await userManager.FindByNameAsync(currentUserAppName);
-
-            
-            var result = context.Users.Include(e => e.Intereses).Where(e => e.Visibility == AccountVisible.Visible && e.UserName != currentUserAppName);
+            var currentUser = await userManager.FindByNameAsync(currentUserAppName);            
+            var result = context.Users.Include(e => e.Intereses).Where(e => e.Visibility == AccountVisible.Visible && e.Id != currentUser.Id);
 
             if (!string.IsNullOrWhiteSpace(city))
             {
