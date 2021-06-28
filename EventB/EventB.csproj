@@ -31,8 +31,12 @@
   <ItemGroup>
     <Folder Include="wwwroot\images\EventImages\Medium\" />
     <Folder Include="wwwroot\images\EventImages\Mini\" />
+    <Folder Include="wwwroot\images\EventImages\Mini\" />
+    <Folder Include="wwwroot\images\EventImages\Medium\" />
     <Folder Include="wwwroot\images\Profileimages\Medium\" />
     <Folder Include="wwwroot\images\Profileimages\Mini\" />
+    <Folder Include="wwwroot\images\Profileimages\Mini\" />
+    <Folder Include="wwwroot\images\Profileimages\Medium\" />
     <Folder Include="wwwroot\logs\" />
     <Folder Include="wwwroot\resourses\helpimages\" />
   </ItemGroup>

@@ -19,6 +19,7 @@ using System.Diagnostics;
 using System.Text;
 using Microsoft.CodeAnalysis.CSharp;
 using EventB.Services.EventServices;
+using EventB.ViewModels.SharedViews;
 
 namespace EventB.Controllers
 {
@@ -181,28 +182,69 @@ namespace EventB.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<ActionResult> Details(int? id)
-        {
-            if (id.HasValue)
-            {               
-                Event eve;
-               
-                if (!string.IsNullOrWhiteSpace(User?.Identity?.Name))
+        public async Task<ActionResult> Details(int id)
+        {             
+            Event eve;
+
+            eve = await eventService.Details(id);
+
+            if(eve == null)
+            {
+                return View("~/Views/Shared/_AccessDeniedPage.cshtml", new AccessDeniedVM()
                 {
-                    var user = await userManager.FindByNameAsync(User.Identity.Name);
-                    eve = await eventService.Details(id.Value, user.Id);
-                    ViewData["UserId"] = user.Id;
-                    ViewData["UserName"] = user.Name;
-                }
-                else
-                {
-                    eve = await eventService.Details(id.Value, null);
-                    ViewData["UserId"] = "0";
-                    ViewData["UserName"] = "Неавторизован";
-                }
-                return View(eve);
+                    Tittle = "Искомое событие не найдено",
+                    Reazon = "Событие с введенными параметрами не найдено.",
+                    Text = "Попробуйте изменить параметры поиска и проверить правильность ввода адреса"
+                });
             }
-            return NotFound();
+            UserChat userChat;
+            if (!string.IsNullOrWhiteSpace(User?.Identity?.Name))
+            {
+                var user = await context.Users.
+                    Include(e=>e.Invites).
+                    Include(e=>e.Friends).
+                    Include(e=>e.UserChats).ThenInclude(e=>e.Chat).
+                    FirstAsync(e=>e.NormalizedUserName == User.Identity.Name.ToUpper());
+                ViewData["UserId"] = user.Id;
+                ViewData["UserName"] = user.Name;
+
+                userChat = user.UserChats.FirstOrDefault(e => e.Chat.EventId == id);
+                if(userChat == null)
+                {
+                    userChat = new UserChat();
+                }
+
+                if(eve.Type == EventType.Private && 
+                    !eve.Vizits.Any(e=>e.UserId == user.Id) && 
+                    !user.Invites.Any(e=>e.EventId == id) && 
+                    !user.Friends.Any(e => !e.IsBlocked && e.FriendUserId == eve.UserId) &&
+                    eve.UserId != user.Id)
+                {
+                    return View("~/Views/Shared/_AccessDeniedPage.cshtml", new AccessDeniedVM()
+                    {
+                        Tittle = "Недоступно",
+                        Reazon = "Событие является привантым.",
+                        Text = "Для просмотра добавьте организатора в дузья или получите приглашение на это событие."
+                    });
+                }
+            }
+            else
+            {
+                userChat = new UserChat();
+                ViewData["UserId"] = "0";
+                ViewData["UserName"] = "Неавторизован";
+                if (eve.Type == EventType.Private)
+                {
+                    return View("~/Views/Shared/_AccessDeniedPage.cshtml", new AccessDeniedVM()
+                    {
+                        Tittle = "Недоступно",
+                        Reazon = "Событие является привантым.",
+                        Text = "Необходима регистрация для просмотра частных событий. Для просмотра добавьте организатора в пдузья или получите приглашение на это событие."
+                    });
+                }
+            }
+            eve.Chat.UserChat = new List<UserChat>() { userChat};
+            return View(eve);
         }
 
         #region АПИ для деталей события

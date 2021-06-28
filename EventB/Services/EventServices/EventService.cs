@@ -193,25 +193,17 @@ namespace EventB.Services.EventServices
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<Event> Details(int id, string userId = null )
+        public async Task<Event> Details(int id)
         {
             // Берем юзер чат  для пользователя для отображения заблокированности
             var eve = await context.Events.
                      Include(e => e.Creator).
+                     ThenInclude(e=>e.Friends).
                      Include(e => e.Chat).
                      ThenInclude(e => e.Messages).
                      Include(e => e.EventTegs).
                      Include(e => e.Vizits).
                      FirstOrDefaultAsync(e => e.EventId == id);
-            if (!string.IsNullOrWhiteSpace(userId))
-            {
-                var userChat = await context.UserChats.Where(e => e.ChatId == eve.Chat.ChatId && e.UserId == userId).ToListAsync();
-                eve.Chat.UserChat = userChat;
-            }
-            else
-            {
-                eve.Chat.UserChat = new List<UserChat>(0);
-            }
             return eve;
         }
 
