@@ -45,14 +45,15 @@
                     </div>
                 </div>
                 <div>
-                    @if(Context?.User?.Identity != null && Context.User.Identity.IsAuthenticated)
+                    @if (Context?.User?.Identity != null && Context.User.Identity.IsAuthenticated)
                     {
-                        <div>@Context?.User?.Identity.Name
-                            <a asp-action="Logout" asp-controller="Account">
-                                <span class="btn btn-info">Выйти</span>
-                            </a>
-                        </div>
-                    }
+                        <div>
+                            @Context?.User?.Identity.Name
+                        <a asp-action="Logout" asp-controller="Account">
+                            <span class="btn btn-info">Выйти</span>
+                        </a>
+                    </div>
+                }
                 </div>
             </div>
         </nav>
@@ -65,6 +66,8 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="~/js/dx.all.js"></script>
+    <script type="text/javascript" src="~/js/dx.messages.ru.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/@ViewData["Script"]" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)

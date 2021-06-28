@@ -14,14 +14,27 @@ namespace Admin.Models.ViewModels.Events
         public string EventTitle { get; set; }
 
         /// <summary>
-        /// Дата С поиска
+        /// Дата создания события с
+        /// </summary>
+        public DateTime? EventCreateStartDate { get; set; }
+        
+        /// <summary>
+        /// дата создания события по
+        /// </summary>
+        public DateTime? EventCreateEndDate { get; set; }
+
+        /// <summary>
+        /// Дата С проведения поиска
         /// </summary>
         public DateTime? StartDate { get; set; }
 
         /// <summary>
-        /// Дата ПО поиска
+        /// Дата ПО проведения поиска
         /// </summary>
         public DateTime? EndDate { get; set; }
+
+
+
 
         /// <summary>
         /// Имя или логин пользователя
@@ -29,8 +42,11 @@ namespace Admin.Models.ViewModels.Events
         public string UserName { get; set; }
 
         /// <summary>
-        /// Параметр пагинации.
+        /// Публичные события.
         /// </summary>
-        public PagingParam PagingParam { get; set; }
+        public bool IsGlobal { get; set; }
+
+
+
     }
 }

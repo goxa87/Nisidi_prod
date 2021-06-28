@@ -9,7 +9,7 @@ namespace Admin.Models.ViewModels.Events
 {
     public class EventsListVM
     {
-        public PagingParam PagingParam { get; set; }
+        public EventListParam SearchParam { get; set; }
         public List<Event> Events { get; set; }
     }
 }

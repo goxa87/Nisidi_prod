@@ -1,3 +1,55 @@
-﻿@model Admin.Models.ViewModels.Events.EventsListVM
+﻿@model Admin.Models.ViewModels.Events.EventListParam
 
-<div></div>
+<div>
+    <div >
+        <div class="flex-hss">
+            <div>
+                <label class="form-label">Дата создания С:</label><br>
+                <input id="evelist-createstartdate" type="hidden" 
+                       value="@(Model.EventCreateStartDate.HasValue 
+                               ? Model.EventCreateStartDate.Value.ToString("yyyy-MM-ddTHH:mm:ss")
+                               : "")">
+                <div class="calender-width" id="dateCreateStartDE"></div>
+            </div>
+            <div>
+                <label class="form-label">Дата создания По:</label><br>
+                <input id="evelist-createenddate" type="hidden" 
+                       value="@(Model.EventCreateEndDate.HasValue
+                               ? Model.EventCreateEndDate.Value.ToString("yyyy-MM-ddTHH:mm:ss")
+                               : "")">
+                <div class="calender-width" id="dateCreateEndDE"></div>
+            </div>
+        </div>
+
+        <div class="flex-hss">
+            <div>
+                <label class="form-label">Дата проведения С:</label><br>
+                <input id="evelist-startdate" type="hidden" asp-for="StartDate">
+                <div class="calender-width" id="dateStartDE"></div>
+            </div>
+            <div>
+                <label class="form-label">Дата проведения По:</label><br>
+                <input id="evelist-enddate" type="hidden" asp-for="EndDate">
+                <div class="calender-width" id="dateEndDE"></div>
+            </div>
+        </div>
+        <br>
+        <div class="input-group-sm mb-3">
+            <label class="form-label">Заголовок:</label><br>
+            <input asp-for="EventTitle" type="text" class="form-control min-width400" />
+        </div>
+        <div class="input-group-sm mb-3">
+            <label class="form-label">Имя или id пользователя:</label><br>
+            <input asp-for="UserName" type="text" class="form-control min-width400" />
+        </div>
+
+        <div class="form-check">
+            <input asp-for="IsGlobal" class="form-check-input" type="checkbox" value="false" id="flexCheckDefault">
+            <label class="form-check-label" for="flexCheckDefault">
+                В статусе GLOBAL
+            </label>
+        </div>
+        <button class="eve-list-filter btn btn-info" >Найти</button>
+    </div>
+    <hr>
+</div>

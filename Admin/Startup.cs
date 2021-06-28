@@ -105,7 +105,7 @@ namespace Admin
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Statistic}/{id?}");
+                    pattern: "{controller=Events}/{action=EventList}/{id?}");
             });
         }
     }

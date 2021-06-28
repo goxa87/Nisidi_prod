@@ -35,16 +35,26 @@ namespace Admin.Services.EventsService
             // filter
             var query = context.Events.Include(e => e.EventTegs).Include(e=>e.Creator).AsQueryable();
 
-            if (!param.StartDate.HasValue)
+            if (!param.EventCreateStartDate.HasValue)
             {
-                param.StartDate = DateTime.Now.AddDays(-45);
+                param.EventCreateStartDate = DateTime.Now.AddDays(-45);
             }
 
-            if (!param.EndDate.HasValue)
+            if (!param.EventCreateEndDate.HasValue)
             {
-                param.EndDate = DateTime.Now;
+                param.EventCreateEndDate = DateTime.Now;
             }
-            query = query.Where(e => e.CreationDate > param.StartDate && e.CreationDate < param.EndDate);
+            query = query.Where(e => e.CreationDate > param.EventCreateStartDate && e.CreationDate < param.EventCreateEndDate);
+
+            if (param.StartDate.HasValue)
+            {
+                query.Where(e => e.Date >= param.StartDate);
+            }
+
+            if (param.EndDate.HasValue)
+            {
+                query.Where(e => e.Date <= param.EndDate);
+            }
 
             if (!string.IsNullOrEmpty(param.EventTitle))
             {
@@ -57,40 +67,12 @@ namespace Admin.Services.EventsService
                     || e.Creator.NormalizedName == param.UserName.ToUpper());
             }
 
-            // paging
-
-            var result = new EventsListVM();
-            result.PagingParam = param.PagingParam;
-
-            var allEvents = await query.ToListAsync();
-            var allEventCount = allEvents.Count;
-            if (allEventCount <= param.PagingParam.PageSize)
+            if (param.IsGlobal)
             {
-                result.PagingParam.CurrentPage = 1;
-                result.PagingParam.PageCount = 1;
-                result.PagingParam.TotalCount = allEventCount;
-                result.Events = allEvents;
-                return result;
+                query.Where(e => e.Type == EventBLib.Models.EventType.Global);
             }
 
-            var skip = param.PagingParam.CurrentPage * param.PagingParam.PageSize;
-            if(skip > allEventCount)
-            {
-                skip = allEventCount - (allEventCount % param.PagingParam.PageSize);
-                var take = allEventCount % param.PagingParam.PageSize;
-                result.Events = allEvents.Skip(skip).Take(take).ToList();
-                result.PagingParam.PageCount =(int)(allEventCount / param.PagingParam.PageSize) + 1;
-                result.PagingParam.CurrentPage = (int)(allEventCount / param.PagingParam.PageSize) + 1;
-                result.PagingParam.TotalCount = allEventCount;
-                return result;
-            }
-
-            skip = param.PagingParam.PageSize * param.PagingParam.CurrentPage - 1;            
-            result.Events = allEvents.Skip(skip).Take(param.PagingParam.PageSize).ToList();
-            result.PagingParam.PageCount = (int)(allEventCount / param.PagingParam.PageSize) + 1;
-            result.PagingParam.CurrentPage = (int)(allEventCount / param.PagingParam.PageSize);
-            result.PagingParam.TotalCount = allEventCount;
-            return result;
+            return new EventsListVM() { Events = await query.ToListAsync(), SearchParam = param };
         }
     }
 }

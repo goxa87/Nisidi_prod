@@ -1,28 +1,94 @@
-﻿
-$(document).ready(function () {
-    console.log('Executed');
-    getEventsMarkup(null, placeMarkup);
+﻿DevExpress.localization.locale("ru");
+// Настройка DE элементов
+$(function () {
+
+    var DateStartCreate = $('#evelist-createstartdate').val();
+    if (DateStartCreate != undefined && DateStartCreate != '') {
+        DateStartCreate = new Date(DateStartCreate);
+    }
+    else {
+        DateStartCreate = undefined;
+    }
+    $("#dateCreateStartDE").dxDateBox({
+        type: "datetime",
+        displayFormat: "dd.MM.yyyy HH:mm:ss",
+        dateSerializationFormat: "yyyy-MM-ddTHH:mm:ss",
+        showClearButton: true,
+        value: DateStartCreate,
+        onValueChanged: function (e) {
+            $('#evelist-createstartdate').val(e.value);
+        }
+    });
+
+    DateStartCreate = $('#evelist-createenddate').val();
+    if (DateStartCreate != undefined && DateStartCreate != '') {
+        DateStartCreate = new Date(DateStartCreate);
+    }
+    else {
+        DateStartCreate = undefined;
+    }
+    $("#dateCreateEndDE").dxDateBox({
+        type: "datetime",
+        displayFormat: "dd.MM.yyyy HH:mm:ss",
+        dateSerializationFormat: "yyyy-MM-ddTHH:mm:ss",
+        showClearButton: true,
+        value: DateStartCreate,
+        onValueChanged: function (e) {
+            $('#evelist-createenddate').val(e.value);
+        }
+    });
+
+    $("#dateStartDE").dxDateBox({
+        type: "datetime",
+        displayFormat: "dd.MM.yyyy HH:mm:ss",
+        dateSerializationFormat: "yyyy-MM-ddTHH:mm:ss",
+        showClearButton: true,
+        onValueChanged: function (e) {
+            $('#evelist-startdate').val(e.value);
+        }
+    });
+
+    $("#dateEndDE").dxDateBox({
+        type: "datetime",
+        displayFormat: "dd.MM.yyyy HH:mm:ss",
+        dateSerializationFormat: "yyyy-MM-ddTHH:mm:ss",
+        showClearButton: true,
+        onValueChanged: function (e) {
+            $('#evelist-enddate').val(e.value);
+        }
+    });
 });
 
-function getRequestBodyForEventsMarkup() {
-
-}
-
-function getEventsMarkup(param, callback) {
-    $.post({
-        url: '/Events/get-events-page',
-        data: param,
-        success: function (data) {
-            console.log('data1', data)
-            callback(data);
-        },
-        error: function () {
-            console.log('Error ...');
-        }
+$(document).ready(function () {
+    $('.eve-list-filter').click(function () {
+        let params = GetDataForFilter();
+        $.ajax({
+            method: 'POST',
+            data: params,
+            success: function (data) {
+                $('#evelist-table').html(data);
+            },
+            error: function () {
+                alert('Ошибка получения событий');
+            }
+        });
     })
-}
+});
 
-function placeMarkup(markup) {
-    $('#ev-page-content').html(markup);
-}
+
+function GetDataForFilter() {
+    let isGlobal = $('#IsGlobal').prop('checked');// ? true : false;
+    console.log('isGlobal')
+
+    return {
+        EventCreateStartDate: $('#evelist-createstartdate').val(),
+        EventCreateEndDate: $('#evelist-createenddate').val(),
+        StartDate: $('#evelist-startdate').val(),
+        EndDate: $('#evelist-enddate').val(),
+        EventTitle: $('#EventTitle').val(),
+        UserName: $('#UserName').val(),
+        IsGlobal: isGlobal,
+    }
+};
+
 

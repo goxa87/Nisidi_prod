@@ -21,27 +21,22 @@ namespace Admin.Controllers
             eventsService = _eventsService;
         }
 
-        public async Task<IActionResult> EventList()
+        [HttpGet, HttpPost]
+        public async Task<IActionResult> EventList(EventListParam eventsListParam = null)
         {
-            return View();
+            if(eventsListParam == null)
+            {
+                eventsListParam = new EventListParam();
+            }
+            var model = await eventsService.GetEventsList(eventsListParam);
+            return View(model);
         }
 
         [HttpPost]
-        [Route("Events/get-events-page")]
-        public async Task<IActionResult> GetEventsPartialTablePage(EventListParam param = null)
+        public async Task<ActionResult> GetGetEventsTable(EventListParam param)
         {
-            if(param == null)
-            {
-                param = new EventListParam();
-            }
-            if(param.PagingParam == null)
-            {
-                param.PagingParam = new PagingParam();
-                param.PagingParam.CurrentPage = 1;
-                param.PagingParam.PageSize = 3;
-            }
-            var events = await eventsService.GetEventsList(param);
-            return PartialView("~/Views/Events/_EventsTablePage.cshtml", events);
+            var model = await eventsService.GetEventsList(param);
+            return PartialView("_EventsTablePage.cshtml", model.Events);
         }
     }
 }

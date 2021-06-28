@@ -5,5 +5,12 @@
     ViewData["Script"] = "events.js";
 }
 
-<div id="ev-page-content"></div>
+<div id="ev-page-content">
+    <div>
+        @{await Html.RenderPartialAsync("_EventsFilterForm.cshtml", Model.SearchParam);}
+    </div>
+    <div id="evelist-table">
+        @{await Html.RenderPartialAsync("_EventsTablePage.cshtml", Model.Events);}
+    </div>
+</div>
 
