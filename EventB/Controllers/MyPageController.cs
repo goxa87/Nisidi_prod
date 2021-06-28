@@ -193,11 +193,11 @@ namespace EventB.Controllers
                 if (model.newPhoto != null)
                 {
                     var userImgDict = new Dictionary<int, string>();
-                    userImgDict.Add(0, TrimSuffix(user.Photo));
+                    userImgDict.Add(400, TrimSuffix(user.Photo));
                     userImgDict.Add(360, TrimSuffix(user.MediumImage));
                     userImgDict.Add(100, TrimSuffix(user.MiniImage));
 
-                    await imageService.SaveOriginAndResizedImagesByInputedSizes(model.newPhoto, IMAGE_SUFFIX, userImgDict);
+                    await imageService.SaveOriginAndResizedImagesByInputedSizes(model.newPhoto, IMAGE_SUFFIX, userImgDict, null);
                 } 
 
                 // Изменения имени в таблицах.

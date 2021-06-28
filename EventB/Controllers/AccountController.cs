@@ -129,13 +129,13 @@ namespace EventB.Controllers
                         {
                             var newImagesDict = new Dictionary<int, string>();
 
-                            newImagesDict.Add(0, imgSourse);
+                            newImagesDict.Add(400, imgSourse);
                             newImagesDict.Add(360, imgMedium);
                             newImagesDict.Add(100, imgMini);
 
-                            newImagesDict = await imageService.SaveOriginAndResizedImagesByInputedSizes(model.Photo, IMAGE_SUFFIX, newImagesDict);
+                            newImagesDict = await imageService.SaveOriginAndResizedImagesByInputedSizes(model.Photo, IMAGE_SUFFIX, newImagesDict, null);
 
-                            imgSourse = newImagesDict[0];
+                            imgSourse = newImagesDict[400];
                             imgMedium = newImagesDict[360];
                             imgMini = newImagesDict[100];
                         }
@@ -146,7 +146,7 @@ namespace EventB.Controllers
                     }
                     else
                     {
-                        await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgSourse, 800, IMAGE_SUFFIX);
+                        await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgSourse, 500, IMAGE_SUFFIX);
                         imgSourse += IMAGE_SUFFIX;
                         await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgMedium, 360, IMAGE_SUFFIX);
                         imgMedium += IMAGE_SUFFIX;

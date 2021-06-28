@@ -16,7 +16,7 @@ namespace EventB.Services.ImageService
         /// <param name="newSize">новый размер картинки</param>
         /// <param name="suffix">формат новой картинки</param>
         /// <returns></returns>
-        Task<bool> SaveResizedImage(string originPath, string outputPath, int newSize, string suffix = ".jpeg");
+        Task<bool> SaveResizedImage(string originPath, string outputPath, int newSize, string suffix = ".jpeg", bool verticalSizing = false);
         /// <summary>
         /// Сохранит оригинал картинки и оригинал в формате суффикса
         /// </summary>
@@ -41,6 +41,6 @@ namespace EventB.Services.ImageService
         /// <param name="suffix"></param>
         /// <param name="requiredSizesWithPaths">Словарь: размер - путь куда сохранять картинки</param>
         /// <returns> 0 путь с оригиналом другие не с оригиналом</returns>
-        Task<Dictionary<int, string>> SaveOriginAndResizedImagesByInputedSizes(IFormFile originFile, string suffix, Dictionary<int, string> requiredSizesWithPaths);
+        Task<Dictionary<int, string>> SaveOriginAndResizedImagesByInputedSizes(IFormFile originFile, string suffix, Dictionary<int, string> requiredSizesWithPaths, int? verticatlSizeForDefaualtImage);
     }
 }

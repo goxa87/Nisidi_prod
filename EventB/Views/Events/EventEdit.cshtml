@@ -81,7 +81,7 @@ else
         <p> Изменение даты для событий Global невозможно.</p>
     }
     <label class="form-label" asp-for="MainPicture"></label>
-    <img class="img-100" src="@Model.MainPicture">
+    <img class="img-100" src="@($"{Model.MainPicture}?{DateTime.Now.ToString()}")">
     <div class="content">изменить на</div>
     <input class="form-date" type="file" asp-for="NewPicture" /><br>
 

@@ -10,7 +10,7 @@
 <div class="mp-header">
     <div>
         <div class="mp-img">
-            <img src="@Model.Photo" alt="фото">
+            <img src="@($"{Model.Photo}?{DateTime.Now.Millisecond.ToString()}")" alt="фото">
         </div>
         <div class="btn-area">
             <a asp-action="EditProfile">
@@ -160,7 +160,7 @@
 
                         <div class="invite-container">
                             <a asp-action="Details" asp-controller="Events" asp-route-id="@inv.EventId">
-                                <img class="item-img" src="@inv.Event.MediumImage">
+                                <img class="item-img" src="@(inv.Event.MediumImage + "?" + DateTime.Now.Millisecond.ToString())">
                             </a>
                             <div class="inv-content">
                                 <a asp-action="Details" asp-controller="Events" asp-route-id="@inv.EventId">
@@ -181,7 +181,7 @@
                                 <p>@inv.InviteDescription</p>
                             </div>
                             <a asp-action="UserInfo" asp-controller="Friends" asp-route-userId="@inv.InviterId">
-                                <img class="item-img" src="@inv.InviterPhoto" alt="@inv.InviterName" />
+                                <img class="item-img" src="@(inv.InviterPhoto + "?" + DateTime.Now.Millisecond.ToString())" alt="@inv.InviterName" />
                             </a>
                         </div>
                     </div>

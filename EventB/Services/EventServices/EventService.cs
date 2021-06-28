@@ -80,7 +80,7 @@ namespace EventB.Services.EventServices
                         newImagesDict.Add(360, imgMedium);
                         newImagesDict.Add(100, imgMini);
 
-                        newImagesDict = await imageService.SaveOriginAndResizedImagesByInputedSizes(model.MainPicture, IMAGE_SUFFIX, newImagesDict);
+                        newImagesDict = await imageService.SaveOriginAndResizedImagesByInputedSizes(model.MainPicture, IMAGE_SUFFIX, newImagesDict, 500);
 
                         imgSourse = newImagesDict[0];
                         imgMedium = newImagesDict[360];
@@ -491,7 +491,7 @@ namespace EventB.Services.EventServices
                 eveImgDict.Add(360, TrimSuffix(eve.MediumImage));
                 eveImgDict.Add(100, TrimSuffix(eve.MiniImage));
 
-                await imageService.SaveOriginAndResizedImagesByInputedSizes(model.NewPicture, IMAGE_SUFFIX, eveImgDict);
+                await imageService.SaveOriginAndResizedImagesByInputedSizes(model.NewPicture, IMAGE_SUFFIX, eveImgDict, 500);
             }
 
             // Здесь подправить разметку чтобы отображать абзацами

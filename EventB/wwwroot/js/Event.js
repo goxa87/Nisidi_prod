@@ -349,6 +349,7 @@ $(document).ready(function ()
             url: '/Event/GetAvailableChats'
         });
         req.then(function (data, stat, jqXHR) {
+            console.log('xData', data);
             if (jqXHR.status == 200) {
                 let content = `<div class="s-filter-container">
                         <span class="small-label">Фильтр</span>

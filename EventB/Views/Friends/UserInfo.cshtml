@@ -19,7 +19,7 @@ else
     <div class="ui-info flex-hsbs">
         <input type="hidden" id="user-id" value="@Model.User.Id">
         <div>
-            <img class="ui-photo" src="@Model.User.Photo" />
+            <img class="ui-photo" src="@($"{Model.User.Photo}?{DateTime.Now.Millisecond.ToString()}")" />
             <div class="btn-area">
 
                 <input type="hidden" value="@Model.User.Id" id="friend-entity-id" />

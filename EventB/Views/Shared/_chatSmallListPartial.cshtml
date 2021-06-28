@@ -6,7 +6,7 @@
         <div class="chat-list-small flex-hsbc">
             <input class="ev-link-chat-id" type="hidden" value="@e.UserChatId" />
             <div class="flex-hsc">
-                <img class="ev-link-img" src="@e.ChatPhoto" />
+                <img class="ev-link-img" src="@($"{e.ChatPhoto}?{DateTime.Now.Millisecond.ToString()}")" />
                 <span class="ev-link-title">@e.ChatName</span>
             </div>
             <img class="ev-link-send-btn" src="~/resourses/send_link.png" title="Отправить в этот чат" />

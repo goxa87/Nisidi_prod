@@ -71,6 +71,7 @@
     object-fit: contain;
 }
 .ev-twin-details{
+    width: 100%;
 }
 @media(max-width:750px) {
     .ev-twin-details {

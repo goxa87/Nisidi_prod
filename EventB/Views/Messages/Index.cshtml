@@ -47,7 +47,7 @@
             {
                 <div class="flex-hsc">
                     <div class="flex-hcc opponent-photo">
-                        <img src="@Model.Opponent.MiniImage" />
+                        <img src="@($"{Model.Opponent.MiniImage}?{DateTime.Now.Millisecond.ToString()}")" />
                     </div>
                     <div class="opponent-name" id="header-name">@Model.Opponent.Name</div>
                 </div>

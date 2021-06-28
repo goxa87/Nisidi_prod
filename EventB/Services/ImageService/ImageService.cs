@@ -25,19 +25,24 @@ namespace EventB.Services.ImageService
             environment = _environment;
         }
         
-        public async Task<Dictionary<int, string>> SaveOriginAndResizedImagesByInputedSizes(IFormFile originFile, string suffix, Dictionary<int, string> requiredSizesWithPaths)
+        /// <inheritdoc />
+        public async Task<Dictionary<int, string>> SaveOriginAndResizedImagesByInputedSizes(
+            IFormFile originFile, 
+            string suffix, 
+            Dictionary<int, string> requiredSizesWithPaths, 
+            int? verticatlSizeForDefaualtImage)
         {
             var result = new Dictionary<int, string>();
             //Сначала надо сохранить оригиал и отнего ресайзить
             var inputHasOriginPath = requiredSizesWithPaths.TryGetValue(0, out string originPath);
-            if(!inputHasOriginPath)
+            if(!inputHasOriginPath || verticatlSizeForDefaualtImage.HasValue)
             {
-                originPath = $"{environment.WebRootPath}/images/tempimg{DateTime.Now.Millisecond}";
+                originPath = $"/images/tempimg{DateTime.Now.Millisecond}";
             }
             try
             {
                 await SaveImageWithoutResizing(originFile, environment.WebRootPath + originPath, suffix);
-                if (inputHasOriginPath)
+                if (inputHasOriginPath && !verticatlSizeForDefaualtImage.HasValue)
                 {
                     result.Add(0, originPath + suffix);
                 }
@@ -52,7 +57,12 @@ namespace EventB.Services.ImageService
             {
                 try
                 {
-                    if(image.Key != 0)
+                    if(image.Key == 0 && verticatlSizeForDefaualtImage.HasValue)
+                    {
+                        await SaveResizedImage(environment.WebRootPath + originPath + suffix, environment.WebRootPath + image.Value, verticatlSizeForDefaualtImage.Value, suffix, true);
+                        result.Add(image.Key, requiredSizesWithPaths[image.Key] + suffix);
+                    }
+                    else
                     {
                         await SaveResizedImage(environment.WebRootPath + originPath + suffix, environment.WebRootPath + image.Value , image.Key, suffix);
                         result.Add(image.Key, requiredSizesWithPaths[image.Key] + suffix);
@@ -65,19 +75,21 @@ namespace EventB.Services.ImageService
                     result.Add(image.Key, requiredSizesWithPaths[image.Key] + suffix);
                 }
             }
-            if (!inputHasOriginPath)
+            if (!inputHasOriginPath || verticatlSizeForDefaualtImage.HasValue)
             {
-                await DeleteImage(originPath);
+                await DeleteImage(environment.WebRootPath + originPath + suffix);
             }
             return result;
         }
 
+        /// <inheritdoc />
         public async Task<bool> DeleteImage(string filePath)
         {
             File.Delete(filePath);
             return true;
         }
 
+        /// <inheritdoc />
         public async Task<bool> SaveImageWithoutResizing(IFormFile sourceFile, string outputPath, string suffix = ".jpeg")
         {
             using (var FS = new FileStream(outputPath, FileMode.Create))
@@ -106,7 +118,8 @@ namespace EventB.Services.ImageService
             return true;
         }
 
-        public async Task<bool> SaveResizedImage(string originPath, string outputPath, int newSize, string suffix = ".jpeg")
+        /// <inheritdoc />
+        public async Task<bool> SaveResizedImage(string originPath, string outputPath, int newSize, string suffix = ".jpeg", bool verticalSizing = false)
         {
             var size = newSize;
             const int quality = RESIZE_COMPRESS_QUALITY;
@@ -117,15 +130,16 @@ namespace EventB.Services.ImageService
                     using (var original = SKBitmap.Decode(inputStream))
                     {
                         int width, height;
-                        if (original.Width > original.Height)
+                        if (original.Width < original.Height || verticalSizing)
                         {
-                            width = size;
-                            height = original.Height * size / original.Width;
+
+                            width = original.Width * size / original.Height;
+                            height = size;
                         }
                         else
                         {
-                            width = original.Width * size / original.Height;
-                            height = size;
+                            width = size;
+                            height = original.Height * size / original.Width;
                         }
 
                         using (var resized = original.Resize(new SKImageInfo(width, height), SKBitmapResizeMethod.Lanczos3))
