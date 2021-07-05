@@ -141,7 +141,8 @@ namespace EventB.Services.EventServices
                 {
                     UserId = creator.Id,
                     ChatName = model.Title.Length > 25 ? model.Title.Remove(25) + "..." : model.Title,
-                    ChatPhoto = imgMini
+                    ChatPhoto = imgMini,
+                    SystemUserName = userName
                 };
                 chat.UserChat.Add(userChat);
                 
@@ -256,7 +257,8 @@ namespace EventB.Services.EventServices
                         UserId = userId,
                         ChatId = chatId,
                         ChatPhoto = chat.Event.MiniImage,
-                        OpponentId = "0"                        
+                        OpponentId = "0",
+                        SystemUserName = userName
                     };
                     await context.UserChats.AddAsync(newUserChat);
                     await context.SaveChangesAsync();
@@ -345,7 +347,8 @@ namespace EventB.Services.EventServices
                         ChatName = curentEv.TitleShort,
                         UserId = user.Id,
                         ChatId = curentEv.Chat.ChatId,
-                        ChatPhoto = curentEv.MiniImage
+                        ChatPhoto = curentEv.MiniImage,
+                        SystemUserName = user.UserName
                     };
                     context.UserChats.Add(newUserChat);
                 }

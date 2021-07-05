@@ -62,7 +62,6 @@ namespace EventB.Hubs
                 .Include(e=>e.UserChats)
                 .ThenInclude(e=>e.Chat)
                 .ThenInclude(e=>e.UserChat)
-                .ThenInclude(e=>e.User)
                 .FirstOrDefaultAsync(e => e.UserName == userName);
 
             var curentUserChat = sender.UserChats.First(e=>e.ChatId == dataObject.chatId);
@@ -80,14 +79,13 @@ namespace EventB.Hubs
 
             await context.SaveChangesAsync();
 
-            var usersForSending = curentUserChat.Chat.UserChat.Select(e => e.User.UserName);
+            var usersForSending = curentUserChat.Chat.UserChat.Select(e => e.SystemUserName);
 
-            foreach(var user in usersForSending)
+            foreach(var opponentUserName in usersForSending)
             {
-                //if(user!=Context.User.Identity.Name)
-                    await this.Clients.Group(user).SendAsync("reciveChatMessage", dataObject);
+                if(!string.IsNullOrWhiteSpace(opponentUserName))
+                    await this.Clients.Group(opponentUserName).SendAsync("reciveChatMessage", dataObject);
             }
-
         }
     }
 }

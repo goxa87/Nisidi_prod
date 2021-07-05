@@ -51,5 +51,10 @@ namespace EventBLib.Models
         /// сигнализирует о том, что пользователь покинул чат
         /// </summary>
         public bool IsDeleted { get; set; }
+
+        /// <summary>
+        /// Системное имя пользователя(логин) ТОго пользователя, которому принадлежит юзерчат
+        /// </summary>
+        public string SystemUserName { get; set; }
     }
 }

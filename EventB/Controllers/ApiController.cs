@@ -204,7 +204,8 @@ namespace EventB.Controllers
                 ChatName = opponent.Name,
                 OpponentId = opponentId,
                 ChatPhoto = opponent.MiniImage,
-                IsBlockedInChat = isBlockedFriend
+                IsBlockedInChat = isBlockedFriend,
+                SystemUserName = user.UserName
             };
             var userChatopponent = new UserChat
             {
@@ -212,7 +213,8 @@ namespace EventB.Controllers
                 ChatName = user.Name,
                 OpponentId = id,
                 ChatPhoto = user.MiniImage,
-                IsBlockedInChat = isBlockedFriend
+                IsBlockedInChat = isBlockedFriend,
+                SystemUserName = opponent.UserName
             };
             var chat = new Chat
             {              
