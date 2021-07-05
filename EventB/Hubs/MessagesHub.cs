@@ -58,12 +58,17 @@ namespace EventB.Hubs
         public async Task SendToChat(ChatMessageVM dataObject)
         {
             var userName = this.Context.User.Identity.Name;
-            var sender = await context.Users.FirstOrDefaultAsync(e => e.UserName == userName);
-            var chat = await context.Chats.Include(e => e.UserChat).ThenInclude(e => e.User).FirstOrDefaultAsync(e => e.ChatId == dataObject.chatId);
-            var curentuserChat = chat.UserChat.FirstOrDefault(e => e.UserId == sender.Id);
-            if (curentuserChat.IsBlockedInChat)
+            var sender = await context.Users
+                .Include(e=>e.UserChats)
+                .ThenInclude(e=>e.Chat)
+                .ThenInclude(e=>e.UserChat)
+                .ThenInclude(e=>e.User)
+                .FirstOrDefaultAsync(e => e.UserName == userName);
+
+            var curentUserChat = sender.UserChats.First(e=>e.ChatId == dataObject.chatId);
+            if (curentUserChat.IsBlockedInChat)
             {
-                await this.Clients.Caller.SendAsync("responceForBlockUser", "Отправка сообщений в этот чат заблокирована адитнтстратором чата.");
+                await this.Clients.Caller.SendAsync("responceForBlockUser", "Отправка сообщений в этот чат заблокирована.");
                 return;
             }
 
@@ -73,21 +78,13 @@ namespace EventB.Hubs
             var messageDTO = messageService.ConvertMessageVmToDTO(dataObject);
             context.Messages.Add(messageDTO);
 
-            
-            if(!chat.EventId.HasValue && chat.UserChat.Any(e=>e.IsDeleted == true))
-            {
-                foreach(var e in chat.UserChat.Where(e => e.IsDeleted).ToList())
-                {
-                    e.IsDeleted = false;
-                }
-            }
             await context.SaveChangesAsync();
 
-            var usersForSending = chat.UserChat.Select(e => e.User.UserName);
+            var usersForSending = curentUserChat.Chat.UserChat.Select(e => e.User.UserName);
 
             foreach(var user in usersForSending)
             {
-                if(user!=Context.User.Identity.Name)
+                //if(user!=Context.User.Identity.Name)
                     await this.Clients.Group(user).SendAsync("reciveChatMessage", dataObject);
             }
 

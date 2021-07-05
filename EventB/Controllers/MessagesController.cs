@@ -39,7 +39,7 @@ namespace EventB.Controllers
             var opponent = await context.Users.FirstOrDefaultAsync(e => e.Id == opponentId);
             var chatVM = new MessagesViewModel
             {
-                UserChats=user.UserChats.Where(e=>e.IsDeleted == false).OrderBy(e=>e.ChatName).ToList(),
+                UserChats = user.UserChats.Where(e => e.IsDeleted == false && e.IsBlockedInChat == false).OrderBy(e => e.ChatName).ToList(),
                 CurrentUserId = user.Id,
                 CurrentUserName = user.Name,
                 Opponent = opponent,

@@ -13,6 +13,8 @@ using EventB.ViewModels.MessagesVM;
 using Microsoft.AspNetCore.Identity;
 using EventB.ViewModels;
 using EventB.Services.FriendService;
+using CommonServices.Infrastructure.WebApi;
+using EventB.Services.Logger;
 
 namespace EventB.Controllers
 {
@@ -25,12 +27,15 @@ namespace EventB.Controllers
         readonly IUserFindService userFind;
         readonly UserManager<User> userManager;
         readonly IFriendService friendService;
+
+        private readonly ILogger logger;
         public ApiController(
             Context _context,
             UserManager<User> _userManager,
             ITegSplitter _tegSplitter, 
             IUserFindService _userFind,
-            IFriendService _friendService
+            IFriendService _friendService,
+            ILogger _logger
             )
         {
             tegSplitter = _tegSplitter;
@@ -38,6 +43,7 @@ namespace EventB.Controllers
             userManager = _userManager;
             userFind = _userFind;
             friendService = _friendService;
+            logger = _logger;
         }
 
         /// <summary>
@@ -68,7 +74,7 @@ namespace EventB.Controllers
         /// <returns></returns>
         [Authorize]
         [Route("BlockUser")]
-        public async Task<StatusCodeResult> BlockUser( string friendId)
+        public async Task<StatusCodeResult> BlockUser(string friendId)
         {
             // Валидация.
             if (string.IsNullOrWhiteSpace(friendId))
@@ -82,6 +88,7 @@ namespace EventB.Controllers
             // Друг и обратный друг.    
             var currentUser = await userManager.FindByNameAsync(User.Identity.Name);
             var friend = await context.Friends.FirstOrDefaultAsync(e => e.FriendUserId == currentUser.Id && e.UserId == friendId);
+            // Запись о нас у того пользователя
             var opponentFriend = await context.Friends.FirstOrDefaultAsync(e=>e.FriendUserId == friendId && e.UserId == currentUser.Id);
             // Если не инициатор, то запрещаем.
             if (friend != null && (!friend.BlockInitiator && friend.IsBlocked ))
@@ -92,7 +99,19 @@ namespace EventB.Controllers
             friend.IsBlocked = friend.IsBlocked ? false : true;
             friend.BlockInitiator = friend.BlockInitiator ? false : true;
             opponentFriend.IsBlocked = opponentFriend.IsBlocked ? false : true;
-           
+
+            // Блокируем чаты
+            var chat = await context.Chats.Include(e=>e.UserChat).FirstOrDefaultAsync(e => !e.EventId.HasValue &&
+                e.UserChat.Any(e=>e.UserId == friendId) &&
+                e.UserChat.Any(e=>e.UserId == currentUser.Id));
+            if(chat != null)
+            {
+                foreach (var uChat in chat.UserChat)
+                {
+                    uChat.IsBlockedInChat = !uChat.IsBlockedInChat;                    
+                }
+            }
+
             context.Update(friend);
             context.Update(opponentFriend);
             await context.SaveChangesAsync();
@@ -145,72 +164,55 @@ namespace EventB.Controllers
         /// <returns></returns>
         [Route("CreatePrivateChat")]
         [Authorize]
-        public async Task<int> CreateUserChat(string id, string opponentId) 
+        public async Task<WebResponce<int>> CreateUserChat(string id, string opponentId) 
         {
             // здесь добавлять проверку на заблокированность.
             // 2 потому-что для каждого из собеседников.
-            var user = await userFind.GetUserByIdAsync(id);
+            var user = await context.Users.Include(e=>e.Friends).FirstAsync(e=>e.UserName == User.Identity.Name);
             var opponent = await userFind.GetUserByIdAsync(opponentId);
             
             if (user == null || opponent == null)
-            {
-                Response.StatusCode = 204;
-                return 0;
+            {                
+                return new WebResponce<int>(0);
             }
 
             // здесь добавлять userChat если его нет.
             var createdUserChat = await context.UserChats.Include(e => e.Chat).Where(e => (e.UserId == user.Id && e.OpponentId == opponentId) || (e.UserId == opponentId && e.OpponentId == user.Id)).ToListAsync();
+            
             if (createdUserChat.Count > 0)
             {
-                if (createdUserChat.Count == 2)
+                if (createdUserChat.Count == 2 && createdUserChat.All(e=>e.IsBlockedInChat == false))
                 {
                     foreach(var e in createdUserChat)
                     {
                         e.IsDeleted = false;
                     }
                     await context.SaveChangesAsync();
-                    return createdUserChat[0].Chat.ChatId;
-                }
-                // с новой системой получится так что этого никогда не произойдет
-                // Чаты не удаляются и там всегда будет 2 
-                UserChat newUCh;
-                if (createdUserChat.Any(e => e.UserId == user.Id && e.OpponentId == opponentId)){
-                    newUCh = new UserChat
-                    {
-                        UserId = opponentId,
-                        ChatName = opponent.Name,
-                        OpponentId = id,
-                        ChatPhoto = opponent.MiniImage
-                    };
+                    return new WebResponce<int>(createdUserChat[0].Chat.ChatId);
                 }
                 else
                 {
-                    newUCh = new UserChat
-                    {
-                        UserId = id,
-                        ChatName = opponent.Name,
-                        OpponentId = opponentId,
-                        ChatPhoto = opponent.MiniImage
-                    };
+                    return new WebResponce<int>(0, false, "Заблокировано");
                 }
-                createdUserChat[0].Chat.UserChat.Add(newUCh);
-                await context.SaveChangesAsync();
-                return createdUserChat[0].Chat.ChatId;
             }
+            var friend = user.Friends.FirstOrDefault(e => e.FriendUserId == opponentId);
+            var isBlockedFriend = friend != null && friend.IsBlocked;
 
             var userChatCurent = new UserChat
             {
                 UserId = id,
                 ChatName = opponent.Name,
                 OpponentId = opponentId,
-                ChatPhoto = opponent.MiniImage
+                ChatPhoto = opponent.MiniImage,
+                IsBlockedInChat = isBlockedFriend
             };
             var userChatopponent = new UserChat
             {
                 UserId = opponentId,
                 ChatName = user.Name,
                 OpponentId = id,
-                ChatPhoto = user.MiniImage
+                ChatPhoto = user.MiniImage,
+                IsBlockedInChat = isBlockedFriend
             };
             var chat = new Chat
             {              
@@ -229,14 +231,11 @@ namespace EventB.Controllers
             }
             catch(Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.Message);
-                System.Diagnostics.Debug.WriteLine(ex.StackTrace);
-
+                await logger.LogStringToFile($"CreatePrivateChat: {ex.Message}");
             }
             
-            return chat.ChatId;
+            return new WebResponce<int>(chat.ChatId);
         }
-
         
         /// <summary>
         /// Отправление сообщения в чат.

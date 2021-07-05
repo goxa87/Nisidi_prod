@@ -97,7 +97,7 @@ namespace EventB.Services.FriendService
             {
                 return null;
             }
-            if (friend != null && friend.IsBlocked && friend.BlockInitiator)
+            if (friend != null && friend.IsBlocked)
                 return null;
 
             var infoVM = new UserInfoVM();

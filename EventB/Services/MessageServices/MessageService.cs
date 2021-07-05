@@ -18,8 +18,6 @@ namespace EventB.Services.MessageServices
             context = _context;
         }
 
-        
-
         /// <summary>
         /// Изменения в событии
         /// </summary>

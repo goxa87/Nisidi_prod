@@ -46,14 +46,12 @@
             if (jqXHR.status == 200) {
                 // от вида кнопки сменить стили и надписаь
                 if ($(this).hasClass('action-button')) {
-                    console.log('1')
                     $(this).toggleClass('action-button');
                     $(this).toggleClass('red-btn-alert');
                     $(this).text('Заблокирован');
                 }
                 else {
                     // просто в обратном поярдке.
-                    console.log('2')
                     $(this).toggleClass('action-button');
                     $(this).toggleClass('red-btn-alert');
                     $(this).text('Заблокировать');

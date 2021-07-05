@@ -33,7 +33,6 @@ function SendMessage() {
         postDate: date1
     }
     connection.invoke("SendToChat", DataObject);
-    AddRenderedMessages(DataObject, senderId);
     $('#message').val('');
 };
 // Запрос к АПИ на Создание чата с новым собеседником.
@@ -47,9 +46,16 @@ function createPrivateChat(Id, Opponent) {
             id: Id,
             opponentId: Opponent
         },
-        complete: function (response) {
-            $('#chat-id').val(response.responseJSON);
-            SendMessage();
+        success: function (response) {
+            if (response.isSuccess == true) {
+                $('#chat-id').val(response.content);
+                SendMessage();
+            } else {
+                GetNotification(response.errorMessage, 2, duration = 3)
+            }
+        },
+        error: function () {
+            GetNotification('Что-то пошло не так (', 2, duration = 3)
         }
     });
 };

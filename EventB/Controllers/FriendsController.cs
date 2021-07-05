@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using EventB.Services;
 using EventB.Services.FriendService;
 using EventB.ViewModels.FriendsVM;
+using EventB.ViewModels.SharedViews;
 using EventBLib.DataContext;
 using EventBLib.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -94,6 +95,16 @@ namespace EventB.Controllers
             var currentUser = await userManager.FindByNameAsync(User.Identity.Name);
             if (currentUser.Id == userId) RedirectToAction("Index", "MyPage");
             var model = await friendService.GetFriendInfo(userId, currentUser);
+
+            if(model == null)
+            {
+                return View("~/Views/Shared/_AccessDeniedPage.cshtml", new AccessDeniedVM()
+                {
+                    Tittle = "Пользователь не найден",
+                    Reazon = "Пользователь не найден или заблокировал переход на его страницу. ",
+                    Text = "Попробуйте изменить параметры поиска, проверить правильность ввода адреса или разблокировать пользователя на вкладке ДРУЗЬЯ."
+                });
+            }
 
             return View(model);
         }
