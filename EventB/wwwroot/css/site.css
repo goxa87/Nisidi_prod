@@ -1,7 +1,4 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-/*
+﻿/*
     золотой #ffcd00
     темный синь #1b5972
     беж темный #e4dcc5  -  #dee2e6
@@ -215,6 +212,12 @@ input[type="checkbox"].input-validation-error {
         }
 
 #main-menu-li li a:hover {
+    color: #ffcd00;
+    background-color: #1b5972;
+    text-decoration: none;
+}
+
+.menu-link:hover {
     color: #ffcd00;
     background-color: #1b5972;
     text-decoration: none;
@@ -1162,4 +1165,96 @@ figure img {
         font-size: 12px;
         padding: 4px;
     }
+}
+
+
+/*БАННЕРЫ*/
+.banner-item{
+    background-color: white;
+    min-height: 450px;
+    padding: 8px;
+}
+
+.banner-hello-container {
+    min-height: 400px;
+    margin-top: 8px;
+    padding: 8px;
+    background-color: white;
+    position: relative;
+}
+
+.btn-close {
+    position: absolute;
+    right: 0px;
+    box-sizing: content-box;
+    color: #000;
+    border-radius: .25rem;
+    border: none;
+    background-color: #0000;
+    height: 1.5em;
+}
+    .btn-close:focus {
+        outline: 0;
+        opacity: 1;
+    }
+    .btn-close:hover {
+        color: #000;
+        text-decoration: none;
+        opacity: .75;
+    }
+
+/*Карусель*/
+.carousel-item-block {
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+.carousel-btn {
+    position: absolute;
+    bottom: 0;
+    z-index: 10;
+    display: inline-block;
+    cursor: pointer;
+    height: 24px;
+    width: 24px;
+    background-color: #1b5972;
+}
+    .carousel-btn:focus {
+        border: none;
+    }
+
+    .carousel-btn:hover {
+        background-color: #1b597299;
+    }
+
+
+.my-carousel-item {
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.carousel-selected {
+    visibility: visible;
+}
+
+.carousel-btn-prev{
+    left: 0;
+}
+.carousel-btn-next {
+    right: 0;
+}
+.chevron-right{
+    height: 24px;
+    width: 24px;
+    background-image: url('../resourses/chevron_right.png');
+    color: #ffcd00;
+}
+.chevron-left {
+    height: 24px;
+    width: 24px;
+    background-image: url('../resourses/chevron_left.png');
+    color: #ffcd00;
 }

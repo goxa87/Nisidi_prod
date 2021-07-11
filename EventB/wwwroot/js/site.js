@@ -24,37 +24,13 @@ $(document).ready(function () {
             $('.main-menu-container').removeClass('float-menu'); 
         }
     });
+
+    GetUpdates();
+
     // Узкое меню
     $('#thin-menu').click(function () {
         $('.thin-menu-items-container').toggleClass('display-none');
     });
-
-    // Звездочки в меню
-    function GetUpdates() {
-        $.ajax({
-            url: '/api/get-updates-for-menu',
-            success: (function (updates) {
-                console.log(updates)
-                if (updates.hasNewFriends == true) {
-                    $('#mm-li-users').removeClass('display-none')
-                    $('#mm-li-users-th').removeClass('display-none')
-                    $('#fr-new-star').removeClass('display-none')
-                }
-                if (updates.hasNewInvites == true) {
-                    $('#mm-li-mypage').removeClass('display-none')
-                    $('#mm-li-mypage-th').removeClass('display-none')
-                    $('#mp-invites-star').removeClass('display-none')
-                }
-                if (updates.hasNewMessages == true) {
-                    $('#mm-li-messages').removeClass('display-none')
-                    $('#mm-li-messages-th').removeClass('display-none')
-                }
-            }),
-            error: function (ex) { console.error('при получении обновлений для меню:', ex); }
-        });
-    }
-
-    GetUpdates();
 
     // Согласиться принять в друзья. моя страница и друзья
     //agree-friend
@@ -95,7 +71,96 @@ $(document).ready(function () {
             thisFrame.offset({ left: ($(window).width() - thisFrame.width() - 12), top: thisFrame.offset().top })
         }
     });
+
+    //Карусель кнопки
+    $('body').on('click', '.carousel-btn-next', function () {
+        carouselMoveNext($(this));
+    });
+
+    $('body').on('click', '.carousel-btn-prev', function () {
+        carouselMovePrev($(this));
+    });
+
+    $('body').on('click', '.btn-close', function () {
+        $(this).parent().hide();
+    });
 });
+
+/**Карусель перейти к следующему */
+function carouselMoveNext(element) {
+    let carouselItems = $(element).siblings('.carousel-item-block').children('.my-carousel-item');
+    let selected = 100;
+    carouselItems.each((ind, e) => {
+        if ($(e).hasClass('carousel-selected')) {
+            selected = ind;
+        }
+    });
+
+    $(carouselItems).removeClass('carousel-selected');
+
+    if (selected == carouselItems.length - 1) {
+        $(carouselItems).first().addClass('carousel-selected');
+    }
+    else {
+        carouselItems.each((ind, e) => {
+            if (ind === selected + 1) {
+                $(e).fadeIn();
+                $(e).addClass('carousel-selected');
+            }
+        });
+    }
+}
+
+/**Карусель перейти к прошлому */
+function carouselMovePrev(element) {
+    let carouselItems = $(element).siblings('.carousel-item-block').children('.my-carousel-item');
+    let selected = 100;
+    carouselItems.each((ind, e) => {
+        if ($(e).hasClass('carousel-selected')) {
+            selected = ind;
+        }
+    });
+
+    $(carouselItems).removeClass('carousel-selected');
+
+    if (selected == 0) {
+        $(carouselItems).last().addClass('carousel-selected');
+    }
+    else {
+        carouselItems.each((ind, e) => {
+            if (ind === selected - 1) {
+                $(e).fadeIn();
+                $(e).addClass('carousel-selected');
+            }
+        });
+    }
+}
+
+// Звездочки в меню
+function GetUpdates() {
+    $.ajax({
+        url: '/api/get-updates-for-menu',
+        success: (function (updates) {
+            console.log(updates)
+            if (updates.hasNewFriends == true) {
+                $('#mm-li-users').removeClass('display-none')
+                $('#mm-li-users-th').removeClass('display-none')
+                $('#fr-new-star').removeClass('display-none')
+            }
+            if (updates.hasNewInvites == true) {
+                $('#mm-li-mypage').removeClass('display-none')
+                $('#mm-li-mypage-th').removeClass('display-none')
+                $('#mp-invites-star').removeClass('display-none')
+            }
+            if (updates.hasNewMessages == true) {
+                $('#mm-li-messages').removeClass('display-none')
+                $('#mm-li-messages-th').removeClass('display-none')
+            }
+        }),
+        error: function (ex) { console.error('при получении обновлений для меню:', ex); }
+    });
+}
+
 /**
  * вернет сообщения в виде html
  * @param {any} content ответ с сервера

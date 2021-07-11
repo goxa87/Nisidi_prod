@@ -34,7 +34,10 @@ $(document).ready(function ()
     if ($('#end-marker').length) {
         prepareDynamicLoad(); 
     }
-      
+
+    // Баннер
+    GetHelloBanner();
+
     // Start постранично при нажатии загрузить еще.
     $('#ev-load-more').click(function () {        
             if (dynamicLoadStopper == true) {
@@ -426,3 +429,26 @@ $(document).ready(function ()
     };
 });
 
+/**Получить баннер по имени и разменстить в тег с id селектора*/
+function GetBanner(bannerName, tegIdSelector) {
+    $.ajax({
+        url: "/Banner/GetBannerByName",
+        data: {
+            name: bannerName
+        },
+        success: function (markup) {
+            console.log(markup);
+            let selector = "#" + tegIdSelector;
+            $(selector).html(markup);
+            $(selector).removeClass('display-none')
+        },
+        error: function () {
+            console.log('Ошибка получения разметки баннера');
+        }
+    });
+}
+
+function GetHelloBanner() {
+    //...
+    GetBanner("Hello.cshtml", "ev-hello-banner");
+}
