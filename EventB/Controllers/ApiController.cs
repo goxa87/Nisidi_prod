@@ -50,19 +50,30 @@ namespace EventB.Controllers
         /// Вернет обновления для меню
         /// </summary>
         /// <returns></returns>
-        [Authorize]
+        //[Authorize]
         [Route("get-updates-for-menu")]
-        public async Task<MenuUpdatesApiVM> GetUpdatesForMenu()
+        public async Task<WebResponce<MenuUpdatesApiVM>> GetUpdatesForMenu()
         {
-            var user = await context.Users.Include(e => e.Invites).Include(e => e.Friends).Include(e => e.UserChats).ThenInclude(e => e.Chat).ThenInclude(e => e.Messages).FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
+            if(User?.Identity?.Name == null)
+            {
+                return new WebResponce<MenuUpdatesApiVM>(new MenuUpdatesApiVM(), false, "неавторизован");
+            }
+
+            var user = await context.Users.
+                Include(e => e.Invites).
+                Include(e => e.Friends).
+                Include(e => e.UserChats).ThenInclude(e => e.Chat).ThenInclude(e => e.Messages).
+                FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
             var friends = await context.Friends.Where(e => e.FriendUserId == user.Id).ToListAsync();
-            return new MenuUpdatesApiVM()
+            var content = new MenuUpdatesApiVM()
             {
                 HasResult = true,
                 HasNewFriends = friends.Any(e => e.FriendInitiator == false && e.IsConfirmed == false),
                 HasNewInvites = user.Invites.Any(),
-                HasNewMessages = user.UserChats.Any(e=>e.IsDeleted == false && e.Chat.Messages.Any(y=>y.Read == false && y.PersonId != user.Id))                
+                HasNewMessages = user.UserChats.Any(e => e.IsDeleted == false && e.Chat.Messages.Any(y => y.Read == false && y.PersonId != user.Id))
             };
+            var response = new WebResponce<MenuUpdatesApiVM>(content);
+            return response;
         }
 
         #region Секция ПОДПИСКИ

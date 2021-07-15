@@ -102,9 +102,7 @@ $(document).ready(function ()
             },
             success: function(data){
                 // Загрузка в изменения
-                console.log(data)
                 let changes = data.filter(e=> e.eventState == true )
-                console.log(changes)
                 let block = renderMessage(changes, user);
                 $('#ed-changes').html(block);
                 // Загрузка в комментарии
@@ -437,7 +435,6 @@ function GetBanner(bannerName, tegIdSelector) {
             name: bannerName
         },
         success: function (markup) {
-            console.log(markup);
             let selector = "#" + tegIdSelector;
             $(selector).html(markup);
             $(selector).removeClass('display-none')
