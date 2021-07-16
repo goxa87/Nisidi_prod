@@ -132,6 +132,7 @@
     <footer class="footer">
     </footer>
     <script src="~/js/jquery-3.4.1.min.js"></script>
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
     <script type="text/javascript" src="~/js/dx.all.js"></script>
     <script type="text/javascript" src="~/js/dx.messages.ru.js"></script>

@@ -1,5 +1,7 @@
 ﻿@model EventB.ViewModels.Account.UserLogin
 @{
+    ViewData["Style"] = "Account.css";
+    ViewData["Script"] = "Account.js";
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Войти";
 }
@@ -26,5 +28,5 @@
         </form>
     </div>
 </div>
-@{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
 

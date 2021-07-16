@@ -71,6 +71,15 @@ namespace EventB.Controllers
             await context.SaveChangesAsync();
             return Ok();
         }
+
+        /// <summary>
+        /// Пользовательское соглашение
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Agreement()
+        {
+            return View();
+        }
     }
 
 }
