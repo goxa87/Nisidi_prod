@@ -1,4 +1,4 @@
-﻿import { renderMessage, getModelWindow, iensSearchByText, GetNotification, GetBanner } from './Controls.js';
+﻿import { renderMessage, getModelWindow, iensSearchByText, GetNotification } from './Controls.js';
 
 $(document).ready(() => {
     let btnHtml = '<div id="h-small-menu-btn"></div>';
@@ -45,4 +45,4 @@ $(document).ready(() => {
 function ScrollToEnd() {
     let startoffset = $('#vertical-trigger').offset().top;
     $('#h-support-content').scrollTop(startoffset);
-}в
+}

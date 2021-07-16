@@ -1,4 +1,4 @@
-﻿import { renderMessage, getModelWindow, iensSearchByText, GetNotification, GetBanner } from './Controls.js';
+﻿import { renderMessage, getModelWindow, iensSearchByText, GetNotification } from './Controls.js';
 
 const connection = new signalR.HubConnectionBuilder()
     .withUrl("/chatroom")
