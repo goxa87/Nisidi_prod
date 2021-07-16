@@ -1,4 +1,6 @@
-﻿$(document).ready(() => {
+﻿import { renderMessage, getModelWindow, iensSearchByText, GetNotification, GetBanner } from './Controls.js';
+
+$(document).ready(() => {
     let btnHtml = '<div id="h-small-menu-btn"></div>';
     $('#menu-left-container').append(btnHtml);
 

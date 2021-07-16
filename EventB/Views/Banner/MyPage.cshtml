@@ -1,34 +1,37 @@
-﻿<div class="banner-container">
-    <button type="button" class="btn-close">
-        <span class="material-icons">
-            close
-        </span>
-    </button>
-    <div class="carousel-item-block">
-        <div class="my-carousel-item carousel-selected">
-            <div>
-                <h3>Описание страниыцы</h3>
-                <p>Описать зачем здесь эта страницакакие плючы она дает</p>
+﻿@if (ViewData["show"].ToString() == "true")
+{
+    <div class="banner-container">
+        <button type="button" class="btn-close">
+            <span class="material-icons">
+                close
+            </span>
+        </button>
+        <div class="carousel-item-block">
+            <div class="my-carousel-item carousel-selected">
+                <div>
+                    <h3>Описание страниыцы</h3>
+                    <p>Описать зачем здесь эта страницакакие плючы она дает</p>
+                </div>
+            </div>
+            <div class="my-carousel-item">
+                <div>
+                    <h3>Показать где что</h3>
+                    <p>картинками показать где какие элементы управления</p>
+                </div>
+            </div>
+            <div class="my-carousel-item">
+                <div>
+                    <h3>Показать где что</h3>
+                    <p>картинками как редактировать профиль</p>
+                    <p>показать где и как управлять созданными событиями</p>
+                </div>
             </div>
         </div>
-        <div class="my-carousel-item">
-            <div>
-                <h3>Показать где что</h3>
-                <p>картинками показать где какие элементы управления</p>
-            </div>
+        <div class="carousel-btn carousel-btn-prev">
+            <div class="chevron-left"></div>
         </div>
-        <div class="my-carousel-item">
-            <div>
-                <h3>Показать где что</h3>
-                <p>картинками как редактировать профиль</p>
-                <p>показать где и как управлять созданными событиями</p>
-            </div>
+        <div class="carousel-btn carousel-btn-next">
+            <div class="chevron-right"></div>
         </div>
     </div>
-    <div class="carousel-btn carousel-btn-prev">
-        <div class="chevron-left"></div>
-    </div>
-    <div class="carousel-btn carousel-btn-next">
-        <div class="chevron-right"></div>
-    </div>
-</div>
+}

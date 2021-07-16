@@ -1,36 +1,39 @@
-﻿<div class="banner-container">
-    <button type="button" class="btn-close">
-        <span class="material-icons">
-            close
-        </span>
-    </button>
-    <div class="carousel-item-block">
-        <div class="my-carousel-item carousel-selected">
-            <div>
-                <h3>Добро пожаловать</h3>
-                <p>Этот сайт поможет найти все события, которые интересны именно вам и не потратить на это много времени.</p>
-                <p>Все что нужно это на странице поискаdgdgdgdgdgdgddg</p>
+﻿@if (ViewData["show"].ToString() == "true")
+{
+    <div class="banner-container">
+        <button type="button" class="btn-close">
+            <span class="material-icons">
+                close
+            </span>
+        </button>
+        <div class="carousel-item-block">
+            <div class="my-carousel-item carousel-selected">
+                <div>
+                    <h3>Добро пожаловать</h3>
+                    <p>Этот сайт поможет найти все события, которые интересны именно вам и не потратить на это много времени.</p>
+                    <p>Все что нужно это на странице поискаdgdgdgdgdgdgddg</p>
+                </div>
+            </div>
+            <div class="my-carousel-item">
+                <div>
+                    <h3>Добро пожаловать2</h3>
+                    <p>Этот сайт пfsdfоможет найти все события, которые интересны именно вам и не потратить на это много времени.</p>
+                    <p>Все что нужно это на странице поиска dgd</p>
+                </div>
+            </div>
+            <div class="my-carousel-item">
+                <div>
+                    <h3>зло пожаловать3</h3>
+                    <p>Этот сайт пfsdfоможет найти все события, которые интересны именно вам и не потратить на это много времени.</p>
+                    <p>Все что нужно это на странице поиска dgd</p>
+                </div>
             </div>
         </div>
-        <div class="my-carousel-item">
-            <div>
-                <h3>Добро пожаловать2</h3>
-                <p>Этот сайт пfsdfоможет найти все события, которые интересны именно вам и не потратить на это много времени.</p>
-                <p>Все что нужно это на странице поиска dgd</p>
-            </div>
+        <div class="carousel-btn carousel-btn-prev">
+            <div class="chevron-left"></div>
         </div>
-        <div class="my-carousel-item">
-            <div>
-                <h3>зло пожаловать3</h3>
-                <p>Этот сайт пfsdfоможет найти все события, которые интересны именно вам и не потратить на это много времени.</p>
-                <p>Все что нужно это на странице поиска dgd</p>
-            </div>
+        <div class="carousel-btn carousel-btn-next">
+            <div class="chevron-right"></div>
         </div>
     </div>
-    <div class="carousel-btn carousel-btn-prev">
-        <div class="chevron-left"></div>
-    </div>
-    <div class="carousel-btn carousel-btn-next">
-        <div class="chevron-right"></div>
-    </div>
-</div>
+}

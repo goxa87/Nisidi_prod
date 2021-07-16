@@ -117,6 +117,11 @@ namespace EventBLib.Models
         /// </summary>
         public MarketKibnet MarketKibnet { get; set; }
 
+        /// <summary>
+        /// Системные баннеры для показа пользователю
+        /// </summary>
+        public List<UserBanner> UserBanners { get; set; }
+
         #endregion
     }
 }

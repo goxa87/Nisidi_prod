@@ -1,28 +1,31 @@
-﻿<div class="banner-container">
-    <button type="button" class="btn-close">
-        <span class="material-icons">
-            close
-        </span>
-    </button>
-    <div class="carousel-item-block">
-        <div class="my-carousel-item carousel-selected">
-            <div>
-                <h3>Здесь описание этой страницы</h3>
-                <p>Для чего это нужно какие преимущества дает. Перейти в собятия пользователя .</p>
-                
+﻿@if(ViewData["show"].ToString() == "true")
+{
+    <div class="banner-container">
+        <button type="button" class="btn-close">
+            <span class="material-icons">
+                close
+            </span>
+        </button>
+        <div class="carousel-item-block">
+            <div class="my-carousel-item carousel-selected">
+                <div>
+                    <h3>Здесь описание этой страницы</h3>
+                    <p>Для чего это нужно какие преимущества дает. Перейти в собятия пользователя .</p>
+
+                </div>
+            </div>
+            <div class="my-carousel-item">
+                <div>
+                    <h3>Небольшая инструкция по использованию</h3>
+                    <p>где и как искать где заявки . Как добавить как блокировать. </p>
+                </div>
             </div>
         </div>
-        <div class="my-carousel-item">
-            <div>
-                <h3>Небольшая инструкция по использованию</h3>
-                <p>где и как искать где заявки . Как добавить как блокировать. </p>
-            </div>
+        <div class="carousel-btn carousel-btn-prev">
+            <div class="chevron-left"></div>
+        </div>
+        <div class="carousel-btn carousel-btn-next">
+            <div class="chevron-right"></div>
         </div>
     </div>
-    <div class="carousel-btn carousel-btn-prev">
-        <div class="chevron-left"></div>
-    </div>
-    <div class="carousel-btn carousel-btn-next">
-        <div class="chevron-right"></div>
-    </div>
-</div>
+}

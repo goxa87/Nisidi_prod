@@ -80,6 +80,11 @@ namespace EventBLib.DataContext
         /// <summary>
         /// Рекламные карточки (пока не добавляем в проект . нет бизнес схемы.)
         /// </summary>
-        public DbSet<MarkListCard> MarkListCards { get; set; }        
+        public DbSet<MarkListCard> MarkListCards { get; set; }
+
+        /// <summary>
+        /// Баннеры пользователей.
+        /// </summary>
+        public DbSet<UserBanner> UserBanners { get; set; }
     }
 }

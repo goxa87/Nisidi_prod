@@ -1,4 +1,7 @@
-﻿DevExpress.localization.locale("ru");
+﻿import { renderMessage, getModelWindow, iensSearchByText, GetNotification } from './Controls.js';
+import { GetBanner } from './Banner.js';
+
+DevExpress.localization.locale("ru");
 $(function () {
     $("#dateEvent").dxDateBox({
         type: "datetime",
@@ -35,8 +38,7 @@ $(document).ready(function ()
         prepareDynamicLoad(); 
     }
 
-    // Баннер
-    GetHelloBanner();
+    GetBanner("Hello.cshtml", "ev-hello-banner");
 
     // Start постранично при нажатии загрузить еще.
     $('#ev-load-more').click(function () {        
@@ -185,10 +187,8 @@ $(document).ready(function ()
     function AddMessageToListMessage(text1)
     {
         let date1 = new Date();
-        console.log(date1);
         let userId = $('#user-id').val();
         let data = { personId: userId, text: text1, postDate: date1, eventState:false, eventLink:false }
-
         let block = renderMessage(data, userId);
         $('.ed-message-list').prepend(block);
 
@@ -319,12 +319,10 @@ $(document).ready(function ()
         $('.checked-inv').each(function (i, v) {
             let id = $(v).parents('.invite-data').children('#friend-id').val();
             let mess = $(v).parents('.invite-data').children('.ev-d-invite-text').val();
-            console.log(mess)
             let inv = { userId: id, message: mess };
             ids.push(inv);
         });
         let eventid = $('#event-id').val();
-        console.log('ids', ids)
         $.ajax({
             type: 'post',
             url: '/Events/InviteFriendsIn',
@@ -426,8 +424,3 @@ $(document).ready(function ()
         $(opps).removeClass('display-none');
     };
 });
-
-function GetHelloBanner() {
-    //...
-    GetBanner("Hello.cshtml", "ev-hello-banner");
-}

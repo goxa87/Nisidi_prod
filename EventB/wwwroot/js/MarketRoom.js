@@ -1,4 +1,6 @@
-﻿$(document).ready(function ()
+﻿import { renderMessage, getModelWindow, iensSearchByText, GetNotification, GetBanner } from './Controls.js';
+
+$(document).ready(function ()
 {
     // Кнопка сменить статус.
     $('.right-columnn').on('click', '.lk-change-event-status', function () {

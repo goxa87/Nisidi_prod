@@ -1,4 +1,7 @@
-﻿$(document).ready(function ()
+﻿import { renderMessage, getModelWindow, iensSearchByText, GetNotification } from './Controls.js';
+import { GetBanner } from './Banner.js';
+
+$(document).ready(function ()
 {
     GetFriendBanner();
     // добавить друга.
