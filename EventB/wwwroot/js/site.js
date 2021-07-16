@@ -284,4 +284,26 @@ function GetNotification(text, type, duration = 2) {
     setTimeout(() => { $('.s-fixed-notification').remove(); }, duration * 1000);
 }
 
+/**
+ * Получить разметку баннера по названию файла банера
+ * @param {any} bannerName имя файла из папки
+ * @param {any} tegIdSelector селктор на верстке (передавать через id без #)
+ */
+function GetBanner(bannerName, tegIdSelector) {
+    $.ajax({
+        url: "/Banner/GetBannerByName",
+        data: {
+            name: bannerName
+        },
+        success: function (markup) {
+            let selector = "#" + tegIdSelector;
+            $(selector).html(markup);
+            $(selector).removeClass('display-none')
+        },
+        error: function () {
+            console.log('Ошибка получения разметки баннера');
+        }
+    });
+}
+
 

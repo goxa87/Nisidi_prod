@@ -1167,20 +1167,14 @@ figure img {
     }
 }
 
-
 /*БАННЕРЫ*/
-.banner-item{
-    background-color: white;
-    min-height: 450px;
-    padding: 8px;
-}
-
-.banner-hello-container {
+.banner-container {
     min-height: 400px;
     margin-top: 8px;
     padding: 8px;
     background-color: white;
     position: relative;
+    margin-bottom: 4px;
 }
 
 .btn-close {

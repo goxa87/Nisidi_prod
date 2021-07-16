@@ -427,24 +427,6 @@ $(document).ready(function ()
     };
 });
 
-/**Получить баннер по имени и разменстить в тег с id селектора*/
-function GetBanner(bannerName, tegIdSelector) {
-    $.ajax({
-        url: "/Banner/GetBannerByName",
-        data: {
-            name: bannerName
-        },
-        success: function (markup) {
-            let selector = "#" + tegIdSelector;
-            $(selector).html(markup);
-            $(selector).removeClass('display-none')
-        },
-        error: function () {
-            console.log('Ошибка получения разметки баннера');
-        }
-    });
-}
-
 function GetHelloBanner() {
     //...
     GetBanner("Hello.cshtml", "ev-hello-banner");

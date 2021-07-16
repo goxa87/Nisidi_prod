@@ -1,4 +1,5 @@
 ﻿$(document).ready(function () {
+    GetBanner("MyPage.cshtml", "mypage-banner");
     // Кнпоки Нижнего меню.
     $('.mp-my-selector').on('click', function () {
         $('.selected-label').removeClass('selected-label');
