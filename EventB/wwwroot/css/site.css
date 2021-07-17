@@ -229,7 +229,7 @@ input[type="checkbox"].input-validation-error {
 }
 
 #title-container {
-    padding: 8px 24px;
+    padding: 8px 24px 8px 16px;
     color: #1b5972;
     background-color: #1b5972;
     font-size: 18px;
@@ -238,9 +238,14 @@ input[type="checkbox"].input-validation-error {
     align-items:center;
 }
 
-#title-container article {
+.title-container-article {
     text-align: center;
     color: #ffcd00;
+}
+
+.main-running-man{
+    max-height:27px;
+    max-width:27px;
 }
 
 .shared-login h5, .shared-login a {

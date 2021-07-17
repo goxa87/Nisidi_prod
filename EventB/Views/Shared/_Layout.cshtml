@@ -17,11 +17,15 @@
     <header>
         <div class="the-container">
             <div id="title-container">
-                <article>СОБЫТИЯ В ТВОЕМ ГОРОДЕ</article>
+                <div class="flex-hsc">
+                    <img class="main-running-man" src="~/resourses/running_man.png" alt="nisidi" />
+                    <article class="title-container-article">СОБЫТИЯ В ТВОЕМ ГОРОДЕ</article>
+                </div>
+                
                 <div class="shared-login">
                     @{if (User.Identity.IsAuthenticated)
                         {
-                            <h5>ВЫ: @User.Identity.Name </h5>
+                            <h5>@User.Identity.Name </h5>
                             <a asp-action="Exit" asp-controller="Account">Выйти</a>
                         }
                         else
