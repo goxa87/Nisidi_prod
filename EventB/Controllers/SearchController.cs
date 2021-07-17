@@ -54,7 +54,7 @@ namespace EventB.Controllers
                 DateDue = model.DateEnd,
                 IsTegsFromProfile = false,
                 Title = model.Title.ToUpper(),
-                City = model.Сity.ToUpper(),
+                City = model.City.ToUpper(),
                 Tegs = model.Tegs.ToUpper()
             };
 
@@ -67,8 +67,16 @@ namespace EventB.Controllers
         {
             return View(list);
         }
+
+        /// <summary>
+        /// Вернет партиалку поиска
+        /// </summary>
+        /// <param name="body"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> GetSearchPartial(EventSearchViewModel body)
+        {
+            return PartialView("~/Views/Shared/_SearchModalPartial.cshtml", body);
+        }
     }
-
-    
-
 }

@@ -18,12 +18,22 @@
         </div>        
     </div>
 </div>
+
 <div class="top-page-header" id="header-title">
+    <div class="help-btn help-btn-light">
+        <div class="help-content display-none">
+            <div class="help-close"></div>
+            <p class="help-container">
+                Выборка на этой странице производилась по этим параметрам, которые взяты либо из Вашего профиля либо из параметров поиска (Только публичные). Для изменения параметров перейдите на вкладку <a class="a-dark" href="/Search/Index">ПОИСК</a>
+            </p>
+        </div>
+    </div>
+    <img class="tune_gold" src="~/resourses/tune_gold_24.png" alt="search" title="поиск" />
     <div class="ticket">c: @Model.args.DateSince.ToString("dd.MM.yyyy")</div>
     <div class="ticket">по: @Model.args.DateDue.ToString("dd.MM.yyyy")</div>
     @if (Model.args.City != "" || Model.args.City == null)
     {
-        <div class="ticket">@Model.args.City</div>
+        <div class="ticket" id="search-param-city">@Model.args.City</div>
     }
 
     @if (Model.args.Tegs != "" || Model.args.Tegs == null)
@@ -34,12 +44,12 @@
         }
         else
         {
-            <div class="ticket">@Model.args.Tegs</div>
+            <div class="ticket" id="search-param-tegs">@Model.args.Tegs</div>
         }
 
     }
     @if (Model.args.Title != "" || Model.args.Title == null)
-    {<div class="ticket">@Model.args.Title</div>}
+    {<div class="ticket" id="search-param-title">@Model.args.Title</div>}
 
     <input type="hidden" id="args-date-s" value="@Model.args.DateSince.ToString("MM.dd.yyyy HH:mm:ss")" />
     <input type="hidden" id="args-date-e" value="@Model.args.DateDue.ToString("MM.dd.yyyy HH:mm:ss")" />
@@ -49,16 +59,6 @@
     <input type="hidden" id="args-skip" value=@Model.args.Skip />
     <input type="hidden" id="args-take" value=@Model.args.Take />
     <input type="hidden" id="flag-dwnl-more" value="true" />
-    <div class="help-btn help-btn-light">
-        <div class="help-content display-none">
-            <div class="help-close"></div>
-            <p class="help-container">
-                Выборка на этой странице производилась по этим параметрам, которые взяты либо из Вашего профиля либо из параметров поиска (Только публичные). Для изменения параметров перейдите на вкладку <a class="a-dark" href="/Search/Index">ПОИСК</a>
-            </p>
-        </div>
-    </div>
-</div>
-<div class="top-page-header display-none" id="header-args">    
 </div>
 <div id="ev-hello-banner" class="display-none"></div>
 <div id="event-list">

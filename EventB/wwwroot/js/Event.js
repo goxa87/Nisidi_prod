@@ -1,5 +1,6 @@
 ﻿import { renderMessage, getModelWindow, iensSearchByText, GetNotification } from './Controls.js';
 import { GetBanner } from './Banner.js';
+import { GetSearchPartial } from './GetPartialsService.js';
 
 DevExpress.localization.locale("ru");
 $(function () {
@@ -39,6 +40,17 @@ $(document).ready(function ()
     }
 
     GetBanner("Hello.cshtml", "ev-hello-banner");
+
+
+    $('body').on('click', '.tune_gold', function () {
+        getModelWindow("Поиск событий", false, null, null, "Введите параметры поиска событий");
+        var body = getSearchParams();
+        GetSearchPartial(body, function (response) {
+            console.log('exec callback');
+            $('.modal-body').html(response);
+        });
+        
+    });
 
     // Start постранично при нажатии загрузить еще.
     $('#ev-load-more').click(function () {        
@@ -424,3 +436,14 @@ $(document).ready(function ()
         $(opps).removeClass('display-none');
     };
 });
+
+/**
+ * Вернет параметры поиска событий
+ * */
+function getSearchParams() {
+    return {
+        Title: $('#search-param-title').text(),
+        Tegs: $('#search-param-tegs').text(),
+        City: $('#search-param-city').text()
+    }
+}

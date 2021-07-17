@@ -13,6 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Search\_SearchModalPartial.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MailKit" Version="2.6.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
@@ -40,6 +44,10 @@
     <Folder Include="wwwroot\images\Profileimages\Medium\" />
     <Folder Include="wwwroot\logs\" />
     <Folder Include="wwwroot\resourses\helpimages\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Shared\_SearchModalPartial.cshtml" />
   </ItemGroup>
 
   <ItemGroup>    

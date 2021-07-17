@@ -1,0 +1,29 @@
+﻿@model EventB.ViewModels.EventSearchViewModel
+
+<div>
+    <p class="common-text">Здесь вы можете задать параметры поиска событий.</p>
+</div>
+
+<form asp-action="SearchEventlist" asp-controller="Events" asp-antiforgery="true" method="post" class="wide-form" >
+    <label class="form-label">Название:</label><br>
+    <input class="form-entry-title" type="text" name="Title" value="@Model.Title"><br>
+
+    <label class="form-label">Город:</label><br>
+    <input class="form-entry-title" type="text" name="City" value="@Model.City"><br>
+
+    <label class="form-label">Теги:</label><br>
+    <input class="form-entry-title" type="text" name="Tegs" value="@Model.Tegs"><br>
+
+    <label class="form-label">Дата начала С:</label><br>
+    <input id="ser-date-since" type="hidden" name="DateSince">
+    <div class="calender-width" id="dateSinseDE"></div>
+
+    <label class="form-label">Дата начала ПО:</label><br>
+    <input id="ser-date-due" class="form-date" type="hidden" name="DateDue">
+    <div class="calender-width" id="dateDueDE"></div>
+
+    <input type="hidden" name="Skip" value="0" />
+    <input type="hidden" name="Take" value="12" />
+
+    <input class="form-submit" type="submit" name="f" value="Найти событие"><br><br>
+</form>

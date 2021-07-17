@@ -27,7 +27,6 @@ namespace EventB.ViewModels
         /// <summary>
         ///  город проведения
         /// </summary>
-        public string Сity { get; set; } 
-
+        public string City { get; set; } 
     }
 }
