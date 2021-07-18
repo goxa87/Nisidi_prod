@@ -1,4 +1,5 @@
-﻿using EventB.ViewModels.FriendsVM;
+﻿using EventB.ViewModels;
+using EventB.ViewModels.FriendsVM;
 using EventBLib.DataContext;
 using EventBLib.Models;
 using Microsoft.AspNetCore.Identity;
@@ -113,7 +114,7 @@ namespace EventB.Services.FriendService
             return infoVM;
         }
 
-        public async Task<List<SmallFigureFriendVM>> SearchFriend(string name, string teg, string city, string currentUserAppName)
+        public async Task<List<SmallFigure>> SearchFriend(string name, string teg, string city, string currentUserAppName)
         {
             var currentUser = await userManager.FindByNameAsync(currentUserAppName);            
             var result = context.Users.Include(e => e.Intereses).Where(e => e.Visibility == AccountVisible.Visible && e.Id != currentUser.Id);
@@ -135,7 +136,7 @@ namespace EventB.Services.FriendService
                 result = result.Where(e => EF.Functions.Like(e.Name, $"%{name}%"));
             }
 
-            return result.Select(e=> new SmallFigureFriendVM()
+            return result.Select(e=> new SmallFigure()
             {
                 Image = e.MediumImage,
                 Link = $"/Friends/UserInfo?userId={e.Id}",

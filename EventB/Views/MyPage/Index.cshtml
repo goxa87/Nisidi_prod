@@ -91,7 +91,7 @@
                 @foreach (var e in Model.Vizits.OrderByDescending(e => e.Event.Date))
                 {
                     <div class="mp-details-figure">
-                        @{await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.FriendsVM.SmallFigureFriendVM()
+                        @{await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.SmallFigure()
                             {
                                 Title = e.EventTitle,
                                 Link = $"/Events/Details/{e.EventId}",
@@ -125,7 +125,7 @@
                 @foreach (var e in Model.MyEvents.OrderByDescending(e=>e.Date))
                 {
                     <div class="mp-details-figure">
-                        @{await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.FriendsVM.SmallFigureFriendVM()
+                        @{await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.SmallFigure()
                             {
                                 Title = e.TitleShort,
                                 Link = $"/Events/Details/{e.EventId}",

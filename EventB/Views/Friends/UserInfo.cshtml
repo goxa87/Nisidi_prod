@@ -87,7 +87,7 @@ else
                 <div class="element-square-container">
                     @foreach (var e in Model.WillGoEvents.OrderByDescending( e => e.Event.Date))
                     {
-                        await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.FriendsVM.SmallFigureFriendVM()
+                        await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.SmallFigure()
                         {
                             Title = e.EventTitle,
                             Link = $"/Events/Details/{e.EventId}",
@@ -108,7 +108,7 @@ else
                 <div class="element-square-container">
                     @foreach (var e in Model.CreatedEvents.OrderByDescending(e =>e.Date))
                     {
-                        await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.FriendsVM.SmallFigureFriendVM()
+                        await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.SmallFigure()
                         {
                             Title = e.Title,
                             Link = $"/Events/Details/{e.EventId}",
@@ -128,7 +128,7 @@ else
                 <div class="flex-hsac flex-wr">
                     @foreach (var e in Model.Friends)
                     {
-                        await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.FriendsVM.SmallFigureFriendVM()
+                        await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.SmallFigure()
                         {
                             Title = e.UserName,
                             Link = $"/Friends/UserInfo/UserInfo?userId={e.UserId}",

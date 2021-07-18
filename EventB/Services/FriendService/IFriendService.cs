@@ -1,4 +1,5 @@
-﻿using EventB.ViewModels.FriendsVM;
+﻿using EventB.ViewModels;
+using EventB.ViewModels.FriendsVM;
 using EventBLib.Models;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace EventB.Services.FriendService
         /// Получит список потенциальных друзей
         /// </summary>
         /// <returns></returns>
-        Task<List<SmallFigureFriendVM>> SearchFriend(string name, string teg, string city, string currentUserAppName);
+        Task<List<SmallFigure>> SearchFriend(string name, string teg, string city, string currentUserAppName);
 
         /// <summary>
         /// Добавит пользователя в друзья

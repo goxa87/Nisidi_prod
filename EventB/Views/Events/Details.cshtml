@@ -122,7 +122,7 @@
         <div class="flex-hss flex-wr">
             @foreach (var e in Model.Vizits)
             {
-                await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.FriendsVM.SmallFigureFriendVM()
+                await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.SmallFigure()
                 {
                     Title = e.VizitorName,
                     Link = $"/Friends/UserInfo?userId={e.UserId}",
