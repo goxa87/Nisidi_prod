@@ -43,6 +43,7 @@ $(document).ready(() => {
 
 /** Прокрутит до конца списка сообщений */
 function ScrollToEnd() {
+    if ($('#vertical-trigger').offset() == undefined) return;
     let startoffset = $('#vertical-trigger').offset().top;
     $('#h-support-content').scrollTop(startoffset);
 }

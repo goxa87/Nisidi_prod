@@ -198,7 +198,7 @@ textarea {
         z-index: 50;
     }
     .ch-hide-menu{
-        visibility:visible;
+        visibility:hidden;
     }
 
     #ch-small-menu-btn {

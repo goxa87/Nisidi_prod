@@ -9,7 +9,7 @@
 
 
 <div class="chat-frame">
-    <div class="left-column">
+    <div class="left-column @((Model.CurrentChatId.HasValue && Model.CurrentChatId == 0) ? "ch-hide-menu" : "")">
         <div >
             <form class="search">
                 <input id="txt-search" type="text">

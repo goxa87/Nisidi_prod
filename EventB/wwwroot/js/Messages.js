@@ -154,7 +154,6 @@ $(document).ready(function () {
     getNewMessageCount();
 
     let curentChatId = $('#chat-id').val();
-    console.log(curentChatId)
     if (curentChatId && curentChatId != '0') {
         $.ajax({
             url: '/Api/GetMessageHistory',
