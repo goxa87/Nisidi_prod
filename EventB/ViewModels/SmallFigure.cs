@@ -11,5 +11,6 @@ namespace EventB.ViewModels
         public string FullTitle { get; set; }
         public string Title { get; set; }
         public string Link { get; set; }
+        public bool Active { get; set; } = true;
     }
 }

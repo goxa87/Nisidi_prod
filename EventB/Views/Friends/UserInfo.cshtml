@@ -91,7 +91,8 @@ else
                         {
                             Title = e.EventTitle,
                             Link = $"/Events/Details/{e.EventId}",
-                            Image = e.EventPhoto
+                            Image = e.EventPhoto,
+                            Active = e.Event.Date < DateTime.Now ? false : true
                         });
                     }
                 </div>
@@ -112,7 +113,8 @@ else
                         {
                             Title = e.Title,
                             Link = $"/Events/Details/{e.EventId}",
-                            Image = e.MediumImage
+                            Image = e.MediumImage,
+                            Active = e.Date < DateTime.Now ? false : true  
                         });
                     }
                 </div>
