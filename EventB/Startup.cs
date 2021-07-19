@@ -49,9 +49,8 @@ namespace EventB
                     opt.Password.RequireLowercase = false;
                     opt.Password.RequireNonAlphanumeric = false;
                     opt.Password.RequireDigit = false;
-                    
                 }
-                ).AddEntityFrameworkStores<Context>().AddDefaultTokenProviders();
+                ).AddEntityFrameworkStores<Context>();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -60,17 +59,20 @@ namespace EventB
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
                 options.Lockout.AllowedForNewUsers = true;
                 options.User.RequireUniqueEmail = true;
-
-                services.ConfigureApplicationCookie(options =>
-                {
-                    options.Cookie.HttpOnly = true;
-                    options.Cookie.Expiration = TimeSpan.FromDays(7);
-                    options.LoginPath = "/Account/Login";
-                    options.LogoutPath = "/Account/Logout";
-
-                    options.SlidingExpiration = true;
-                });
             });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = "nisidi_security";
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromDays(7);
+                options.Cookie.MaxAge = TimeSpan.FromDays(8);
+                options.LoginPath = "/Account/Login";
+                options.LogoutPath = "/Account/Logout";
+
+                options.SlidingExpiration = true;
+            });
+
             services.AddTransient<ILogger>(sp => new Logger($"{hostEnvironment.WebRootPath}/{Configuration.GetSection("LogPath").Value}"));
             services.AddTransient<ITegSplitter, TegSplitter>();
             services.AddTransient<IUserFindService, UserFindService>();
