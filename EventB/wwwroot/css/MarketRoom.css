@@ -44,9 +44,6 @@
         align-items: center;
     }
 }
-hr{
-    margin-bottom: 24px;
-}
 /* модалка блокировка пользователей*/
 
 .lk-block-user-name{

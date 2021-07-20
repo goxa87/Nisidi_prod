@@ -56,12 +56,12 @@
     <div id="come-block">
         @if (Model.Vizits.Where(e => e.UserId == ViewData["UserId"].ToString()).Any())
         {
-            <div class="form-label">Вы пойдете</div>
+            <div class="bold-label">Вы пойдете</div>
             <div id="btn-come" class="form-search-fade">Отменить участие</div>
         }
         else
         {
-            <div class="form-label display-none">Вы пойдете</div>
+            <div class="bold-label display-none">Вы пойдете</div>
             <div id="btn-come" class="form-submit">Подтвердить участие</div>
         }
     </div>

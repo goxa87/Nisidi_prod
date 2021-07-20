@@ -96,6 +96,12 @@ label{
 .calender-width{
     width: 300px;
 }
+.bold-label {
+    color: #1b5972;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
 /*звездочки*/
 .s-star16 {
     background-image: url('../resourses/star32.png');
@@ -569,15 +575,6 @@ align-items: center;
     cursor: pointer;
     margin-right: 7px;
 }
-/*Элементы дизайна*/
-.label-foregrounded-dark {
-    display: inline-block;
-    background-color: #1e404e;
-    color: #ffcd00;
-    padding: 4px;
-    margin-bottom: 4px;
-    border-radius: 2px;
-}
 
 /*блоки фигур*/
 .small-figure-figure {
@@ -774,6 +771,10 @@ figure img {
     flex: 3;
     padding: 0 16px 16px 16px;
     width:100%;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 

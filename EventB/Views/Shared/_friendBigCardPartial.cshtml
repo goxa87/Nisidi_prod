@@ -17,20 +17,27 @@
             <h3 class="central-title">@Model.UserName</h3>
             @if (!Model.IsConfirmed && Model.FriendInitiator)
             {
-                <div class="red-btn-alert width100">Ваша заявка в друзья не подтверждена</div>
+                <div class="fr-label-text">Заявка не подтверждена</div>
             }
-            @if (!Model.IsConfirmed && !Model.FriendInitiator)
+            else
             {
-                <div class="action-button width100 agree-friend">Добавить в друзья</div>
+                <br>
             }
+
             <input type="hidden" id="friend-id" name="friendId" value="@Model.UserId" />
             @if (!Model.IsBlocked)
             {
+                <br>
                 <div class="action-button width100 btn-block" id="btn-block">Заблокировать</div>
             }
             else
             {
-                <div class="red-btn-alert width100 btn-block" id="btn-block">Заблокирован</div>
+                <div class="fr-label-text">ЗАБЛОКРОВАН</div>
+                <div class="red-btn-alert width100 btn-block" id="btn-block">Разблокировать</div>
+            }
+            @if (!Model.IsConfirmed && !Model.FriendInitiator)
+            {
+                <div class="action-button width100 agree-friend">Добавить в друзья</div>
             }
             <a asp-controller="Messages" asp-action="Index" asp-route-opponentId="@Model.UserId"><div class="action-button width100">Сообщение</div></a>
 

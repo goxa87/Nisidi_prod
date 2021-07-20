@@ -10,20 +10,21 @@
             </div>
         </div>
         <div class="eventlist-info">
-            <hr>
-            <h3 class="eve-title">@Model.Title</h3>
-            <h4>Место: @Model.Place</h4><br>
-            <h4>Время: @Model.Date.ToString("dd.MM.yyyy HH:mm")</h4><br>
+            <div>
+                <hr>
+                <h3 class="eve-title">@Model.Title</h3>
+            </div>            
+            <h4>Место: @Model.Place</h4>
+            <h4>Время: @Model.Date.ToString("dd.MM.yyyy HH:mm")</h4>
             <h4>
                 Билеты: @if (Model.Tickets)
                 {<span>Нужны</span> }
                 else
                 {<span>Не нужны</span>}
-            </h4><br>            
+            </h4>           
             <h4>
                 Теги: @Model.Tegs
             </h4>
-            <BR>
         </div>
         <div class="eventlist-bottom-menu">
             <div class="eventlist-btn-come-right-col">
