@@ -217,9 +217,9 @@ namespace EventB.Services.EventServices
         {
             var chat = await context.Chats.Include(e => e.Messages).Where(e => e.EventId == EventId).FirstOrDefaultAsync();
 
-            return await context.Messages.Where(e => e.ChatId == chat.ChatId)
-                .Take(40)
-                .Union(context.Messages.Where(e => e.ChatId == chat.ChatId && e.EventState == true)).OrderByDescending(e => e.PostDate).ToListAsync();
+            return chat.Messages.Where(e => e.ChatId == chat.ChatId)
+                .Take(100)
+                .Union(context.Messages.Where(e => e.ChatId == chat.ChatId && e.EventState == true)).OrderByDescending(e => e.PostDate).ToList();
         }
 
 

@@ -282,8 +282,12 @@ $(document).ready(function () {
 
 
 function scrollDown() {
-    let position = $('#vertical-trigger').position();
-    $('.message-list').scrollTop(position.top + 2000);
+    //let position = $('#vertical-trigger').position();
+    //console.log('pos', position)
+    let element = document.getElementById('message-list');
+    console.log(element, element.scrollHeight);
+    $('.message-list').scrollTop(element.scrollHeight + 1000);
+
 }
 
 // Получение значков новых сообщений

@@ -77,6 +77,7 @@ namespace EventB.Services
         /// </summary>
         /// <param name="p"></param>
         /// <returns></returns>
+        [Obsolete("Сейчас через js грузит")]
         public async Task<List<Event>> GetStartEventListAsync(User user)
         {
             // Это отнесено к кастомизированному поиску, т.к. по сути поже самое что и выше.

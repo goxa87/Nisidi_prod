@@ -296,10 +296,10 @@ namespace EventB.Controllers
         /// <returns></returns>
         [Route("GetMessageHistory")]
         [Authorize]
-        public async Task<List<Message>> GetMessageHistory(int chatId, int lastCount = 30)
+        public async Task<List<Message>> GetMessageHistory(int chatId, int lastCount = 100)
         {
             // Реализовать количество загрузок.
-            // ! Реализовать ПОЛУЧЕНИЕ ИМЕНИ ИЗ БД т.к. в изменении профиля к ссобщениям имя не меяется.
+            // ! Реализовать ПОЛУЧЕНИЕ ИМЕНИ ИЗ БД т.к. в изменении профиля к собщениям имя не меяется.
             var messages = await context.Messages.
                 Where(e => e.ChatId == chatId).
                 OrderByDescending(e => e.PostDate).
