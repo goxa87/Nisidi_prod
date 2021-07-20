@@ -54,6 +54,7 @@ else
     <label class="form-label" asp-for="Phone"></label>
     <span asp-validation-for="Phone"></span><br>
     <input class="form-entry-title" type="text" asp-for="Phone" /><br>
+    <input type="hidden" asp-for="OldPhone" value="@Model.OldPhone" />
 
     <label class="form-label" asp-for="AgeRest"></label>
     <span asp-validation-for="AgeRest"></span>
@@ -71,6 +72,7 @@ else
     <div class="content">@Model.Date.ToString("dd.MM.yyyy HH:mm") изменить на </div>
     <input type="hidden" value="@Model.Date" asp-for="Date" /><br>
     <div class="calender-width" id="eve-edit-date"></div>
+    <input type="hidden" asp-for="OldDate" value="@Model.OldDate" />
 
     <label class="form-label" asp-for="MainPicture"></label>
     <img class="img-100" src="@($"{Model.MainPicture}?{DateTime.Now.ToString()}")">

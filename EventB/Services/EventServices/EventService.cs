@@ -516,7 +516,7 @@ namespace EventB.Services.EventServices
                 chatMessage += $"<p><span>Новое место: </span>{model.Place}</p>";
             }            
 
-            if (model.Date != model.OldDate && eve.Type == EventType.Private)
+            if (model.Date != model.OldDate) // Это вернуть когда прийдет время && eve.Type == EventType.Private)
             {
                 eve.Date = model.Date;
                 chatMessage += $"<p><span>Новое время: </span>{model.Date.ToString("dd.MM.yy HH:mm")}</p>";
