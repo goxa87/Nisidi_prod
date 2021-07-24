@@ -5,7 +5,6 @@
         <div class="flex-vsc small-figure-figure @(Model.Active ? "small-figure-active" : "")">
             <div class="image-container min-height-180">
                 <img src="@($"{Model.Image}?{DateTime.Now.Millisecond.ToString()}")" class="image-self-back" />
-                <div class="image-mask"></div>
                 <img src="@($"{Model.Image}?{DateTime.Now.Millisecond.ToString()}")" class="image-self-front" />
             </div>            
             <div class="small-figure-title">@Model.Title</div>

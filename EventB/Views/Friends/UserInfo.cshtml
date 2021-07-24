@@ -53,9 +53,14 @@ else
             <div>@Model.User.City</div>
             <label>Интересы:</label>
             <div class="flex-hsc flex-wr">
-                @foreach (var e in Model.User.Intereses)
+                @foreach (var teg in Model.User.Intereses)
                 {
-                    <div class="interes">@e.Value</div>
+                    var tegData = new EventB.ViewModels.SharedViews.TegColoredLink()
+                    {
+                        TegValue = teg.Value,
+                        City = Model.User.City
+                    };
+                    await Html.RenderPartialAsync("~/Views/Shared/_tegColoredLink.cshtml", tegData);
                 }
             </div>
             <label>Пара слов:</label>

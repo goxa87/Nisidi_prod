@@ -4,9 +4,8 @@
     <div class="eventlist-container flex-vss">
         <div class="eventlist-img">
             <div class="image-container">
-                <img src="@($"{Model.MediumImage}?{DateTime.Now.Millisecond.ToString()}")" class="image-self-back" alt="event"/>
-                <div class="image-mask"></div>
-                <img src="@($"{Model.MediumImage}?{DateTime.Now.Millisecond.ToString()}")" class="image-self-front" alt="event"/>
+                <img src="@Model.MediumImage" class="image-self-back" alt="event" />
+                <img src="@Model.MediumImage" class="image-self-front" alt="event" />
             </div>
         </div>
         <div class="eventlist-info">
