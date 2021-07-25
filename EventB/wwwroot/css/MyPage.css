@@ -16,6 +16,7 @@
 .mp-name {
     font-size: 20px;
     font-weight: bold;
+    word-break: break-word;
 }
 
 .mp-img {
