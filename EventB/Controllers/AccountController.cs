@@ -178,12 +178,12 @@ namespace EventB.Controllers
                         try
                         {
                             await SendEmailConfirmationAsync(model.Email);
-                            return View("ConfirmEmail", model.Email);
                         }
                         catch (Exception ex)
                         {
                             await logger.LogObjectToFile("RegisterAccount", ex);
                         }
+                        return View("ConfirmEmail", model.Email);
                     }
                     else
                     {

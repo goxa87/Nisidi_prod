@@ -46,13 +46,12 @@ namespace EventB.Services
                 Where(e => e.Date > dateStart && e.Date < dateEnd && e.Type == EventType.Global);
             // город
             if (!string.IsNullOrWhiteSpace(args.City))
-                selection = selection.Where(e => e.NormalizedCity == args.City);
+                selection = selection.Where(e => e.NormalizedCity == args.City.ToUpper());
             // заголовок
             // Возможно здесь будет тянуть из бд уже в оперативу. (узкое место нужно проверить)
             // Проверил . Судя по запросу выполняется на сервере. 
             if (!string.IsNullOrWhiteSpace(args.Title))
                 selection = selection.Where(e => EF.Functions.Like(e.Title, $"%{args.Title}%"));
-
             var selectionLocal = selection;
             // теги
             
@@ -63,12 +62,13 @@ namespace EventB.Services
             }     
             
             var selectionLocalList = await selection.OrderBy(e => e.Date).Skip(args.Skip).Take(args.Take).ToListAsync();
-
+            /*
             foreach(var eve in selectionLocalList)
             {
                 eve.Views++;
             }
             await context.SaveChangesAsync();
+            */
             return selectionLocalList;
         }
 
