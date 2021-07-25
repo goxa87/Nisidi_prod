@@ -238,7 +238,7 @@ namespace EventB.Controllers
             return View("ConfirmEmail", email);
         }
         /// <summary>
-        /// ФИнальное подтверждение почты. 
+        /// Финальное подтверждение почты. 
         /// </summary>
         /// <param name="token">тоен подтверждения</param>
         /// <param name="userId">id пользователя, которого подтверждать</param>
@@ -334,7 +334,7 @@ namespace EventB.Controllers
                 ViewBag.IsUserNull = user == null ? true: false;
                 ViewBag.IsNotConfirmed = isConfirmed ? true: false;
                 return View("PasswordRecoweryBadModel");
-            }                
+            }
 
             var code = await userManager.GeneratePasswordResetTokenAsync(user);
             var url = Url.Action("PasswordRecoveryPage", "Account", new {userId= user.Id, code = code }, HttpContext.Request.Scheme);

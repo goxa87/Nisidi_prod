@@ -69,7 +69,8 @@ p{
     max-height: calc(100% - 30px);
 }
 .opponent-container {
-    padding: 4px 4px 4px 0;
+    padding: 4px 4px 4px 4px;
+    border-radius: 4px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -83,6 +84,8 @@ p{
 .opponent-name-value{
     color: #ffcd00;
     font-weight: bold;
+    word-break: break-word;
+    max-width: 270px;
 }
 .opponent-name {
     color: #ffcd00;

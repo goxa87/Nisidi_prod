@@ -102,3 +102,10 @@ label {
     font-weight: 600;
     text-transform: uppercase;
 }
+.fr-image-watersign {
+    bottom: 4px;
+    right: 4px;
+    position: absolute;
+    font-size: 18px;
+    text-shadow: 0 0 4px whitesmoke;
+}

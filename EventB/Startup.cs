@@ -50,7 +50,7 @@ namespace EventB
                     opt.Password.RequireNonAlphanumeric = false;
                     opt.Password.RequireDigit = false;
                 }
-                ).AddEntityFrameworkStores<Context>();
+                ).AddEntityFrameworkStores<Context>().AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>
             {

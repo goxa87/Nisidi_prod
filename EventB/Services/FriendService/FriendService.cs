@@ -131,9 +131,9 @@ namespace EventB.Services.FriendService
             }
 
             name = name?.Trim();
-            if (!string.IsNullOrWhiteSpace(name))
+            if (!string.IsNullOrEmpty(name))
             {
-                result = result.Where(e => EF.Functions.Like(e.Name, $"%{name}%"));
+                result = result.Where(e => EF.Functions.Like(e.NormalizedName, $"%{name.ToUpper()}%"));
             }
 
             return result.Select(e=> new SmallFigure()

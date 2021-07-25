@@ -7,36 +7,32 @@
                 <div class="image-container">
                     <img src="@Model.UserPhoto" class="image-self-back" alt="user" />
                     <img src="@Model.UserPhoto" class="image-self-front" alt="user" />
+                    <div class="fr-image-watersign">
+                        @if (!Model.IsConfirmed && Model.FriendInitiator)
+                        {
+                            <span class="fr-label-text">Заявка не подтверждена</span><br>
+                        }
+                        @if (Model.IsBlocked)
+                        {
+                            <span class="fr-label-text">ЗАБЛОКРОВАН</span>
+                        }
+                    </div>
+                    
                 </div>                
             </div>
         </a>
         <hr>
         <div>
             <input type="hidden" value="@Model.UserId" id="friend-entity-id" />
-            <h3 class="central-title">@Model.UserName</h3>
-            @if (!Model.IsConfirmed && Model.FriendInitiator)
-            {
-                <div class="fr-label-text">Заявка не подтверждена</div>
-            }
-            else
-            {
-                <br>
-            }
-
-            <input type="hidden" id="friend-id" name="friendId" value="@Model.UserId" />
+            <h3 class="min-height-3str central-title">@Model.UserName</h3>
+            
             @if (!Model.IsBlocked)
             {
-                <br>
                 <div class="action-button width100 btn-block" id="btn-block">Заблокировать</div>
             }
             else
             {
-                <div class="fr-label-text">ЗАБЛОКРОВАН</div>
                 <div class="red-btn-alert width100 btn-block" id="btn-block">Разблокировать</div>
-            }
-            @if (!Model.IsConfirmed && !Model.FriendInitiator)
-            {
-                <div class="action-button width100 agree-friend">Добавить в друзья</div>
             }
             <a asp-controller="Messages" asp-action="Index" asp-route-opponentId="@Model.UserId"><div class="action-button width100">Сообщение</div></a>
 

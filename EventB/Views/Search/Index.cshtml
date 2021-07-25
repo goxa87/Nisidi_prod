@@ -13,13 +13,13 @@
 
 <form asp-action="SearchEventlist" asp-controller="Events" asp-antiforgery="true" method="post" class="wide-form">
     <label class="form-label">Название:</label><br>
-    <input class="form-entry-title" type="text" name="Title"><br>
+    <input class="form-entry-title" type="text" name="Title" autocomplete="off"><br>
 
     <label class="form-label">Город:</label><br>
     <input class="form-entry-title" type="text" name="City"><br>
 
     <label class="form-label">Теги:</label><br>
-    <input class="form-entry-title" type="text" name="Tegs"><br>
+    <input class="form-entry-title" type="text" name="Tegs" autocomplete="off"><br>
 
     <label class="form-label">Дата начала С:</label><br>
     <input id="ser-date-since" type="hidden" name="DateSince">

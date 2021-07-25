@@ -5,6 +5,10 @@
     беж светлый #f1ead8   -  #fff
 
 */
+h1,h2,h3,h4,h5,h6,p{
+    word-break:break-word;
+}
+
 body {
     padding: 0;
     padding-bottom:24px;
@@ -12,7 +16,9 @@ body {
     background-color: #dee2e6;
     box-sizing: border-box;
     height:100vh;
+
 }
+
 
 hr{
     margin:2px 0;
@@ -62,17 +68,20 @@ label{
     width: 100%;
     font-weight: 600;
 }
-.action-button{
-    text-align:center;
-    background-color:#1b5972;
-    color:#fff;
-    border-radius:2px;
+.min-height-3str{
+    min-height: 3.25em;
+}
+.action-button {
+    text-align: center;
+    background-color: #1b5972;
+    color: #fff;
+    border-radius: 2px;
     border: none;
-    font-weight:200;
-    font-size:16px;
-    padding:4px;
+    font-weight: 200;
+    font-size: 16px;
+    padding: 4px;
     margin-bottom: 4px;
-    text-transform:uppercase;
+    text-transform: uppercase;
     cursor: pointer;
 }
     .action-button:hover{
@@ -739,6 +748,14 @@ figure img {
     position: absolute;
     top: 0;
     left: 0;
+}
+.image-watersign {
+    bottom: 4px;
+    right: 4px;
+    position: absolute;
+    font-size   : 18px;
+    color: #333;
+    text-shadow: 0 0 4px whitesmoke;
 }
 /*Карточка события */
 #event-list {
