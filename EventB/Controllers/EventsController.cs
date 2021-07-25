@@ -177,6 +177,54 @@ namespace EventB.Controllers
             }
         }
 
+        /*
+        [HttpPost]
+        [Authorize]
+        [Route("Events/AddMega")]
+        public async Task<IActionResult> AddMega(AddEventViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var eve = await context.Events.Include(e=>e.Creator).Include(e=>e.Chat).Include(e=>e.EventTegs).FirstAsync(e => e.EventId == 2);
+                int i = 0;
+                var lis = new List<Event>();
+                while(i < 10000)
+                {
+                    var neweve = new Event()
+                    {
+                        Chat = new Chat() {Type = ChatType.EventChat },
+                        Date = eve.Date,
+                        City = eve.City,
+                        NormalizedCity = eve.NormalizedCity,
+                        EventTegs = new List<EventTeg>() { new EventTeg() { Teg = "ТЕСТНОВ" } },
+                        Image = eve.Image,
+                        MediumImage = eve.MediumImage,
+                        MiniImage = eve.MiniImage,
+                        NormalizedTitle = eve.NormalizedTitle,
+                        Title = eve.Title,
+                        Place = eve.Place,
+                        Tickets = false,
+                        UserId = eve.UserId,
+                        Type = EventType.Global
+                    };
+                    lis.Add(neweve);
+                    i++;
+                }
+
+                await context.Events.AddRangeAsync(lis);
+                await context.SaveChangesAsync();
+
+                //var eve = await eventService.AddEvent(model, User.Identity.Name);
+                return Redirect($"/Events/Details/{eve.EventId}");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Неверные данные");
+                return View(model);
+            }
+        }
+        */
+
         /// <summary>
         /// вызов деталей event по id
         /// </summary>

@@ -59,7 +59,7 @@ namespace EventB.Services
             {
                 var tegs = tegSplitter.GetEnumerable(args.Tegs);
                 selection = selection.Where(e => e.EventTegs.Any(x=> tegs.Contains(x.Teg)));
-            }     
+            }
             
             var selectionLocalList = await selection.OrderBy(e => e.Date).Skip(args.Skip).Take(args.Take).ToListAsync();
             /*
