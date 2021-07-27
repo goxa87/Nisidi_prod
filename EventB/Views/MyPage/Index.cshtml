@@ -163,7 +163,7 @@
 
                         <div class="invite-container">
                             <a asp-action="Details" asp-controller="Events" asp-route-id="@inv.EventId">
-                                <img class="item-img" src="@(inv.Event.MediumImage + "?" + DateTime.Now.Millisecond.ToString())">
+                                <img class="item-img" src="@inv.Event.MediumImage">
                             </a>
                             <div class="inv-content">
                                 <a asp-action="Details" asp-controller="Events" asp-route-id="@inv.EventId">

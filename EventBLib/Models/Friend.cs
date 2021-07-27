@@ -18,15 +18,15 @@ namespace EventBLib.Models
         /// </summary>
         public int FriendId { get; set; }
         /// <summary>
-        /// Id пользователя , который владелец друга.
+        /// Id пользователя друга (он будет в списке владельца)
         /// </summary>
         public string FriendUserId { get; set; }
         /// <summary>
-        /// Свойство связи (ID)(в списке у владельца).
+        /// Id ползователя 
         /// </summary>
         public string  UserId { get; set; }
         /// <summary>
-        /// Непосредственно друг.
+        /// Текущий пользователь
         /// </summary>
         public User User { get; set; }
         /// <summary>
@@ -50,7 +50,7 @@ namespace EventBLib.Models
         /// </summary>
         public bool IsConfirmed { get; set; }
         /// <summary>
-        /// Инициатор дружбы( true- данный пользователь, false - оппонент).
+        /// Инициатор дружбы( true- данный пользователь(user), false - оппонент).
         /// </summary>
         public bool FriendInitiator { get; set; }
     }

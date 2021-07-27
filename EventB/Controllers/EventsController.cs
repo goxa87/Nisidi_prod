@@ -361,7 +361,7 @@ namespace EventB.Controllers
         {
             var user = await userManager.FindByNameAsync(User.Identity.Name);
             var chats = await context.UserChats.Include(e => e.Chat).Where(e => e.UserId == user.Id).ToListAsync();
-            chats = chats.Where(e => e.Chat.EventId == null).ToList();
+            chats = chats.Where(e => e.Chat.EventId == null && e.IsBlockedInChat == false).ToList();
             return PartialView("_chatSmallListPartial", chats);
         }
         #endregion

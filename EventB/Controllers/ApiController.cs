@@ -64,11 +64,11 @@ namespace EventB.Controllers
                 Include(e => e.Friends).
                 Include(e => e.UserChats).ThenInclude(e => e.Chat).ThenInclude(e => e.Messages).
                 FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
-            var friends = await context.Friends.Where(e => e.FriendUserId == user.Id).ToListAsync();
+            
             var content = new MenuUpdatesApiVM()
             {
                 HasResult = true,
-                HasNewFriends = friends.Any(e => e.FriendInitiator == false && e.IsConfirmed == false),
+                HasNewFriends = user.Friends.Any(e => e.FriendInitiator == false && e.IsConfirmed == false && !e.IsBlocked),
                 HasNewInvites = user.Invites.Any(),
                 HasNewMessages = user.UserChats.Any(e => e.IsDeleted == false && e.Chat.Messages.Any(y => y.Read == false && y.PersonId != user.Id))
             };
@@ -98,9 +98,9 @@ namespace EventB.Controllers
             }
             // Друг и обратный друг.    
             var currentUser = await userManager.FindByNameAsync(User.Identity.Name);
-            var friend = await context.Friends.FirstOrDefaultAsync(e => e.FriendUserId == currentUser.Id && e.UserId == friendId);
+            var friend = await context.Friends.FirstOrDefaultAsync(e => e.FriendUserId == friendId && e.UserId == currentUser.Id);
             // Запись о нас у того пользователя
-            var opponentFriend = await context.Friends.FirstOrDefaultAsync(e=>e.FriendUserId == friendId && e.UserId == currentUser.Id);
+            var opponentFriend = await context.Friends.FirstOrDefaultAsync(e=>e.FriendUserId == currentUser.Id && e.UserId == friendId);
             // Если не инициатор, то запрещаем.
             if (friend != null && (!friend.BlockInitiator && friend.IsBlocked ))
             {
@@ -147,8 +147,8 @@ namespace EventB.Controllers
             
             // Друг и обратный друг.    
             var currentUser = await userManager.FindByNameAsync(User.Identity.Name);
-            var friend = await context.Friends.FirstOrDefaultAsync(e => e.FriendUserId == currentUser.Id && e.UserId == friendId);
-            var opponentFriend = await context.Friends.FirstOrDefaultAsync(e => e.FriendUserId == friendId && e.UserId == currentUser.Id);
+            var friend = await context.Friends.FirstOrDefaultAsync(e => e.FriendUserId == friendId && e.UserId == currentUser.Id);
+            var opponentFriend = await context.Friends.FirstOrDefaultAsync(e => e.FriendUserId == currentUser.Id && e.UserId == friendId);
 
             if(friend == default)
             {

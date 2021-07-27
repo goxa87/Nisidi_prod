@@ -1,8 +1,8 @@
 ﻿@model EventBLib.Models.Friend
 
     <div class="friend-list-container">
-        <input type="hidden" value="@Model.UserId" id="friend-entity-id">
-        <a asp-action="UserInfo" asp-controller="Friends" asp-route-userId="@Model.UserId">
+        <input type="hidden" value="@Model.FriendUserId" id="friend-entity-id">
+        <a asp-action="UserInfo" asp-controller="Friends" asp-route-userId="@Model.FriendUserId">
             <div class="friend-list-img">
                 <div class="image-container">
                     <img src="@Model.UserPhoto" class="image-self-back" alt="user" />
@@ -27,7 +27,7 @@
         </a>
         <hr>
         <div>
-            <input type="hidden" value="@Model.UserId" id="friend-entity-id" />
+            <input type="hidden" value="@Model.FriendUserId" id="friend-entity-id" />
             <h3 class="min-height-3str central-title">@Model.UserName</h3>
             @if (!Model.IsConfirmed && !Model.FriendInitiator)
             {
@@ -45,7 +45,7 @@
                 }
             }
 
-            <a asp-controller="Messages" asp-action="Index" asp-route-opponentId="@Model.UserId"><div class="action-button width100">Сообщение</div></a>
+            <a asp-controller="Messages" asp-action="Index" asp-route-opponentId="@Model.FriendUserId"><div class="action-button width100">Сообщение</div></a>
 
             <div class="action-button width100 delete-friend">Удалить из друзей</div>
 

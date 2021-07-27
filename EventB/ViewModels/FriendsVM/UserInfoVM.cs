@@ -14,6 +14,7 @@ namespace EventB.ViewModels.FriendsVM
         /// </summary>
         public User User { get; set; }
 
+        //TODO Friend проверить что это тянет
         /// <summary>
         /// Сведения о дружбе (запись с Friends у текущего пользователя)
         /// </summary>

@@ -53,14 +53,12 @@ namespace EventB.Controllers
             var user = await context.Users.
                 Include(e => e.Intereses).
                 Include(e => e.MyEvents).
+                Include(e => e.Friends).
                 Include(e => e.Vizits).
-                ThenInclude(e => e.Event).
                 Include(e => e.Invites).
-                ThenInclude(e => e.Event).
+                ThenInclude(e=>e.Event).
                 FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
 
-            var friends = await context.Friends.Where(e => e.FriendUserId == user.Id && e.IsBlocked == false).ToListAsync();
-            user.Friends = friends;
             return View(user);
         }
 
@@ -180,6 +178,8 @@ namespace EventB.Controllers
             }
             else
             {
+
+                // TODO FRIEND
                 // Сдесь всю шляпу получать за раз что нужно менять
                 var user = await context.Users.Include(e => e.Friends)
                     .Include(e => e.Invites)

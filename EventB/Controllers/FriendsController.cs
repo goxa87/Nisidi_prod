@@ -53,9 +53,9 @@ namespace EventB.Controllers
         public async Task<IActionResult> List()
         {
             var user = await userFind.GetCurrentUserAsync(User.Identity.Name);
-            var selection = await context.Friends.Where(e => e.FriendUserId == user.Id).ToListAsync();
+            var selection = await context.Friends.Where(e => e.UserId == user.Id).ToListAsync();
             ViewBag.userId = user.Id;
-            return View(selection);                        
+            return View(selection);           
         }
 
         /// <summary>

@@ -37,7 +37,7 @@ namespace EventB.Services.FriendService
             {
                
                 // Если есть такая запись о друзьях уже есть просто возвратить статус.
-                if (context.Friends.Where(e => e.UserId == userId && e.FriendUserId == currentUser.Id).Any())
+                if (await context.Friends.Where(e => e.UserId == currentUser.Id && e.FriendUserId == userId).AnyAsync())
                 {
                     return 204;
                 }
@@ -45,16 +45,16 @@ namespace EventB.Services.FriendService
                 // Создание новых записей (прямой и обратный друг). 
                 var userFriend = new Friend
                 {
-                    UserId = friend.Id,
-                    FriendUserId = currentUser.Id,
+                    UserId = currentUser.Id,
+                    FriendUserId = friend.Id,
                     UserName = friend.Name,
                     UserPhoto = friend.MediumImage,
                     FriendInitiator = true
                 };
                 var userFriendReverce = new Friend
                 {
-                    UserId = currentUser.Id,
-                    FriendUserId = friend.Id,
+                    UserId = friend.Id,
+                    FriendUserId = currentUser.Id,
                     UserName = currentUser.Name,
                     UserPhoto = currentUser.MediumImage
                 };
@@ -75,6 +75,7 @@ namespace EventB.Services.FriendService
         {
             var user = await context.Users.
                 Include(e => e.Intereses).
+                Include(e=>e.Friends).
                 Include(e=>e.MyEvents).
                 Include(e=>e.Vizits).ThenInclude(e=>e.Event).
                 FirstOrDefaultAsync(e => e.Id == userId);
@@ -88,26 +89,26 @@ namespace EventB.Services.FriendService
             {
                 return null;
             }
-            // Если показ только для друзей (Выберем 1 раз)
-            var allRelatedVisits = await context.Friends.Where(e => 
-                (e.FriendUserId == curentUser.Id && e.UserId == user.Id) 
-                || (e.FriendUserId == user.Id && e.UserId == curentUser.Id)
-                || (e.FriendUserId == userId)).ToListAsync();
-            var friend = allRelatedVisits.FirstOrDefault(e => e.FriendUserId == curentUser.Id && e.UserId == user.Id);
-            if (user.Visibility == AccountVisible.FriendsOnly && friend == null)
+
+            var curentFriend = user.Friends.FirstOrDefault(e => e.FriendUserId == curentUser.Id);
+            if (user.Visibility == AccountVisible.FriendsOnly && curentFriend == null)
             {
                 return null;
             }
-            if (friend != null && friend.IsBlocked)
+
+            if (curentFriend != null && curentFriend.IsBlocked)
                 return null;
+
+            /// тот что в друзьях у текущего пользователя
+            var curentUserFriend = await context.Friends.FirstOrDefaultAsync(e => e.UserId == curentUser.Id && e.FriendUserId == userId);
 
             var infoVM = new UserInfoVM();
             infoVM.User = user;
             infoVM.CreatedEvents = user.MyEvents;
             infoVM.WillGoEvents = user.Vizits;
-            infoVM.Friends = allRelatedVisits.Where(e => e.FriendUserId == userId).ToList();
-            infoVM.Friend = friend;
-            if (friend != null)
+            infoVM.Friends = user.Friends;
+            infoVM.Friend = curentUserFriend;
+            if (curentUserFriend != null)
                 infoVM.IsFriend = true;
             else
                 infoVM.IsFriend = false;
@@ -146,7 +147,7 @@ namespace EventB.Services.FriendService
 
         public async Task<int> SubmitFriend(string friendId, User currentUser)
         {
-            var entitys = await context.Friends.Where(e =>(e.UserId == friendId && e.FriendUserId == currentUser.Id) || (e.UserId == currentUser.Id && e.FriendUserId == friendId)).ToListAsync();
+            var entitys = await context.Friends.Where(e =>(e.UserId == currentUser.Id && e.FriendUserId == friendId) || (e.UserId == friendId && e.FriendUserId == currentUser.Id)).ToListAsync();
             if (entitys.Count == 0)
             {
                 return 400;

@@ -410,23 +410,23 @@ namespace EventB.Services.EventServices
         /// <returns></returns>
         public async Task<List<InviteOutVM>> GetFriendslist(int eventId, string userName)
         {
-            var curUser = await userManager.FindByNameAsync(userName);
-            // не оздавать приглашения для тех, кто уже пойдет или имеет приглашение
-            
-            var friends = await context.Friends
-                .Include(e=>e.User).ThenInclude(e=>e.Invites)
-                .Include(e=>e.User).ThenInclude(e=>e.Vizits)
-                .Where(e => e.FriendUserId == curUser.Id 
-                    && e.IsBlocked == false 
-                    && e.IsConfirmed == true 
-                    && !e.User.Vizits.Any(x=>x.EventId == eventId) 
-                    && !e.User.Invites.Any(x=>x.EventId == eventId)).
+            var curUser = await context.Users.
+                Include(e => e.Friends).
+                FirstOrDefaultAsync(e => e.UserName == userName);
+            var eve = await context.Events.Include(e => e.Invites).Include(e => e.Vizits).FirstOrDefaultAsync(e=>e.EventId == eventId);
+
+            var friends = curUser.Friends
+                .Where(e =>
+                    e.IsBlocked == false &&
+                    e.IsConfirmed == true &&
+                    !eve.Vizits.Any(vi => e.FriendUserId == vi.UserId) &&
+                    !eve.Invites.Any(inv => e.FriendUserId == inv.UserId)).
                 Select(e => new InviteOutVM
                 {
-                    UserId = e.UserId,
+                    UserId = e.FriendUserId,
                     Name = e.UserName,
                     Photo = e.UserPhoto
-                }).ToListAsync();
+                }).ToList();
 
             return friends;
         }
@@ -440,14 +440,16 @@ namespace EventB.Services.EventServices
         /// <returns></returns>
         public async Task InviteFriendsIn(int eventId, string user, InviteInVm[] invites)
         {
+            var eve = await context.Events.Include(e => e.Invites).Include(e => e.Vizits).FirstAsync(e => e.EventId == eventId); 
             var curUser = await context.Users.Include(e=>e.Friends).FirstOrDefaultAsync(e=>e.UserName == user);
-            var friends = await context.Friends.Where(e => e.FriendUserId == curUser.Id).ToListAsync();
             var newInv = new List<Invite>();
 
             foreach (var id in invites)
             {
-                if (!friends.Any(e => e.UserId == id.userId)) continue;
-                // не оздавать приглашения для тех, кто уже пойдет или имеет приглашение
+                if (!curUser.Friends.Any(e => e.FriendUserId == id.userId) ||
+                    eve.Invites.Any(e=>e.UserId == id.userId) ||
+                    eve.Vizits.Any(e=>e.UserId == id.userId)) continue;
+                
                 var newItm = new Invite
                 {
                     EventId = eventId,
@@ -463,7 +465,6 @@ namespace EventB.Services.EventServices
             await context.Invites.AddRangeAsync(newInv);
             await context.SaveChangesAsync();
         }
-
 
         /// <summary>
         /// Редактирование события

@@ -266,6 +266,7 @@ $(document).ready(function ()
         {
             // Парс в HTML списка друзей доступных для приглашения
             var block = '';
+            console.log(data)
             $(data).each(function (i, v) {
                 block +=
                     `<div class="invite-item flex-hsbc">
