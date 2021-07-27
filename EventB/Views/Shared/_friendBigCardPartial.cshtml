@@ -8,6 +8,10 @@
                     <img src="@Model.UserPhoto" class="image-self-back" alt="user" />
                     <img src="@Model.UserPhoto" class="image-self-front" alt="user" />
                     <div class="fr-image-watersign">
+                        @if (!Model.IsConfirmed && !Model.FriendInitiator)
+                        {
+                            <span class="fr-label-text" style="color: #ffcd00">NEW</span>
+                        }
                         @if (!Model.IsConfirmed && Model.FriendInitiator)
                         {
                             <span class="fr-label-text">Заявка не подтверждена</span><br>
@@ -25,15 +29,22 @@
         <div>
             <input type="hidden" value="@Model.UserId" id="friend-entity-id" />
             <h3 class="min-height-3str central-title">@Model.UserName</h3>
-            
-            @if (!Model.IsBlocked)
+            @if (!Model.IsConfirmed && !Model.FriendInitiator)
             {
-                <div class="action-button width100 btn-block" id="btn-block">Заблокировать</div>
+                <div class="action-button width100 agree-friend">Принять заявку</div>
             }
             else
             {
-                <div class="red-btn-alert width100 btn-block" id="btn-block">Разблокировать</div>
+                @if (!Model.IsBlocked)
+                {
+                    <div class="action-button width100 btn-block" id="btn-block">Заблокировать</div>
+                }
+                else
+                {
+                    <div class="red-btn-alert width100 btn-block" id="btn-block">Разблокировать</div>
+                }
             }
+
             <a asp-controller="Messages" asp-action="Index" asp-route-opponentId="@Model.UserId"><div class="action-button width100">Сообщение</div></a>
 
             <div class="action-button width100 delete-friend">Удалить из друзей</div>

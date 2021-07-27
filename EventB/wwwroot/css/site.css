@@ -436,15 +436,21 @@ input[type="checkbox"].input-validation-error {
     display: inline-block;
 }
 /* ******************** формы*/
+
 .small-container {
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-basis: 700px
 }
 
 .identity-cintainer {
-    min-width:300px;    
+    min-width:300px;
+}
+.identity-cintainer-register{
+    margin: 0 auto;
+    max-width: 800px;
 }
 .wide-form{
     padding: 4px;
@@ -453,6 +459,7 @@ align-items: center;
     color: #1b5972;
     padding: 5px;
     margin-bottom: 0;
+    font-size: 14px;
 }
 
 .form-entry-title {
@@ -582,13 +589,12 @@ align-items: center;
 }
 
 .ticket{
-    padding:4px 8px;
+    padding: 2px 4px;
     border: 1px solid #1b5972;
     border-radius:4px;
     background-color:#fff;
     color:#1b5972;
-    font-weight:600;
-    font-size:16px;
+    font-size:14px;
 }
 
 .tune_gold {
@@ -598,6 +604,9 @@ align-items: center;
     margin-right: 7px;
 }
 
+.label-text{
+    font-size: 14px;
+}
 /*блоки фигур*/
 .small-figure-figure {
     padding: 0px;
@@ -1067,6 +1076,9 @@ figure img {
     flex-direction: column;
     justify-content: space-between;
     align-items: stretch;
+    max-width: 60%;
+    margin-top: 38px;
+    max-height: calc(100vh - 45px);
 }
 .modal-body{    
     background-color: #fff;
@@ -1090,7 +1102,7 @@ figure img {
     height: 8px;
     float: right;
 }
-@media(max-width: 700px) {
+@media(max-width: 800px) {
     .modal-content {
         max-width: 94%;
         margin-top: 38px;

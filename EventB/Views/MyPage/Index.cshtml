@@ -79,7 +79,7 @@
             </div>
             
         </div>
-        <div>Вы пойдете на следующие события:</div>
+        <div>Куда пойдешь</div>
         <div class="element-square-container">
             @if (Model.Vizits == null || Model.Vizits.Count == 0)
             {
@@ -115,11 +115,11 @@
             </div>
             
         </div>
-        <div>Созданные события:</div>
+        <div>Созданные</div>
         <div class="element-square-container">
             @if (Model.MyEvents == null || Model.MyEvents.Count == 0)
             {
-                <div class="mp-none-content">Моих событий пока нет.</div>
+                <div class="mp-none-content">Созданных пока нет</div>
             }
             else
             {

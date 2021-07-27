@@ -8,29 +8,13 @@
 }
 
 <div class="top-page-header">
-    <a class="top-page-header-a" asp-controller="Events" asp-action="Add">ДОБАВИТЬ СОБЫТИЕ</a>
-    <div class="help-btn help-btn-light">
-        <div class="help-content display-none">
-            <div class="help-close"></div>
-            <p class="help-container">
-                Добавить новое приватное событие. Для добавления публичного события создайте приватное и измените его настройки в личном кабинете на Вашей странице
-            </p>
-        </div>        
-    </div>
+    <a class="top-page-header-a" asp-controller="Events" asp-action="Add">ДОБАВИТЬ</a>
 </div>
 
 <div class="top-page-header" id="header-title">
-    <div class="help-btn help-btn-light">
-        <div class="help-content display-none">
-            <div class="help-close"></div>
-            <p class="help-container">
-                Выборка на этой странице производилась по этим параметрам, которые взяты либо из Вашего профиля либо из параметров поиска (Только публичные). Для изменения параметров перейдите на вкладку <a class="a-dark" href="/Search/Index">ПОИСК</a>
-            </p>
-        </div>
-    </div>
     <img class="tune_gold" src="~/resourses/tune_gold_24.png" alt="search" title="поиск" />
-    <div class="ticket">c: @Model.args.DateSince.ToString("dd.MM.yyyy")</div>
-    <div class="ticket">по: @Model.args.DateDue.ToString("dd.MM.yyyy")</div>
+    <div class="ticket">c @Model.args.DateSince.ToString("dd.MM.yyyy")</div>
+    <div class="ticket">по @Model.args.DateDue.ToString("dd.MM.yyyy")</div>
     @if (Model.args.City != "" || Model.args.City == null)
     {
         <div class="ticket" id="search-param-city">@Model.args.City</div>
@@ -38,15 +22,7 @@
 
     @if (Model.args.Tegs != "" || Model.args.Tegs == null)
     {
-        if (Model.args.IsTegsFromProfile)
-        {
-            <div class="ticket">Ваши интересы</div>
-        }
-        else
-        {
-            <div class="ticket" id="search-param-tegs">@Model.args.Tegs</div>
-        }
-
+        <div class="ticket" id="search-param-tegs">@Model.args.Tegs</div>
     }
     @if (Model.args.Title != "" || Model.args.Title == null)
     {<div class="ticket" id="search-param-title">@Model.args.Title</div>}
