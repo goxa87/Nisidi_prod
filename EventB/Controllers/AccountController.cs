@@ -326,7 +326,9 @@ namespace EventB.Controllers
             if(string.IsNullOrWhiteSpace(email))
             {
                 ModelState.AddModelError("", "Не указан адрес электронной почты");
+                return View();
             }
+            
             var user = await userManager.FindByNameAsync(email);
             var isConfirmed = !(await userManager.IsEmailConfirmedAsync(user));
             if (user==null || isConfirmed)
