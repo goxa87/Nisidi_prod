@@ -112,12 +112,12 @@
     margin: 10px 5px;
 }
 /* нижнее меню деталей*/
-.bottom-menu{
-    display:flex;
-    justify-content:space-around;
-    flex-wrap:wrap;
-    background-color:#1b5972;
-    padding:8px 24px;
+.bottom-menu {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    background-color: #0b4962;
+    padding: 8px 24px;
 }
 .bottom-menu-item{
     color:#fff;

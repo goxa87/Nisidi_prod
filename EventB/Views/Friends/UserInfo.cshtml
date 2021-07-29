@@ -63,14 +63,14 @@ else
                     await Html.RenderPartialAsync("~/Views/Shared/_tegColoredLink.cshtml", tegData);
                 }
             </div>
+            @if (string.IsNullOrWhiteSpace(Model.User.PhoneNumber))
+            {
+                <label>Телефон:</label>
+                <div>@Model.User.PhoneNumber</div>
+            }
             <label>Пара слов:</label>
             <div>@Model.User.Description</div>
-            <label>Отправить ссылку:</label>
-            <div>(Место для ссылки)</div>
-            <label>Телефон:</label>
-            <div>@Model.User.PhoneNumber</div>
-            <label>Адрес:</label>
-            <div>(Место для адреса)</div>
+
         </div>
         
     </div>

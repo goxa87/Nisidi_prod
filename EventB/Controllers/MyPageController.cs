@@ -55,6 +55,7 @@ namespace EventB.Controllers
                 Include(e => e.MyEvents).
                 Include(e => e.Friends).
                 Include(e => e.Vizits).
+                ThenInclude(e => e.Event).
                 Include(e => e.Invites).
                 ThenInclude(e=>e.Event).
                 FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
