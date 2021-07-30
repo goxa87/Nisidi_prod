@@ -90,8 +90,11 @@ input, textarea{
 .width100{
     width: 100%;
 }
-.width200{
-    max-width:200px;
+.maxwidth300{
+    max-width: 300px;
+}
+.width200 {
+    max-width: 200px;
 }
 
 .margin-8px {
