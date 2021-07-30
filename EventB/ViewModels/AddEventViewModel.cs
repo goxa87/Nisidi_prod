@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using EventBLib.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -47,6 +48,9 @@ namespace EventB.ViewModels
         public int AgeRestrictions { get; set; }
 
         [Display(Name = "Изображение")]
-        public IFormFile MainPicture { get; set; } 
+        public IFormFile MainPicture { get; set; }
+
+        [Display(Name = "Тип события")]
+        public EventType Type { get; set; }
     }
 }

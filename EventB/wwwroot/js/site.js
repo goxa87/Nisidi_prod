@@ -50,9 +50,9 @@ $(document).ready(function () {
     });
 
     // динамическая  справка
-    $('body').on('click', '.help-close', function (e) {
+    $('body').on('click', '.help-content', function (e) {
         e.stopPropagation();
-        $(this).parent().first().addClass('display-none');   
+        $(this).addClass('display-none');   
     });
     $('body').on('click', '.help-btn', function (e) {
         e.stopPropagation(); 

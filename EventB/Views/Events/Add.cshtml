@@ -12,15 +12,15 @@
 
     <label class="form-label" asp-for="Title"></label>
     <span asp-validation-for="Title"></span>
-    <input class="form-entry-title" type="text" asp-for="Title" /><br>
+    <input class="form-entry-title" type="text" asp-for="Title" autocomplete="off"/><br>
 
     <label class="form-label" asp-for="Body"></label>
     <span asp-validation-for="Body"></span>
-    <textarea class="form-entry-body" type="text" asp-for="Body"></textarea><br>
+    <textarea class="form-entry-body" type="text" asp-for="Body" autocomplete="off"></textarea><br>
 
     <label class="form-label" asp-for="Tegs"></label>
     <span asp-validation-for="Tegs"></span>
-    <input class="form-entry-title" type="text" asp-for="Tegs" /><br>
+    <input class="form-entry-title" type="text" asp-for="Tegs" autocomplete="off"/><br>
 
     <label class="form-label" asp-for="City"></label>
     <span asp-validation-for="City"></span>
@@ -38,15 +38,15 @@
 
     <label class="form-label" asp-for="TicketsDesc"></label>
     <span asp-validation-for="TicketsDesc"></span>
-    <textarea class="form-entry-body" type="text" asp-for="TicketsDesc"></textarea><br>
+    <textarea class="form-entry-body" type="text" asp-for="TicketsDesc" autocomplete="off"></textarea><br>
 
     <label class="form-label" asp-for="Phone"></label>
     <span asp-validation-for="Phone"></span>
-    <input class="form-entry-title" type="text" asp-for="Phone" /><br>
+    <input class="form-entry-title" type="text" asp-for="Phone" autocomplete="off"/><br>
 
     <label class="form-label" asp-for="AgeRestrictions"></label>
     <span asp-validation-for="AgeRestrictions"></span>
-    <select asp-for="AgeRestrictions">
+    <select asp-for="AgeRestrictions" class="custom-select width200">
         <option value="0">0+</option>
         <option value="6">6+</option>
         <option value="12">12+</option>
@@ -57,6 +57,30 @@
     <label class="form-label" asp-for="MainPicture"></label>
     <input class="form-date" type="file" asp-for="MainPicture" /><br>
 
+    <div class="flex-hsc">
+        <label class="form-label" asp-for="Type"></label>
+        <div class="help-btn help-btn-dark ">
+            <div class="help-content display-none">
+                <div class="help-close"></div>
+                <p class="help-container">
+                    Приватные события не будут отображаться в поиске. Увидеть их смогут только ваши друзья на вашей странице или те, кого вы пригласили.<br>
+                    Публичные видны всем на главной странице с учетом интересов пользователей.
+                </p>
+            </div>
+        </div>
+        <span asp-validation-for="Type"></span>
+        <select asp-for="Type" class="custom-select width200">
+            <option value="@EventType.Private" selected class="dropdown-item">Частное</option>
+            <option value="@EventType.Global" class="dropdown-item">Публичное</option>
+        </select>
+    </div>
+    
+
+
+
+    <br>
     <input class="form-submit" type="submit" value="Сохранить" />
+    <br />
+    <br />
 </form>
 @{ ViewData["Script"] = "Event.js";}

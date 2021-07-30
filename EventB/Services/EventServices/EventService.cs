@@ -156,7 +156,7 @@ namespace EventB.Services.EventServices
                     NormalizedCity = model.City.ToUpper(),
                     Place = model.Place,
                     Date = model.Date,
-                    Type = EventType.Private,
+                    Type = model.Type,
                     Views = 0,
                     WillGo = 1,
                     Creator = creator,
