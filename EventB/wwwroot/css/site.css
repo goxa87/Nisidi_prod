@@ -731,13 +731,18 @@ figure img {
     justify-content: start;
     align-items: center;
 }
-
+.flex-vsac{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
 /* картинка с фоном и маской*/
 /* Заполняет на 100% так что нужно оборачивать*/
-.image-container{
-    width:100%;
+.image-container {
+    width: 100%;
     height: 100%;
-    position:relative;
+    position: relative;
 }
 .image-self-back {
     object-fit: cover;
@@ -1328,7 +1333,7 @@ figure img {
 .bnr-full-width{
     width: 100%;
 }
-.bnr > h3, h4, h5 {
+.bnr > h3, .bnr > h4, .bnr > h5 {
     text-align: center;
 }
 .bnr-half-width {
@@ -1347,9 +1352,35 @@ figure img {
     background-image: url('../resourses/banners/ban1.jpg');
     background-size: cover;
 }
-.bnr-transparent-fon{
-    max-width: 700px;
-    margin: 24px auto;
-    background-color: #fffb;
+.bnr-transparent-fon-dark {
+    width: 300px;
+    height: 300px;
+    margin: 40px auto;
+    background-color: #0b49629e;
     padding: 24px;
+}
+.bnr-color-gold {
+    color: #ffd700bd;
+}
+.bnr-transparent-fon-light {
+    width: 80%;
+    margin: auto;
+    background-color: #fffd;
+    padding: 16px;
+}
+.bnr-text {
+    margin-top: 0.5em;
+}
+.bnr-text:nth-child(2n+1){
+    color: #1b5972;
+}
+
+@media(max-width: 600px) {
+    .bnr-transparent-fon-light {
+        width: 90%;
+        padding: 16px 8px;
+    }
+    .bnr-text{
+        font-size: 14px;
+    }
 }
