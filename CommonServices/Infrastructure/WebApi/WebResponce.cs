@@ -45,7 +45,7 @@ namespace CommonServices.Infrastructure.WebApi
         public WebResponce(T content, bool isSuccess = true, string errorMessage = "")
         {
             Content = content;
-            IsSuccess = true;
+            IsSuccess = isSuccess;
             ErrorMessage = "";
         }
     }

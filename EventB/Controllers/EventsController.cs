@@ -20,6 +20,7 @@ using System.Text;
 using Microsoft.CodeAnalysis.CSharp;
 using EventB.Services.EventServices;
 using EventB.ViewModels.SharedViews;
+using CommonServices.Infrastructure.WebApi;
 
 namespace EventB.Controllers
 {
@@ -327,15 +328,15 @@ namespace EventB.Controllers
         /// </summary>
         /// <param name="eventId">Id события</param>
         /// <returns></returns>
-        [Authorize]
         [Route("/Event/SubmitToEvent")]
-        public async Task<StatusCodeResult> SubmitToEvent(int eventId)
+        public async Task<WebResponce<string>> SubmitToEvent(int eventId)
         {
+            if (User?.Identity?.Name == null) return new WebResponce<string>("not ok", false, "Неавторизован");
             // !! не создавать UserChat если он уже есть
             // Поверить
             // ВАЖНАЯ функция
             var code = await eventService.SubmitToEvent(eventId, User.Identity.Name);
-            return StatusCode(code);
+            return new WebResponce<string>("ОК");
         }
 
         /// <summary>
@@ -355,10 +356,12 @@ namespace EventB.Controllers
         /// ИСКЛЮЧЕНЫ ЧАТЫ СОБЫТИЙ
         /// </summary>
         /// <returns></returns>
-        [Authorize]
         [Route("/Event/GetAvailableChats")]
         public async Task<PartialViewResult> GetAvailableChats()
         {
+            //if (User?.Identity?.Name == null) return new WebResponce<PartialViewResult>(null, false, "Not authorize");
+            if (User?.Identity?.Name == null) throw new Exception("Not authorize");
+
             var user = await userManager.FindByNameAsync(User.Identity.Name);
             var chats = await context.UserChats.Include(e => e.Chat).Where(e => e.UserId == user.Id).ToListAsync();
             chats = chats.Where(e => e.Chat.EventId == null && e.IsBlockedInChat == false).ToList();
@@ -372,9 +375,13 @@ namespace EventB.Controllers
         /// </summary>
         /// <param name="eventId"></param>
         /// <returns></returns>
-        public async Task<List<InviteOutVM>> GetFriendslist(int eventId)
+        public async Task<WebResponce<List<InviteOutVM>>> GetFriendslist(int eventId)
         {
-            return await eventService.GetFriendslist(eventId, User.Identity.Name);
+            if (User?.Identity?.Name == null) { 
+                var ans = new WebResponce<List<InviteOutVM>>(null, false, "not authorize");
+                return ans;
+            }
+            return new WebResponce<List<InviteOutVM>>(await eventService.GetFriendslist(eventId, User.Identity.Name));
         }
 
         /// <summary>

@@ -210,42 +210,43 @@ $(document).ready(function ()
     $('#btn-come').click(function ()
     {
         let id = $('#event-id').val();
-
-        let req = $.ajax({
+        let button = $('#btn-come');
+        $.ajax({
             url: '/Event/SubmitToEvent',
             data:
             {
                 eventId: id
-            }           
-        });
+            },
+            success: function (ans) {
+                console.log(ans)
+                if (ans.isSuccess) {
+                    // Состояние проверяем по классу.
+                    if (button.hasClass('form-search-fade')) {
 
-        req.then(function (data, statusText,jqXHR)
-        {
-            let button = $('#btn-come');
-            if (jqXHR.status == 200) {
-                // Состояние проверяем по классу.
-                if (button.hasClass('form-search-fade')) {
-
-                    button.removeClass('form-search-fade');
-                    button.addClass('form-submit');
-                    button.text('Подтвердить участие');
-                    button.siblings().toggleClass('display-none');
-                    GetNotification('Отметка о визите удалена', 3, 3)
-                    // Отписаться.
+                        button.removeClass('form-search-fade');
+                        button.addClass('form-submit');
+                        button.text('Подтвердить участие');
+                        button.siblings().toggleClass('display-none');
+                        GetNotification('Отметка о визите удалена', 3, 3)
+                        // Отписаться.
+                    }
+                    else {
+                        button.removeClass('form-submit');
+                        button.addClass('form-search-fade');
+                        button.text('Отменить участие');
+                        button.siblings().toggleClass('display-none');
+                        GetNotification('Отметка о визите сохранена', 3, 3)
+                        // Подписаться.
+                    }
+                } else {
+                    getModelWindow("Действие недоступно", false, null, null, null);
+                    let content = '<h3>Необходима авторизация</h3><p> Для успешного выполнения этого действия необходимо войти в систему.<br> Если ты еще не зарагистрирован, то ты можешь сделать это перейдя по <a href="/Account/Register">ССЫЛКЕ</a></p>';
+                    $('.modal-body').html(content);
                 }
-                else {
-                    button.removeClass('form-submit');
-                    button.addClass('form-search-fade');
-                    button.text('Отменить участие');
-                    button.siblings().toggleClass('display-none');
-                    GetNotification('Отметка о визите сохранена', 3, 3)
-                    // Подписаться.
+            },
+            error: function () {
+                GetNotification("Что-то пошло не так(", 1, 2);
                 }
-            }
-            else {
-                GetNotification('Внутрення ошибка. Обратитесь в техподдержку.', 1, 3);
-            }
-
         });
     });
 
@@ -254,22 +255,21 @@ $(document).ready(function ()
     function GetFriends()
     {
         let eve = $('#event-id').val();
-        var rez;
-        var req = $.ajax({
+        $.ajax({
             url: '/Events/GetFriendslist',
             data:
             {
                 eventId: eve
-            }
-        });
-        req.then(function (data, stat, jqXHR)
-        {
-            // Парс в HTML списка друзей доступных для приглашения
-            var block = '';
-            console.log(data)
-            $(data).each(function (i, v) {
-                block +=
-                    `<div class="invite-item flex-hsbc">
+            },
+            success: function (ans) {
+                if (ans.isSuccess) {
+                    let data = ans.content;
+                    // Парс в HTML списка друзей доступных для приглашения
+                    var block = '';
+                    console.log(ans)
+                    $(data).each(function (i, v) {
+                        block +=
+                            `<div class="invite-item flex-hsbc">
                         <img src="${v.photo}" />
                         <div class="invite-data">
                             <div class="flex-hsbc flex-wr-reverse">
@@ -283,15 +283,15 @@ $(document).ready(function ()
                             <input type="hidden" id="friend-id" value="${v.userId}"/>
                         </div>
                 </div>`
-            });
-            let helpText = `
+                    });
+                    let helpText = `
 В этом окне Вы можете пригласить Ваших друзей на событие. Здесь отображаются только те пользователи, которые подтвердили добавление в друзья.
 Для выбора пользователей, которым будет отправлено приглашение, нажмите на кружок рядом с именем, что бы тот стал жёлтым.
 Вы можете указать текст приглашения длинной до 1000 символов. <br>Также есть возможность скопировать текст приглашения от порвого ко всем остальным пользователям и отметить или снять выделение со всех 
 пользователей, которым будет отправлено приглашение.<hr> Если вы не нашли нужных пользователей, то либо они не приняли вашу заявку в друзья, либо у них уже есть приглашение на это событие.
 `
-            getModelWindow('Пригласить', false, null, null, helpText);
-            let firstBlock = `
+                    getModelWindow('Пригласить', false, null, null, helpText);
+                    let firstBlock = `
                 <div class="invite-menu">
                     <div class="form-submit inline" id="invite-copy" title="Скопировть текст из первого сообщения пользователю ко всем пользователям">Скопировать текст</div>
                     <div class="form-submit inline" id="inv-selectall">Отметить всех</div>
@@ -299,10 +299,18 @@ $(document).ready(function ()
                 </div>
                 <div class="invite-list">
                 </div>`
-            $('.modal-body').html(firstBlock);
-            $('.invite-list').html(block);         
+                    $('.modal-body').html(firstBlock);
+                    $('.invite-list').html(block);
+                } else {
+                    getModelWindow("Действие недоступно", false, null, null, null);
+                    let content = '<h3>Необходима авторизация</h3><p> Для успешного выполнения этого действия необходимо войти в систему.<br> Если ты еще не зарагистрирован, то ты можешь сделать это перейдя по <a href="/Account/Register">ССЫЛКЕ</a></p>';
+                    $('.modal-body').html(content);
+                }
+            },
+            error: function () {
+                GetNotification("Что-то пошло не так(", 1, 2);
+            }
         });
-        return rez;
     }
     // Нажатие на форме детали кнопки пригласить.
     $('#btn-invite').click(function ()
@@ -357,23 +365,23 @@ $(document).ready(function ()
     //Запрос и вставка чатов
     function getChats() {
         //var rez;
-        var req = $.ajax({
-            url: '/Event/GetAvailableChats'
-        });
-        req.then(function (data, stat, jqXHR) {
-            console.log('xData', data);
-            if (jqXHR.status == 200) {
+        $.ajax({
+            url: '/Event/GetAvailableChats',
+            success: function (ans) {
                 let content = `<div class="s-filter-container">
-                        <span class="small-label">Фильтр</span>
-                        <div class="flex-hsbc">                            
-                            <input id="ev-send-link-filter" class="s-filter" />
-                            <img src="/resourses/cancel.png" class="s-filter-clear" />
-                        </div>
-                    </div>` + data;
+                    <span class="small-label">Фильтр</span>
+                    <div class="flex-hsbc">                            
+                        <input id="ev-send-link-filter" class="s-filter" />
+                        <img src="/resourses/cancel.png" class="s-filter-clear" />
+                    </div>
+                </div>` + ans;
                 getModelWindow('Отправить ссылку', false, null, null, "Вы можете отправить ссылку на собыие собеседнику. В списке отображаются активные приватные чаты. Если вы не видите нужный вам чат, начните его отправив любое сообщение.");
+                $('.modal-body').html(content);               
+            },
+            error: function(){
+                getModelWindow("Действие недоступно", false, null, null, null);
+                let content = '<h3>Необходима авторизация</h3><p> Для успешного выполнения этого действия необходимо войти в систему.<br> Если ты еще не зарагистрирован, то ты можешь сделать это перейдя по <a href="/Account/Register">ССЫЛКЕ</a></p>';
                 $('.modal-body').html(content);
-            } else {
-                alert(`Чтото пошло не так . Ошибка ${data}`)
             }
         });
     }
