@@ -8,7 +8,6 @@ namespace EventB.Services
 {
     public interface IEventSelectorService
     {
-        public Task<List<Event>> GetStartEventListAsync(User user);
         public Task<List<Event>> GetCostomEventsAsync(CostomSelectionArgs args);
     }
 }

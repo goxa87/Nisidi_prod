@@ -55,16 +55,16 @@ namespace EventB.Controllers
         }
         #region Выборки и постраничный вывод
         /// <summary>
-        ///  Точка входа
+        /// Начальная страница с параметрами входа
         /// </summary>
         /// <returns></returns>
         public async Task<IActionResult> Start()
         {
-            // Сформировать первоначальный список событий и задать параметры для будущего поиска.
+            // Сформировать параметры для будущего поиска.
             if (User.Identity.IsAuthenticated)
             {
-                var user = await userManager.GetUserAsync(HttpContext.User);
-                var tegs = await context.Intereses.Where(e => e.UserId == user.Id).ToListAsync();
+                var user = await context.Users.Include(e=>e.Intereses).FirstAsync(e=>e.UserName == User.Identity.Name);
+                var tegs = user.Intereses.ToList();
                 var tegsStr = "";
                 foreach (var e in tegs)
                 {
@@ -79,10 +79,8 @@ namespace EventB.Controllers
                         IsTegsFromProfile = true,
                         Skip=0,
                         Take=12
-                    };
-                //var rezult = await eventSelector.GetCostomEventsAsync(args);
-                // Пропускаем то что уж нашли.
-                //args.Skip += args.Take;
+                };
+                
                 var VM = new EventListVM
                 {
                     events = null,
@@ -103,9 +101,7 @@ namespace EventB.Controllers
                     Skip = 0,
                     Take = 12
                 };
-                //var rezult = await eventSelector.GetCostomEventsAsync(args);
-                // Пропускаем то что уж нашли.
-                //args.Skip += args.Take; 
+                
                 var VM = new EventListVM
                 {
                     events = null,
@@ -178,56 +174,8 @@ namespace EventB.Controllers
             }
         }
 
-        /*
-        [HttpPost]
-        [Authorize]
-        [Route("Events/AddMega")]
-        public async Task<IActionResult> AddMega(AddEventViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var eve = await context.Events.Include(e=>e.Creator).Include(e=>e.Chat).Include(e=>e.EventTegs).FirstAsync(e => e.EventId == 2);
-                int i = 0;
-                var lis = new List<Event>();
-                while(i < 10000)
-                {
-                    var neweve = new Event()
-                    {
-                        Chat = new Chat() {Type = ChatType.EventChat },
-                        Date = eve.Date,
-                        City = eve.City,
-                        NormalizedCity = eve.NormalizedCity,
-                        EventTegs = new List<EventTeg>() { new EventTeg() { Teg = "ТЕСТНОВ" } },
-                        Image = eve.Image,
-                        MediumImage = eve.MediumImage,
-                        MiniImage = eve.MiniImage,
-                        NormalizedTitle = eve.NormalizedTitle,
-                        Title = eve.Title,
-                        Place = eve.Place,
-                        Tickets = false,
-                        UserId = eve.UserId,
-                        Type = EventType.Global
-                    };
-                    lis.Add(neweve);
-                    i++;
-                }
-
-                await context.Events.AddRangeAsync(lis);
-                await context.SaveChangesAsync();
-
-                //var eve = await eventService.AddEvent(model, User.Identity.Name);
-                return Redirect($"/Events/Details/{eve.EventId}");
-            }
-            else
-            {
-                ModelState.AddModelError("", "Неверные данные");
-                return View(model);
-            }
-        }
-        */
-
         /// <summary>
-        /// вызов деталей event по id
+        /// Страница детали события
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -252,16 +200,11 @@ namespace EventB.Controllers
                 var user = await context.Users.
                     Include(e=>e.Invites).
                     Include(e=>e.Friends).
-                    Include(e=>e.UserChats).ThenInclude(e=>e.Chat).
                     FirstAsync(e=>e.NormalizedUserName == User.Identity.Name.ToUpper());
                 ViewData["UserId"] = user.Id;
                 ViewData["UserName"] = user.Name;
 
-                userChat = user.UserChats.FirstOrDefault(e => e.Chat.EventId == id);
-                if(userChat == null)
-                {
-                    userChat = new UserChat();
-                }
+                userChat = new UserChat();
 
                 if(eve.Type == EventType.Private && 
                     !eve.Vizits.Any(e=>e.UserId == user.Id) && 

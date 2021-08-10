@@ -79,7 +79,6 @@ $(document).ready(function ()
         }
         
         LoadEvents(args);
-        
     }
     // Непосредственно загрузка контента и рассувать по ДОМ
     function LoadEvents(args)
