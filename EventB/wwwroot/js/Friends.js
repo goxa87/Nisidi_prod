@@ -3,7 +3,6 @@ import { GetBanner } from './Banner.js';
 
 $(document).ready(function ()
 {
-    GetFriendBanner();
     // добавить друга.
     $('.add-as-friend').on('click', function () {
         let friendId = $(this).parent().children('input').val();
