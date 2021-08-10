@@ -49,7 +49,7 @@ namespace Admin.Controllers
                     var createResult = await CreateNewUser(model.Login, model.Password);
                     if (createResult.Succeeded)
                     {
-                        var logiResult = await _signInManager.PasswordSignInAsync(model.Login, model.Password, false, false);
+                        var logiResult = await _signInManager.PasswordSignInAsync(model.Login, model.Password, true, false);
                         if (logiResult.Succeeded)
                         {
                             var creaatedUser = await _userManager.FindByNameAsync(model.Login);

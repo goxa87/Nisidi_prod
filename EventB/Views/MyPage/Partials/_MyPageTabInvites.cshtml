@@ -1,0 +1,52 @@
+﻿@model List<Invite>
+
+<div class="s-filter-container">
+    <span class="small-label">Фильтр</span>
+    <div class="flex-hsbc">
+        <input id="mp-invites-filter" class="s-filter" autocomplete="off" />
+        <img src="~/resourses/cancel.png" class="s-filter-clear" />
+    </div>
+
+</div>
+<div class="element-square-container">
+    @if (Model == null || Model.Count() == 0)
+    {
+        <span>Приглашений нет</span>
+    }
+    else
+    {
+        foreach (var inv in Model)
+        {
+            <div class="total-invite">
+                <div class="invite-header">Приглашение</div>
+
+                <div class="invite-container">
+                    <a asp-action="Details" asp-controller="Events" asp-route-id="@inv.EventId">
+                        <img class="item-img" src="@inv.Event.MediumImage">
+                    </a>
+                    <div class="inv-content">
+                        <a asp-action="Details" asp-controller="Events" asp-route-id="@inv.EventId">
+                            <p class="mp-invites-title">@inv.Event.Title </p>
+                        </a>
+                        <p>@inv.Event.Place </p>
+                        <p>@inv.Event.Date.ToString("dd.MM.yy HH:mm")</p>
+                        <p>@inv.Event.City</p>
+                        <input id="eveId" type="hidden" value="@inv.EventId">
+                        <input id="inviteId" type="hidden" value="@inv.InviteId">
+                        <div class="btn mp-will-go" id="will-go">Пойду )</div>
+                        <div class="btn mp-will-notgo" id="will-notgo">Не пойду (</div>
+
+                    </div>
+
+                    <div class="inv-content">
+                        <p><b>Вас приглашает @inv.InviterName:</b></p>
+                        <p>@inv.InviteDescription</p>
+                    </div>
+                    <a asp-action="UserInfo" asp-controller="Friends" asp-route-userId="@inv.InviterId">
+                        <img class="item-img" src="@inv.InviterPhoto" alt="@inv.InviterName" />
+                    </a>
+                </div>
+            </div>
+        }
+    }
+</div>

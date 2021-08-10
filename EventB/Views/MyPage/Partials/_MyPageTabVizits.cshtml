@@ -1,0 +1,35 @@
+﻿@model List<Vizit>
+
+<div class="s-filter-container">
+    <span class="small-label">Фильтр</span>
+    <div class="flex-hsbc">
+        <input id="mp-vizits-filter" class="s-filter" autocomplete="off" />
+        <img src="~/resourses/cancel.png" class="s-filter-clear" />
+    </div>
+
+</div>
+<div>Куда пойдешь</div>
+<div class="element-square-container">
+    @if (Model == null || Model.Count == 0)
+    {
+        <div class="mp-none-content">Отметок пойду пока нет.</div>
+    }
+    else
+    {
+
+        @foreach (var e in Model.OrderByDescending(e => e.Event.Date))
+        {
+            <div class="mp-details-figure">
+                @{await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.SmallFigure()
+                    {
+                        Title = e.EventTitle,
+                        Link = $"/Events/Details/{e.EventId}",
+                        Image = e.EventPhoto,
+                        Active = e.Event.Date < DateTime.Now ? false : true
+                    });
+                }
+            </div>
+
+        }
+    }
+</div>

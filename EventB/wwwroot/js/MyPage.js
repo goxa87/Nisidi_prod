@@ -108,7 +108,48 @@ $(document).ready(function () {
         $('.total-invite').removeClass('display-none');
     });
 
+    // Загрузит визиты
+    GetVizitsBlock();
+    // Загрузка созданных событий
+    GetCreatedBlock();
+    // Загрузка приглашений
+    GetInviteBlock();
+    
 });
+
+/**Загрузит блок с визитами */
+function GetVizitsBlock() {
+    $.ajax({
+        url: "/MyPage/GetVizits",
+        success: function (markup) {
+            $('#events-willgo-body').html(markup);
+        },
+        error: function () { GetNotification("Что-то пошло не так (", 1, 2); }
+    })
+}
+
+/**Загрузит блок с созданными */
+function GetCreatedBlock() {
+    $.ajax({
+        url: "/MyPage/GetCreated",
+        success: function (markup) {
+            $('#my-events-body').html(markup);
+        },
+        error: function () { GetNotification("Что-то пошло не так (", 1, 2); }
+    })
+}
+
+/**Загрузит блок с приглашениями */
+function GetInviteBlock() {
+    $.ajax({
+        url: "/MyPage/GetInvites",
+        success: function (markup) {
+            $('#invites-body').html(markup);
+        },
+        error: function () { GetNotification("Что-то пошло не так (", 1, 2); }
+    })
+}
+
 
 
 

@@ -1245,7 +1245,7 @@ figure img {
     position: absolute;
     right: 0px;
     box-sizing: content-box;
-    z-index: 100;
+    z-index: 99;
     border-radius: .25rem;
     border: none;
     background-color: #0000;

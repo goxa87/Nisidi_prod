@@ -38,7 +38,7 @@ namespace EventB
         {
             string connection = Configuration.GetConnectionString("EB1");
             services.AddDbContext<Context>(options=> {
-                options.UseNpgsql(connection);
+                options.UseSqlServer    (connection);
             });
             //services.AddScoped<IDataProvider, DbData>();
 

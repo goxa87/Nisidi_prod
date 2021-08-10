@@ -1,0 +1,33 @@
+﻿@model List<Event>
+
+<div class="s-filter-container">
+    <span class="small-label">Фильтр</span>
+    <div class="flex-hsbc">
+        <input id="mp-created-ev-filter" class="s-filter" autocomplete="off" />
+        <img src="~/resourses/cancel.png" class="s-filter-clear" />
+    </div>
+
+</div>
+<div>Созданные</div>
+<div class="element-square-container">
+    @if (Model == null || Model.Count == 0)
+    {
+        <div class="mp-none-content">Созданных пока нет</div>
+    }
+    else
+    {
+        @foreach (var e in Model.OrderByDescending(e => e.Date))
+        {
+            <div class="mp-details-figure">
+                @{await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.SmallFigure()
+                    {
+                        Title = e.TitleShort,
+                        Link = $"/Events/Details/{e.EventId}",
+                        Image = e.MediumImage,
+                        Active = e.Date < DateTime.Now ? false : true
+                    });
+                }
+            </div>
+        }
+    }
+</div>

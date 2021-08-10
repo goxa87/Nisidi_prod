@@ -72,7 +72,7 @@ namespace EventB.Controllers
                 if (!await userManager.IsEmailConfirmedAsync(user))
                     return View("ConfirmEmail", model.LoginProp);
 
-                var loginResult = await signInManager.PasswordSignInAsync(model.LoginProp, model.Password, false, false);
+                var loginResult = await signInManager.PasswordSignInAsync(model.LoginProp, model.Password, true, false);
 
                 if (loginResult.Succeeded)
                 {

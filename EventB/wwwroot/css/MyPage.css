@@ -75,6 +75,7 @@
 
 .mp-my-selector {
     color: #e4dcc5;
+    text-transform: uppercase;
 }
 .selected-label {
     color:#ffcd00;

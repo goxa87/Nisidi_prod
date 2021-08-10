@@ -52,15 +52,50 @@ namespace EventB.Controllers
         {
             var user = await context.Users.
                 Include(e => e.Intereses).
-                Include(e => e.MyEvents).
-                Include(e => e.Friends).
                 Include(e => e.Vizits).
                 ThenInclude(e => e.Event).
-                Include(e => e.Invites).
-                ThenInclude(e=>e.Event).
                 FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
 
             return View(user);
+        }
+
+        /// <summary>
+        /// Получить разметку для вкладки пойду
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet, Route("/MyPage/GetVizits")]
+        public async Task<IActionResult> GetVizitsMarkup()
+        {
+            var user = await context.Users.Include(e => e.Vizits).ThenInclude(e=>e.Event).FirstAsync(e => e.UserName == User.Identity.Name);
+            var events = user.Vizits;
+
+            return PartialView("~/Views/MyPage/Partials/_MyPageTabVizits.cshtml", events);
+        }
+
+        /// <summary>
+        /// Получить разметку для вкладки созданных
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet, Route("/MyPage/GetCreated")]
+        public async Task<IActionResult> GetEventsMarkup()
+        {
+            var user = await context.Users.Include(e => e.MyEvents).FirstAsync(e => e.UserName == User.Identity.Name);
+            var events = user.MyEvents;
+
+            return PartialView("~/Views/MyPage/Partials/_MyPageTabCreated.cshtml", events);
+        }
+
+        /// <summary>
+        /// Получить разметку для вкладки приглашений
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet, Route("/MyPage/GetInvites")]
+        public async Task<IActionResult> GetInvitesMarkup()
+        {
+            var user = await context.Users.Include(e => e.Invites).ThenInclude(e=>e.Event).FirstAsync(e=>e.UserName == User.Identity.Name);
+            var invites = user.Invites;
+
+            return PartialView("~/Views/MyPage/Partials/_MyPageTabInvites.cshtml", invites);
         }
 
         /// <summary>
