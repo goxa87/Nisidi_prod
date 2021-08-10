@@ -52,8 +52,6 @@ namespace EventB.Controllers
         {
             var user = await context.Users.
                 Include(e => e.Intereses).
-                Include(e => e.Vizits).
-                ThenInclude(e => e.Event).
                 FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
 
             return View(user);
