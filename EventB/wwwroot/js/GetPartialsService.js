@@ -12,24 +12,6 @@ export function GetSearchPartial(body, callback) {
         },
         success: function (response) {
             callback(response);
-            $("#dateSinseDE").dxDateBox({
-                type: "date",
-                displayFormat: "dd.MM.yyyy",
-                dateSerializationFormat: "yyyy-MM-dd",
-                showClearButton: true,
-                onValueChanged: function (e) {
-                    $('#ser-date-since').val(e.value);
-                }
-            });
-            $("#dateDueDE").dxDateBox({
-                type: "date",
-                displayFormat: "dd.MM.yyyy",
-                dateSerializationFormat: "yyyy-MM-dd",
-                showClearButton: true,
-                onValueChanged: function (e) {
-                    $('#ser-date-due').val(e.value);
-                }
-            });
         },
         error: function () {
             callback("Ошибка получения разметки")

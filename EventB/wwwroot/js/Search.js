@@ -1,26 +1,4 @@
-﻿DevExpress.localization.locale("ru");
-$(function () {
-    $("#dateSinseDE").dxDateBox({
-        type: "date",
-        displayFormat: "dd.MM.yyyy",
-        dateSerializationFormat: "yyyy-MM-dd",
-        showClearButton: true,
-        onValueChanged: function (e) {
-            $('#ser-date-since').val(e.value);
-        }
-    });
-    $("#dateDueDE").dxDateBox({
-        type: "date",
-        displayFormat: "dd.MM.yyyy",
-        dateSerializationFormat: "yyyy-MM-dd",
-        showClearButton: true,
-        onValueChanged: function (e) {
-            $('#ser-date-due').val(e.value);
-        }
-    });
-});
-
-$(document).ready(function ()
+﻿$(document).ready(function ()
 {
     $('input[type="submit"]:last').on('click', function (event)
     {

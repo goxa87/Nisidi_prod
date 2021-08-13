@@ -70,8 +70,7 @@ else
     <span asp-validation-for="Date"></span><br>
 
     <div class="content">@Model.Date.ToString("dd.MM.yyyy HH:mm") изменить на </div>
-    <input type="hidden" value="@Model.Date" asp-for="Date" /><br>
-    <div class="calender-width" id="eve-edit-date"></div>
+    <input type="datetime-local" class="form-date" value="@Model.Date" asp-for="Date" /><br>
     <input type="hidden" asp-for="OldDate" value="@Model.OldDate" />
 
     <label class="form-label" asp-for="MainPicture"></label>

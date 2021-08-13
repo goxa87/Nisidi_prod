@@ -6,9 +6,7 @@
     <title>Нисиди - @ViewData["Title"]</title>
     <!--https://google.github.io/material-design-icons/-->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/20.1.8/css/dx.common.css">
-    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/20.1.8/css/dx.light.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">    
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/@ViewData["Style"]" />
     <link rel="icon" href="~/favicon.ico" />
@@ -138,8 +136,6 @@
     <script src="~/js/jquery-3.4.1.min.js"></script>
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
-    <script type="text/javascript" src="~/js/dx.all.js"></script>
-    <script type="text/javascript" src="~/js/dx.messages.ru.js"></script>
     <script src="~/js/site.js" asp-append-version="true" type="module"></script>
     <script src="~/js/@ViewData["Script"]" asp-append-version="true" type="module"></script>
     @RenderSection("Scripts", required: false)

@@ -32,8 +32,7 @@
 
     <label class="form-label" asp-for="Date"></label>
     <span asp-validation-for="Date"></span>
-    <input id="eve-date" class="form-date" type="hidden" asp-for="Date" />
-    <div class="calender-width" id="dateEvent"></div>
+    <input id="eve-date" class="form-date" type="datetime-local" asp-for="Date" />
     <br>
 
     <label class="form-label" asp-for="TicketsDesc"></label>

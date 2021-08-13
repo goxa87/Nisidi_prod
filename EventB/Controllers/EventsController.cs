@@ -78,7 +78,7 @@ namespace EventB.Controllers
                         Tegs = tegsStr,
                         IsTegsFromProfile = true,
                         Skip=0,
-                        Take=12
+                        Take=20
                 };
                 
                 var VM = new EventListVM
@@ -99,7 +99,7 @@ namespace EventB.Controllers
                     Tegs = "",
                     IsTegsFromProfile = false,
                     Skip = 0,
-                    Take = 12
+                    Take = 20
                 };
                 
                 var VM = new EventListVM

@@ -22,15 +22,13 @@
     <input class="form-entry-title" type="text" name="Tegs" autocomplete="off"><br>
 
     <label class="form-label">Дата начала С:</label><br>
-    <input id="ser-date-since" type="hidden" name="DateSince">
-    <div class="calender-width" id="dateSinseDE"></div>
+    <input id="ser-date-since" class="form-date" type="datetime-local" name="DateSince"><br>
 
     <label class="form-label">Дата начала ПО:</label><br>
-    <input id="ser-date-due" class="form-date" type="hidden" name="DateDue">
-    <div class="calender-width" id="dateDueDE"></div>
+    <input id="ser-date-due" class="form-date" type="datetime-local" name="DateDue"><br>
 
     <input type="hidden" name="Skip" value="0" />
-    <input type="hidden" name="Take" value="12" />
+    <input type="hidden" name="Take" value="20" />
 
     <input class="form-submit" type="submit" name="f" value="Найти событие"><br><br>
 </form>
