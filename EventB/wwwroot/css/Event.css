@@ -201,6 +201,11 @@ form label {
 .invite-data{
     flex-basis:400px;
 }
+@media(max-width: 550px){
+    .invite-item > img{
+        display: none;
+    }
+}
 #text {
     width: 100%;
     height:94px;
