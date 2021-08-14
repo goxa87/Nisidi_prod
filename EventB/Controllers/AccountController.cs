@@ -17,6 +17,7 @@ using System.Diagnostics;
 using EventBLib.Models.MarketingModels;
 using EventB.Services.Logger;
 using EventB.Services.ImageService;
+using System.Security.Claims;
 
 namespace EventB.Controllers
 {
@@ -71,8 +72,8 @@ namespace EventB.Controllers
 
                 if (!await userManager.IsEmailConfirmedAsync(user))
                     return View("ConfirmEmail", model.LoginProp);
-
-                var loginResult = await signInManager.PasswordSignInAsync(model.LoginProp, model.Password, true, false);
+                //await userManager.AddClaimAsync(user, new Claim("user_id", user.Id));
+                var loginResult = await signInManager.PasswordSignInAsync(user, model.Password, true, false);
 
                 if (loginResult.Succeeded)
                 {

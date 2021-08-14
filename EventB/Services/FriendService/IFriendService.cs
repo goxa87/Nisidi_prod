@@ -16,7 +16,7 @@ namespace EventB.Services.FriendService
         /// <param name="userId">ID пользователя</param>
         /// <param name="curentUser">Текущий пользователь</param>
         /// <returns></returns>
-        Task<UserInfoVM> GetFriendInfo(string userId, User curentUser);
+        Task<UserInfoVM> GetFriendInfo(string userId, string curentUserId);
 
         /// <summary>
         /// Получит список потенциальных друзей
@@ -38,6 +38,6 @@ namespace EventB.Services.FriendService
         /// <param name="friendId">ИД друга</param>
         /// <param name="currentUser">текущий пользователь</param>
         /// <returns></returns>
-        Task<int> SubmitFriend(string friendId, User currentUser);
+        Task<int> SubmitFriend(string friendId, string currentUserId);
     }
 }

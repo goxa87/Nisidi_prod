@@ -71,7 +71,7 @@ namespace EventB.Services.FriendService
             }
         }
 
-        public async Task<UserInfoVM> GetFriendInfo(string userId, User curentUser)
+        public async Task<UserInfoVM> GetFriendInfo(string userId, string curentUserId)
         {
             var user = await context.Users.
                 Include(e => e.Intereses).
@@ -90,7 +90,7 @@ namespace EventB.Services.FriendService
                 return null;
             }
 
-            var curentFriend = user.Friends.FirstOrDefault(e => e.FriendUserId == curentUser.Id);
+            var curentFriend = user.Friends.FirstOrDefault(e => e.FriendUserId == curentUserId);
             if (user.Visibility == AccountVisible.FriendsOnly && curentFriend == null)
             {
                 return null;
@@ -100,7 +100,7 @@ namespace EventB.Services.FriendService
                 return null;
 
             /// тот что в друзьях у текущего пользователя
-            var curentUserFriend = await context.Friends.FirstOrDefaultAsync(e => e.UserId == curentUser.Id && e.FriendUserId == userId);
+            var curentUserFriend = await context.Friends.FirstOrDefaultAsync(e => e.UserId == curentUserId && e.FriendUserId == userId);
 
             var infoVM = new UserInfoVM();
             infoVM.User = user;
@@ -145,9 +145,9 @@ namespace EventB.Services.FriendService
             }).ToList();
         }
 
-        public async Task<int> SubmitFriend(string friendId, User currentUser)
+        public async Task<int> SubmitFriend(string friendId, string currentUserId)
         {
-            var entitys = await context.Friends.Where(e =>(e.UserId == currentUser.Id && e.FriendUserId == friendId) || (e.UserId == friendId && e.FriendUserId == currentUser.Id)).ToListAsync();
+            var entitys = await context.Friends.Where(e =>(e.UserId == currentUserId && e.FriendUserId == friendId) || (e.UserId == friendId && e.FriendUserId == currentUserId)).ToListAsync();
             if (entitys.Count == 0)
             {
                 return 400;

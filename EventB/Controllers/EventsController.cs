@@ -21,6 +21,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using EventB.Services.EventServices;
 using EventB.ViewModels.SharedViews;
 using CommonServices.Infrastructure.WebApi;
+using System.Security.Claims;
 
 namespace EventB.Controllers
 {
@@ -350,15 +351,15 @@ namespace EventB.Controllers
         [Route("Events/EventEdit")]
         public async Task<IActionResult> EventEdit(int eventId)
         {
-            var curUser = await context.Users.FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var eve = await context.Events.Include(e => e.EventTegs).FirstOrDefaultAsync(e => e.EventId == eventId);
-            if (curUser == null || eve == null)
+            if (userId == null || eve == null)
             {
                 Response.StatusCode = 204;
                 ViewBag.Status = 204;
                 return View(null);
             }
-            if (curUser.Id != eve.UserId)
+            if (userId != eve.UserId)
             {
                 Response.StatusCode = 403;
                 ViewBag.Status = 403;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using EventB.Services;
 using EventB.Services.FriendService;
@@ -52,10 +53,10 @@ namespace EventB.Controllers
         /// <returns></returns>
         public async Task<IActionResult> List()
         {
-            var user = await userFind.GetCurrentUserAsync(User.Identity.Name);
-            var selection = await context.Friends.Where(e => e.UserId == user.Id).ToListAsync();
-            ViewBag.userId = user.Id;
-            return View(selection);           
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var selection = await context.Friends.Where(e => e.UserId == userId).ToListAsync();
+            ViewBag.userId = userId;
+            return View(selection);
         }
 
         /// <summary>
@@ -80,8 +81,8 @@ namespace EventB.Controllers
         /// <returns></returns>
         public async Task<StatusCodeResult> SubmitFriend(string friendId)
         {
-            var currentUser = await userManager.FindByNameAsync(User.Identity.Name);
-            var result = await friendService.SubmitFriend(friendId, currentUser);
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await friendService.SubmitFriend(friendId, currentUserId);
             return StatusCode(result);
         }
         #region детали пользователя
@@ -92,9 +93,9 @@ namespace EventB.Controllers
         /// <returns></returns>
         public async Task<IActionResult> UserInfo(string userId)
         {
-            var currentUser = await userManager.FindByNameAsync(User.Identity.Name);
-            if (currentUser.Id == userId) RedirectToAction("Index", "MyPage");
-            var model = await friendService.GetFriendInfo(userId, currentUser);
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (currentUserId == userId) RedirectToAction("Index", "MyPage");
+            var model = await friendService.GetFriendInfo(userId, currentUserId);
 
             if(model == null)
             {
