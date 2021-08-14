@@ -30,8 +30,7 @@ $(document).ready(function () {
         $('#invites-body').addClass('display-block');
     });
     // Нажате на кнопку пойду в контейнере приглашения.
-    $('.mp-will-go').click(function ()
-    {
+    $('body').on('click', '.mp-will-go', function () {
         let eId = $(this).parent().children('#eveId').val();
         let invId = $(this).parent().children('#inviteId').val();
         $.ajax({
@@ -48,7 +47,7 @@ $(document).ready(function () {
     });
 
     // Нажате на кнопку НЕпойду в контейнере приглашения.
-    $('.mp-will-notgo').click(function () {
+    $('body').on('click', '.mp-will-notgo', function () {
         let invId = $(this).parent().children('#inviteId').val();
         $.ajax({
             url: '/MyPage/RefuseInvite',

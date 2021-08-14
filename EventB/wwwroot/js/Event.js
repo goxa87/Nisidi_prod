@@ -263,7 +263,7 @@ $(document).ready(function ()
 Вы можете указать текст приглашения длинной до 1000 символов. <br>Также есть возможность скопировать текст приглашения от порвого ко всем остальным пользователям и отметить или снять выделение со всех 
 пользователей, которым будет отправлено приглашение.<hr> Если вы не нашли нужных пользователей, то либо они не приняли вашу заявку в друзья, либо у них уже есть приглашение на это событие.
 `
-                    getModelWindow('Пригласить', false, null, null, helpText);
+                    getModelWindow('Пригласить', false, onInviteClick, null, helpText);
                     let firstBlock = `
                 <div class="invite-menu">
                     <div class="form-submit inline" id="invite-copy" title="Скопировть текст из первого сообщения пользователю ко всем пользователям">Скопировать текст</div>
@@ -309,26 +309,7 @@ $(document).ready(function ()
     });
     // Кнопка пригласить всех. InviteFriendsIn(int eventId, InviteInVm[] invites)
     $('body').on('click', '#inv-invite', function () {
-        var ids = [];
-        $('.checked-inv').each(function (i, v) {
-            let id = $(v).parents('.invite-data').children('#friend-id').val();
-            let mess = $(v).parents('.invite-data').children('.ev-d-invite-text').val();
-            let inv = { userId: id, message: mess };
-            ids.push(inv);
-        });
-        let eventid = $('#event-id').val();
-        $.ajax({
-            type: 'post',
-            url: '/Events/InviteFriendsIn',
-            data:
-            {
-                eventId: eventid,
-                invites: ids
-            }, success: () => {
-                GetNotification('Приглашения отправлены', 3, 3)
-                $('.modal-shadow').remove();
-            }                
-        });
+        onInviteClick();
     });
 
     // Секция Отправить ссылку в чат.
@@ -428,4 +409,30 @@ function getSearchParams() {
         Tegs: $('#search-param-tegs').text(),
         City: $('#search-param-city').text()
     }
+}
+
+/**Пригласить друщей (в содержимоми на ОК) */
+function onInviteClick() {
+    console.log('execinvite');
+    var ids = [];
+    $('.checked-inv').each(function (i, v) {
+        let id = $(v).parents('.invite-data').children('#friend-id').val();
+        let mess = $(v).parents('.invite-data').children('.ev-d-invite-text').val();
+        let inv = { userId: id, message: mess };
+        ids.push(inv);
+    });
+    let eventid = $('#event-id').val();
+    $.ajax({
+        type: 'post',
+        url: '/Events/InviteFriendsIn',
+        data:
+        {
+            eventId: eventid,
+            invites: ids
+        }, success: () => {
+            console.log('execinvite 1');
+            GetNotification('Приглашения отправлены', 3, 3)
+            $('.modal-shadow').remove();
+        }
+    });
 }

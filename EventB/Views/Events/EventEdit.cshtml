@@ -4,7 +4,6 @@
     ViewData["Style"] = "Event.css";
     ViewData["Script"] = "Event.js";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewData["Title"] = "редактор";
 }
     <div class="top-page-header">Редактор события</div>
 
@@ -69,7 +68,7 @@ else
     <label class="form-label" asp-for="Date"></label>
     <span asp-validation-for="Date"></span><br>
 
-    <div class="content">@Model.Date.ToString("dd.MM.yyyy HH:mm") изменить на </div>
+    <div class="content">@Model.OldDate.ToString("dd.MM.yyyy HH:mm") изменить на </div>
     <input type="datetime-local" class="form-date" value="@Model.Date" asp-for="Date" /><br>
     <input type="hidden" asp-for="OldDate" value="@Model.OldDate" />
 

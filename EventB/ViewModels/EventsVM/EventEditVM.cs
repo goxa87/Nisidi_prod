@@ -20,6 +20,7 @@ namespace EventB.ViewModels.EventsVM
 
         [Display(Name = "Теги тобытия")]
         [MaxLength(1000, ErrorMessage = "Длинна этого поля не должна быть больше 1000 символов")]
+        [Required(ErrorMessage = "Поле теги не заполнено")]
         public string Tegs { get; set; }
         public string OldTegs { get; set; }
 
@@ -29,7 +30,7 @@ namespace EventB.ViewModels.EventsVM
         public string OldBody { get; set; }
 
         [Display(Name = "Дата и время проведения события")]
-        public DateTime Date { get; set; }
+        public DateTime? Date { get; set; }
         public DateTime OldDate { get; set; }
 
         [Display(Name = "Город проведения")]

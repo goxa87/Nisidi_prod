@@ -43,8 +43,10 @@ namespace EventB.Services.SenderServices
             {
                 using (var client = new SmtpClient())
                 {
-                    await client.ConnectAsync("wpl42.hosting.reg.ru", 587, false);
-                    await client.AuthenticateAsync(new NetworkCredential("support@stable-nisidi.ru", "utjhubqrhen456*+"));
+
+                    //await client.ConnectAsync("wpl42.hosting.reg.ru", 587, false);
+                    //await client.AuthenticateAsync(new NetworkCredential("support@stable-nisidi.ru", "utjhubqrhen456*+"));
+                    await client.ConnectAsync("127.0.0.1", 25, false);
 
 
                     await client.SendAsync(emailMessage);
