@@ -64,36 +64,10 @@
                 <div class="mes-remove-chat display-none">Удалить чат</div>
             }
         </div>
-                
-            
-           
+
         <div class="message-list" id="message-list">
-            @if (Model.Messages != null)
-            {
-                foreach (var mes in Model.Messages)
-                {
-                    if (mes.EventState)
-                    {
-                        <div class="message-item message-item-event">
-                            <div class="message-sender-event">@mes.SenderName</div>
-                            <div class="message-text-event">@mes.Text</div>
-                            <div class="message-date-event">@mes.PostDate</div>
-                            <div class="message-info display-none">@mes.PersonId</div>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="message-item">
-                            <div class="message-sender">@mes.SenderName</div>
-                            <div class="message-text">@mes.Text</div>
-                            <div class="message-date">@mes.PostDate</div>
-                            <div class="message-info display-none">@mes.PersonId</div>
-                        </div>
-                    }
-                }
-            }
-            <div id="vertical-trigger"></div>
         </div>
+
         <div >
             <sub>Сообщение</sub><br>
             <form class="form-send">
@@ -103,7 +77,6 @@
                 @if (Model.Opponent != null){ <input id="opponent-id" type="hidden" value="@Model.Opponent.Id" />}
                 else { <input id="opponent-id" type="hidden" value="0"/> }
                 <input id="opponent-is-event" type="hidden" value="false" />
-
                 <textarea id="message" ></textarea>
                 <button id="btn-send"></button>
             </form>

@@ -1,10 +1,236 @@
 ﻿import { renderMessage, getModelWindow, iensSearchByText, GetNotification } from './Controls.js';
 
+let alreadyLoadedMessages = 0;
+
+const messageCountToLoad = 30;
 const connection = new signalR.HubConnectionBuilder()
     .withUrl("/chatroom")
     .build();
+
+// Нажатие энетра
+$('#message').keyup(function (event) {
+    if (event.keyCode == 13) {
+        var content = this.value;
+        var caret = getCaret(this);
+        if (event.shiftKey) {
+            this.value = content.substring(0, caret - 1) + "\n" + content.substring(caret, content.length);
+            event.stopPropagation();
+        } else {
+            MessageSender();
+        }
+    }
+});
+// Нажатие на кнопу отправить сообщение.
+$('#btn-send').on('click', function (event) {
+    event.preventDefault();
+    MessageSender();
+});
+
+// получение сообщения с хаба
+connection.on('reciveChatMessage', function (message) {
+    // Если открыт этот чат добавляем на экран нет то ставим фифорку
+    let chatId = $('#chat-id').val();    
+    if (message.chatId == chatId) {
+        AddRenderedMessages(message, $('#user-id').val())
+    } else {
+        let opponent = $('.opponent-chat-id[value="' + message.chatId + '"]').parent()
+        let curentValue = $(opponent).children('.new-message-flag').text();
+        if (curentValue === '' || curentValue == undefined) {
+            curentValue = '1'
+        } else {
+            curentValue = Number.parseInt(curentValue) + 1;
+        }
+        $(opponent).children('.new-message-flag').text(curentValue);
+        $(opponent).detach().prependTo('.opponents-list');
+    }
+});
+
+connection.on('responceForBlockUser', function (message) {
+    GetNotification(message, 1, 5);
+});
+connection.start();
+// Конец хаба
+
+$(document).ready(function () {
+    let btnHtml = '<div id="ch-small-menu-btn"></div>';
+    $('#menu-left-container').append(btnHtml);
+
+    getNewMessageCount();
+
+    let curentChatId = $('#chat-id').val();
+    if (curentChatId && curentChatId != '0') {
+        $.ajax({
+            url: '/Api/GetMessageListForChat',
+            data: {
+                chatId: curentChatId,
+                lastCount: messageCountToLoad
+            },
+            success: function (rezult) {
+                updateFirstMessageId(rezult);
+                buildMessagesContent(rezult);
+                scrollDown();
+            }
+        });
+    }
+
+    scrollDown();
+
+    // Выбор собеседника из левой колонки.
+    $('.opponent-container').on('click', function () {
+        // Картинку и имя в заголовок.
+        $('.opponent-photo').children('img').prop('src', $(this).children('.opponent-photo-value').val());
+        $('.opponent-name').text($(this).children('.opponent-name-value').text());
+
+        // убрать с выделенного класс
+        $('.selected-opponent').removeClass('selected-opponent');
+        // поставить на этот класс
+        $(this).addClass('selected-opponent');
+        // отчистить сообщения с листа
+        $('.message-list').empty();
+        // убрать количество новых сообщений
+        $(this).children('.new-message-flag').text('');
+        // Сделать неактивной если чат недоступен
+
+        if ($(this).children('.opponent-is-blocked-chat').val() == 1) {
+            $('#btn-send').attr('disabled', true);
+            $('#message').attr('disabled', true);
+            $('#message').val('заблокировано');
+        }
+        else {
+            $('#btn-send').attr('disabled', false);
+            $('#message').attr('disabled', false);
+            $('#message').val('');
+        }
+
+        // скопировать значения id b chat id в форму
+        let newChat = $(this).children('.opponent-chat-id').val();
+        let newOppId = $(this).children('.opponent-id').val();
+        $('#chat-id').val(newChat);
+        $('#opponent-id').val(newOppId);
+
+        $('.mes-remove-chat').removeClass('display-none');
+
+        // загрузить сообщения для этого чата
+        $.ajax({
+            url: '/Api/GetMessageListForChat',
+            data: {
+                chatId: newChat,
+                lastCount: messageCountToLoad
+            },
+            success: function (rezult) {
+                // Рендеринг сообщений.
+                buildMessagesContent(rezult);
+            }
+        });
+        // Прячем узкое меню если оно есть
+        if ($('.left-column').hasClass('ch-hide-menu')) {
+            $('.left-column').toggleClass('ch-hide-menu');
+        }
+    });
+        
+    // Клик на кнопке Отчистить.
+    $('#btn-search').on('click', function (event) {
+        event.preventDefault();
+        $('#txt-search').val('');
+        $('.mes-opponent-container').removeClass('display-none');
+    });
+
+    // Динамический поиск.
+    $(document).on('keyup', function () {
+        if ($('#txt-search').is(':focus')) {
+            let searchText = $('#txt-search').val();
+            let items = $('.mes-opponent-container');
+            iensSearchByText(items, '.opponent-name-value', searchText);
+        }
+    });
+
+    // Удаление чата
+    // /messages/delete-user-chat
+    $('.mes-remove-chat').click(() => {
+        let chatId = $('#chat-id').val();
+        $.ajax({
+            url: '/messages/delete-user-chat',
+            data: {
+                chatId: chatId
+            },
+            success: () => {                
+                $('.selected-opponent').parent().remove();
+                $('.opponent-photo').children('img').prop('src', '');
+                $('.opponent-name').text('');
+                $('.mes-remove-chat').addClass('display-none');
+                $('.message-list').html('');
+                $('#chat-id').val('0');
+                GetNotification("Вы покинули этот чат", 2, 3);
+            },
+            error: () => {
+                GetNotification("Удаление не удалось", 2, 10);
+            }
+        });
+    });
+
+    // узкое меню
+    $('body').on('click', '#ch-small-menu-btn', function () {
+        $('.left-column').toggleClass('ch-hide-menu');
+    });
+
+    // загружаем историю
+    $('body').on('click', '#mes-load-history', function () {
+        getPreviousMessages();
+    });
+
+});
+
 /**
- * Добавляет сообщение в список сообщений
+ * ние результатов запроса в блок content
+ * Добавление результата в конец и скролл. Только для первоначальной загрузки.
+ * @param {any} content List<Message>
+ */
+function buildMessagesContent(content) {
+    // Рендеринг ответа в блоки        
+    let userId = $('#user-id').val();
+    let block = renderMessage(content, userId);
+    $('#vertical-trigger').remove();
+    if (content && content.length == messageCountToLoad) {
+        block = '<div id="mes-load-history">раньше<span class="arrow-up"><img src="/resourses/arrow-up.png" /></span></div>' + block;
+    }
+    $('.message-list').html(block);
+    $('.message-list').append('<div id="vertical-trigger"></div>');
+    scrollDown();
+};
+
+/**Получить более ранние сообщения для истории*/
+function getPreviousMessages() {
+    let skipCount = $('.message-item').length;
+    let curentChatId = $('#chat-id').val();
+    $.ajax({
+        url: '/Api/GetMessageListForChat',
+        data: {
+            chatId: curentChatId,
+            lastCount: messageCountToLoad,
+            skip: skipCount
+        },
+        success: function (messages) {
+            buildPreviousMessages(messages);
+        }
+    });
+}
+
+/**
+ * Рендерит полученные из истории сообщения  в правильное место после кнопки раньше .
+ * @param {any} content лист мессаджей
+ */
+function buildPreviousMessages(content) {
+    
+    let userId = $('#user-id').val();
+    let block = renderMessage(content, userId);
+    $('#mes-load-history').after(block);
+    if (!content || content.length < messageCountToLoad) {
+        $('#mes-load-history').remove();
+    }
+}
+
+/**
+ * Добавляет сообщение в список сообщений после отправки текущим пользователем
  * @param {any} data
  * @param {any} senderId
  */
@@ -15,8 +241,11 @@ function AddRenderedMessages(data, senderId) {
     $('.message-list').append('<div id="vertical-trigger"></div>');
     // Прокрутка лучше не придумал.(( 
     // Здесь vertical-trigger находится относительно окна а нужно относительно родителя. исправить
-    scrollDown();    
+    alreadyLoadedMessages = $('.message-item').length;
+    scrollDown();
 }
+
+
 
 /** Отправляет сообщение в хаб*/
 function SendMessage() {
@@ -79,6 +308,7 @@ function getCaret(el) {
     }
     return 0;
 }
+
 function MessageSender() {
     if ($('#message').val() == '') { return; }
     let chatId = $('#chat-id').val();
@@ -103,189 +333,9 @@ function MessageSender() {
         SendMessage();
     }
 }
-// Нажатие энетра
-$('#message').keyup(function (event) {
-    if (event.keyCode == 13) {
-        var content = this.value;
-        var caret = getCaret(this);
-        if (event.shiftKey) {
-            this.value = content.substring(0, caret - 1) + "\n" + content.substring(caret, content.length);
-            event.stopPropagation();
-        } else {
-            MessageSender();
-        }
-    }
-});
-// Нажатие на кнопу отправить сообщение.
-$('#btn-send').on('click', function (event) {
-    event.preventDefault();
-    MessageSender();
-});
-
-// получение сообщения с хаба
-connection.on('reciveChatMessage', function (message) {
-    // Если открыт этот чат добавляем на экран нет то ставим фифорку
-    let chatId = $('#chat-id').val();    
-    if (message.chatId == chatId) {
-        AddRenderedMessages(message, $('#user-id').val())
-    } else {
-        let opponent = $('.opponent-chat-id[value="' + message.chatId + '"]').parent()
-        let curentValue = $(opponent).children('.new-message-flag').text();
-        if (curentValue === '' || curentValue == undefined) {
-            curentValue = '1'
-        } else {
-            curentValue = Number.parseInt(curentValue) + 1;
-        }
-        $(opponent).children('.new-message-flag').text(curentValue);
-        $(opponent).detach().prependTo('.opponents-list');
-    }
-});
-
-connection.on('responceForBlockUser', function (message) {
-    GetNotification(message, 1, 5);
-});
-connection.start();
-// Конец хаба
-
-$(document).ready(function () {
-    let btnHtml = '<div id="ch-small-menu-btn"></div>';
-    $('#menu-left-container').append(btnHtml);
-
-    getNewMessageCount();
-
-    let curentChatId = $('#chat-id').val();
-    if (curentChatId && curentChatId != '0') {
-        $.ajax({
-            url: '/Api/GetMessageHistory',
-            data: {
-                chatId: curentChatId
-            },
-            success: function (rezult) {
-                console.log('rezult', rezult)
-                buildMessagesContent(rezult);
-                scrollDown(); 
-            }
-        });
-    }
-
-    scrollDown();
-
-    // Выбор собеседника из левой колонки.
-    $('.opponent-container').on('click', function () {
-        // Картинку и имя в заголовок.
-        $('.opponent-photo').children('img').prop('src', $(this).children('.opponent-photo-value').val());
-        $('.opponent-name').text($(this).children('.opponent-name-value').text());
-
-        // убрать с выделенного класс
-        $('.selected-opponent').removeClass('selected-opponent');
-        // поставить на этот класс
-        $(this).addClass('selected-opponent');
-        // отчистить сообщения с листа
-        $('.message-list').empty();
-        // убрать количество новых сообщений
-        $(this).children('.new-message-flag').text('');
-        // Сделать неактивной если чат недоступен
-
-        if ($(this).children('.opponent-is-blocked-chat').val() == 1) {
-            $('#btn-send').attr('disabled', true);
-            $('#message').attr('disabled', true);
-            $('#message').val('заблокировано');
-        }
-        else {
-            $('#btn-send').attr('disabled', false);
-            $('#message').attr('disabled', false);
-            $('#message').val('');
-        }
-
-        // скопировать значения id b chat id в форму
-        let newChat = $(this).children('.opponent-chat-id').val();
-        let newOppId = $(this).children('.opponent-id').val();
-        $('#chat-id').val(newChat);
-        $('#opponent-id').val(newOppId);
-
-        $('.mes-remove-chat').removeClass('display-none');
-
-        // загрузить сообщения для этого чата
-        $.ajax({
-            url: '/Api/GetMessageHistory',
-            data: {
-                chatId: newChat
-            },
-            success: function (rezult) {
-                // Рендеринг сообщений.
-                buildMessagesContent(rezult);
-            }
-        });
-        // Прячем узкое меню если оно есть
-        if ($('.left-column').hasClass('ch-hide-menu')) {
-            $('.left-column').toggleClass('ch-hide-menu');
-        }
-    });
-
-    // Построение результатов запроса в блок content - List<Message>
-    // Добавление результата в конец и скролл.
-    function buildMessagesContent(content) {
-        // Рендеринг ответа в блоки        
-        let userId = $('#user-id').val();
-        let block = renderMessage(content, userId);
-        $('#vertical-trigger').remove();
-        $('.message-list').html(block);
-        $('.message-list').append('<div id="vertical-trigger"></div>');
-        scrollDown();
-    };    
-
-    // Клик на кнопке Отчистить.
-    $('#btn-search').on('click', function (event) {
-        event.preventDefault();
-        $('#txt-search').val('');
-        $('.mes-opponent-container').removeClass('display-none');
-    });
-    // Динамический поиск.
-    $(document).on('keyup', function () {
-        if ($('#txt-search').is(':focus')) {
-            let searchText = $('#txt-search').val();
-            let items = $('.mes-opponent-container');
-            iensSearchByText(items, '.opponent-name-value', searchText);
-        }
-    });
-
-    // Удаление чата
-    // /messages/delete-user-chat
-    $('.mes-remove-chat').click(() => {
-        let chatId = $('#chat-id').val();
-        console.log(chatId);
-        $.ajax({
-            url: '/messages/delete-user-chat',
-            data: {
-                chatId: chatId
-            },
-            success: () => {                
-                $('.selected-opponent').parent().remove();
-                $('.opponent-photo').children('img').prop('src', '');
-                $('.opponent-name').text('');
-                $('.mes-remove-chat').addClass('display-none');
-                $('.message-list').html('');
-                $('#chat-id').val('0');
-                GetNotification("Вы покинули этот чат", 2, 3);
-            },
-            error: () => {
-                GetNotification("Удаление не удалось", 2, 10);
-            }
-        });
-    });
-
-    // узкое меню
-    $('body').on('click', '#ch-small-menu-btn', function () {
-        $('.left-column').toggleClass('ch-hide-menu');
-    });
-});
-
 
 function scrollDown() {
-    //let position = $('#vertical-trigger').position();
-    //console.log('pos', position)
     let element = document.getElementById('message-list');
-    console.log(element, element.scrollHeight);
     $('.message-list').scrollTop(element.scrollHeight + 1000);
 
 }

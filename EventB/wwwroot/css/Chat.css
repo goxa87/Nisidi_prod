@@ -219,3 +219,20 @@ textarea {
         display:none;
     }
 }
+
+#mes-load-history{
+   display:inline-block;
+   background-color: #1b5972;
+   color: #ffcd00;
+   font-size: 14px;
+   border-radius: 4px;
+   padding: 2px 4px 4px 4px;
+   text-transform: lowercase;
+   margin-bottom: 4px;
+   cursor: pointer;
+}
+.arrow-up{
+    background-image: url(../resourses/arrow-up.png);
+    width: 16px;
+    height:16px;
+}

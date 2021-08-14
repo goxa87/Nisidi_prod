@@ -37,7 +37,7 @@ namespace EventB.Services.MessageServices
         public async Task<List<Message>> GetEventChatMessages(int eventId)
         {
             var eve = await context.Events.Include(e => e.Chat).FirstOrDefaultAsync(e => e.EventId == eventId);
-            return await context.Messages.Where(e => e.ChatId == eve.Chat.ChatId).Take(100).ToListAsync();
+            return await context.Messages.Where(e => e.ChatId == eve.Chat.ChatId).Take(15).ToListAsync();
         }
 
         /// <summary>

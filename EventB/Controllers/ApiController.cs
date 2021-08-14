@@ -294,16 +294,18 @@ namespace EventB.Controllers
         /// <param name="cahtId">id чата</param>
         /// <param name="lastCount">Количество нужных для загрузки записей.</param>
         /// <returns></returns>
-        [Route("GetMessageHistory")]
+        [Route("GetMessageListForChat")]
         [Authorize]
-        public async Task<List<Message>> GetMessageHistory(int chatId, int lastCount = 100)
+        public async Task<List<Message>> GetMessageHistory(int chatId, int lastCount = 10, int skip = 0)
         {
             // Реализовать количество загрузок.
             // ! Реализовать ПОЛУЧЕНИЕ ИМЕНИ ИЗ БД т.к. в изменении профиля к собщениям имя не меяется.
             var messages = await context.Messages.
                 Where(e => e.ChatId == chatId).
                 OrderByDescending(e => e.PostDate).
-                Take(lastCount).OrderBy(e => e.PostDate).
+                Skip(skip).
+                Take(lastCount)
+                .OrderBy(e => e.PostDate).
                 ToListAsync();
                 foreach (var item in messages)
                 {

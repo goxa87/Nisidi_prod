@@ -48,9 +48,8 @@ namespace EventB.Controllers
 
             if (!string.IsNullOrWhiteSpace(opponentId))
             {
-                var userChat = await context.UserChats.Include(e => e.Chat).ThenInclude(e => e.Messages).FirstOrDefaultAsync(e => e.UserId == user.Id && e.OpponentId == opponentId);
+                var userChat = user.UserChats.FirstOrDefault(e => e.OpponentId == opponentId);
                 chatVM.CurrentChatId = userChat != null ? userChat.ChatId : 0;
-                chatVM.Messages = userChat != null ? userChat.Chat.Messages : new List<Message>();
             }
 
             return View(chatVM);
