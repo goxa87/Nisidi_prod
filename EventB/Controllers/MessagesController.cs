@@ -11,6 +11,8 @@ using EventBLib.Models;
 using EventB.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using EventB.Services.MessageServices;
+using EventB.Services.Logger;
+using System.Security.Claims;
 
 namespace EventB.Controllers
 {
@@ -20,14 +22,17 @@ namespace EventB.Controllers
         readonly Context context;
         private readonly UserManager<User> userManager;
         private readonly IMessageService messagesService;
+        private readonly ILogger logger;
         public MessagesController(Context _context,
             UserManager<User> _userManager,
             IUserFindService _findUser,
-            IMessageService _messagesService)
+            IMessageService _messagesService,
+            ILogger _logger)
         {
             context = _context;
             userManager = _userManager;
             messagesService = _messagesService;
+            logger = _logger;
         }
 
         public async Task<IActionResult> Index(string opponentId=null)
@@ -66,6 +71,27 @@ namespace EventB.Controllers
             var user = await userManager.FindByNameAsync(User.Identity.Name);
             var result = await messagesService.DeleteUserChat(chatId, user.Id);
             return StatusCode(result);
+        }
+
+        /// <summary>
+        /// Отметить чат как прочитанный.
+        /// </summary>
+        /// <param name="userChatId"></param>
+        /// <returns></returns>
+        [Route("/messages/mark-as-read-chat")]
+        public async Task<StatusCodeResult> MarkAsReadMessage(int chatId)
+        {
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                await messagesService.MarkAsReadMessage(chatId, userId);
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                await logger.LogStringToFile($"ОШИБКА Отметка как прочитанного сообщения(userChatId: {chatId}): {ex.Message}");
+                return Ok();
+            }
         }
     }
 }

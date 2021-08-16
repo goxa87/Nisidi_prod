@@ -36,5 +36,13 @@ namespace EventB.Services.MessageServices
         /// <param name="vm"></param>
         /// <returns></returns>
         public Message ConvertMessageVmToDTO(ChatMessageVM vm);
+
+        /// <summary>
+        /// Отметка чата кака прочитннного
+        /// </summary>
+        /// <param name="userChatId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public Task MarkAsReadMessage(int chatId, string userId);
     }
 }

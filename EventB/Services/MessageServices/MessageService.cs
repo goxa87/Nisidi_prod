@@ -94,5 +94,31 @@ namespace EventB.Services.MessageServices
             };
         }
 
+        ///<inheritdoc />
+        public async Task MarkAsReadMessage(int chatId, string userId)
+        {
+            var userChat = await context.UserChats.Include(e => e.Chat).ThenInclude(e => e.Messages).FirstOrDefaultAsync(e => e.ChatId == chatId && e.UserId == userId);
+            if(userChat == null)
+            {
+                throw new Exception("MarkAsReadMessage: userChatNotFound");
+            }
+            if(userChat.UserId != userId)
+            {
+                throw new Exception("MarkAsReadMessage: user chat not own by current user");
+            }
+
+            if(userChat.Chat.Messages.Count == 0)
+            {
+                return;
+            }
+
+            var lastRead = userChat.Chat.Messages.Max(e => e.MessageId);
+            if (userChat.LastReadMessageId != lastRead)
+            {
+                userChat.LastReadMessageId = lastRead;
+                await context.SaveChangesAsync();
+            }
+            return;
+        }
     }
 }

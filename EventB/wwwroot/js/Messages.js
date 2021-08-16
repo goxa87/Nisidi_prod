@@ -31,7 +31,8 @@ connection.on('reciveChatMessage', function (message) {
     // Если открыт этот чат добавляем на экран нет то ставим фифорку
     let chatId = $('#chat-id').val();    
     if (message.chatId == chatId) {
-        AddRenderedMessages(message, $('#user-id').val())
+        AddRenderedMessages(message, $('#user-id').val());
+        MarkAsReadChat();
     } else {
         let opponent = $('.opponent-chat-id[value="' + message.chatId + '"]').parent()
         let curentValue = $(opponent).children('.new-message-flag').text();
@@ -126,6 +127,7 @@ $(document).ready(function () {
         if ($('.left-column').hasClass('ch-hide-menu')) {
             $('.left-column').toggleClass('ch-hide-menu');
         }
+        MarkAsReadChat();
     });
         
     // Клик на кнопке Отчистить.
@@ -362,6 +364,21 @@ function getNewMessageCount() {
         },
         error: () => {
             GetNotification('Ошибка загрузки', 3, duration = 3)
+        }
+    });
+}
+
+/**Пометить чат как прочитанный */
+function MarkAsReadChat() {
+    let curentChatId = $('#chat-id').val();
+    $.ajax({
+        url: '/messages/mark-as-read-chat',
+        data: {
+            chatId: curentChatId
+        },
+        success: function () { },
+        error: function () {
+            console.error('Ошибка пометки чата как прочитанного.');
         }
     });
 }

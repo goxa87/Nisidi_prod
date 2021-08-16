@@ -56,5 +56,10 @@ namespace EventBLib.Models
         /// Системное имя пользователя(логин) ТОго пользователя, которому принадлежит юзерчат
         /// </summary>
         public string SystemUserName { get; set; }
+
+        /// <summary>
+        /// ID последнего прочитанного сообщения. 
+        /// </summary>
+        public int LastReadMessageId { get; set; }
     }
 }
