@@ -239,7 +239,6 @@ $(document).ready(function ()
                     let data = ans.content;
                     // Парс в HTML списка друзей доступных для приглашения
                     var block = '';
-                    console.log(ans)
                     $(data).each(function (i, v) {
                         block +=
                             `<div class="invite-item flex-hsbc">
@@ -413,7 +412,6 @@ function getSearchParams() {
 
 /**Пригласить друщей (в содержимоми на ОК) */
 function onInviteClick() {
-    console.log('execinvite');
     var ids = [];
     $('.checked-inv').each(function (i, v) {
         let id = $(v).parents('.invite-data').children('#friend-id').val();
@@ -430,7 +428,6 @@ function onInviteClick() {
             eventId: eventid,
             invites: ids
         }, success: () => {
-            console.log('execinvite 1');
             GetNotification('Приглашения отправлены', 3, 3)
             $('.modal-shadow').remove();
         }

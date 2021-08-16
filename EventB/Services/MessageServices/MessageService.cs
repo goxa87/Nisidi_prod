@@ -62,8 +62,7 @@ namespace EventB.Services.MessageServices
                 PersonId = userChat.UserId,
                 SenderName = userChat.User.Name,
                 Text = "Пользователь покинул чат",
-                PostDate = DateTime.Now,
-                Read = false
+                PostDate = DateTime.Now
             };
             await context.Messages.AddAsync(message);
             userChat.IsDeleted = true;
@@ -87,7 +86,6 @@ namespace EventB.Services.MessageServices
                 EventState = false,
                 PersonId = vm.personId,
                 PostDate = vm.postDate,
-                Read = false,
                 ReciverId = null,
                 SenderName = vm.senderName,
                 Text = vm.text
@@ -119,6 +117,24 @@ namespace EventB.Services.MessageServices
                 await context.SaveChangesAsync();
             }
             return;
+        }
+
+        ///<inheritdoc />
+        public async Task<List<NewMessagesVM>> GetUnreadMessagesCount(string userId)
+        {
+            var selection = await context.UserChats
+                .Include(e => e.Chat)
+                .ThenInclude(e => e.Messages)
+                .Where(e => e.UserId == userId).ToListAsync();
+
+            var rezult = new List<NewMessagesVM>();
+            rezult = selection.Select(e => new NewMessagesVM
+            {
+                ChatId = e.ChatId,
+                CountNew = e.Chat.Messages.Where(mes => mes.MessageId > e.LastReadMessageId).Count()
+            }).ToList();
+
+            return rezult;
         }
     }
 }

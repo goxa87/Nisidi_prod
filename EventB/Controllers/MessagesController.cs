@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using EventB.Services.MessageServices;
 using EventB.Services.Logger;
 using System.Security.Claims;
+using EventB.ViewModels.MessagesVM;
 
 namespace EventB.Controllers
 {
@@ -92,6 +93,19 @@ namespace EventB.Controllers
                 await logger.LogStringToFile($"ОШИБКА Отметка как прочитанного сообщения(userChatId: {chatId}): {ex.Message}");
                 return Ok();
             }
+        }
+
+
+        /// <summary>
+        /// Возвращает количество новых сообщений в чатах по chatId.
+        /// </summary>
+        /// <param name="chatIds"></param>
+        /// <returns></returns>
+        [Route("/messages/GetNewMessagesCount")]
+        public async Task<List<NewMessagesVM>> GetNewMessagesCount()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return await messagesService.GetUnreadMessagesCount(userId);
         }
     }
 }

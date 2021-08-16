@@ -44,10 +44,6 @@ namespace EventBLib.Models
         [DataType(DataType.DateTime), DisplayFormat(DataFormatString ="{0:dd.MM.yy HH.mm}",ApplyFormatInEditMode =true)]
         public DateTime PostDate { get; set; }
         /// <summary>
-        /// Cимвол прочитанности.
-        /// </summary>
-        public bool Read { get; set; }
-        /// <summary>
         /// true для сообщений о изменения в состоянии события.
         /// </summary>
         public bool EventState { get; set; }

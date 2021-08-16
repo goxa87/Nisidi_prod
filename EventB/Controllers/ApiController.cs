@@ -70,7 +70,7 @@ namespace EventB.Controllers
                 HasResult = true,
                 HasNewFriends = user.Friends.Any(e => e.FriendInitiator == false && e.IsConfirmed == false && !e.IsBlocked),
                 HasNewInvites = user.Invites.Any(),
-                HasNewMessages = user.UserChats.Any(e => e.IsDeleted == false && e.Chat.Messages.Any(y => y.Read == false && y.PersonId != user.Id))
+                HasNewMessages = user.UserChats.Any(e => e.IsDeleted == false && e.Chat.Messages.Any(y => y.MessageId > e.LastReadMessageId))
             };
             var response = new WebResponce<MenuUpdatesApiVM>(content);
             return response;
@@ -279,7 +279,6 @@ namespace EventB.Controllers
                 SenderName = senderName,
                 Text = text,
                 PostDate = DateTime.Now,
-                Read = false,
                 ReciverId = reciverId
             };
             await context.Messages.AddAsync(message);
@@ -307,59 +306,8 @@ namespace EventB.Controllers
                 Take(lastCount)
                 .OrderBy(e => e.PostDate).
                 ToListAsync();
-                foreach (var item in messages)
-                {
-                    item.Read = true;
-                    context.UpdateRange(messages);                    
-                }
-            await context.SaveChangesAsync();
-            return messages;
-        }
-        
-        /// <summary>
-        /// Отправка клиенту непрочитанных сообщений.
-        /// </summary>
-        /// <param name="chatId">ID чата.</param>
-        /// <param name="opponentId">Сообщения от собеседника.</param>
-        /// <returns>List<Message></returns>
-        [Authorize]
-        [Route("GetNewMessages")]
-        public async Task<List<Message>> GetNewMessages(int chatId, string opponentId)
-        {
-            // ! Реализовать ПОЛУЧЕНИЕ ИМЕНИ ИЗ БД т.к. в изменении профиля к ссобщениям имя не меяется.
-            var messages = await context.Messages.
-                Where(e => e.ChatId == chatId && e.PersonId==opponentId && e.Read==false).
-                ToListAsync();
-
-            foreach (var e in messages)
-            {
-                e.Read = true;
-            }
-            context.Messages.UpdateRange(messages);
-            await context.SaveChangesAsync();
 
             return messages;
-        }
-        /// <summary>
-        /// Возвращает количество новых сообщений в чатах по chatId.
-        /// </summary>
-        /// <param name="chatIds"></param>
-        /// <returns></returns>
-        [Authorize]
-        [Route("GetNewMessagesCount")]
-        public async Task<List<NewMessagesVM>> GetNewMessagesCount()
-        {
-            // Мне кажется это криво и неэффективно. Нужно отрефакторить.
-            var user = await userManager.GetUserAsync(User);
-            var selection = context.UserChats.Include(e=>e.Chat).ThenInclude(e=>e.Messages).Where(e => e.UserId == user.Id).ToList();
-            var rezult = new List<NewMessagesVM>();
-            rezult = selection.Select(e => new NewMessagesVM
-            {
-                ChatId = e.ChatId,
-                CountNew = e.Chat.Messages.Where(e=>e.PersonId != user.Id && e.Read == false).Count()
-            }).ToList();
-
-            return rezult;
         }
         #endregion
     }

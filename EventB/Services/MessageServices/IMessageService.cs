@@ -44,5 +44,12 @@ namespace EventB.Services.MessageServices
         /// <param name="userId"></param>
         /// <returns></returns>
         public Task MarkAsReadMessage(int chatId, string userId);
+
+        /// <summary>
+        /// Получить количество новых непрочитанных сообщений
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public Task<List<NewMessagesVM>> GetUnreadMessagesCount(string userId);
     }
 }

@@ -1,8 +1,7 @@
 ﻿import { renderMessage, getModelWindow, iensSearchByText, GetNotification } from './Controls.js';
 
-let alreadyLoadedMessages = 0;
-
 const messageCountToLoad = 30;
+
 const connection = new signalR.HubConnectionBuilder()
     .withUrl("/chatroom")
     .build();
@@ -67,7 +66,6 @@ $(document).ready(function () {
                 lastCount: messageCountToLoad
             },
             success: function (rezult) {
-                updateFirstMessageId(rezult);
                 buildMessagesContent(rezult);
                 scrollDown();
             }
@@ -356,7 +354,7 @@ function displayNewMessageFlag(count, chatId) {
 }
 function getNewMessageCount() {
     $.ajax({
-        url: '/Api/GetNewMessagesCount',
+        url: '/messages/GetNewMessagesCount',
         success: function (rezult) {
             $(rezult).each(function (i, value) {
                 displayNewMessageFlag(value.countNew, value.chatId)

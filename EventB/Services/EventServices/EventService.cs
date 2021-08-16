@@ -286,7 +286,6 @@ namespace EventB.Services.EventServices
                 Text = text,
                 ReciverId = "0",
                 PostDate = DateTime.Now,
-                Read = false
             };
             await context.Messages.AddAsync(message);
             await context.SaveChangesAsync();
@@ -390,7 +389,6 @@ namespace EventB.Services.EventServices
                 SenderName = user.Name,
                 ChatId = userChat.ChatId,
                 PostDate = DateTime.Now,
-                Read = false,
                 EventState = false,
                 EventLink = eventId,
                 Text = eve.Title,
