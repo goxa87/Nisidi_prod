@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using EventB.Services.MarketKibnetApiServices;
 using EventB.ViewModels.MarketRoom;
@@ -68,7 +69,8 @@ namespace EventB.Controllers.MarketKibnetApi
         [Route("switch-user-chat-block"), HttpGet]
         public async Task<StatusCodeResult> SwitchUserChatBlock(int EventId, int userChatId)
         {
-            return StatusCode(await kibnetApiServices.SwitchUserChatBlock(EventId, userChatId, User.Identity.Name));
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return StatusCode(await kibnetApiServices.SwitchUserChatBlock(EventId, userChatId, userId));
         }
     }
 }

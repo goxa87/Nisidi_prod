@@ -21,6 +21,6 @@ namespace EventB.Services.MarketKibnetApiServices
         /// </summary>
         /// <param name="eventId"></param>
         /// <param name="userId"></param>
-        Task<int> SwitchUserChatBlock(int eventId, int userChatId, string curentUserName);
+        Task<int> SwitchUserChatBlock(int eventId, int userChatId, string curentUserId);
     }
 }

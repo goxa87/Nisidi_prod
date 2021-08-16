@@ -37,10 +37,10 @@
 
     <label class="form-label" asp-for="Visibility"></label>
     <span asp-validation-for="Visibility"></span><br>
-    <select asp-for="Visibility">
-        <option value="0">Виден всем</option>
-        <option value="1">Виден друзьям</option>
-        <option value="2">Не видим никому</option>
+    <select asp-for="Visibility" class="custom-select width200">
+        <option value="0" class="dropdown-item">Виден всем</option>
+        <option value="1" class="dropdown-item">Виден друзьям</option>
+        <option value="2" class="dropdown-item">Не видим никому</option>
     </select><br>
 
     <label class="form-label" asp-for="newPhoto"></label><br>

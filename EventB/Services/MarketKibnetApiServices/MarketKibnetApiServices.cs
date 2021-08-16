@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace EventB.Services.MarketKibnetApiServices
@@ -111,18 +112,17 @@ namespace EventB.Services.MarketKibnetApiServices
         /// <param name="userChatId"></param>
         /// <param name="curentUserName"></param>
         /// <returns></returns>
-        public async Task<int> SwitchUserChatBlock(int eventId, int userChatId, string curentUserName)
-        {
-            var user = await userManager.FindByNameAsync(curentUserName);
-            var eve = await context.Events.FirstOrDefaultAsync(e => e.EventId == eventId);
+        public async Task<int> SwitchUserChatBlock(int eventId, int userChatId, string curentUserId)
+        {            
+            var eve = await context.Events.Include(e=>e.Chat).ThenInclude(e=>e.UserChat).FirstOrDefaultAsync(e => e.EventId == eventId);
             if (eve == null)
                 return 404;
 
-            if(eve.UserId != user.Id)
+            if(eve.UserId != curentUserId)
             {
                 return 401;
             }
-            var userChat = await context.UserChats.FirstOrDefaultAsync(e => e.UserChatId == userChatId);
+            var userChat = eve.Chat.UserChat.FirstOrDefault(e => e.UserChatId == userChatId);
             if (userChat == null)
                 return 400;
             userChat.IsBlockedInChat = !userChat.IsBlockedInChat;

@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace EventB.Hubs
@@ -57,12 +58,12 @@ namespace EventB.Hubs
         /// <returns></returns>
         public async Task SendToChat(ChatMessageVM dataObject)
         {
-            var userName = this.Context.User.Identity.Name;
+            var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier); ;
             var sender = await context.Users
                 .Include(e=>e.UserChats)
                 .ThenInclude(e=>e.Chat)
                 .ThenInclude(e=>e.UserChat)
-                .FirstOrDefaultAsync(e => e.UserName == userName);
+                .FirstOrDefaultAsync(e => e.Id == userId);
 
             var curentUserChat = sender.UserChats.First(e=>e.ChatId == dataObject.chatId);
             if (curentUserChat.IsBlockedInChat)
