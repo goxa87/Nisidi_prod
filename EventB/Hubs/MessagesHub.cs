@@ -72,6 +72,8 @@ namespace EventB.Hubs
                 return;
             }
 
+            curentUserChat.IsDeleted = false;
+
             dataObject.postDate = DateTime.Now;
             dataObject.personId = sender.Id;
             dataObject.senderName = sender.Name;

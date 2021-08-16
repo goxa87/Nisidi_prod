@@ -241,7 +241,6 @@ function AddRenderedMessages(data, senderId) {
     $('.message-list').append('<div id="vertical-trigger"></div>');
     // Прокрутка лучше не придумал.(( 
     // Здесь vertical-trigger находится относительно окна а нужно относительно родителя. исправить
-    alreadyLoadedMessages = $('.message-item').length;
     scrollDown();
 }
 
@@ -337,7 +336,6 @@ function MessageSender() {
 function scrollDown() {
     let element = document.getElementById('message-list');
     $('.message-list').scrollTop(element.scrollHeight + 1000);
-
 }
 
 // Получение значков новых сообщений
