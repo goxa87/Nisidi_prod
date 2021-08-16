@@ -26,15 +26,15 @@ $(document).ready(function ()
                 }
             });
         };
-        getModelWindow('PRESSED', true, changeStatus, null, null);
+        getModelWindow('ПУБЛИКАЦИЯ', true, changeStatus, null, null);
         // Контент блока модалки.
         let content =`<div class="lk-sale-message flex-vsc">
-            <p>Сейчас ваше событие находится в статусе "Private". Это значит, что оно будет отображатся в списке рекомендаций по интересам, дате и локации.</p>
-            <p>Вы можете перевести это событие  статус "Global" оно будет попадать в список рекомендаций.</p>
-            <p>После нажатия кнопки ОК, вы будете перенаправлены на окно оплаты. После поступления оплаты событие сразу будет попадать в выборки для показа.</p>
-            <img src="/resourses/sale.png" alt="sale" />
+            <p>Сейчас ваше событие находится в статусе "Частное".</p>
+            <p> Это значит, что оно не будет отображатся в списке рекомендаций по интересам, дате и локации.</p>
+            <p>Вы можете перевести это событие в статус "Публичное". После этого оно будет попадать в список рекомендаций.</p>
+            <img src="/resourses/sale.png?v=3" alt="sale" />
             <p>Внимание! Сейчас действует специальная цена: 0р. на публикацию глобальных событий.</p>
-            <p>Специальная цена действует до 31.10.20</p></div>
+            <p>Специальная цена действует до 01.03.2022г.</p></div>
         `;
         $('.modal-body').html(content);
         
@@ -65,8 +65,7 @@ $(document).ready(function ()
         }
         
         let data = { id: eveId, container: eventContainer }
-        console.log(data)
-        getModelWindow('Удаление события', true, onConfirmDelete, null, null);
+        getModelWindow('УДАЛЕНИЕ СОБЫТИЯ', true, onConfirmDelete, null, null);
         let content = `<h3>Внимание!</h3>
             <p>Удалив данное событие вы не сможете его восстановить.</p>
             <p>также будут удалены все отметки о визитах и чат.</p>`;
@@ -84,13 +83,13 @@ $(document).ready(function ()
             },
             success: (usersChat) => {
                 console.log('usersChat', usersChat);
-                getModelWindow('Удаление события', false, null, null, "В этом списке управляйте возможностью пользователей отправлять сообщения в чат события.");
+                getModelWindow('Блокировка пользователей', false, null, null, "В этом списке управляйте возможностью пользователей отправлять сообщения в чат события.");
                 let content = `<h3>Участники чата события</h3><input type="hidden" id="lk-block-users-event-id" value="${eveId}"><div>`;
                 $(usersChat).each(function (index, user) {
                     let block = `
 <div class="flex-hsbc flex-wr">
 <input type="hidden" class="lk-block-users-user-chat-id" value="${user.userChatId}" />
-<div class="lk-block-user-name"><img class="lk-block-user-ava" src="${user.userPhoto}">${user.userName}&nbsp<span class="lk-isBlock"><u>${user.isBlocked ? "Заблокирован" : "НЕ заблокирован"}</u></span></div>`
+<div class="lk-block-user-name"><img class="lk-block-user-ava" src="${user.userPhoto}">${user.userName}&nbsp<span class="lk-isBlock"><u>${user.isBlocked ? "Заблокирован" : "НЕ&nbsp;заблокирован"}</u></span></div>`
                     if (user.isBlocked) {
                         block += `
                         <div class="lk-block-user-btn lk-block-user-btn-unblock">Разблокировать</div>

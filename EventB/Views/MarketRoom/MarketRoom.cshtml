@@ -39,7 +39,7 @@
                             </div>
                             <div class="margin-8px">
                                 <input class="kibnet-event-id" type="hidden" value="@ev.EventId" />
-                                <div class="bold-label lk-event-state">Статус: @ev.Type</div>
+                                <div class="bold-label lk-event-state">Статус: @(ev.Type == EventType.Global ? "ПУБЛИЧНОЕ" : "ЧАСТНОЕ")</div>
                                 @if (ev.Type == EventType.Private)
                                 {
                                     <div class="action-button lk-change-event-status">Сменить статус</div>

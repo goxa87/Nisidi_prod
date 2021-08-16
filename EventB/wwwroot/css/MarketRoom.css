@@ -53,14 +53,16 @@
     max-width:46px;
 }
 .lk-block-user-btn-block{
-    border: 1px solid #55f222;
-    color: green;
+    color: #f25522;
     cursor: pointer;
-    padding: 0 4px;
+    padding: 4px 6px;
+    background-color: #1b5972;
+    border-radius: 4px;
 }
 .lk-block-user-btn-unblock {
-    border: 1px solid #f25522;
-    color: red;
+    color: #00ff90;
     cursor: pointer;
-    padding: 0 4px;
+    padding: 4px 6px;
+    background-color: #1b5972;
+    border-radius: 4px;
 }
