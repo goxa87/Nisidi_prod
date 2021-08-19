@@ -233,7 +233,7 @@ namespace EventB.Services.EventServices
         /// <param name="chatId">id чата</param>
         /// <param name="text">сообщение</param>
         /// <returns></returns>
-        public async Task<int> SendMessage(string userId, string userName, int chatId, string text)
+        public async Task<int> SendMessage(string userId, User user, int chatId, string text)
         {
             var chat = await context.Chats.Include(e => e.Event)
                 .Include(e=>e.UserChat)
@@ -260,7 +260,7 @@ namespace EventB.Services.EventServices
                         ChatId = chatId,
                         ChatPhoto = chat.Event.MiniImage,
                         OpponentId = "0",
-                        SystemUserName = userName
+                        SystemUserName = user.UserName
                     };
                     await context.UserChats.AddAsync(newUserChat);
                     await context.SaveChangesAsync();
@@ -282,7 +282,7 @@ namespace EventB.Services.EventServices
             {
                 ChatId = chatId,
                 PersonId = userId,
-                SenderName = userName,
+                SenderName = user.Name,
                 Text = text,
                 ReciverId = "0",
                 PostDate = DateTime.Now,

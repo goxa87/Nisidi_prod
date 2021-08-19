@@ -16,7 +16,7 @@ namespace EventB.Services.EventServices
 
         Task<Event> Details(int id);
 
-        Task<int> SendMessage(string userId, string userName, int chatId, string text);
+        Task<int> SendMessage(string userId, User user, int chatId, string text);
         /// <summary>
         /// Получение списка изменений в событии.
         /// </summary>

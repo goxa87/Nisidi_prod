@@ -263,7 +263,7 @@ namespace EventB.Controllers
         public async Task<StatusCodeResult> SendMessage(string userId, string userName, int chatId, string text)
         {
             var user = await context.Users.FirstAsync(e => e.UserName == User.Identity.Name);
-            var result = await eventService.SendMessage(user.Id, user.Name, chatId, text);
+            var result = await eventService.SendMessage(user.Id, user, chatId, text);
             return StatusCode(result);
         }
 
