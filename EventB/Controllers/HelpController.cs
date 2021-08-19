@@ -80,6 +80,15 @@ namespace EventB.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// Пользовательское соглашение о персональных данных
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Personal()
+        {
+            return View();
+        }
     }
 
 }

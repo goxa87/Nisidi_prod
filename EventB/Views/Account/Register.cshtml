@@ -47,10 +47,11 @@
                 <span asp-validation-for="Description"></span>
                 <textarea class="form-entry-title" maxlength="1000" type="text" asp-for="Description"></textarea><br>
 
-                <label class="StartAdd-label">Я соглашаюсь с <a href="/Help/Agreement" target="_blank" style="text-decoration: underline; font-size: 18px">правилами использования</a> сайта:</label>
-                <span asp-validation-for="AgreePersonalData"></span>                
-               
-                <label><input type="checkbox" asp-for="AgreePersonalData" id="agree-personal-data"></label><br>
+                <label><input type="checkbox" asp-for="AgreePersonalData" id="agree-personal-data"></label>
+                <label class="StartAdd-label">Я соглашаюсь с <a href="/Help/Agreement" target="_blank" style="text-decoration: underline; font-size: 18px">правилами использования</a> сайта и <a href="/Help/Personal" target="_blank" style="text-decoration: underline; font-size: 18px">политикой обработки персональных данных</a>.</label>
+                <span asp-validation-for="AgreePersonalData"></span>
+
+
                 <input class="form-submit" type="submit" value="Регистрация"><br>
             </form>
         </div>
