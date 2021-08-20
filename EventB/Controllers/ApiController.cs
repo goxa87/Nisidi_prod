@@ -309,29 +309,5 @@ namespace EventB.Controllers
             return messages;
         }
         #endregion
-
-
-        [Route("SetBatch")]
-        public async Task SetBatch(int num)
-        {
-            var RND = new Random();
-            var batch = new List<Message>();
-            for(int i =0; i < num; i++)
-            {
-                var newMes = new Message()
-                {
-                    ChatId = 1,
-                    PersonId = "25c28a78-c779-4561-9af5-2110c40dd15c",
-                    PostDate = DateTime.Now,
-                    SenderName = "oca1",
-                    Text = $"VARRRRR"
-                };
-
-                batch.Add(newMes);
-            }
-
-            await context.Messages.AddRangeAsync(batch);
-            await context.SaveChangesAsync();
-        }
     }
 }

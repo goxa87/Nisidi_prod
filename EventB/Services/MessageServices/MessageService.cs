@@ -48,7 +48,7 @@ namespace EventB.Services.MessageServices
         public async Task<int> DeleteUserChat(int ChatId, string userId)
         {
             var userChat = await context.UserChats
-                .Include(e => e.Chat).ThenInclude(e => e.Messages)
+                .Include(e => e.Chat)
                 .Include(e=>e.User)
                 .FirstOrDefaultAsync(e=>e.ChatId == ChatId && e.UserId == userId);
             if(userChat == null)
