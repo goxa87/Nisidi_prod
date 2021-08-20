@@ -95,25 +95,16 @@ namespace EventB.Services.MessageServices
         ///<inheritdoc />
         public async Task MarkAsReadMessage(int chatId, string userId)
         {
-            var userChat = await context.UserChats.Include(e => e.Chat).ThenInclude(e => e.Messages).FirstOrDefaultAsync(e => e.ChatId == chatId && e.UserId == userId);
+            var userChat = await context.UserChats.FirstOrDefaultAsync(e => e.ChatId == chatId && e.UserId == userId);
             if(userChat == null)
             {
                 throw new Exception("MarkAsReadMessage: userChatNotFound");
             }
-            if(userChat.UserId != userId)
-            {
-                throw new Exception("MarkAsReadMessage: user chat not own by current user");
-            }
 
-            if(userChat.Chat.Messages.Count == 0)
+            var lastRead = await context.Messages.Where(e => e.ChatId == userChat.ChatId).OrderBy(e=>e.PostDate).LastOrDefaultAsync();
+            if (lastRead != null)
             {
-                return;
-            }
-
-            var lastRead = userChat.Chat.Messages.Max(e => e.MessageId);
-            if (userChat.LastReadMessageId != lastRead)
-            {
-                userChat.LastReadMessageId = lastRead;
+                userChat.LastReadMessageId = lastRead.MessageId;
                 await context.SaveChangesAsync();
             }
             return;
@@ -122,17 +113,15 @@ namespace EventB.Services.MessageServices
         ///<inheritdoc />
         public async Task<List<NewMessagesVM>> GetUnreadMessagesCount(string userId)
         {
-            var selection = await context.UserChats
+            var rezult = new List<NewMessagesVM>();
+            rezult = await context.UserChats
                 .Include(e => e.Chat)
                 .ThenInclude(e => e.Messages)
-                .Where(e => e.UserId == userId).ToListAsync();
-
-            var rezult = new List<NewMessagesVM>();
-            rezult = selection.Select(e => new NewMessagesVM
-            {
-                ChatId = e.ChatId,
-                CountNew = e.Chat.Messages.Where(mes => mes.MessageId > e.LastReadMessageId).Count()
-            }).ToList();
+                .Where(e => e.UserId == userId).Select(e => new NewMessagesVM
+                    {
+                        ChatId = e.ChatId,
+                        CountNew = e.Chat.Messages.Where(mes => mes.MessageId > e.LastReadMessageId).Count()
+                    }).ToListAsync();
 
             return rezult;
         }

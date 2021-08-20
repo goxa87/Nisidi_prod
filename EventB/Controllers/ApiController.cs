@@ -15,6 +15,7 @@ using EventB.ViewModels;
 using EventB.Services.FriendService;
 using CommonServices.Infrastructure.WebApi;
 using EventB.Services.Logger;
+using System.Security.Claims;
 
 namespace EventB.Controllers
 {
@@ -58,19 +59,17 @@ namespace EventB.Controllers
             {
                 return new WebResponce<MenuUpdatesApiVM>(new MenuUpdatesApiVM(), false, "неавторизован");
             }
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var user = await context.Users.
-                Include(e => e.Invites).
-                Include(e => e.Friends).
-                Include(e => e.UserChats).ThenInclude(e => e.Chat).ThenInclude(e => e.Messages).
-                FirstOrDefaultAsync(e => e.UserName == User.Identity.Name);
-            
+            var HasNewFriends = await context.Friends.AnyAsync(e => e.UserId == userId && e.FriendInitiator == false && e.IsConfirmed == false && e.IsBlocked == false);
+            var HasNewInvites = await context.Invites.AnyAsync(e => e.UserId == userId);
+            var HasNewMessages = await context.UserChats.AnyAsync(e => e.UserId == userId && e.Chat.Messages.Any(x => x.MessageId > e.LastReadMessageId));
             var content = new MenuUpdatesApiVM()
             {
                 HasResult = true,
-                HasNewFriends = user.Friends.Any(e => e.FriendInitiator == false && e.IsConfirmed == false && !e.IsBlocked),
-                HasNewInvites = user.Invites.Any(),
-                HasNewMessages = user.UserChats.Any(e => e.IsDeleted == false && e.Chat.Messages.Any(y => y.MessageId > e.LastReadMessageId))
+                HasNewFriends = HasNewFriends,
+                HasNewInvites = HasNewInvites,
+                HasNewMessages = HasNewMessages
             };
             var response = new WebResponce<MenuUpdatesApiVM>(content);
             return response;
@@ -310,5 +309,29 @@ namespace EventB.Controllers
             return messages;
         }
         #endregion
+
+
+        [Route("SetBatch")]
+        public async Task SetBatch(int num)
+        {
+            var RND = new Random();
+            var batch = new List<Message>();
+            for(int i =0; i < num; i++)
+            {
+                var newMes = new Message()
+                {
+                    ChatId = 1,
+                    PersonId = "25c28a78-c779-4561-9af5-2110c40dd15c",
+                    PostDate = DateTime.Now,
+                    SenderName = "oca1",
+                    Text = $"VARRRRR"
+                };
+
+                batch.Add(newMes);
+            }
+
+            await context.Messages.AddRangeAsync(batch);
+            await context.SaveChangesAsync();
+        }
     }
 }

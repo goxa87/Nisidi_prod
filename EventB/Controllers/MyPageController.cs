@@ -64,9 +64,8 @@ namespace EventB.Controllers
         [HttpGet, Route("/MyPage/GetVizits")]
         public async Task<IActionResult> GetVizitsMarkup()
         {
-            var user = await context.Users.Include(e => e.Vizits).ThenInclude(e=>e.Event).FirstAsync(e => e.UserName == User.Identity.Name);
-            var events = user.Vizits;
-
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var events = await context.Vizits.Include(e => e.Event).Where(e => e.UserId == userId).OrderByDescending(e => e.VizitId).Take(300).ToListAsync();
             return PartialView("~/Views/MyPage/Partials/_MyPageTabVizits.cshtml", events);
         }
 
@@ -77,8 +76,8 @@ namespace EventB.Controllers
         [HttpGet, Route("/MyPage/GetCreated")]
         public async Task<IActionResult> GetEventsMarkup()
         {
-            var user = await context.Users.Include(e => e.MyEvents).FirstAsync(e => e.UserName == User.Identity.Name);
-            var events = user.MyEvents;
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var events = await  context.Events.Where(e=>e.UserId == userId).OrderByDescending(e=>e.Date).Take(300).ToListAsync();
 
             return PartialView("~/Views/MyPage/Partials/_MyPageTabCreated.cshtml", events);
         }

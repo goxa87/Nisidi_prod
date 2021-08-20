@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using EventB.ViewModels.MarketRoom;
 using EventBLib.DataContext;
@@ -23,14 +24,14 @@ namespace EventB.Controllers
 
         public async Task<IActionResult> MarketRoom()
         {
-            var user = await context.Users.Include(e=>e.MarketKibnet)
-                .Include(e=>e.MyEvents).ThenInclude(e=>e.Vizits)
-                .Include(e=>e.MyEvents).ThenInclude(e=>e.EventTegs)
-                .FirstOrDefaultAsync(e=>e.UserName == HttpContext.User.Identity.Name);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            var events = await context.Events.Include(e => e.Vizits).Include(e => e.EventTegs)
+                .Where(e => e.UserId == userId).OrderByDescending(e => e.Date > DateTime.Now).ThenBy(e => e.Date).Take(300).ToListAsync();
+           
             var model = new MarketRoomVM { 
-                MarketKibnet = user.MarketKibnet,
-                Events = user.MyEvents.OrderByDescending(e=>e.CreationDate).ToList(),
+                MarketKibnet = null,
+                Events = events,
                 Banner = new List<MarketBanner>() 
             };
 
