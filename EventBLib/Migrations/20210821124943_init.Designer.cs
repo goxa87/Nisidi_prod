@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EventBLib.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20210816035332_add_last_read_message")]
-    partial class add_last_read_message
+    [Migration("20210821124943_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -350,9 +350,6 @@ namespace EventBLib.Migrations
 
                     b.Property<DateTime>("PostDate")
                         .HasColumnType("timestamp without time zone");
-
-                    b.Property<bool>("Read")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("ReciverId")
                         .HasColumnType("text");

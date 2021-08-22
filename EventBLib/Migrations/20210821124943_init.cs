@@ -485,7 +485,6 @@ namespace EventBLib.Migrations
                     ReciverId = table.Column<string>(type: "text", nullable: true),
                     Text = table.Column<string>(type: "text", nullable: true),
                     PostDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    Read = table.Column<bool>(type: "boolean", nullable: false),
                     EventState = table.Column<bool>(type: "boolean", nullable: false),
                     EventLink = table.Column<int>(type: "integer", nullable: false),
                     EventLinkImage = table.Column<string>(type: "text", nullable: true)
@@ -514,7 +513,8 @@ namespace EventBLib.Migrations
                     ChatId = table.Column<int>(type: "integer", nullable: false),
                     IsBlockedInChat = table.Column<bool>(type: "boolean", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    SystemUserName = table.Column<string>(type: "text", nullable: true)
+                    SystemUserName = table.Column<string>(type: "text", nullable: true),
+                    LastReadMessageId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {

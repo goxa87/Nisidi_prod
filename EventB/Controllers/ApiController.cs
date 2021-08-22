@@ -63,7 +63,7 @@ namespace EventB.Controllers
 
             var HasNewFriends = await context.Friends.AnyAsync(e => e.UserId == userId && e.FriendInitiator == false && e.IsConfirmed == false && e.IsBlocked == false);
             var HasNewInvites = await context.Invites.AnyAsync(e => e.UserId == userId);
-            var HasNewMessages = await context.UserChats.AnyAsync(e => e.UserId == userId && e.Chat.Messages.Any(x => x.MessageId > e.LastReadMessageId));
+            var HasNewMessages = await context.UserChats.AnyAsync(e => e.UserId == userId && e.IsBlockedInChat == false && e.IsDeleted == false && e.Chat.Messages.Any(x => x.MessageId > e.LastReadMessageId));
             var content = new MenuUpdatesApiVM()
             {
                 HasResult = true,
