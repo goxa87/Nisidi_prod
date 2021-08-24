@@ -31,7 +31,7 @@ namespace EventB.Services.SenderServices
             
             var emailMessage = new MimeMessage();
 
-            emailMessage.From.Add(new MailboxAddress("support@stable-nisidi.ru"));
+            emailMessage.From.Add(new MailboxAddress("support@nisidi.ru"));
             emailMessage.To.Add(new MailboxAddress(email));
             emailMessage.Subject = target;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
