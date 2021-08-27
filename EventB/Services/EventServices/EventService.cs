@@ -1,13 +1,16 @@
-﻿using EventB.Services.ImageService;
+﻿using EventB.Hubs;
+using EventB.Services.ImageService;
 using EventB.Services.Logger;
 using EventB.Services.MessageServices;
 using EventB.ViewModels;
 using EventB.ViewModels.EventsVM;
+using EventB.ViewModels.MessagesVM;
 using EventBLib.DataContext;
 using EventBLib.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Schema;
 using System;
@@ -36,14 +39,16 @@ namespace EventB.Services.EventServices
         private readonly ILogger logger;
         private readonly IImageService imageService;
 
+        private readonly IHubContext<MessagesHub> hubContext;
+
         public EventService(Context _context,
             IMessageService _messageService,
             ITegSplitter _tegSplitter,
             IWebHostEnvironment _environment,
             UserManager<User> _userManager,
             ILogger _logger,
-            IImageService _imageService
-        )
+            IImageService _imageService,
+            IHubContext<MessagesHub> _hubContext)
         {
             context = _context;
             messageService = _messageService;
@@ -52,6 +57,7 @@ namespace EventB.Services.EventServices
             userManager = _userManager;
             logger = _logger;
             imageService = _imageService;
+            hubContext = _hubContext;
         }
         /// <summary>
         /// Добавление нового события.
@@ -262,7 +268,7 @@ namespace EventB.Services.EventServices
                         OpponentId = "0",
                         SystemUserName = user.UserName
                     };
-                    await context.UserChats.AddAsync(newUserChat);
+                    chat.UserChat.Add(newUserChat);
                     await context.SaveChangesAsync();
                 }
                 catch (Exception ex)
@@ -290,7 +296,20 @@ namespace EventB.Services.EventServices
             await context.Messages.AddAsync(message);
             await context.SaveChangesAsync();
 
-            // ВНИМАНИЕ ! Здесь нужно организовать отправку сообщения через хаб всем подключенным клиентам
+            var dataObject = new ChatMessageVM()
+            {
+                chatId = chatId,
+                personId = user.Id,
+                postDate = message.PostDate,
+                senderName = user.Name,
+                text = message.Text
+            };
+
+            // Здесь отправкa сообщения через хаб всем подключенным клиентам, которые есть в чате
+            foreach (var userInChat in chat.UserChat.Where(e=>e.IsDeleted == false))
+            {
+                await hubContext.Clients.Group(userInChat.SystemUserName).SendAsync("reciveChatMessage", dataObject);
+            }
 
             return 200;
         }
@@ -397,6 +416,24 @@ namespace EventB.Services.EventServices
 
             await context.Messages.AddAsync(message);
             await context.SaveChangesAsync();
+
+            var dataObject = new ChatMessageVM()
+            {
+                chatId = userChat.ChatId,
+                personId = user.Id,
+                postDate = message.PostDate,
+                senderName = user.Name,
+                text = message.Text,
+                eventLink = message.EventLink,
+                eventLinkImage = eve.MediumImage
+            };
+            var userChats = await context.UserChats.Where(e => e.IsDeleted == false && e.ChatId == userChat.ChatId).ToListAsync();
+            // Здесь отправкa сообщения через хаб всем подключенным клиентам, которые есть в чате
+            foreach (var userInChat in userChats)
+            {
+                await hubContext.Clients.Group(userInChat.SystemUserName).SendAsync("reciveChatMessage", dataObject);
+            }
+
             return 200;
         }
 
@@ -585,6 +622,23 @@ namespace EventB.Services.EventServices
 
             context.Events.Update(eve);
             await context.SaveChangesAsync();
+
+            var dataObject = new ChatMessageVM()
+            {
+                chatId = eve.Chat.ChatId,
+                personId = user.Id,
+                postDate = DateTime.Now,
+                senderName = user.Name,
+                text = chatMessage,
+                eventState = true
+            };
+            var userChats = await context.UserChats.Where(e => e.IsDeleted == false && e.ChatId == eve.Chat.ChatId).ToListAsync();
+            // Здесь отправкa сообщения через хаб всем подключенным клиентам, которые есть в чате
+            foreach (var userInChat in userChats)
+            {
+                await hubContext.Clients.Group(userInChat.SystemUserName).SendAsync("reciveChatMessage", dataObject);
+            }
+
             return eve;
         }
 

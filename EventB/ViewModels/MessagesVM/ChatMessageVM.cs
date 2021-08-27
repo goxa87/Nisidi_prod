@@ -12,5 +12,8 @@ namespace EventB.ViewModels.MessagesVM
         public string senderName { get; set; }
         public string text { get; set; }
         public DateTime postDate { get; set; }
+        public int? eventLink { get; set; }
+        public string eventLinkImage { get; set; }
+        public bool? eventState { get; set; }
     }
 }

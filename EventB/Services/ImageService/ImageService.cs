@@ -71,7 +71,7 @@ namespace EventB.Services.ImageService
                 catch (Exception ex)
                 {
                     await logger.LogStringToFile($"Ошибка создания картинок для события : {ex.Message}");
-                    await SaveResizedImage(environment.WebRootPath + DEFAULT_IMAGE_PATH + suffix, environment.WebRootPath + image.Value, image.Key, suffix);
+                    await SaveResizedImage(environment.WebRootPath + DEFAULT_IMAGE_PATH, environment.WebRootPath + image.Value, image.Key, suffix);
                     result.Add(image.Key, requiredSizesWithPaths[image.Key] + suffix);
                 }
             }

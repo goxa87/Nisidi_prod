@@ -68,11 +68,13 @@ export function renderMessage(content, userId) {
     let block = '';
     $(content).each(function (index, value) {
         let date = formatter.format(new Date(value.postDate));
+        // Сообщение о изменении в событии
         if (value.eventState && value.eventState != false) {
             block += '<div class="message-item message-item-event"><div class="message-sender-event">' + value.senderName +
                 '</div><div class="message-text-event">' + value.text + '</div ><div class="message-date-event">' + date + '</div >' +
                 '<div class="message-info display-none">' + value.personId + '</div ></div > ';
         }
+        // Ссылка на событие
         else if (value.eventLink && value.eventLink != 0) {
             block += `<a href="/Events/Details/${value.eventLink}">
                         <div class="message-item message-item-event message-item-event-link">
@@ -83,11 +85,13 @@ export function renderMessage(content, userId) {
                         </div >
                       </a>`;
         }
+        // Отправитель текущий пользователь
         else if (userId == value.personId) {
             block += '<div class="message-item  my-message"><div class="message-sender">' + 'ВЫ' +
                 '</div><div class="message-text formatted-body">' + value.text + '</div ><div class="message-date">' + date + '</div >' +
                 '<div class="message-info display-none">' + value.personId + '</div ></div > ';
         }
+        // отправитель другой пользователь
         else {
             block += '<div class="message-item"><div class="message-sender">' + value.senderName +
                 '</div><div class="message-text formatted-body">' + value.text + '</div ><div class="message-date">' + date + '</div >' +
