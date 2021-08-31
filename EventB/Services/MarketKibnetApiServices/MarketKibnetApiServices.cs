@@ -37,11 +37,10 @@ namespace EventB.Services.MarketKibnetApiServices
         /// <param name="eventId">id события</param>
         /// <param name="userName">имя текущего пользователя</param>
         /// <returns></returns>
-        public async Task<bool> ChangeEventStatus(int newType, int eventId, string userName)
+        public async Task<bool> ChangeEventStatus(int newType, int eventId, string userId)
         {
-            // Сдесь сделать логику оплаты для смены статуса. Пока не 
-            var user = await userManager.FindByNameAsync(userName);
-            var curEvent = await context.Events.FirstOrDefaultAsync(e => e.EventId == eventId && e.UserId == user.Id);
+            // Сдесь сделать логику оплаты для смены статуса. Пока не
+            var curEvent = await context.Events.FirstOrDefaultAsync(e => e.EventId == eventId && e.UserId == userId);
             if (curEvent == null)
             {
                 return false;

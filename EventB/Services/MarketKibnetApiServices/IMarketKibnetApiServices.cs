@@ -8,7 +8,7 @@ namespace EventB.Services.MarketKibnetApiServices
 {
     public interface IMarketKibnetApiServices
     {
-        Task<bool> ChangeEventStatus(int newType, int eventId, string userName);
+        Task<bool> ChangeEventStatus(int newType, int eventId, string userId);
         Task<bool> DeleteEvent(int eventId, string userName);
         /// <summary>
         /// Получение участников чата события

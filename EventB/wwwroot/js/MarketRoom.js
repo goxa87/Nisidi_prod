@@ -10,7 +10,7 @@ $(document).ready(function ()
 
         // Запрос на изменение статуса.
         function changeStatus(){
-            window.open('/MarketRoom/Pay');
+            // window.open('/MarketRoom/Pay');
             $.ajax({
                 url: '/api/MarketKibnet/change-event-type',
                 data: {

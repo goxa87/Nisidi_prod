@@ -32,7 +32,8 @@ namespace EventB.Controllers.MarketKibnetApi
                 ModelState.AddModelError("", "Недопустимое значение типа");
                 return StatusCode(400);
             }
-            var result = await kibnetApiServices.ChangeEventStatus(targetType, eventId, User.Identity.Name);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await kibnetApiServices.ChangeEventStatus(targetType, eventId, userId);
             if (result) return Ok();
             else return StatusCode(400);
         }
