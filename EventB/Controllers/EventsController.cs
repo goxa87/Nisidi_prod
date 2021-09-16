@@ -76,7 +76,7 @@ namespace EventB.Controllers
                         DateDue = DateTime.Now.AddDays(31),
                         Title = "",
                         City = user.City,
-                        Tegs = tegsStr,
+                        Tegs = "",
                         IsTegsFromProfile = true,
                         Skip=0,
                         Take=30
