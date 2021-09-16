@@ -7,8 +7,13 @@
     ViewData["Title"] = "события";
 }
 
-<div class="top-page-header">
+<div class="top-page-header flex-hsbs flex-wr">
+
     <a class="top-page-header-a" asp-controller="Events" asp-action="Add">ДОБАВИТЬ</a>
+    @if (Model.ByMyTegsLink != null)
+    {
+        <a class="ev-recomendations" href="@Model.ByMyTegsLink">рекомендации</a>
+    }
 </div>
 
 <div class="top-page-header" id="header-title">
@@ -20,12 +25,22 @@
         <div class="ticket" id="search-param-city">@Model.args.City</div>
     }
 
-    @if (Model.args.Tegs != "" || Model.args.Tegs == null)
-    {
-        <div class="ticket" id="search-param-tegs">@Model.args.Tegs</div>
-    }
     @if (Model.args.Title != "" || Model.args.Title == null)
     {<div class="ticket" id="search-param-title">@Model.args.Title</div>}
+
+    @if (Model.Tegs != null)
+    {
+        @foreach (var e in Model.Tegs)
+        {
+            var tegData = new EventB.ViewModels.SharedViews.TegColoredLink()
+            {
+                TegValue = e,
+                City = Model.args.City
+            };
+            await Html.RenderPartialAsync("~/Views/Shared/_tegColoredLink.cshtml", tegData);
+        }
+    }
+
 
     <input type="hidden" id="args-date-s" value="@Model.args.DateSince.ToString("MM.dd.yyyy HH:mm:ss")" />
     <input type="hidden" id="args-date-e" value="@Model.args.DateDue.ToString("MM.dd.yyyy HH:mm:ss")" />

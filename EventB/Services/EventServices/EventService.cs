@@ -661,7 +661,12 @@ namespace EventB.Services.EventServices
                 return 401;
             }
 
+            await imageService.DeleteImage(environment.WebRootPath + eve.Image);
+            await imageService.DeleteImage(environment.WebRootPath + eve.MediumImage);
+            await imageService .DeleteImage(environment.WebRootPath + eve.MiniImage);
+
             context.Remove(eve);
+
             await context.SaveChangesAsync();
             return 200;
 

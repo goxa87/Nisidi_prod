@@ -85,7 +85,9 @@ namespace EventB.Controllers
                 var VM = new EventListVM
                 {
                     events = null,
-                    args = args
+                    args = args,
+                    Tegs = null,
+                    ByMyTegsLink = GetByMyTegsLink(user)
                 };
                 return View(VM);
             }
@@ -106,7 +108,8 @@ namespace EventB.Controllers
                 var VM = new EventListVM
                 {
                     events = null,
-                    args = args
+                    args = args,
+                    ByMyTegsLink = null
                 };
                 return View(VM);
             }
@@ -130,8 +133,19 @@ namespace EventB.Controllers
         [Route("/Events/SearchEventlist")]
         public async Task<IActionResult> SearchEventlist(CostomSelectionArgs args)
         {
-            var user = await userManager.GetUserAsync(User);
-
+            User user;
+            string url;
+            if (User.Identity.IsAuthenticated)
+            {
+                user = await context.Users.Include(e => e.Intereses).FirstAsync(e => e.UserName == User.Identity.Name);
+                url = GetByMyTegsLink(user);
+            }
+            else
+            {
+                user = null;
+                url = null;
+            }
+            
             args.DateDue = args.DateDue.AddDays(1);
             args.Title = args.Title ?? "";
 
@@ -145,7 +159,9 @@ namespace EventB.Controllers
             var VM = new EventListVM
             {
                 events = null,
-                args = args
+                args = args,
+                Tegs = tegSplitter.GetEnumerable(args.Tegs),
+                ByMyTegsLink = url
             };
             return View("Start", VM);
         }
@@ -428,5 +444,10 @@ namespace EventB.Controllers
             else return StatusCode(result);
         }
         #endregion
+
+        private string GetByMyTegsLink(User user)
+        {
+            return $"/Events/SearchEventlist?City={user.NormalizedCity}&Tegs={string.Join("@", user.Intereses.Select(e => e.Value).ToList())}&Skip=0&Take=30";
+        }
     }
 }
