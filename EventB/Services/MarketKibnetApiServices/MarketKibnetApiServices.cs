@@ -76,7 +76,20 @@ namespace EventB.Services.MarketKibnetApiServices
 
             // TODO Удалять все картинки
             var photoPath = environment.WebRootPath + "/" + eve.Image;
-            Debug.WriteLine("image path: ", photoPath);
+
+            if (File.Exists(photoPath))
+            {
+                File.Delete(photoPath);
+            }
+
+            photoPath = environment.WebRootPath + "/" + eve.MediumImage;
+
+            if (File.Exists(photoPath))
+            {
+                File.Delete(photoPath);
+            }
+
+            photoPath = environment.WebRootPath + "/" + eve.MiniImage;
 
             if (File.Exists(photoPath))
             {

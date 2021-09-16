@@ -20,5 +20,15 @@ namespace EventB.ViewModels.EventsVM
         /// Параметры поиска.
         /// </summary>
         public CostomSelectionArgs args { get; set; }
+
+        /// <summary>
+        /// Ссылка для получить события по моим интересам
+        /// </summary>
+        public string ByMyTegsLink { get; set; }
+
+        /// <summary>
+        /// Теги
+        /// </summary>
+        public List<string> Tegs { get; set; }
     }
 }
