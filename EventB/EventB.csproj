@@ -8,9 +8,17 @@
 
   <ItemGroup>
     <Compile Remove="Auth\**" />
+    <Compile Remove="wwwroot\images\EventImages\**" />
+    <Compile Remove="wwwroot\images\Profileimages\**" />
     <Content Remove="Auth\**" />
+    <Content Remove="wwwroot\images\EventImages\**" />
+    <Content Remove="wwwroot\images\Profileimages\**" />
     <EmbeddedResource Remove="Auth\**" />
+    <EmbeddedResource Remove="wwwroot\images\EventImages\**" />
+    <EmbeddedResource Remove="wwwroot\images\Profileimages\**" />
     <None Remove="Auth\**" />
+    <None Remove="wwwroot\images\EventImages\**" />
+    <None Remove="wwwroot\images\Profileimages\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,14 +47,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\EventImages\Medium\" />
-    <Folder Include="wwwroot\images\EventImages\Mini\" />
-    <Folder Include="wwwroot\images\EventImages\Mini\" />
-    <Folder Include="wwwroot\images\EventImages\Medium\" />
-    <Folder Include="wwwroot\images\Profileimages\Medium\" />
-    <Folder Include="wwwroot\images\Profileimages\Mini\" />
-    <Folder Include="wwwroot\images\Profileimages\Mini\" />
-    <Folder Include="wwwroot\images\Profileimages\Medium\" />
     <Folder Include="wwwroot\logs\" />
   </ItemGroup>
 
