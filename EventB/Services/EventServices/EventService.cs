@@ -120,13 +120,16 @@ namespace EventB.Services.EventServices
 
                 var vizits = new List<Vizit> { vizit };
 
-                var tegs = tegSplitter.GetEnumerable(model.Tegs).ToList();
+                var tegs = tegSplitter.GetEnumerable(model.Tegs);
                 List<EventTeg> eventTegs = new List<EventTeg>();
-                foreach (var teg in tegs)
+                if(tegs != null)
                 {
-                    eventTegs.Add(new EventTeg { Teg = teg });
+                    foreach (var teg in tegs)
+                    {
+                        eventTegs.Add(new EventTeg { Teg = teg });
+                    }
                 }
-                
+
                 var chat = new Chat
                 {
                     Messages = new List<Message>
@@ -569,7 +572,7 @@ namespace EventB.Services.EventServices
 
             if (model.Tegs != eve.Tegs)
             {
-                var tegs = tegSplitter.GetEnumerable(model.Tegs.ToUpper()).ToList();
+                var tegs = tegSplitter.GetEnumerable(model.Tegs);
                 List<EventTeg> eventTegs = new List<EventTeg>();
                 foreach (var teg in tegs)
                 {

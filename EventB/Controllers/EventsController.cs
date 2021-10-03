@@ -418,7 +418,7 @@ namespace EventB.Controllers
         public async Task<IActionResult> EventEdit(EventEditVM model)
         {
             // Валидация.
-            if ( string.IsNullOrWhiteSpace(model.City) || string.IsNullOrWhiteSpace(model.Tegs) ||  string.IsNullOrWhiteSpace(model.Title))
+            if ( string.IsNullOrWhiteSpace(model.City) ||  string.IsNullOrWhiteSpace(model.Title))
             {
                 ModelState.AddModelError("", "Нужно заполнить обязательные поля");
                 return View(model);

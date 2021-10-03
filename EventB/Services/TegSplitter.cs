@@ -19,7 +19,7 @@ namespace EventB.Services
                 return input.ToUpper().Split(new char[] { '@', ' '}, StringSplitOptions.RemoveEmptyEntries).Distinct().ToList();
             }  
             else 
-                return new List<string>();
+                return null;
         }
     }
 }

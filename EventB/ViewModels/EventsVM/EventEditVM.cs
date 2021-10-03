@@ -20,7 +20,6 @@ namespace EventB.ViewModels.EventsVM
 
         [Display(Name = "Теги тобытия")]
         [MaxLength(1000, ErrorMessage = "Длинна этого поля не должна быть больше 1000 символов")]
-        [Required(ErrorMessage = "Поле теги не заполнено")]
         public string Tegs { get; set; }
         public string OldTegs { get; set; }
 

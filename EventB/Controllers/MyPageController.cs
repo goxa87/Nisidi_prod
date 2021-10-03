@@ -260,16 +260,25 @@ namespace EventB.Controllers
                         e.SenderName = model.Name;
                     }
                 }
+
                 // Изменение интересов.
                 if (model.Tegs != model.OldTegs)
                 {
-                    var oldTegsDb = context.Intereses.Where(e => e.UserId == user.Id);
-                    context.Intereses.RemoveRange(oldTegsDb);
-                    var newTegs = tegSplitter.GetEnumerable(model.Tegs.ToUpper())
-                        .Select(e => new Interes { Value = e })
-                        .ToList();
+                    var oldTegs = context.Intereses.Where(e => e.UserId == user.Id);
+                    context.RemoveRange(oldTegs);
+
+                    var newTegs = new List<Interes>();
+                    if(!string.IsNullOrEmpty(model.Tegs) && !string.IsNullOrWhiteSpace(model.Tegs))
+                    {
+                        var splitted = tegSplitter.GetEnumerable(model.Tegs)
+                           .Select(e => new Interes { Value = e })
+                           .ToList();
+                        newTegs = splitted;
+                    }
+
                     user.Intereses = newTegs;
                 }
+
                 // Прочие изменения.
                 user.City = model.City;
                 user.NormalizedCity = model.City.ToUpper();
