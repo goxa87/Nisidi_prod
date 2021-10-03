@@ -120,7 +120,7 @@ namespace EventB.Services.EventServices
 
                 var vizits = new List<Vizit> { vizit };
 
-                var tegs = tegSplitter.GetEnumerable(model.Tegs.ToUpper()).ToList();
+                var tegs = tegSplitter.GetEnumerable(model.Tegs).ToList();
                 List<EventTeg> eventTegs = new List<EventTeg>();
                 foreach (var teg in tegs)
                 {
