@@ -37,12 +37,12 @@ namespace Admin
         {
             string connection = Configuration.GetConnectionString("EB1");
             services.AddDbContext<Context>(options => {
-                options.UseSqlServer(connection);
+                options.UseNpgsql(connection);
             });
 
             string adminConnection = Configuration.GetConnectionString("Admin");
             services.AddDbContext<AdminContext>(options => {
-                options.UseSqlServer(adminConnection);
+                options.UseNpgsql(adminConnection);
             });
 
             services.AddIdentity<AdminUser, IdentityRole>(
