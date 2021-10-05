@@ -1,18 +1,34 @@
 ﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
+
+    <!-- Google Tag Manager -->
+    <script>
+    (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-KJP4RW2');</script>
+    <!-- End Google Tag Manager -->
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Нисиди - @ViewData["Title"]</title>
-    <!--https://google.github.io/material-design-icons/-->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/@ViewData["Style"]" />
     <link rel="icon" href="~/favicon.ico" />
-    <script src="~/js/gtm.js"></script>
+    
 </head>
 <body>
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KJP4RW2"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
     <header>
         <div class="the-container">
             <div id="title-container">
@@ -20,7 +36,7 @@
                     <img class="main-running-man" src="~/resourses/running_man.png" alt="nisidi" />
                     <article class="title-container-article">СОБЫТИЯ В ТВОЕМ ГОРОДЕ</article>
                 </div>
-                
+
                 <div class="shared-login">
                     @{if (User.Identity.IsAuthenticated)
                         {
