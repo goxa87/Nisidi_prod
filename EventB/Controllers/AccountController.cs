@@ -23,7 +23,7 @@ namespace EventB.Controllers
 {
     public class AccountController : Controller
     {
-        private const string DEFAULT_IMG_PATH = "/images/defaultimg.jpg";
+        private const string DEFAULT_IMG_PATH = "/images/defaultuser.jpg";
         private const string IMAGE_SUFFIX = ".jpeg";
 
         private readonly UserManager<User> userManager;
@@ -112,9 +112,9 @@ namespace EventB.Controllers
                         Email = model.Email,
                         UserName = model.Email,
                         Name = model.Name,
-                        City = model.City,
+                        City = model.City.Trim(),
                         NormalizedName = model.Name.ToUpper(),
-                        NormalizedCity = model.City.ToUpper(),
+                        NormalizedCity = model.City.Trim().ToUpper(),
                         Description = model.Description,
                         PhoneNumber = model.PhoneNumber
                     };

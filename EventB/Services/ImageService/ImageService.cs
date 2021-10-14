@@ -13,7 +13,7 @@ namespace EventB.Services.ImageService
     public class ImageService : IImageService
     {
         const int RESIZE_COMPRESS_QUALITY = 90;
-        const string DEFAULT_IMAGE_PATH = "/images/defaultimg.jpg";
+        const string DEFAULT_IMAGE_PATH = "/images/defaultevent.jpg";
 
         private readonly ILogger logger;
         private readonly IWebHostEnvironment environment;

@@ -37,7 +37,7 @@ namespace EventB.Services
             var dateEnd = args.DateDue;
             if (dateEnd == new DateTime(0))
             {
-                dateEnd = DateTime.Now.AddDays(300);
+                dateEnd = DateTime.Now.AddDays(90);
             }
             var selection = context.Events.
                 Include(e=>e.EventTegs).
@@ -46,7 +46,7 @@ namespace EventB.Services
                 Where(e => e.Date > dateStart && e.Date < dateEnd && e.Type == EventType.Global);
             // город
             if (!string.IsNullOrWhiteSpace(args.City))
-                selection = selection.Where(e => e.NormalizedCity == args.City.ToUpper());
+                selection = selection.Where(e => e.NormalizedCity == args.City.Trim().ToUpper());
             // заголовок
             if (!string.IsNullOrWhiteSpace(args.Title))
                 selection = selection.Where(e => EF.Functions.Like(e.Title, $"%{args.Title}%"));

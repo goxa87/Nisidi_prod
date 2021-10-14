@@ -33,7 +33,7 @@ namespace EventB.Services
         /// <summary>
         /// Дата окончания
         /// </summary>
-        public DateTime DateDue { get; set; } = DateTime.Now.AddDays(31);
+        public DateTime DateDue { get; set; } = DateTime.Now.AddDays(90);
         /// <summary>
         /// Пропустить.
         /// </summary>

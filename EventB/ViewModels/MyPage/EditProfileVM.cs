@@ -57,12 +57,12 @@ namespace EventB.ViewModels.MyPage
         /// <summary>
         /// Разрешить отправку сообщений От не друзей
         /// </summary>
-        [Display(Name ="Разрешить получение сообщений от не добавленных в друзья")]
+        [Display(Name ="Разрешить получение сообщений от недобавленных в друзья")]
         public bool AlowAnonMessages { get; set; }
         /// <summary>
         /// Видимость для других пользователей.
         /// </summary>
-        [Display(Name ="Аккаунт могут просмтривать")]
+        [Display(Name ="Аккаунт могут просмaтривать")]
         public AccountVisible Visibility { get; set; }
     }
 }

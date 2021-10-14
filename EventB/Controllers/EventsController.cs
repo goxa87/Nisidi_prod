@@ -73,7 +73,7 @@ namespace EventB.Controllers
                 }
                 var args = new CostomSelectionArgs { 
                         DateSince = DateTime.Now,
-                        DateDue = DateTime.Now.AddDays(31),
+                        DateDue = DateTime.Now.AddDays(90),
                         Title = "",
                         City = user.City,
                         Tegs = "",
@@ -96,7 +96,7 @@ namespace EventB.Controllers
                 var args = new CostomSelectionArgs
                 {
                     DateSince = DateTime.Now,
-                    DateDue = DateTime.Now.AddDays(31),
+                    DateDue = DateTime.Now.AddDays(90),
                     Title = "",
                     City = "СТАВРОПОЛЬ",
                     Tegs = "",

@@ -29,7 +29,7 @@ namespace EventB.Services.EventServices
     {
 
         private string IMAGE_SUFFIX = ".jpeg";
-        private string DEFAULT_IMG_PATH = "/images/defaultimg.jpg";
+        private string DEFAULT_IMG_PATH = "/images/defaultevent.jpg";
 
         private readonly Context context;
         private readonly IMessageService messageService;
@@ -161,8 +161,8 @@ namespace EventB.Services.EventServices
                     NormalizedTitle = model.Title.ToUpper(),
                     Body = model.Body,
                     EventTegs = eventTegs,
-                    City = model.City,
-                    NormalizedCity = model.City.ToUpper(),
+                    City = model.City.Trim(),
+                    NormalizedCity = model.City.Trim().ToUpper(),
                     Place = model.Place,
                     Date = model.Date,
                     Type = model.Type,
@@ -565,8 +565,8 @@ namespace EventB.Services.EventServices
 
             if (model.City != model.OldCity)
             {
-                eve.City = model.City;
-                eve.NormalizedCity = model.City.ToUpper();
+                eve.City = model.City.Trim();
+                eve.NormalizedCity = model.City.Trim().ToUpper();
                 chatMessage += $"<p><span>Новый город: </span>{model.City}</p>";
             }
 

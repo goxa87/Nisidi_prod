@@ -280,8 +280,11 @@ namespace EventB.Controllers
                 }
 
                 // Прочие изменения.
-                user.City = model.City;
-                user.NormalizedCity = model.City.ToUpper();
+                if (!string.IsNullOrEmpty(model.City))
+                {
+                    user.City = model.City.Trim();
+                    user.NormalizedCity = model.City.Trim().ToUpper();
+                }
                 user.Description = model.Description;
                 user.AnonMessages = model.AlowAnonMessages;
                 user.Visibility = model.Visibility;
