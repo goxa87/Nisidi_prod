@@ -215,7 +215,8 @@ namespace EventB.Controllers
                 OpponentId = opponentId,
                 ChatPhoto = opponent.MiniImage,
                 IsBlockedInChat = isBlockedFriend,
-                SystemUserName = user.UserName
+                SystemUserName = user.UserName,
+                RealtedObjectLink = $"/Friends/UserInfo?userId={opponentId}"
             };
             var userChatopponent = new UserChat
             {
@@ -224,7 +225,8 @@ namespace EventB.Controllers
                 OpponentId = id,
                 ChatPhoto = user.MiniImage,
                 IsBlockedInChat = isBlockedFriend,
-                SystemUserName = opponent.UserName
+                SystemUserName = opponent.UserName,
+                RealtedObjectLink = $"/Friends/UserInfo?userId={id}"
             };
             var chat = new Chat
             {              

@@ -133,16 +133,16 @@ namespace EventB.Services.EventServices
                 var chat = new Chat
                 {
                     Messages = new List<Message>
-                {
-                    new Message
                     {
-                        PersonId = creator.Id,
-                        PostDate = DateTime.Now,
-                        SenderName = creator.Name,
-                        Text = "Событие создано!",
-                        EventState = true
-                    }
-                },
+                        new Message
+                        {
+                            PersonId = creator.Id,
+                            PostDate = DateTime.Now,
+                            SenderName = creator.Name,
+                            Text = "Событие создано!",
+                            EventState = true
+                        }
+                    },
                     UserChat = new List<UserChat>()
                 };
 
@@ -185,7 +185,9 @@ namespace EventB.Services.EventServices
                     eve.Tickets = true;
                 }
 
-                await context.Events.AddAsync(eve);
+                context.Events.Add(eve);
+                await context.SaveChangesAsync();
+                eve.Chat.UserChat.First().RealtedObjectLink = $"/Events/Details/{eve.EventId}";
                 await context.SaveChangesAsync();
                 await logger.LogObjectToFile("Создано событие ", eve);
                 await logger.LogStringToFile($"Окончание создания события с номером {eve.EventId}");
@@ -269,7 +271,8 @@ namespace EventB.Services.EventServices
                         ChatId = chatId,
                         ChatPhoto = chat.Event.MiniImage,
                         OpponentId = "0",
-                        SystemUserName = user.UserName
+                        SystemUserName = user.UserName,
+                        RealtedObjectLink = $"/Events/Details/{chat.Event.EventId}"
                     };
                     chat.UserChat.Add(newUserChat);
                     await context.SaveChangesAsync();
@@ -371,7 +374,8 @@ namespace EventB.Services.EventServices
                         UserId = user.Id,
                         ChatId = curentEv.Chat.ChatId,
                         ChatPhoto = curentEv.MiniImage,
-                        SystemUserName = user.UserName
+                        SystemUserName = user.UserName,
+                        RealtedObjectLink =$"/Events/Details/{curentEv.EventId}"
                     };
                     context.UserChats.Add(newUserChat);
                 }

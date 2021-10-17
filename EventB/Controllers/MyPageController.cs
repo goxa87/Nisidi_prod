@@ -137,7 +137,8 @@ namespace EventB.Controllers
                 ChatName = eve.Title,
                 ChatPhoto = eve.MiniImage,
                 UserId = curUser.Id,
-                SystemUserName = curUser.UserName
+                SystemUserName = curUser.UserName,
+                RealtedObjectLink = $"/Events/Details/{eve.EventId}"
             };
             context.UserChats.Add(userChat);
             // Удаляем приглашение.

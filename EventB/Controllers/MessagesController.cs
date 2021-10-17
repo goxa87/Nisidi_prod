@@ -47,7 +47,6 @@ namespace EventB.Controllers
             {
                 UserChats = user.UserChats.Where(e => e.IsDeleted == false && e.IsBlockedInChat == false).OrderBy(e => e.ChatName).ToList(),
                 CurrentUserId = user.Id,
-                CurrentUserName = user.Name,
                 Opponent = opponent,
                 CurrentChatId = 0
             };

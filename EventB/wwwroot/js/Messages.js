@@ -79,6 +79,7 @@ $(document).ready(function () {
         // Картинку и имя в заголовок.
         $('.opponent-photo').children('img').prop('src', $(this).children('.opponent-photo-value').val());
         $('.opponent-name').text($(this).children('.opponent-name-value').text());
+        $('.related-link').prop('href', $(this).children('.related-link-source').val())
 
         // убрать с выделенного класс
         $('.selected-opponent').removeClass('selected-opponent');
@@ -251,13 +252,11 @@ function SendMessage() {
     let senderId = $('#user-id').val();
     let opponentId = $('#opponent-id').val();
     let chat = Number.parseInt($('#chat-id').val());
-    let senderNam = $('#user-name').val();
     let message = $('#message').val();
     let date1 = new Date();
     let DataObject = {
         personId: senderId,
         chatId: chat,
-        senderName: senderNam,
         reciverId: opponentId,
         text: message,
         postDate: date1

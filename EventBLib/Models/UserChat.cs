@@ -61,5 +61,10 @@ namespace EventBLib.Models
         /// ID последнего прочитанного сообщения. 
         /// </summary>
         public int LastReadMessageId { get; set; }
+
+        /// <summary>
+        /// Id события к кторому принадлежит чат
+        /// </summary>
+        public string RealtedObjectLink { get; set; }
     }
 }

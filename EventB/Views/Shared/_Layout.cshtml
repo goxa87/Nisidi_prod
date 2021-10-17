@@ -32,10 +32,12 @@
     <header>
         <div class="the-container">
             <div id="title-container">
-                <div class="flex-hsc">
-                    <img class="main-running-man" src="~/resourses/running_man.png" alt="nisidi" />
-                    <article class="title-container-article">СОБЫТИЯ В ТВОЕМ ГОРОДЕ</article>
-                </div>
+                <a href="/">
+                    <div class="flex-hsc">
+                        <img class="main-running-man" src="~/resourses/running_man.png" alt="nisidi" />
+                        <article class="title-container-article">СОБЫТИЯ В ТВОЕМ ГОРОДЕ</article>
+                    </div>
+                </a>
 
                 <div class="shared-login">
                     @{if (User.Identity.IsAuthenticated)

@@ -31,6 +31,14 @@
                         }
                         <input class="opponent-chat-id" type="hidden" value="@opponent.ChatId" />
                         <input class="opponent-photo-value" type="hidden" value="@opponent.ChatPhoto" />
+                        @if (!string.IsNullOrEmpty(opponent.RealtedObjectLink))
+                        {
+                            <input type="hidden" class="related-link-source" value="@opponent.RealtedObjectLink" />
+                        }
+                        else
+                        {
+                            <input type="hidden" class="related-link-source" value="" />
+                        }
                         <div class="opponent-name-value overflowed-text">@opponent.ChatName</div>
                         <input class="opponent-id" type="hidden" value="@opponent.OpponentId" />
                         <div class="new-message-flag"></div>
@@ -45,22 +53,26 @@
 
             @if (Model.Opponent != null)
             {
-                <div class="flex-hsc">
-                    <div class="flex-hcc opponent-photo">
-                        <img src="@Model.Opponent.MiniImage" />
+                <a class="related-link" href="/Friends/UserInfo?userId=@Model.Opponent.Id">
+                    <div class="flex-hsc">
+                        <div class="flex-hcc opponent-photo">
+                            <img src="@Model.Opponent.MiniImage" />
+                        </div>
+                        <div class="opponent-name" id="header-name">@Model.Opponent.Name</div>
                     </div>
-                    <div class="opponent-name" id="header-name">@Model.Opponent.Name</div>
-                </div>
+                </a>
                 <div class="mes-remove-chat">Удалить чат</div>
             }
             else
             {
-                <div class="flex-hsc">
-                    <div class="opponent-photo flex-hcc">
-                        <img />
+                <a class="related-link" href="">
+                    <div class="flex-hsc">
+                        <div class="opponent-photo flex-hcc">
+                            <img />
+                        </div>
+                        <div class="opponent-name" id="header-name"></div>
                     </div>
-                    <div class="opponent-name" id="header-name"></div>
-                </div>
+                </a>
                 <div class="mes-remove-chat display-none">Удалить чат</div>
             }
         </div>
@@ -72,11 +84,15 @@
             <sub>Сообщение</sub><br>
             <form class="form-send">
                 <input id="user-id" type="hidden" value="@Model.CurrentUserId" />
-                <input id="user-name" type="hidden" value="@Model.CurrentUserName" />
                 <input id="chat-id" type="hidden" value="@Model.CurrentChatId" />
-                @if (Model.Opponent != null){ <input id="opponent-id" type="hidden" value="@Model.Opponent.Id" />}
-                else { <input id="opponent-id" type="hidden" value="0"/> }
-                <input id="opponent-is-event" type="hidden" value="false" />
+                @if (Model.Opponent != null)
+                {
+                    <input id="opponent-id" type="hidden" value="@Model.Opponent.Id" />
+                }
+                else 
+                {
+                    <input id="opponent-id" type="hidden" value="0"/> 
+                }
                 <textarea id="message" ></textarea>
                 <button id="btn-send"></button>
             </form>
