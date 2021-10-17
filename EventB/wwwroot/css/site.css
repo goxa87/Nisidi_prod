@@ -85,7 +85,7 @@ ul{
     cursor: pointer;
 }
     .action-button:hover{
-        color:#ffcd00;
+        color: #ffcd00;
     }
 .width100{
     width: 100%;
@@ -117,6 +117,47 @@ ul{
     font-weight: 600;
     text-transform: uppercase;
 }
+
+/*Скроллбар*/
+* {
+    scrollbar-width: thin; /* "auto" или "thin"  */
+    scrollbar-color: #eeb831 #0b4962; /* плашка скролла и дорожка */
+}
+
+::-webkit-scrollbar-button {
+    background-image: url('');
+    background-repeat: no-repeat;
+    width: 6px;
+    height: 0px
+}
+
+::-webkit-scrollbar-track {
+    background-color: #0b4962;
+    box-shadow: 0px 0px 3px #000 inset;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    background-color: #eeb831;
+    box-shadow: 0px 1px 1px #fff inset;
+    background-image: url('https://yraaa.ru/_pu/24/59610063.png');
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+::-webkit-resizer {
+    background-image: url('');
+    background-repeat: no-repeat;
+    width: 7px;
+    height: 0px
+}
+
+::-webkit-scrollbar {
+    width: 11px;
+}
+
 /*звездочки*/
 .s-star16 {
     background-image: url('../resourses/star32.png');
