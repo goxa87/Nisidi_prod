@@ -125,7 +125,7 @@ namespace EventB.Controllers
             {
                 UserId = curUser.Id,
                 EventId = eve.EventId,
-                EventTitle = eve.TitleShort,
+                EventTitle = eve.Title,
                 EventPhoto = eve.MediumImage,
                 VizitorName = curUser.Name,
                 VizitirPhoto = curUser.MediumImage
@@ -134,7 +134,7 @@ namespace EventB.Controllers
             var userChat = new UserChat
             {
                 ChatId = eve.Chat.ChatId,
-                ChatName = eve.TitleShort,
+                ChatName = eve.Title,
                 ChatPhoto = eve.MiniImage,
                 UserId = curUser.Id,
                 SystemUserName = curUser.UserName

@@ -149,7 +149,7 @@ namespace EventB.Services.EventServices
                 UserChat userChat = new UserChat
                 {
                     UserId = creator.Id,
-                    ChatName = model.Title.Length > 25 ? model.Title.Remove(25) + "..." : model.Title,
+                    ChatName = model.Title,
                     ChatPhoto = imgMini,
                     SystemUserName = userName
                 };
@@ -264,7 +264,7 @@ namespace EventB.Services.EventServices
                 {
                     var newUserChat = new UserChat
                     {
-                        ChatName = chat.Event.TitleShort,
+                        ChatName = chat.Event.Title,
                         UserId = userId,
                         ChatId = chatId,
                         ChatPhoto = chat.Event.MiniImage,
@@ -367,7 +367,7 @@ namespace EventB.Services.EventServices
                 {
                     var newUserChat = new UserChat
                     {
-                        ChatName = curentEv.TitleShort,
+                        ChatName = curentEv.Title,
                         UserId = user.Id,
                         ChatId = curentEv.Chat.ChatId,
                         ChatPhoto = curentEv.MiniImage,
@@ -540,12 +540,12 @@ namespace EventB.Services.EventServices
                 eve.NormalizedTitle = model.Title.ToUpper();
                 foreach (var e in eve.Chat.UserChat)
                 {
-                    e.ChatName = eve.TitleShort;
+                    e.ChatName = eve.Title;
                 }
                 vizits = vizits != null ? vizits : await context.Vizits.Where(e => e.EventId == eve.EventId).ToListAsync();
                 foreach (var e in vizits)
                 {
-                    e.EventTitle = eve.TitleShort;
+                    e.EventTitle = eve.Title;
                 }
                 context.Vizits.UpdateRange(vizits);
                 chatMessage += $"<p><span>Новое название: </span>{model.Title}</p>";

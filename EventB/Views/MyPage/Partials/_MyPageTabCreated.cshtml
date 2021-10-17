@@ -21,7 +21,7 @@
             <div class="mp-details-figure">
                 @{await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.SmallFigure()
                     {
-                        Title = e.TitleShort,
+                        Title = e.Title,
                         Link = $"/Events/Details/{e.EventId}",
                         Image = e.MediumImage,
                         Active = e.Date < DateTime.Now ? false : true

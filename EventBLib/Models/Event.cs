@@ -48,22 +48,6 @@ namespace EventBLib.Models
         public string Title { get; set; }
 
         /// <summary>
-        /// Возвращает короткое название.
-        /// </summary>
-        public string TitleShort 
-        {
-            get 
-            {
-                if (Title.Length > 24)
-                {
-                    return Title.Remove(24) + "...";
-                }
-                else
-                    return Title;
-            }
-        }
-
-        /// <summary>
         /// Нормлизованный заголовок.
         /// </summary>
         [StringLength(1000)]

@@ -921,6 +921,14 @@ figure img {
     -moz-animation-timing-function: linear;
 }
 
+.overflowed-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+    .overflowed-text:hover {
+        white-space: normal;
+    }
 
 
 @keyframes noTrespassingAnimationG {
