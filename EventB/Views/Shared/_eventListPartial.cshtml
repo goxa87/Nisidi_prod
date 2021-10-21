@@ -1,6 +1,7 @@
 ﻿@model List<EventBLib.Models.Event>
 
-@foreach(var e in Model){
+@foreach(var e in Model)
+{
     await Html.RenderPartialAsync("~/Views/Shared/_eventItemPartial.cshtml", e);    
 }
 

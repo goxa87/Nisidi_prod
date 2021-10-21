@@ -16,32 +16,35 @@
     }
 </div>
 
-<div class="top-page-header" id="header-title">
+<div class="eve-search-header">
+    <!--
     <img class="tune_gold" src="~/resourses/tune_gold_24.png" alt="search" title="поиск" />
-    <div class="ticket">c @Model.args.DateSince.ToString("dd.MM.yyyy")</div>
-    <div class="ticket">по @Model.args.DateDue.ToString("dd.MM.yyyy")</div>
-    @if (Model.args.City != "" || Model.args.City == null)
-    {
-        <div class="ticket" id="search-param-city">@Model.args.City</div>
-    }
 
-    @if (Model.args.Title != "" || Model.args.Title == null)
-    {<div class="ticket" id="search-param-title">@Model.args.Title</div>}
-
-    @if (Model.Tegs != null)
-    {
-        @foreach (var e in Model.Tegs)
+        <div class="ticket">c @Model.args.DateSince.ToString("dd.MM.yyyy")</div>
+        <input id="ser-date-since" class="form-date" type="date" name="DateSince"><br>
+        <div class="ticket">по @Model.args.DateDue.ToString("dd.MM.yyyy")</div>
+        @if (Model.args.City != "" || Model.args.City == null)
         {
-            var tegData = new EventB.ViewModels.SharedViews.TegColoredLink()
-            {
-                TegValue = e,
-                City = Model.args.City
-            };
-            await Html.RenderPartialAsync("~/Views/Shared/_tegColoredLink.cshtml", tegData);
+            <div class="ticket" id="search-param-city">@Model.args.City</div>
         }
-    }
 
+        @if (Model.args.Title != "" || Model.args.Title == null)
+        {<div class="ticket" id="search-param-title">@Model.args.Title</div>}
 
+        @if (Model.Tegs != null)
+        {
+            @foreach (var e in Model.Tegs)
+            {
+                var tegData = new EventB.ViewModels.SharedViews.TegColoredLink()
+                {
+                    TegValue = e,
+                    City = Model.args.City
+                };
+                await Html.RenderPartialAsync("~/Views/Shared/_tegColoredLink.cshtml", tegData);
+            }
+        }
+
+        -->
     <input type="hidden" id="args-date-s" value="@Model.args.DateSince.ToString("MM.dd.yyyy HH:mm:ss")" />
     <input type="hidden" id="args-date-e" value="@Model.args.DateDue.ToString("MM.dd.yyyy HH:mm:ss")" />
     <input type="hidden" id="args-city" value="@Model.args.City" />
@@ -50,6 +53,29 @@
     <input type="hidden" id="args-skip" value=@Model.args.Skip />
     <input type="hidden" id="args-take" value=@Model.args.Take />
     <input type="hidden" id="flag-dwnl-more" value="true" />
+    
+
+    <form asp-action="SearchEventlist" asp-controller="Events" asp-antiforgery="true" method="post" class="wide-form">
+        <label class="form-label">Название:</label><br>
+        <input class="form-entry-title" type="text" name="Title" value="@Model.args.Title" autocomplete="off"><br>
+
+        <label class="form-label">Город:</label><br>
+        <input class="form-entry-title" type="text" name="City" value="@Model.args.City"><br>
+
+        <label class="form-label">Теги:</label><br>
+        <input class="form-entry-title" type="text" name="Tegs" value="@Model.args.Tegs" autocomplete="off"><br>
+
+        <label class="form-label">Дата начала С:</label><br>
+        <input id="ser-date-since" class="form-date" type="date" name="DateSince" value="@Model.args.DateSince.ToString("yyyy-MM-dd")"><br>
+
+        <label class="form-label">Дата начала ПО:</label><br>
+        <input id="ser-date-due" class="form-date" type="date" name="DateDue" value="@Model.args.DateDue.ToString("yyyy-MM-dd")"><br>
+
+        <input type="hidden" name="Skip" value="0" />
+        <input type="hidden" name="Take" value="30" />
+
+        <input class="form-submit" type="submit" name="f" value="Найти событие"><br><br>
+    </form>
 </div>
 <div id="ev-hello-banner" class="display-none"></div>
 <div id="event-list">
