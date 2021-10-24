@@ -1,0 +1,81 @@
+﻿@model EventB.ViewModels.EventsVM.EventListVM
+
+<div class="eve-search-header">
+    <input type="hidden" id="args-date-s" value="@Model.args.DateSince.ToString("MM.dd.yyyy HH:mm:ss")" />
+    <input type="hidden" id="args-date-e" value="@Model.args.DateDue.ToString("MM.dd.yyyy HH:mm:ss")" />
+    <input type="hidden" id="args-city" value="@Model.args.City" />
+    <input type="hidden" id="args-teg" value="@Model.args.Tegs" />
+    <input type="hidden" id="args-title" value="@Model.args.Title" />
+    <input type="hidden" id="args-skip" value=@Model.args.Skip />
+    <input type="hidden" id="args-take" value=@Model.args.Take />
+    <input type="hidden" id="flag-dwnl-more" value="true" />
+
+    <form asp-action="SearchEventlist" asp-controller="Events" asp-antiforgery="true" method="post" class="wide-form eve-search-wide">
+
+        <div class="flex-hsbe">
+            <div class="flex-hss">
+                <div class="flex-vse search-col-1">
+                    <div>
+                        <span class="material-icons eve-icons">search</span>
+                        <input class="eve-search-input" type="text" name="Title" value="@Model.args.Title" autocomplete="off" placeholder="В названии">
+                    </div>
+                    <div>
+                        <label class="form-label">С:</label>
+                        <input id="ser-date-since" class="eve-search-input" type="date" name="DateSince" value="@Model.args.DateSince.ToString("yyyy-MM-dd")">
+                    </div>
+                </div>
+
+                <div class="flex-vse search-col-1">
+                    <input class="eve-search-input" type="text" name="City" value="@Model.args.City" placeholder="Город">
+                    <div>
+                        <label class="form-label">ПО:</label>
+                        <input id="ser-date-due" class="eve-search-input" type="date" name="DateDue" value="@Model.args.DateDue.ToString("yyyy-MM-dd")">
+                    </div>
+                </div>
+
+                <div class="flex-vse">
+                    <input class="eve-search-input" type="text" name="Tegs" value="@Model.args.Tegs" autocomplete="off" placeholder="Теги">
+                    <input class="calltoaction-prime-btn transition-1" type="submit" name="f" value="Найти">
+                </div>
+            </div>
+            <div class="flex-vee">
+                <a class="calltoaction-btn transition-1" asp-controller="Events" asp-action="Add">ДОБАВИТЬ</a>
+            </div>
+        </div>
+        <input type="hidden" name="Skip" value="0" />
+        <input type="hidden" name="Take" value="30" />
+    </form>
+
+    <form asp-action="SearchEventlist" asp-controller="Events" asp-antiforgery="true" method="post" class="wide-form eve-search-thin">
+
+        <div class="flex-vss width100">
+            <div class="flex-hsc width100">
+                <span class="material-icons eve-icons">search</span>
+                <input class="eve-search-input eve-search-input-loop" type="text" name="Title" value="@Model.args.Title" autocomplete="off" placeholder="В названии">
+            </div>
+
+            <input class="eve-search-input eve-search-input100" type="text" name="City" value="@Model.args.City" placeholder="Город">
+            <input class="eve-search-input eve-search-input100" type="text" name="Tegs" value="@Model.args.Tegs" autocomplete="off" placeholder="Теги">
+
+            <div class="flex-hsc flex-wr">
+                <div class="flex-hsc">
+                    <span class="dot25px">C:</span>
+                    <input id="ser-date-since" class="eve-search-input eve-search-input-date" type="date" name="DateSince" value="@Model.args.DateSince.ToString("yyyy-MM-dd")" placeholder="C">
+                </div>
+                <div class="dot16px"></div>
+                <div class="flex-hsc">
+                    <span class="dot25px">ПО:</span>
+                    <input id="ser-date-due" class="eve-search-input eve-search-input-date" type="date" name="DateDue" value="@Model.args.DateDue.ToString("yyyy-MM-dd")" placeholder="ПО">
+                </div>
+            </div>
+
+            <div class="flex-hsbc flex-wr width100">
+                <input class="calltoaction-prime-btn transition-1" type="submit" name="f" value="Найти">
+                <div class="dot16px"></div>
+                <a class="calltoaction-btn transition-1" asp-controller="Events" asp-action="Add">ДОБАВИТЬ</a>
+            </div>
+        </div>
+        <input type="hidden" name="Skip" value="0" />
+        <input type="hidden" name="Take" value="30" />
+    </form>
+</div>

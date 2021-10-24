@@ -196,6 +196,16 @@ ul{
     background-color: forestgreen;
     color: white;
 }
+
+/*пустые блоки для отделения строк*/
+.dot16px{
+    height: 16px;
+    width: 16px;
+}
+.dot25px {
+    height: 25px;
+    width: 25px;
+}
 /*ВАЛИДАЦИЯ *****************************************/
 .field-validation-error {
     color: orangered;
@@ -565,13 +575,53 @@ input[type="checkbox"].input-validation-error {
        outline:none;
     }
 
-.search-submit{
+.search-input{
+    border: 1px solid #1b597299;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+.calltoaction-prime-btn {
+    padding: 5px 4px;
+    text-align:center;
+    margin: 5px 0;
+    border-radius: 4px;
+    border: 0px;
+    background-color: #1b5972;
+    color: #fff;
+    box-sizing: border-box;
+    font-weight: 600;
+    cursor: pointer;
+    min-width: 192px;
+    border: 1px solid #1b5972;
+}
+
+.calltoaction-prime-btn:hover {
+    background-color: #0b4962;
+    color: #ffcd00;
+}
+.calltoaction-btn {
+    padding: 5px 40px;
+    margin: 5px 0;
+    border-radius: 4px;
+    border: 1px solid #0b4962;
+    color: #0b4962;
+    box-sizing: border-box;
+    font-weight: 600;
+    cursor: pointer;
+}
+.calltoaction-btn:hover {
+    background-color: #0b4962;
+    color: #ffcd00;
+}
+
+.search-submit {
     height: 30px;
-    background-color:#fff;
-    color:#1b5972;
-    border:none;
-    padding:0 12px;
-    cursor:pointer;
+    background-color: #fff;
+    color: #1b5972;
+    border: none;
+    padding: 0 12px;
+    cursor: pointer;
 }
 .search-entry {
     box-sizing: border-box;
@@ -652,6 +702,45 @@ input[type="checkbox"].input-validation-error {
 .label-text{
     font-size: 14px;
 }
+
+.eve-search-wide{
+    display: block;
+}
+
+.eve-search-thin{
+    display: none;
+}
+
+@media(max-width: 900px){
+    .eve-search-wide {
+        display: none;
+    }
+
+    .eve-search-thin {
+        display: block;
+    }
+}
+
+.search-col-1 {
+    padding-right: 6px;
+}
+.eve-search-input {
+    margin: 5px 0;
+    width: 192px;
+    padding: 4px;
+    border: 1px solid #1b5972;
+    border-radius: 4px;
+}
+.eve-search-input-loop{
+    flex-basis: 1000px;
+}
+.eve-search-input100{
+    width: 100%;
+}
+.eve-search-input-date{
+    margin-left: 4px;
+}
+
 /*блоки фигур*/
 .small-figure-figure {
     padding: 0px;
@@ -763,10 +852,15 @@ figure img {
     justify-content: start;
     align-items: start;
 }
+.flex-hsbe{
+    display: flex;
+    justify-content:space-between;
+    align-items: end;
+}
 
 .flex-vss {
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     justify-content: start;
     align-items: start;
 }
@@ -776,11 +870,22 @@ figure img {
     justify-content: start;
     align-items: center;
 }
+.flex-vse {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: end;
+}
 .flex-vsac{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+}
+.flex-vee{
+    display:flex;
+    justify-content:end;
+    align-items: end;
 }
 /* картинка с фоном и маской*/
 /* Заполняет на 100% так что нужно оборачивать*/
@@ -1296,8 +1401,7 @@ figure img {
 /*БАННЕРЫ*/
 .banner-container {
     min-height: 400px;
-    margin-top: 8px;
-    padding: 8px;
+    margin-top: 16px;
     background-color: white;
     position: relative;
     margin-bottom: 4px;
@@ -1320,6 +1424,7 @@ figure img {
     
 .btn-close-white{
     color: #FFF;
+    margin: 0 !important;
 }
     .btn-close-white:hover {
         text-decoration: none;
@@ -1395,14 +1500,14 @@ figure img {
 .bnr-title-big{
     font-size: 28px;
     font-weight: 600;
-    text-align: center;
+    text-align: start;
     margin-top: 28px;
 }
 .bnr-full-width{
     width: 100%;
 }
 .bnr > h3, .bnr > h4, .bnr > h5 {
-    text-align: center;
+    text-align: start;
 }
 .bnr-half-width {
     flex-grow: 1;
@@ -1423,9 +1528,9 @@ figure img {
 .bnr-transparent-fon-dark {
     width: 300px;
     height: 300px;
-    margin: 40px auto;
-    background-color: #0b49629e;
-    padding: 24px;
+    margin: 50px auto 40px 16px;
+    background-color: #FFFA;
+    padding: 16px;
 }
 .bnr-color-gold {
     color: #ffd700bd;
