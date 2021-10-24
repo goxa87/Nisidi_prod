@@ -7,12 +7,30 @@
 }
 <div class="top-page-header">Вы добавляете событие</div>
 
-<form asp-action="Add" asp-antiforgery="true" method="post" enctype="multipart/form-data">
+<form asp-action="Add" asp-antiforgery="true" method="post" enctype="multipart/form-data" class="padding16">
     <div asp-validation-summary="ModelOnly" class="form-summary"></div>
+
+    <div class="flex-hsc">
+        <label class="form-label" asp-for="Type"></label>
+        <div class="help-btn help-btn-dark ">
+            <div class="help-content display-none">
+                <div class="help-close"></div>
+                <p class="help-container">
+                    Приватные события не будут отображаться в поиске. Увидеть их смогут только ваши друзья на вашей странице или те, кого вы пригласили.<br>
+                    Публичные видны всем на главной странице с учетом интересов пользователей.
+                </p>
+            </div>
+        </div>
+        <span asp-validation-for="Type"></span>
+        <select asp-for="Type" class="custom-select width200">
+            <option value="@EventType.Global" selected class="dropdown-item">Публичное</option>
+            <option value="@EventType.Private" class="dropdown-item">Частное</option>
+        </select>
+    </div>
 
     <label class="form-label" asp-for="Title"></label>
     <span asp-validation-for="Title"></span>
-    <input class="form-entry-title" type="text" asp-for="Title" autocomplete="off"/><br>
+    <input class="form-entry-title" type="text" asp-for="Title" autocomplete="off" /><br>
 
     <label class="form-label" asp-for="Body"></label>
     <span asp-validation-for="Body"></span>
@@ -20,7 +38,7 @@
 
     <label class="form-label" asp-for="Tegs"></label>
     <span asp-validation-for="Tegs"></span>
-    <input class="form-entry-title" type="text" asp-for="Tegs" autocomplete="off"/><br>
+    <input class="form-entry-title" type="text" asp-for="Tegs"><br>
 
     <label class="form-label" asp-for="City"></label>
     <span asp-validation-for="City"></span>
@@ -37,11 +55,11 @@
 
     <label class="form-label" asp-for="TicketsDesc"></label>
     <span asp-validation-for="TicketsDesc"></span>
-    <textarea class="form-entry-body" type="text" asp-for="TicketsDesc" autocomplete="off"></textarea><br>
+    <textarea class="form-entry-body" type="text" asp-for="TicketsDesc"></textarea><br>
 
     <label class="form-label" asp-for="Phone"></label>
     <span asp-validation-for="Phone"></span>
-    <input class="form-entry-title" type="text" asp-for="Phone" autocomplete="off"/><br>
+    <input class="form-entry-title" type="text" asp-for="Phone"/><br>
 
     <label class="form-label" asp-for="AgeRestrictions"></label>
     <span asp-validation-for="AgeRestrictions"></span>
@@ -54,28 +72,36 @@
     </select><br>
 
     <label class="form-label" asp-for="MainPicture"></label>
-    <input class="form-date" type="file" asp-for="MainPicture" /><br>
-
-    <div class="flex-hsc">
-        <label class="form-label" asp-for="Type"></label>
-        <div class="help-btn help-btn-dark ">
-            <div class="help-content display-none">
-                <div class="help-close"></div>
-                <p class="help-container">
-                    Приватные события не будут отображаться в поиске. Увидеть их смогут только ваши друзья на вашей странице или те, кого вы пригласили.<br>
-                    Публичные видны всем на главной странице с учетом интересов пользователей.
-                </p>
+    <input class="form-date" id="eve-add-image" type="file" asp-for="MainPicture" /><br>
+    
+    <div class="dot16px"></div>
+    <label class="form-label">Предпросмотр</label>
+    <div class="eventlist-container flex-vss transition-1">
+        <div class="eventlist-img">
+            <div class="image-container">
+                <img src="~/images/defaultevent.jpg" class="image-self-front" alt="event" id="eve-add-image_preview"/>
             </div>
         </div>
-        <span asp-validation-for="Type"></span>
-        <select asp-for="Type" class="custom-select width200">
-            <option value="@EventType.Private" selected class="dropdown-item">Частное</option>
-            <option value="@EventType.Global" class="dropdown-item">Публичное</option>
-        </select>
+        <div class="eventlist-info ">
+            <div>
+                <h3 class="eve-title ">заголовок</h3>
+            </div>
+            <div>
+                <div class="flex-hsbc">
+                    <div class="flex-hsc">
+                        <span class="material-icons eve-icons">calendar_today</span>
+                        <h4 class="eve-time">15 июня</h4>
+                    </div>
+
+                    <div class="flex-hsc">
+                        <span class="material-icons eve-icons">schedule</span>
+                        <h4 class="eve-time">21:00</h4>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
     </div>
-    
-
-
 
     <br>
     <input class="form-submit" type="submit" value="Сохранить" />

@@ -1,6 +1,5 @@
 ﻿import { renderMessage, getModelWindow, iensSearchByText, GetNotification } from './Controls.js';
 import { GetBanner } from './Banner.js';
-import { GetSearchPartial } from './GetPartialsService.js';
 
 // Начало исполнения
 $(document).ready(function ()
@@ -14,17 +13,6 @@ $(document).ready(function ()
     }
 
     GetBanner("Hello.cshtml", "ev-hello-banner");
-
-
-    $('body').on('click', '.tune_gold', function () {
-        getModelWindow("Поиск событий", false, null, null, "Введите параметры поиска событий");
-        var body = getSearchParams();
-        GetSearchPartial(body, function (response) {
-            console.log('exec callback');
-            $('.modal-body').html(response);
-        });
-        
-    });
 
     // Start постранично при нажатии загрузить еще.
     $('#ev-load-more').click(function () {        
@@ -397,6 +385,19 @@ $(document).ready(function ()
         let opps = $(".chat-list-small:contains(" + searchText + ")");
         $(opps).removeClass('display-none');
     };
+
+    // Превью для картинки
+    $('#eve-add-image').change(function () {
+        var input = $(this)[0];
+
+        if (input.files && input.files[0]) {
+            if (input.files[0].type.match('image.*')) {
+                var reader = new FileReader();
+                reader.onload = function (e) { $('#eve-add-image_preview').attr('src', e.target.result); }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    });
 });
 
 /**
