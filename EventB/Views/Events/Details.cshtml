@@ -6,52 +6,59 @@
     ViewData["Title"] = "детали";
 }
 <div class="top-page-header">Описание события</div>
-<div class="ev-big-img">
-    <div class="image-container">
-        <img src="@($"{Model.Image}?{DateTime.Now.Millisecond.ToString()}")" class="image-self-back" />
-        <img src="@($"{Model.Image}?{DateTime.Now.Millisecond.ToString()}")" class="image-self-front" />
-    </div>
-</div>
-<div class="item-container">
-    <div class="ev-twin-details">
-        <div class="ev-half">
-            <h2>@Model.Title</h2>
-            <hr>
-            <div class="ev-teg-placeholder">
-                @foreach(var teg in Model.EventTegs)
-                {
-                    var tegData = new EventB.ViewModels.SharedViews.TegColoredLink()
-                    {
-                        TegValue = teg.Teg,
-                        City = Model.City
-                    };
-                    await Html.RenderPartialAsync("~/Views/Shared/_tegColoredLink.cshtml", tegData);
-                }
-            </div>
-            <h3>Когда: @Model.Date.ToString("dd.MM.yyyy HH:mm")</h3>
-            <h4>Город: @Model.City</h4>
-            <h4>Где: @Model.Place </h4>
-            <p>Интересы: @Model.Tegs</p>
-            @if (!string.IsNullOrWhiteSpace(Model.Phone))
-            {
-                <p>Контактный телефон: @Model.Phone</p>
-            }
-            @if (Model.AgeRestrictions != 0)
-            {
-                <p>Возрастные ограничения: @Model.AgeRestString</p>
-            }
-            <p>Выложил: <a href="/Friends/UserInfo?userId=@Model.Creator.Id">@Model.Creator.Name</a></p>
+
+<!--ИЗОБРАЖЕНИЕ-->
+<div class="detail-main-line">
+    <div class="ev-big-img">
+        <div class="image-container">
+            <img src="@($"{Model.Image}?{DateTime.Now.Millisecond.ToString()}")" class="image-self-back" />
+            <img src="@($"{Model.Image}?{DateTime.Now.Millisecond.ToString()}")" class="image-self-front" />
         </div>
     </div>
-    <hr>
+    <!--детали системные-->
+    <div class="dot16px"></div>
+    <div class="ev-big-desc">
+        <h2>@Model.Title</h2>
+        <div class="dot16px"></div>
+        <div class="flex-hsc"><span class="material-icons eve-icons">calendar_today</span> <div>@Model.Date.ToString("dd.MM.yyyy HH:mm")</div></div>
+        <div class="flex-hsc"><span class="material-icons eve-icons">location_on</span> <div>@Model.City @Model.Place</div></div>
+        @if (!string.IsNullOrWhiteSpace(Model.Phone))
+        {
+            <div class="flex-hsc"><span class="material-icons eve-icons">phone_iphone</span> <div>@Model.Phone</div></div>
+        }
+        
+    </div>
+</div>
+
+
+<!--детали Оипсние-->
+<div class="item-container">
+    <div class="dot16px"></div>
     <p class="formatted-body">@Model.Body</p>
+    <div class="dot16px"></div>
     @if (Model.Tickets)
     {
-        <label>Билеты:</label>
-        <p class="formatted-body">@Model.TicketsDesc</p>
+        <p class="formatted-body"><span>Билеты:</span> @Model.TicketsDesc</p>
     }
-
-    <hr>
+    <div class="dot16px"></div>
+    <div class="ev-teg-placeholder">
+        @foreach (var teg in Model.EventTegs)
+        {
+            var tegData = new EventB.ViewModels.SharedViews.TegColoredLink()
+            {
+                TegValue = teg.Teg,
+                City = Model.City
+            };
+            await Html.RenderPartialAsync("~/Views/Shared/_tegColoredLink.cshtml", tegData);
+        }
+    </div>
+    <div class="dot16px"></div>
+    @if (Model.AgeRestrictions != 0)
+    {
+        <p>Возрастные ограничения: @Model.AgeRestString</p>
+    }
+    <p>Автор: <a href="/Friends/UserInfo?userId=@Model.Creator.Id">@Model.Creator.Name</a></p>
+    <div class="dot16px"></div>
     <div id="come-block">
         @if (Model.Vizits.Where(e => e.UserId == ViewData["UserId"].ToString()).Any())
         {
@@ -64,24 +71,9 @@
             <div id="btn-come" class="form-submit">Подтвердить участие</div>
         }
     </div>
+
     <div id="btn-invite" class="form-submit">Пригласить на это событие</div>
     <div id="btn-details-send-link" class="form-submit">Отправить ссылку на событие</div>
-    <!--
-    @if (Model.Tickets)
-    {
-        <div id="btn-buy-tikets" class="form-submit">Купить билеты</div>
-    }
-    -->
-    <hr>
-</div>
-
-<div class="eventlist-bottom-menu">
-    <div class="eventlist-btn-come-right-col">
-        <img class="info-img" title="Просмотров" src="~/resourses/eye.png" />
-        <span class="info-num">@Model.Views.ToString()</span>
-        <img class="info-img" title="Пойдут" src="~/resourses/share.png" />
-        <span class="info-num">@Model.Vizits.Count()</span>
-    </div>
 </div>
 
 <div class="bottom-menu">
@@ -90,6 +82,7 @@
     <span class="bottom-menu-item" id="btn-vizitors">Участники(@Model.Vizits.Count())</span>
 
 </div>
+
 <div class="bottom-body">
     <!--Изменения-->
     <div class="bottom-page" id="ed-changes">
@@ -107,8 +100,8 @@
             @if (Model.Chat.UserChat.Count > 0 && !Model.Chat.UserChat[0].IsBlockedInChat)
             {
                 <label>Сообщение</label><br>
-                <button type="submit" id="btn-send">Отправить</button>
                 <textarea id="text"></textarea>
+                <button type="submit" id="btn-send">Отправить</button>
             }
         </form>
         <div class="ed-message-list">
@@ -130,7 +123,7 @@
             }
         </div>
     </div>
-</div> 
+</div>
 
 
 @{ViewData["Script"] = "Event.js";

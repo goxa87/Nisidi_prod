@@ -19,7 +19,7 @@
     <title>Нисиди - @ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://allfont.ru/allfont.css?fonts=roboto-regular" rel="stylesheet" type="text/css" />
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900italic,900' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/@ViewData["Style"]" />
     <link rel="icon" href="~/favicon.ico" />
@@ -63,9 +63,6 @@
                         <a asp-controller="Events" asp-action="Start">СОБЫТИЯ</a>
                     </li>
                     <li>
-                        <a asp-controller="Search" asp-action="Index">ПОИСК</a>
-                    </li>
-                    <li>
                         <div>
                             <a asp-controller="Friends" asp-action="List">ПОЛЬЗОВАТЕЛИ</a>
                             <div id="mm-li-users" class="s-star16 display-none s-star16-formenu "></div>
@@ -101,9 +98,6 @@
 
                             <li>
                                 <a class="menu-link" asp-controller="Events" asp-action="Start">СОБЫТИЯ</a>
-                            </li>
-                            <li>
-                                <a class="menu-link" asp-controller="Search" asp-action="Index">ПОИСК</a>
                             </li>
                             <li>
                                 <div class="flex-hcc">

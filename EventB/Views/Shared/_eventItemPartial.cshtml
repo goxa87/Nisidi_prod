@@ -1,12 +1,10 @@
 ﻿@model EventBLib.Models.Event
 
-<a class="event-a" asp-controller="Events" asp-action="Details" asp-route-id="@Model.EventId">
+<a class="event-a" asp-controller="Events" asp-action="Details" asp-route-id="@Model.EventId" target="_blank">
     <div class="eventlist-container flex-vss transition-1">
         <div class="eventlist-img">
             <div class="image-container">
-                <!--<img src="@Model.MediumImage" class="image-self-back" alt="event" />-->
                 <img src="@Model.MediumImage" class="image-self-front" alt="event" />
-                <!--<div class="image-watersign">@Model.AgeRestString</div>-->
             </div>
         </div>
         <div class="eventlist-info ">
@@ -28,15 +26,5 @@
                 <hr>
             </div>
         </div>
-        <!--
-    <div class="eventlist-bottom-menu">
-        <div class="eventlist-btn-come-right-col">
-            <img class="info-img" title="Просмотров" src="~/resourses/eye.png" />
-            <span class="info-num">@Model.Views.ToString()</span>
-            <img class="info-img" title="Пойдут" src="~/resourses/share.png" />
-            <span class="info-num">@Model.Vizits.Count()</span>
-        </div>
-    </div>
-        -->
     </div>
 </a>

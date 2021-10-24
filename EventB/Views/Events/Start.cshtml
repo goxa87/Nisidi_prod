@@ -6,16 +6,7 @@
     ViewData["Script"] = "Event.js";
     ViewData["Title"] = "события";
 }
-<!--
-<div class="top-page-header flex-hsbs flex-wr">
 
-    <a class="top-page-header-a" asp-controller="Events" asp-action="Add">ДОБАВИТЬ</a>
-    @if (Model.ByMyTegsLink != null)
-    {
-        <a class="ev-recomendations" href="@Model.ByMyTegsLink">рекомендации</a>
-    }
-</div>
-    -->
 <div id="ev-hello-banner" class="display-none"></div>
 
 @{await Html.RenderPartialAsync("_EventListSearchForm", Model);}
@@ -35,7 +26,6 @@
         </div>
     </div>
 </div>
-
 
 @{
     ViewData["Script"] = "Event.js";

@@ -27,7 +27,6 @@
                         <input id="lk-eve-filter" class="s-filter" />
                         <img src="~/resourses/cancel.png" class="s-filter-clear" id="lk-eve-filter-clear" />
                     </div>
-
                 </div>
 
                 foreach (var ev in Model.Events)
@@ -36,6 +35,14 @@
                         <div class="lk-event">
                             <div>
                                 @{await Html.RenderPartialAsync("~/Views/Shared/_eventItemPartial.cshtml", ev);}
+                                <div class="eventlist-bottom-menu">
+                                    <div class="eventlist-btn-come-right-col">
+                                        <img class="info-img" title="Просмотров" src="~/resourses/eye.png" />
+                                        <span class="info-num">@ev.Views.ToString()</span>
+                                        <img class="info-img" title="Пойдут" src="~/resourses/share.png" />
+                                        <span class="info-num">@ev.Vizits.Count()</span>
+                                    </div>
+                                </div>
                             </div>
                             <div class="margin-8px">
                                 <input class="kibnet-event-id" type="hidden" value="@ev.EventId" />

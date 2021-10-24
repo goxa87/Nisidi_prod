@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Search\_SearchModalPartial.cshtml" />
     <Content Remove="wwwroot\js\dx.all.js" />
     <Content Remove="wwwroot\js\dx.messages.ru.js" />
   </ItemGroup>
