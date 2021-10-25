@@ -96,10 +96,22 @@ ul{
     padding: 10px;
 }
 
+.font12{
+    font-size:12px;
+}
+
 .margin-8px {
     margin: 8px;
 }
 
+.text-to-left{
+    text-align: left;
+}
+.text-to-right{
+    text-align: end;
+    padding-right: 4px;
+    padding-right: 4px;
+}
 .small-label {
     font-size: 10px;
     color: #0009;
@@ -203,6 +215,10 @@ ul{
 .dot16px{
     height: 16px;
     width: 16px;
+}
+.dot20px {
+    height: 20px;
+    width: 20px;
 }
 .dot25px {
     height: 25px;
@@ -740,9 +756,6 @@ input[type="checkbox"].input-validation-error {
 }
 .eve-search-input100{
     width: 100%;
-}
-.eve-search-input-date{
-    margin-left: 4px;
 }
 
 /*блоки фигур*/
@@ -1504,7 +1517,6 @@ figure img {
 .bnr-title-big{
     font-size: 28px;
     font-weight: 600;
-    text-align: start;
     margin-top: 28px;
 }
 .bnr-full-width{
@@ -1533,9 +1545,15 @@ figure img {
     width: 300px;
     height: 300px;
     margin: 50px auto 40px 16px;
-    background-color: #FFFA;
+    background-color: #FFFB;
     padding: 16px;
 }
+@media(max-width: 800px){
+    .bnr-transparent-fon-dark {
+        margin: 50px auto   ;
+    }
+}
+
 .bnr-color-gold {
     color: #ffd700bd;
 }

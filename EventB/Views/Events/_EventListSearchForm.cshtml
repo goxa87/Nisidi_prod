@@ -59,20 +59,26 @@
 
             <div class="flex-hsc flex-wr">
                 <div class="flex-hsc">
-                    <span class="dot25px">C:</span>
+                    <span class="dot20px font12 text-to-right">C</span>
                     <input id="ser-date-since" class="eve-search-input eve-search-input-date" type="date" name="DateSince" value="@Model.args.DateSince.ToString("yyyy-MM-dd")" placeholder="C">
                 </div>
                 <div class="dot16px"></div>
                 <div class="flex-hsc">
-                    <span class="dot25px">ПО:</span>
+                    <span class="dot20px font12 text-to-right">ПО</span>
                     <input id="ser-date-due" class="eve-search-input eve-search-input-date" type="date" name="DateDue" value="@Model.args.DateDue.ToString("yyyy-MM-dd")" placeholder="ПО">
                 </div>
             </div>
 
             <div class="flex-hsbc flex-wr width100">
-                <input class="calltoaction-prime-btn transition-1" type="submit" name="f" value="Найти">
+                <div class="flex-hss">
+                    <div class="dot20px"></div>
+                    <input class="calltoaction-prime-btn transition-1" type="submit" name="f" value="Найти">
+                </div>
                 <div class="dot16px"></div>
-                <a class="calltoaction-btn transition-1" asp-controller="Events" asp-action="Add">ДОБАВИТЬ</a>
+                <div class="flex-hss">
+                    <div class="dot20px"></div>
+                    <a class="calltoaction-btn transition-1" asp-controller="Events" asp-action="Add">ДОБАВИТЬ</a>
+                </div>
             </div>
         </div>
         <input type="hidden" name="Skip" value="0" />
