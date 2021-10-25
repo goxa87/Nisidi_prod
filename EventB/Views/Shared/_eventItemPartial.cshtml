@@ -4,7 +4,7 @@
     <div class="eventlist-container flex-vss transition-1">
         <div class="eventlist-img">
             <div class="image-container">
-                <img src="@Model.MediumImage" class="image-self-front" alt="event" />
+                <img src="@Model.Image" class="image-self-front" alt="event" />
             </div>
         </div>
         <div class="eventlist-info ">
@@ -15,7 +15,7 @@
                 <div class="flex-hsbc">
                     <div class="flex-hsc">
                         <span class="material-icons eve-icons">calendar_today</span>
-                        <h4 class="eve-time">@Model.Date.ToString("dd MMMM")</h4>
+                        <h4 class="eve-time">@Model.Date.ToString("dd.MM")</h4>
                     </div>
 
                     <div class="flex-hsc">
