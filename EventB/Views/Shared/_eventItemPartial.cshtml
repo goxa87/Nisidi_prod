@@ -1,4 +1,6 @@
-﻿@model EventBLib.Models.Event
+﻿@using CommonServices.Infrastructure.Helpers
+
+@model EventBLib.Models.Event
 
 <a class="event-a" asp-controller="Events" asp-action="Details" asp-route-id="@Model.EventId" target="_blank">
     <div class="eventlist-container flex-vss transition-1">
@@ -15,7 +17,7 @@
                 <div class="flex-hsbc">
                     <div class="flex-hsc">
                         <span class="material-icons eve-icons">calendar_today</span>
-                        <h4 class="eve-time">@Model.Date.ToString("dd.MM")</h4>
+                        <h4 class="eve-time">@Model.Date.ToDateStringmonth(false, " ", false)</h4>
                     </div>
 
                     <div class="flex-hsc">
