@@ -1,6 +1,12 @@
 ﻿import { CarouselMovePrev, CarouselMoveNext } from './Controls.js';
 
-$(document).ready(function () {    
+/*
+window.onload = function () {
+    console.log('city', ymaps.geolocation.city)
+
+}
+*/
+$(document).ready(function () {
     // Передвижение меню при скролле.
     $(window).scroll(function () {       
         //if ($(window).scrollTop() > $('#title-container').height() + 16) { 
