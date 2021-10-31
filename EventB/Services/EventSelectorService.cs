@@ -49,7 +49,7 @@ namespace EventB.Services
                 selection = selection.Where(e => e.NormalizedCity == args.City.Trim().ToUpper());
             // заголовок
             if (!string.IsNullOrWhiteSpace(args.Title))
-                selection = selection.Where(e => EF.Functions.Like(e.Title, $"%{args.Title}%"));
+                selection = selection.Where(e => EF.Functions.Like(e.NormalizedTitle, $"%{args.Title.ToUpper()}%"));
             var selectionLocal = selection;
             // теги
             if (!string.IsNullOrWhiteSpace(args.Tegs))
