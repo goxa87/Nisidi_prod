@@ -106,6 +106,7 @@ ul{
 
 .text-to-left{
     text-align: left;
+    text-indent: 0;
 }
 .text-to-right{
     text-align: end;
@@ -508,22 +509,6 @@ input[type="checkbox"].input-validation-error {
     display: inline-block;
 }
 /* ******************** формы*/
-
-.small-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    flex-basis: 700px
-}
-
-.identity-cintainer {
-    min-width:300px;
-}
-.identity-cintainer-register{
-    margin: 0 auto;
-    max-width: 800px;
-}
 .wide-form{
     padding: 4px;
 }
@@ -881,6 +866,12 @@ figure img {
     justify-content: start;
     align-items: start;
 }
+.flex-vcc {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 .flex-vsc{
     display: flex;
     flex-direction:column;
@@ -903,6 +894,11 @@ figure img {
     display:flex;
     justify-content:end;
     align-items: end;
+}
+.flex-hsec {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
 }
 /* картинка с фоном и маской*/
 /* Заполняет на 100% так что нужно оборачивать*/
@@ -1395,9 +1391,6 @@ figure img {
         width: calc(100vw - 4px);
         background-color: #ddd;
     }
-    .event-a {
-        margin-top: 3px;
-    }
 
     .help-content {
         cursor: default;
@@ -1565,7 +1558,6 @@ figure img {
 }
 .bnr-text {
     margin-top: 0.5em;
-    text-align:center;
     font-size: 20px;
 }
 .bnr-text:nth-child(2n+1){

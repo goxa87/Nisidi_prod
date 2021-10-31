@@ -1,32 +1,73 @@
-﻿@model EventB.ViewModels.Account.UserLogin
+﻿@model EventB.ViewModels.Account.AccountModel
 @{
     ViewData["Style"] = "Account.css";
     ViewData["Script"] = "Account.js";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewData["Title"] = "Войти";
+    Layout = "~/Views/Shared/_LayoutAccount.cshtml";
+    ViewData["Title"] = "Авторизация";
 }
-<div class="small-container">
-    <div class="top-page-header">Войти</div>
-
-    <div class="identity-cintainer">
-        <form asp-controller="Account" asp-action="Login" asp-antiforgery="true" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ReturnUrl" />
-
-            <label class="form-label" asp-for="LoginProp"></label><br>
-            <span asp-validation-for="LoginProp"></span>
-            <input class="form-entry-title" type="text" asp-for="LoginProp"><br>
-
-            <label class="form-label" asp-for="Password"></label><br>
-            <span asp-validation-for="Password"></span>
-            <input class="form-entry-title" type="password" asp-for="Password"><br><br>
-
-            <input class="form-submit" type="submit" value="ВОЙТИ"><br>
-            <a asp-action="PasswordRecovery"><h5>Забыли пароль</h5></a>
-
-            <a asp-action="Register"><h5>Регистрация</h5></a>
-        </form>
+@if (!Model.IsRepeatLoading) { 
+    <div class="acc-preview">
+        <img src="~/resourses/logo256.png" alt="nisidi" class="acc-main-logo" />
+        <h1 class="acc-main-name">NISIDI.RU</h1>
     </div>
+}
+
+<div class="acc-form-menu @(Model.IsRepeatLoading ? "flex-vcc" : "")" style="@(!Model.IsRepeatLoading ? "display: none" : "")">
+    <div class="acc-window">
+        <div class="acc-switch-container">
+            <div class="acc-btn-switch acc-sw-log @( Model.IsRepeatLoading && Model.LoadRegisterPage ? "" :"acc-switch-selected")">Вход</div>
+            <div class="acc-btn-switch acc-sw-reg @( Model.IsRepeatLoading && Model.LoadRegisterPage ? "acc-switch-selected" :"")">Регистрация</div>
+        </div>
+        <div class="acc-login-form" style="@( Model.IsRepeatLoading && Model.LoadRegisterPage ? "display:none;" :"")">
+            <form asp-controller="Account" asp-action="Login" asp-antiforgery="true" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="ReturnUrl" />
+
+                <label class="form-label">Электронная почта</label><br>
+                <input class="form-entry-title" type="email" name="Login" value="@Model.Login"><br>
+
+                <label class="form-label">Пароль</label><br>
+                <input class="form-entry-title" type="password" name="Password"><br><br>
+
+                <input class="form-submit" type="submit" value="ВОЙТИ"><br>
+                <a asp-action="PasswordRecovery"><h5>Забыли пароль</h5></a>
+            </form>
+
+        </div>
+        <div class="acc-reg-form" style="@( Model.IsRepeatLoading && Model.LoadRegisterPage ? "" :"display:none;")">
+            <form asp-controller="Account" asp-action="Register" asp-antiforgery="true" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <label class="form-label">Электронная почта</label><br>
+                <input class="form-entry-title" type="email" name="Login" value="@Model.Login" required><br>
+
+                <div class="flex-hsc">
+                    <label class="form-label">Пароль / </label>
+                    <div class="acc-generate-password" title="Сгенерировать новый пароль">
+                        <span>СЛУЧАЙНЫЙ</span>
+                        <span class="material-icons">change_circle</span>
+                    </div><br>
+                </div>
+               
+                <input id="acc-reg-password-input" class="form-entry-title" type="text" name="Password" value="@Model.Password" required><br>
+
+                <label class="form-label">Имя</label><br>
+                <input class="form-entry-title" type="text" name="UserName" value="@Model.UserName" required><br>
+
+                <label class="form-label">Город / Определен автоматически</label><br>
+                <label class="form-label">Система будет выбирать события в этом городе</label><br>
+                <input class="form-entry-title" type="text" name="City" value="@Model.City" required><br><br>
+
+                <label class="form-label">Обязательно</label><br>
+                <label><input type="checkbox" asp-for="AgreePersonalData" id="agree-personal-data"></label>
+                <label class="StartAdd-label">Я соглашаюсь с <a href="/Help/Agreement" target="_blank" style="text-decoration: underline; font-size: 18px">правилами использования</a> сайта и <a href="/Help/Personal" target="_blank" style="text-decoration: underline; font-size: 18px">политикой обработки персональных данных</a>.</label>
+                <br>
+
+                <input class="form-submit" type="submit" value="Регистрация"><br>
+            </form>
+        </div>
+    </div>
+    <a class="acc-width500" href="/">на главную</a>
 </div>
 
 

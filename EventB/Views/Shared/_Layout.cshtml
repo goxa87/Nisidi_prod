@@ -20,8 +20,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900italic,900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/css/@ViewData["Style"]" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/@ViewData["Style"]" asp-append-version="true"/>
     <link rel="icon" href="~/favicon.ico" />
 
     <script src="//api-maps.yandex.ru/2.0-stable/?load=package.standard&lang=ru-RU" type="text/javascript"></script>
@@ -51,10 +51,7 @@
                         else
                         {
                             <a asp-action="Login" asp-controller="Account">Войти</a>
-                            <a asp-action="Register" asp-controller="Account">Регистрация</a>
                         }
-
-
                     }
                 </div>
             </div>

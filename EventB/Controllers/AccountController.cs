@@ -18,6 +18,7 @@ using EventBLib.Models.MarketingModels;
 using EventB.Services.Logger;
 using EventB.Services.ImageService;
 using System.Security.Claims;
+using CommonServices.Infrastructure.Helpers;
 
 namespace EventB.Controllers
 {
@@ -52,18 +53,23 @@ namespace EventB.Controllers
             imageService = _imageService;
         }
 
-        public  IActionResult Login(string returnUrl)
+        public  IActionResult Login(string returnUrl, AccountModel model = null)
         {
-            return View();
+            if(model == null)
+            {
+                model = new AccountModel();
+            }
+            return View(model);
         }
 
         [ValidateAntiForgeryToken, HttpPost]
         [Route("Account/Login")]
-        public async Task<IActionResult> Login(UserLogin model)
+        public async Task<IActionResult> Login(AccountModel model)
         {
+            model.IsRepeatLoading = true;
             if (ModelState.IsValid)
             {
-                var user = await (userManager.FindByEmailAsync(model.LoginProp));
+                var user = await (userManager.FindByEmailAsync(model.Login));
                 if(user == null)
                 {
                     ModelState.AddModelError("", "Пользователь не найден или неверный пароль");
@@ -71,8 +77,8 @@ namespace EventB.Controllers
                 }
 
                 if (!await userManager.IsEmailConfirmedAsync(user))
-                    return View("ConfirmEmail", model.LoginProp);
-                //await userManager.AddClaimAsync(user, new Claim("user_id", user.Id));
+                    return View("ConfirmEmail", model.Login);
+                
                 var loginResult = await signInManager.PasswordSignInAsync(user, model.Password, true, false);
 
                 if (loginResult.Succeeded)
@@ -89,102 +95,71 @@ namespace EventB.Controllers
             return View(model);
         }
 
-        [HttpGet]
-        public ActionResult Register()
-        {
-            return View();
-        }
-
         [ValidateAntiForgeryToken, HttpPost]
         [Route("Account/Register")]
-        public async Task<IActionResult> Register(UserRegistration model)
+        public async Task<IActionResult> Register(AccountModel model)
         {
             try
             {
                 if (!model.AgreePersonalData)
                 {
-                    ModelState.AddModelError("AgreePersonalData", "Необходимо согласится на обработку персональных данных");
+                    ModelState.AddModelError("", "Необходимо согласится на обработку персональных данных");
                 }
+                if (model.Login == null || string.IsNullOrEmpty(model.Login.Trim()))
+                {
+                    ModelState.AddModelError("", "Поле ЛОГИН не может быть пустым");
+                }
+                if (model.City == null || string.IsNullOrEmpty(model.City.Trim()))
+                {
+                    ModelState.AddModelError("", "Поле ГОРОД не может быть пустым");
+                }
+
                 if (ModelState.IsValid)
                 {
                     var user = new User()
                     {
-                        Email = model.Email,
-                        UserName = model.Email,
-                        Name = model.Name,
+                        Email = model.Login,
+                        UserName = model.Login,
+                        Name = model.UserName,
+                        NormalizedName = model.UserName.ToUpper(),
                         City = model.City.Trim(),
-                        NormalizedName = model.Name.ToUpper(),
-                        NormalizedCity = model.City.Trim().ToUpper(),
-                        Description = model.Description,
-                        PhoneNumber = model.PhoneNumber
+                        NormalizedCity = model.City.Trim().ToUpper()
                     };
 
+                    user.MarketKibnet = new MarketKibnet { MarketState = MarketState.common, PaymentAccountBalance = 0, TotalMarcetCompanyCount = 0 };
+
+                    // Изображение
                     var fileName = Guid.NewGuid().ToString();
                     string imgSourse = String.Concat("/images/Profileimages/", fileName);
                     string imgMedium = String.Concat("/images/Profileimages/Medium/", "M" + fileName);
                     string imgMini = String.Concat("/images/Profileimages/Mini/", "m" + fileName);
 
-                    if (model.Photo != null)
-                    {
-                        try
-                        {
-                            var newImagesDict = new Dictionary<int, string>();
-
-                            newImagesDict.Add(400, imgSourse);
-                            newImagesDict.Add(360, imgMedium);
-                            newImagesDict.Add(100, imgMini);
-
-                            newImagesDict = await imageService.SaveOriginAndResizedImagesByInputedSizes(model.Photo, IMAGE_SUFFIX, newImagesDict, null);
-
-                            imgSourse = newImagesDict[400];
-                            imgMedium = newImagesDict[360];
-                            imgMini = newImagesDict[100];
-                        }
-                        catch (Exception ex)
-                        {
-                            await logger.LogStringToFile($"Ошибка создания картинок для события : {ex.Message}");
-                        }
-                    }
-                    else
-                    {
-                        await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgSourse, 500, IMAGE_SUFFIX);
-                        imgSourse += IMAGE_SUFFIX;
-                        await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgMedium, 360, IMAGE_SUFFIX);
-                        imgMedium += IMAGE_SUFFIX;
-                        await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgMini, 100, IMAGE_SUFFIX);
-                        imgMini += IMAGE_SUFFIX;
-                    }
+                    await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgSourse, 500, IMAGE_SUFFIX);
+                    imgSourse += IMAGE_SUFFIX;
+                    await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgMedium, 360, IMAGE_SUFFIX);
+                    imgMedium += IMAGE_SUFFIX;
+                    await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgMini, 100, IMAGE_SUFFIX);
+                    imgMini += IMAGE_SUFFIX;
 
                     user.Photo = imgSourse;
                     user.MediumImage = imgMedium;
                     user.MiniImage = imgMini;
 
+                    // Создание пользователя
+
                     var createResult = await userManager.CreateAsync(user, model.Password);
 
                     if (createResult.Succeeded)
                     {
-                        var interests = new List<Interes>();
-                        var splitted = tegSplitter.GetEnumerable(model.Tegs);
-                        if (splitted != null)
-                        {
-                            foreach (var inter in splitted)
-                            {
-                                interests.Add(new Interes { Value = inter });
-                            }
-                            user.Intereses = interests;
-                        }
-                        user.MarketKibnet = new MarketKibnet { MarketState = MarketState.common, PaymentAccountBalance = 0, TotalMarcetCompanyCount = 0 };
-                        context.Users.Update(user);
-                        await context.SaveChangesAsync();
                         try
                         {
-                            await SendEmailConfirmationAsync(model.Email);
+                            await SendEmailConfirmationAsync(model.Login, model.Password);
                         }
                         catch (Exception ex)
                         {
-                            await logger.LogObjectToFile("RegisterAccount", ex);
+                            await logger.LogObjectToFile($"RegisterAccount error/ SendMailError ({model.Login} {model.Password})", ex);
                         }
-                        return View("ConfirmEmail", model.Email);
+                        return View("ConfirmEmail", model.Login);
                     }
                     else
                     {
@@ -194,13 +169,17 @@ namespace EventB.Controllers
                         }
                     }
                 }
-                return View(model); 
+                model.IsRepeatLoading = true;
+                model.LoadRegisterPage = true;
+                return View("Login", model);
             }
             catch(Exception ex)
             {
+                model.IsRepeatLoading = true;
+                model.LoadRegisterPage = true;
                 await logger.LogStringToFile($"reg post error {ex.Message} {ex.StackTrace}");
                 ModelState.AddModelError("", ex.Message);
-                return View(model);
+                return View("Login", model);
             }
         }
 
@@ -210,13 +189,24 @@ namespace EventB.Controllers
         /// <param name="email">Email к которому привязан аккаунт.</param>
         /// <returns></returns>
         [NonAction]
-        public async Task SendEmailConfirmationAsync(string email)
+        public async Task SendEmailConfirmationAsync(string email, string userSecret = null)
         {
             var user = await userManager.FindByEmailAsync(email);
             var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
             var url = Url.Action("FinishConfirmEmail", "Account", new { token = token, userId = user.Id }, HttpContext.Request.Scheme);
-            string message = $"<p>Внимаение! Этот адрес был указан при регистрации на сайте nisidi.ru. </p>" +
-                $"<p>Для подтвердения адреса перейдите по ссылке нажав <a href=\"{url}\">ЗДЕСЬ</a>.</p>" +
+
+            var stringWithSecret = $"<p>Ваш пароль <span style=\"font-size:20px; color:#1b5972; margin:0 1em;\">{userSecret}<span></p>";
+
+            string message =
+                $"<h3>Добро пожаловать на </span style=\"color:#1b5972; margin:0 1em;\">NISIDI.RU</span> </h3>" +
+                $"<p>Внимаение! Этот адрес был указан при регистрации на сайте nisidi.ru. </p>";
+            if(userSecret != null)
+            {
+                message += stringWithSecret;
+            }
+            message +=
+                $"<p>Для подтвердения адреса перейдите по ссылке нажав <a style=\"font-size:20px; color:#1b5972;\" href=\"{url}\">ЗДЕСЬ</a>.</p><br>" +
+                $"<p>После подтверждения вы сможете создавать свои события, сохранять свои интересы, находить друзей и общаться с другими пользователями.</p><br>" +
                 $"<p>Это письмо создано автоматически, пожалуйста не отвечайте на него.</p>" +
                 $"<p>Если вы не регистрировались на сайте, то просто проигнорируйте это сообщение.</p>";
 
@@ -302,7 +292,7 @@ namespace EventB.Controllers
             var rezult = await userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
             if (rezult.Succeeded)
             {
-                return RedirectToAction("Index", "MyPage");
+                return View("PasswordRecoveryConfirmed");
             }
             else 
             {
@@ -327,22 +317,35 @@ namespace EventB.Controllers
             if(string.IsNullOrWhiteSpace(email))
             {
                 ModelState.AddModelError("", "Не указан адрес электронной почты");
+                ViewBag.Email = email;
                 return View();
             }
             
             var user = await userManager.FindByNameAsync(email);
-            var isConfirmed = !(await userManager.IsEmailConfirmedAsync(user));
-            if (user==null || isConfirmed)
+            var userIsConfirmed = await userManager.IsEmailConfirmedAsync(user);
+            if (user==null || !userIsConfirmed)
             {
-                ViewBag.IsUserNull = user == null ? true: false;
-                ViewBag.IsNotConfirmed = isConfirmed ? true: false;
-                return View("PasswordRecoweryBadModel");
+                ViewBag.Email = email;
+                if(user == null)
+                {
+                    ModelState.AddModelError("", "Пользователь не найден");
+                }
+                if (!userIsConfirmed)
+                {
+                    ModelState.AddModelError("", "Пользователь не подтвержден. Перейдите по ссылке из письма подтверждения.");
+                }
+                
+                return View("PasswordRecovery");
             }
 
             var code = await userManager.GeneratePasswordResetTokenAsync(user);
             var url = Url.Action("PasswordRecoveryPage", "Account", new {userId= user.Id, code = code }, HttpContext.Request.Scheme);
+
+            var message = "<h3>Восстановление пароля на сайте nisidi.ru</h3>";
+            message += $"<p>Для перехода на страницу восстановления пароля перейдите по <a href={url} style=\"font-size:20px; color:#1b5972;\">ССЫЛКЕ</a></p>";
+
             MailSender mailSender = new MailSender(logger);
-            await mailSender.SendEmailAsync(email, "Восстановление пароля", $"<a href={url}>Нажмите для восстановления</a>");
+            await mailSender.SendEmailAsync(email, "Восстановление пароля най сайте nisidi.ru", message);
             return View("PasswordRecoveryConfirm");
         }
         /// <summary>
@@ -374,8 +377,13 @@ namespace EventB.Controllers
                 if (user == null) return View("PasswordRecoveryConfirm");
 
                 var changeResult = await userManager.ResetPasswordAsync(user, model.Token, model.Password);
-                if(changeResult.Succeeded)
+               
+                if (changeResult.Succeeded)
                 {
+                    if (User == null || User.Identity == null || !User.Identity.IsAuthenticated)
+                    {
+                        await signInManager.PasswordSignInAsync(user, model.Password, true, false);
+                    }
                     return View("PasswordRecoveryConfirmed");
                 }
                 else
@@ -391,6 +399,15 @@ namespace EventB.Controllers
             {
                 return View(model);
             }
+        }
+
+        /// <summary>
+        /// Генерация случайного пароля
+        /// </summary>
+        /// <returns></returns>
+        public string GetNewRandomPassword()
+        {
+            return StringHelper.GetAccountPassword(8);
         }
     }
 }

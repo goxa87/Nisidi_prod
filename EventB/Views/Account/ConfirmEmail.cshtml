@@ -2,11 +2,16 @@
 @{
     ViewData["Style"] = "Account.css";
     ViewData["Script"] = "AccountJs";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutAccount.cshtml";
     ViewData["Title"] = "Подтвердить Email";
 }
-
-<div class="top-page-header">Подтвердите адресс электронной почты.</div>
-<p>Для завершения регистрации перейдите пы ссылке, которая была отправленна на электронную почту.</p>
-<p>Если вы не видите письмо во входящих, проверьте папку Спам.</p>
-<p>Или нажмите <b><a asp-action="RepeatEmailConfirmMessage" asp-route-email="@Model">ЗДЕСЬ</a></b> для повторной отправки письма.</p>
+<div class="acc-form-menu flex-vcc">
+    <div class="acc-window">
+        <h3>ПОДТВЕРДИТЕ АДРЕС ЭЛЕКТРОННОЙ ПОЧТЫ.</h3>
+        <br>
+        <p>Для завершения регистрации перейдите по ссылке, которая была отправлена на электронную почту.</p>
+        <p>Если вы не видите письмо во входящих, проверьте папку СПАМ.</p>
+        <p>Или нажмите <b><a asp-action="RepeatEmailConfirmMessage" asp-route-email="@Model">ЗДЕСЬ</a></b> для повторной отправки письма.</p>
+    </div>
+    <a class="acc-width500" href="/">на главную</a>
+</div>
