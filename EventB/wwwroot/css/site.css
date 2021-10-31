@@ -32,14 +32,6 @@ a{
         text-decoration:none;
     }
 
-.footer {
-    position:fixed;
-    bottom:0;
-    left:0;
-    height:24px;
-    background-color:#1b5972;
-    color:#fff;
-}
 main {
 }
 label{
@@ -859,6 +851,11 @@ figure img {
     justify-content:space-between;
     align-items: end;
 }
+.flex-hses {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: start;
+}
 
 .flex-vss {
     display: flex;
@@ -1575,4 +1572,22 @@ figure img {
     .bnr-text {
         font-size: 16px;
     }
+}
+
+/*FOOTER футер*/
+.foot-body {
+    background-color: #585f66;
+    color: #fff;
+}
+.foot-column{
+    padding: 16px;
+}
+.foot-gold-color {
+    color: #ffcd00;
+}
+.foot-white-color {
+    color: #fff;
+}
+.foot-item{
+    margin-bottom:16px;
 }

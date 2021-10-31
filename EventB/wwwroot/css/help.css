@@ -1,4 +1,8 @@
-﻿.h-left-menu {
+﻿img{
+    max-width: 100%;
+}
+
+.h-left-menu {
     flex-basis: 350px;
 }
 #h-small-menu-btn {
@@ -115,3 +119,4 @@ p{
 .h-message-send{
     
 }
+
