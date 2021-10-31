@@ -10,7 +10,7 @@
     <input type="hidden" id="args-take" value=@Model.args.Take />
     <input type="hidden" id="flag-dwnl-more" value="true" />
 
-    <form asp-action="SearchEventlist" asp-controller="Events" asp-antiforgery="true" method="post" class="wide-form eve-search-wide">
+    <form asp-action="SearchEventlist" asp-controller="Events" method="get" class="wide-form eve-search-wide">
 
         <div class="flex-hsbe">
             <div class="flex-hss">
@@ -46,7 +46,7 @@
         <input type="hidden" name="Take" value="30" />
     </form>
 
-    <form asp-action="SearchEventlist" asp-controller="Events" asp-antiforgery="true" method="post" class="wide-form eve-search-thin">
+    <form asp-action="SearchEventlist" asp-controller="Events" method="get" class="wide-form eve-search-thin">
 
         <div class="flex-vss width100">
             <div class="flex-hsc width100">

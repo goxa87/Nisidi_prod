@@ -41,7 +41,7 @@ $(document).ready(function () {
     });
 });
 
-
+/**Устанавливает в поле пароль регистрации рандомный пароль */
 function GetAndSetRandomPassword() {
     console.log($('#acc-reg-password-input'))
     if ($('#acc-reg-password-input') == undefined) {

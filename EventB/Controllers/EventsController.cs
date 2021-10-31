@@ -146,7 +146,7 @@ namespace EventB.Controllers
                 url = null;
             }
             
-            args.DateDue = args.DateDue.AddDays(1);
+            args.DateDue = args.DateDue.AddDays(1).AddMinutes(-1);
             args.Title = args.Title ?? "";
 
             args.City = args.City != null ? args.City.ToUpper() : (user!=null ? user.NormalizedCity : "СТАВРОПОЛЬ");
