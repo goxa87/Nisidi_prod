@@ -10,6 +10,7 @@
 <div id="ev-hello-banner" class="display-none"></div>
 
 @{await Html.RenderPartialAsync("_EventListSearchForm", Model);}
+@{await Html.RenderPartialAsync("_SearchByRecomendations");}
 
 <div id="event-list">
 </div>
@@ -30,10 +31,6 @@
 <div>
     @{ await Html.RenderPartialAsync("_SiteFooter"); }
 </div>
-
-@{
-    ViewData["Script"] = "Event.js";
-}
 
 
 

@@ -15,6 +15,11 @@ body {
     box-sizing: border-box;
     height: 100vh;
 }
+@media(max-width: 1140px) {
+    body {
+        padding: 2px;
+    }
+}
 
 hr{
     margin:2px 0;
@@ -502,7 +507,7 @@ input[type="checkbox"].input-validation-error {
 }
 /* ******************** формы*/
 .wide-form{
-    padding: 4px;
+    padding: 0;
 }
 .form-label {
     color: #1b5972;
@@ -590,6 +595,25 @@ input[type="checkbox"].input-validation-error {
     min-width: 192px;
     border: 1px solid #1b5972;
 }
+.calltoaction-prime-btn-orange {
+    padding: 5px 4px;
+    text-align: center;
+    margin: 5px 0;
+    border-radius: 4px;
+    border: 0px;
+    background-color: #1b5972;
+    color: #ff6a00;
+    box-sizing: border-box;
+    font-weight: 600;
+    cursor: pointer;
+    min-width: 192px;
+    border: 1px solid #1b5972;
+}
+
+    .calltoaction-prime-btn-orange:hover {
+        color: #ffcd00;
+        background-color: #0b4962;
+    }
 
 .calltoaction-prime-btn:hover {
     background-color: #0b4962;
@@ -1444,6 +1468,68 @@ figure img {
         text-decoration: none;
         opacity: .75;
     }
+
+/*RegisterLeadMagnet*/
+
+/*SearchByRecomendations*/
+.bnrre-body {
+    background-color: #dbdbdb;
+    border-radius: 4px;
+    padding: 16px;
+    margin: 2em 0;
+}
+.bnrre-head {
+    color: #1b5972;
+}
+.bnrre-maintext{
+    margin-top: 1em;
+}
+
+.bnrre-teg-container{
+    display: flex;
+    align-items: start;
+    flex-wrap: wrap;
+}
+.bnrre-teg {
+    padding: 0 4px 4px 4px;
+    border-radius: 4px;
+    color: #ffcd00;
+    margin: 0 4px 4px 0;
+    background-color: #2b6982;
+    text-transform: lowercase;
+    display:flex;
+    align-items: end;
+}
+.bnrre-delete-teg {
+    color: #ff6a00;
+    font-size: 16px;
+    cursor: pointer;
+    padding-bottom: 2px;
+}
+.bnrre-input{
+    width: 250px;
+    max-width: 300px;
+    padding: 4px;
+    border-radius: 4px;
+    background-color: #fff;
+    border:none;
+
+}
+    .bnrre-input:active, 
+    .bnrre-input:focus{
+        border: none;
+        outline: none;
+    }
+.bnrre-btn-add-teg {
+    font-size: 18px;
+    font-weight: 300;
+    color: #1b5972;
+    cursor: pointer;
+}
+
+.bnrre-dtn-filter{
+    width: 250px;
+}
 /*Карусель*/
 .carousel-item-block {
     height: 100%;
