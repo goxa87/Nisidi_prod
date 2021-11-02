@@ -5,11 +5,11 @@
     Layout = "~/Views/Shared/_LayoutAccount.cshtml";
     ViewData["Title"] = "Авторизация";
 }
-@if (!Model.IsRepeatLoading) { 
-    <div class="acc-preview">
-        <img src="~/resourses/logo256.png" alt="nisidi" class="acc-main-logo" />
-        <h1 class="acc-main-name">NISIDI.RU</h1>
-    </div>
+@if (!Model.IsRepeatLoading) {
+<div class="acc-preview">
+    @{ await Html.RenderPartialAsync("_SVGLogo128");}
+    <h1 class="acc-main-name">NISIDI.RU</h1>
+</div>
 }
 
 <div class="acc-form-menu @(Model.IsRepeatLoading ? "flex-vcc" : "")" style="@(!Model.IsRepeatLoading ? "display: none" : "")">

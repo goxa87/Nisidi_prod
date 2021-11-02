@@ -43,7 +43,6 @@ $(document).ready(function () {
 
 /**Устанавливает в поле пароль регистрации рандомный пароль */
 function GetAndSetRandomPassword() {
-    console.log($('#acc-reg-password-input'))
     if ($('#acc-reg-password-input') == undefined) {
         return;
     }
@@ -52,7 +51,6 @@ function GetAndSetRandomPassword() {
         method: 'get',
         url: '/Account/GetNewRandomPassword',
         success: function (newPassword) {
-            console.log(newPassword);
             $('#acc-reg-password-input').val(newPassword);
         },
         error: function () {
