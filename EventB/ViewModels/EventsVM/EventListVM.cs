@@ -30,5 +30,10 @@ namespace EventB.ViewModels.EventsVM
         /// Теги
         /// </summary>
         public List<string> Tegs { get; set; }
+
+        /// <summary>
+        /// Интересы пользователя
+        /// </summary>
+        public UserIntereses UserInterses { get; set; }
     }
 }

@@ -21,6 +21,7 @@ using EventB.Hubs;
 using EventB.Services.Logger;
 using EventB.Services.FriendService;
 using EventB.Services.ImageService;
+using EventB.Services.AccountService;
 
 namespace EventB
 {
@@ -80,6 +81,7 @@ namespace EventB
             services.AddTransient<IMessageService, MessageService>();
             services.AddTransient<IEventService, EventService>();
             services.AddTransient<IFriendService, FriendService>();
+            services.AddTransient<IAccountService, AccountService>();
 
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IEventSelectorService, EventSelectorService>();

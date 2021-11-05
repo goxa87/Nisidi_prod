@@ -1,6 +1,9 @@
 ﻿import { renderMessage, getModelWindow, iensSearchByText, GetNotification } from './Controls.js';
 import { GetBanner } from './Banner.js';
+import { GetCookieByName, UpdateCookieValue, TryRemoveCookie } from './CookieService.js';
 
+var IsAuthorizedUser = true;
+const INTERES_COOKIE_NAME = 'intereses';
 // Начало исполнения
 $(document).ready(function ()
 {    
@@ -13,6 +16,7 @@ $(document).ready(function ()
     }
 
     GetBanner("Hello.cshtml", "ev-hello-banner");
+    InitStartLocalData();
 
     // Start постранично при нажатии загрузить еще.
     $('#ev-load-more').click(function () {        
@@ -398,6 +402,59 @@ $(document).ready(function ()
             }
         }
     });
+
+
+    //Беннер рекомендации
+    /** Закрыть баннер рекомендации*/
+    $('.bnrre-close').click(function () {
+        $('.bnrre-body').slideUp(400);
+    });
+
+    /** Удалить ТЕГ для регистрированного пользователя */
+    $('.bnrre-delete-teg').click(function () {
+        let Teg = $(this).parent().children('.bnrre-interers-value').text();
+        console.log('newT', Teg);
+        if (IsAuthorizedUser) {
+            DeleteTegForAuthUser(Teg, $(this));
+        } else {
+            DeleteTegForNotAuthUser(Teg, $(this));
+        }
+    });
+
+    /** Добавить ТЕГ для регистрированного пользователя */
+    $('.bnrre-add-teg').click(function () {
+        let tegValue = $('.bnrre-input').val();
+
+        if (tegValue == undefined || tegValue == '')
+            return;
+
+        if (IsAuthorizedUser) {
+            AddTegForAuthUser(tegValue);
+        } else {
+            AddTegForNotAuthUser(tegValue);
+        }
+    });
+
+    /**Выполнить фильтрацию */
+    $('.bnrre-btn-filter').click(function () {
+        if (IsAuthorizedUser) {
+            $.ajax({
+                url: '/Events/GetLinqToFilterByTegs',
+                success: function (data) {
+                    window.location.replace(data);
+                },
+                error: function () {
+                    console.log('ошибка перехода по рекомендациям')
+                }
+            })
+        } else {
+            let cookie = GetCookieByName(INTERES_COOKIE_NAME);
+            let city = $('#args-city').val().toUpperCase();
+            let newUrl = '/Events/SearchEventlist?City=' + city + '&Tegs=' + cookie + '&Skip=0&Take=30';
+            window.location.replace(newUrl);
+        }
+    });
+
 });
 
 /**
@@ -433,4 +490,126 @@ function onInviteClick() {
             $('.modal-shadow').remove();
         }
     });
+}
+
+/**Инициализация локальных данных */
+function InitStartLocalData() {
+    if ($('#bnrre-user-id').val() == undefined || ($('#bnrre-user-id').val() == '')){
+        IsAuthorizedUser = false;
+        var intereses = GetCookieByName(INTERES_COOKIE_NAME);
+        if (intereses) {
+            var interesArray = intereses.split('@');
+            if (interesArray.length > 0) {
+                interesArray.forEach(function (element) {
+                    if (element && element.length > 0) {
+                        RenderTegToBunner(element);
+                    }
+                });
+            }
+        }
+    } else {
+        IsAuthorizedUser = true;
+    }
+
+  
+}
+
+/**
+ * Удаление тега у авторизованного пользователя
+ * @param {any} value
+ * @param {any} theThis
+ */
+function DeleteTegForAuthUser(value, theThis) {
+    $.ajax({
+        url: '/Account/DeleteUserInteres?value=' + value,
+        success: (data) => {
+            if (data.IsSuccess == false) {
+                console.log(data.ErrorMessage);
+            }
+            $(theThis).parent().hide();
+        },
+        error: () => {
+            console.log('Ошибка отправка запроса на удаление тега');
+        }
+    });
+}
+
+
+/**
+ * Удаление тега у НЕ авторизованного пользователя
+ * @param {any} value
+ * @param {any} theThis
+ */
+function DeleteTegForNotAuthUser(value, theThis) {
+    let cookie = GetCookieByName(INTERES_COOKIE_NAME);
+    console.log('coockМ', value);
+    console.log('coock1', cookie);
+    if (cookie.indexOf(value) !== -1) {
+        var source = cookie.split('@');
+        cookie = '';
+        source.forEach(function (element) {
+            if (element.length > 0 && element != value) {
+                cookie += (cookie.length == 0 ? '' : '@') + element;
+            }
+        });
+        console.log('New ccok1', cookie);
+        UpdateCookieValue(INTERES_COOKIE_NAME, cookie);
+        $(theThis).parent().hide();
+    }
+}
+
+/**
+ * Добавить тег для авторизованного пользователя
+ * @param {any} value
+ */
+function AddTegForAuthUser(value) {
+    $.ajax({
+        url: '/Account/SaveUserInteres?value=' + value,
+        success: (data) => {
+            if (data.IsSuccess == false) {
+                console.log(data.ErrorMessage);
+            } else {
+                $('.bnrre-input').val('');
+                RenderTegToBunner(value);
+            }
+        },
+        error: () => {
+            console.log('Ошибка отправка запроса на удаление тега');
+        }
+    });
+}
+
+/**
+ * Сохранить тег для НЕ авторизованног о пользователя
+ * @param {any} value
+ */
+function AddTegForNotAuthUser(value) {
+
+    let newString = value.replace(" ", "@");
+    let arr = newString.split("@");
+    console.log('arr', arr);
+    let cookie = GetCookieByName(INTERES_COOKIE_NAME);
+    if (!cookie) {
+        cookie = '';
+    }
+    console.log('cookie', cookie);
+    arr.forEach(function (value, index) {
+        var arrayOfInteres = cookie.split('@')
+        if (arrayOfInteres.indexOf(value) == -1) {
+            cookie += (cookie.length > 0 ? '@' : '') + value;
+        }
+    });
+    console.log('new Cookie', cookie);
+    UpdateCookieValue(INTERES_COOKIE_NAME, cookie);
+    $('.bnrre-input').val('');
+    RenderTegToBunner(value);
+}
+
+/**
+ * Срендерит новый блок тега в блок с тегами
+ * @param {any} value
+ */
+function RenderTegToBunner(value) {
+    var block = '<div class="bnrre-teg"><div class="bnrre-interers-value">' + value + '</div>&nbsp;<span class="material-icons bnrre-delete-teg bnrre-delete-teg">close</span ></div>';
+    $('.bnrre-teg-container').append(block);
 }

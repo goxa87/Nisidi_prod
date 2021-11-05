@@ -19,6 +19,8 @@ using EventB.Services.Logger;
 using EventB.Services.ImageService;
 using System.Security.Claims;
 using CommonServices.Infrastructure.Helpers;
+using EventB.Services.AccountService;
+using CommonServices.Infrastructure.WebApi;
 
 namespace EventB.Controllers
 {
@@ -35,13 +37,16 @@ namespace EventB.Controllers
         private readonly ITegSplitter tegSplitter;
         private readonly ILogger logger;
 
+        private readonly IAccountService accountService;
+
         public AccountController(UserManager<User> UM,
             SignInManager<User> SIM,
             ITegSplitter TS,
             Context Context,
             IWebHostEnvironment _environment,
             ILogger _logger,
-            IImageService _imageService
+            IImageService _imageService,
+            IAccountService _accountService
             )
         {
             userManager = UM;
@@ -51,6 +56,7 @@ namespace EventB.Controllers
             environment = _environment;
             logger = _logger;
             imageService = _imageService;
+            accountService = _accountService;
         }
 
         public  IActionResult Login(string returnUrl, AccountModel model = null)
@@ -214,6 +220,7 @@ namespace EventB.Controllers
 
             await mailSender.SendEmailAsync(email, "Подтверждение электронной почты на сайте nisidi.ru.", message);
         }
+
         /// <summary>
         /// Повторная отправка подтверждения почты.
         /// </summary>
@@ -228,6 +235,7 @@ namespace EventB.Controllers
 
             return View("ConfirmEmail", email);
         }
+
         /// <summary>
         /// Финальное подтверждение почты. 
         /// </summary>
@@ -258,6 +266,7 @@ namespace EventB.Controllers
 
             return RedirectToAction("Start", "Events");
         }
+
         /// <summary>
         /// Форма изменения пароля.
         /// </summary>
@@ -268,6 +277,7 @@ namespace EventB.Controllers
         {
             return View();
         }
+
         /// <summary>
         /// Изменение пароля.
         /// </summary>
@@ -306,6 +316,7 @@ namespace EventB.Controllers
         /// </summary>
         /// <returns></returns>
         public IActionResult PasswordRecovery() => View();
+
         /// <summary>
         /// Начало восстановления пароля ввод почты.
         /// </summary>
@@ -348,6 +359,7 @@ namespace EventB.Controllers
             await mailSender.SendEmailAsync(email, "Восстановление пароля най сайте nisidi.ru", message);
             return View("PasswordRecoveryConfirm");
         }
+
         /// <summary>
         /// Страница с вводом нового пароля.
         /// </summary>
@@ -361,6 +373,7 @@ namespace EventB.Controllers
             else
                 return BadRequest();
         }
+
         /// <summary>
         /// Восстановление пароля. 
         /// </summary>
@@ -405,9 +418,61 @@ namespace EventB.Controllers
         /// Генерация случайного пароля
         /// </summary>
         /// <returns></returns>
+        [HttpGet]
         public string GetNewRandomPassword()
         {
             return StringHelper.GetAccountPassword(8);
         }
+
+        #region Содержимое пользователя
+
+        /// <summary>
+        /// Сохранить новый интерес
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public async Task<WebResponce<bool>> SaveUserInteres(string value)
+        {
+            try
+            {
+                if(!User.Identity.IsAuthenticated)
+                {
+                    throw new Exception("Пользователь не аутентифицирован. Сюда не должен был попасть");
+                }
+                await accountService.AddInteresTouser(User.FindFirstValue(ClaimTypes.NameIdentifier), value);
+                return new WebResponce<bool>(true);
+            }
+            catch(Exception ex)
+            {
+                await logger.LogStringToFile($"Ошибка AcccountController.SaveUserInteres {ex.Message}\n{ex.StackTrace}");
+                return new WebResponce<bool>(false, false, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Удалить интерес
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public async Task<WebResponce<bool>> DeleteUserInteres(string value)
+        {
+            try
+            {
+                if (!User.Identity.IsAuthenticated)
+                {
+                    throw new Exception("Пользователь не аутентифицирован. Сюда не должен был попасть");
+                }
+                await accountService.DeleteInteresForUser(User.FindFirstValue(ClaimTypes.NameIdentifier), value);
+                return new WebResponce<bool>(true);
+            }
+            catch (Exception ex)
+            {
+                await logger.LogStringToFile($"Ошибка AcccountController.SaveUserInteres {ex.Message}\n{ex.StackTrace}");
+                return new WebResponce<bool>(false, false, ex.Message);
+            }
+        }
+        #endregion
+
+
     }
 }

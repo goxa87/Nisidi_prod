@@ -87,7 +87,12 @@ namespace EventB.Controllers
                     events = null,
                     args = args,
                     Tegs = null,
-                    ByMyTegsLink = GetByMyTegsLink(user)
+                    ByMyTegsLink = GetByMyTegsLink(user),
+                    UserInterses = new UserIntereses()
+                    {
+                        UserId = user.Id,
+                        Intereses = user.Intereses.Select(e=>e.Value).ToList()
+                    }
                 };
                 return View(VM);
             }
@@ -109,7 +114,8 @@ namespace EventB.Controllers
                 {
                     events = null,
                     args = args,
-                    ByMyTegsLink = null
+                    ByMyTegsLink = null,
+                    UserInterses = new UserIntereses()
                 };
                 return View(VM);
             }
@@ -135,15 +141,23 @@ namespace EventB.Controllers
         {
             User user;
             string url;
+            UserIntereses userIntereses;
+
             if (User.Identity.IsAuthenticated)
             {
                 user = await context.Users.Include(e => e.Intereses).FirstAsync(e => e.UserName == User.Identity.Name);
                 url = GetByMyTegsLink(user);
+                userIntereses = new UserIntereses()
+                {
+                    Intereses = user.Intereses.Select(e => e.Value).ToList(),
+                    UserId = user.Id
+                };
             }
             else
             {
                 user = null;
                 url = null;
+                userIntereses = new UserIntereses();
             }
             
             args.DateDue = args.DateDue.AddDays(1).AddMinutes(-1);
@@ -151,17 +165,14 @@ namespace EventB.Controllers
 
             args.City = args.City != null ? args.City.ToUpper() : (user!=null ? user.NormalizedCity : "СТАВРОПОЛЬ");
             args.Tegs = args.Tegs ?? "";
-
-            //var rezult = await eventSelector.GetCostomEventsAsync(args);
-            // Пропускаем то что уж нашли.
-            //args.Skip += args.Take;
             
             var VM = new EventListVM
             {
                 events = null,
                 args = args,
                 Tegs = tegSplitter.GetEnumerable(args.Tegs),
-                ByMyTegsLink = url
+                ByMyTegsLink = url,
+                UserInterses = userIntereses
             };
             return View("Start", VM);
         }
@@ -444,6 +455,13 @@ namespace EventB.Controllers
             else return StatusCode(result);
         }
         #endregion
+
+        [Authorize]
+        public async Task<string> GetLinqToFilterByTegs()
+        {
+            var user = await context.Users.Include(e => e.Intereses).FirstOrDefaultAsync(e => e.Id == User.FindFirstValue(ClaimTypes.NameIdentifier));
+            return GetByMyTegsLink(user);
+        }
 
         private string GetByMyTegsLink(User user)
         {

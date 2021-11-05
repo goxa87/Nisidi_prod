@@ -10,7 +10,7 @@
 <div id="ev-hello-banner" class="display-none"></div>
 
 @{await Html.RenderPartialAsync("_EventListSearchForm", Model);}
-@{await Html.RenderPartialAsync("_SearchByRecomendations");}
+@{await Html.RenderPartialAsync("_SearchByRecomendations", Model.UserInterses);}
 
 <div id="event-list">
 </div>
