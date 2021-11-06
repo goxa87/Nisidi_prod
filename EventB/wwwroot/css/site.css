@@ -765,29 +765,46 @@ input[type="checkbox"].input-validation-error {
 /*блоки фигур*/
 .small-figure-figure {
     padding: 0px;
-    width: 268px;
+    width: 270px;
     min-height: 200px;
-    background-color: #383d41;
+    background-color: #eff7fb;
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: start;
-    align-items: center;
-    margin: 4px;
-    margin-bottom: 8px;
-    box-shadow: 0 0 6px 4px #0009;
+    align-items: start;
+    margin-bottom: 24px;
+    border-radius: 4px;
 }
+
+    .small-figure-figure:hover {
+        background-color: #bbe2f5;
+    }
+
 .small-figure-active {
-    background-color: #0b4962;
+    background-color: #d4edf9;
 }
+
+.small-figure-image{
+    width: 270px;
+    height: 233px;
+}
+    .small-figure-image img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+        border-radius: 4px;
+    }
+
 .small-figure-title {
-    color: #ffcd00;
     font-size: 16px;
-    font-weight: 200;
-    text-align: center;
+    color: #000;
+    font-weight: 400;
+    text-align: start;
     min-height: 4.25em;
-    padding: 2px;
+    padding: 4px;
     word-break: break-word;
+    width: 100%;
 }
 .min-height-180{
     min-height:180px;
@@ -796,9 +813,14 @@ input[type="checkbox"].input-validation-error {
 
 .element-square-container {
     display: flex;
-    justify-content: space-around;
-    align-items: center;
+    justify-content: space-between;
+    align-items: start;
     flex-wrap: wrap;
+}
+@media(max-width: 820px){
+    .element-square-container {
+        justify-content: space-evenly;
+    }
 }
 
 figcaption {

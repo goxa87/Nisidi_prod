@@ -2,10 +2,9 @@
 
 
     <a href="@Model.Link">
-        <div class="flex-vsc small-figure-figure @(Model.Active ? "small-figure-active" : "")">
-            <div class="image-container min-height-180">
-                <img src="@Model.Image" class="image-self-back" />
-                <img src="@Model.Image" class="image-self-front" />
+        <div class="flex-vsc small-figure-figure @(Model.Active ? "small-figure-active" : "") transition-1">
+            <div class="small-figure-image">
+                <img src="@Model.Image"/>
             </div>            
             <div class="small-figure-title">@Model.Title</div>
         </div>
