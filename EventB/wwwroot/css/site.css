@@ -101,7 +101,11 @@ ul{
     margin: 8px;
 }
 
-.text-to-left{
+.margintop05em{
+    margin-top: 0.5em;
+}
+
+.text-to-left {
     text-align: left;
     text-indent: 0;
 }

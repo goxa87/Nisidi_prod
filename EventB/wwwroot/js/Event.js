@@ -190,18 +190,18 @@ $(document).ready(function ()
                 console.log(ans)
                 if (ans.isSuccess) {
                     // Состояние проверяем по классу.
-                    if (button.hasClass('form-search-fade')) {
+                    if (button.hasClass('calltoaction-btn')) {
 
-                        button.removeClass('form-search-fade');
-                        button.addClass('form-submit');
+                        button.removeClass('calltoaction-btn');
+                        button.addClass('calltoaction-prime-btn');
                         button.text('Подтвердить участие');
                         button.siblings().toggleClass('display-none');
                         GetNotification('Отметка о визите удалена', 3, 3)
                         // Отписаться.
                     }
                     else {
-                        button.removeClass('form-submit');
-                        button.addClass('form-search-fade');
+                        button.removeClass('calltoaction-prime-btn');
+                        button.addClass('calltoaction-btn');
                         button.text('Отменить участие');
                         button.siblings().toggleClass('display-none');
                         GetNotification('Отметка о визите сохранена', 3, 3)

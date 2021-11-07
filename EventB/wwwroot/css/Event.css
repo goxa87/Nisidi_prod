@@ -59,9 +59,11 @@
     box-sizing: border-box;
 }
 
-.ev-big-desc h2{
-    font-size: 24px;
+.ev-big-desc h1{
+    font-size: 32px;
     font-weight: 300;
+    margin-top: 16px;
+
 }
 .ev-big-desc div {
     font-size: 18px;

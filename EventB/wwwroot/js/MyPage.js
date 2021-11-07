@@ -97,7 +97,8 @@ $(document).ready(function () {
             iensSearchByText(invitesItems, '.mp-invites-title', searchText);
         }
     });
-    $('.s-filter-clear').click(function () {
+
+    $('body').on('click', '.s-filter-clear', function() {
         $('#mp-vizits-filter').val('');
         $('#mp-created-ev-filter').val('');
         $('#mp-invites-filter').val('');

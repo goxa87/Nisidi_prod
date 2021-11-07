@@ -18,13 +18,13 @@
     <!--детали системные-->
     <div class="dot16px"></div>
     <div class="ev-big-desc">
-        <h2>@Model.Title</h2>
+        <h1>@Model.Title</h1>
         <div class="dot16px"></div>
-        <div class="flex-hsc"><span class="material-icons eve-icons">calendar_today</span> <div>@Model.Date.ToString("dd.MM.yyyy HH:mm")</div></div>
-        <div class="flex-hsc"><span class="material-icons eve-icons">location_on</span> <div>@Model.City @Model.Place</div></div>
+        <div class="flex-hsc margintop05em" ><span class="material-icons eve-icons">calendar_today</span> <div>@Model.Date.ToString("dd.MM.yyyy HH:mm")</div></div>
+        <div class="flex-hsc margintop05em"><span class="material-icons eve-icons">location_on</span> <div>@Model.City @Model.Place</div></div>
         @if (!string.IsNullOrWhiteSpace(Model.Phone))
         {
-            <div class="flex-hsc"><span class="material-icons eve-icons">phone_iphone</span> <div>@Model.Phone</div></div>
+            <div class="flex-hsc margintop05em"><span class="material-icons eve-icons">phone_iphone</span> <div>@Model.Phone</div></div>
         }
         
     </div>
@@ -63,17 +63,17 @@
         @if (Model.Vizits.Where(e => e.UserId == ViewData["UserId"].ToString()).Any())
         {
             <div class="bold-label">Вы пойдете</div>
-            <div id="btn-come" class="form-search-fade">Отменить участие</div>
+            <div id="btn-come" class="calltoaction-btn transition-1 width250px">Отменить участие</div>
         }
         else
         {
             <div class="bold-label display-none">Вы пойдете</div>
-            <div id="btn-come" class="form-submit">Подтвердить участие</div>
+            <div id="btn-come" class="calltoaction-prime-btn width250px">Подтвердить участие</div>
         }
     </div>
 
-    <div id="btn-invite" class="form-submit">Пригласить на это событие</div>
-    <div id="btn-details-send-link" class="form-submit">Отправить ссылку на событие</div>
+    <div id="btn-invite" class="calltoaction-prime-btn transition-1 width250px">Пригласить</div>
+    <div id="btn-details-send-link" class="calltoaction-prime-btn transition-1 width250px">Отправить в чат</div>
 </div>
 
 <div class="bottom-menu">
