@@ -3,7 +3,15 @@
     ViewData["Title"] = "Details";
     ViewData["Style"] = "Event.css";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewData["Title"] = Model.Title;
+    ViewData["Title"] = Model.Title;    
+    var Description ="";
+    if(string.IsNullOrEmpty(Model.Body)){
+        Description = Model.Title + Model.Date.ToString("dd.MM.yyyy HH:mm");
+    }
+    else {
+        Description = (Model.Body.Length > 150) ? Model.Body.Substring(0, 150) : Model.Body;
+    }
+    ViewData["Description"] = Description;
 }
 <div class="top-page-header">Описание события</div>
 
