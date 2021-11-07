@@ -1,0 +1,8 @@
+﻿User-agent: *
+Disallow: /Account/
+Disallow: /Friends/
+Disallow: /MyPage/
+Disallow: /Messages/
+Disallow: /Help/
+
+
