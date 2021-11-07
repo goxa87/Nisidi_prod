@@ -127,6 +127,9 @@ ul{
     text-transform: uppercase;
 }
 
+.darkblue-color{
+    color: #0b4962;
+}
 /*Скроллбар*/
 * {
     scrollbar-width: thin; /* "auto" или "thin"  */
@@ -987,11 +990,28 @@ figure img {
 }
 
 #event-list {
-    /*margin: 0 -5px;*/
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
 }
+
+@media(max-width: 1140px){
+    #event-list{
+        width: 752px;
+    }
+}
+
+@media(max-width: 1140px) {
+    #event-list {
+        width: 752px;
+    }
+}
+@media(max-width: 780px) {
+    #event-list {
+        width: 368px;
+    }
+}
+
 
 .eventlist-container {
     align-self: flex-start;
@@ -1422,13 +1442,13 @@ figure img {
 .teg-colored-content{
     line-height: 1em;
 }
-/*MEDIA*/
+/*MEDIA
 @media(max-width: 1100px) {
     #event-list {
         justify-content: space-evenly;
     }
 }
-
+*/
 
 @media(max-width: 380px) {
     .eventlist-container {
@@ -1499,7 +1519,7 @@ figure img {
 /*SearchByRecomendations*/
 .bnrre-body {
     background-color: #e9e9e9;
-    background: linear-gradient(45deg, #EECFBA, #C5DDE8);
+    background: linear-gradient(45deg, #caf3e6, #C5DDE8);
     border-radius: 4px;
     padding: 16px;
     margin: 2em 0;
@@ -1522,9 +1542,9 @@ figure img {
         opacity: 1;
         border: none;
     }
-    .bnrre-maintext {
-        margin-top: 1em;
-    }
+.bnrre-maintext {
+    font-size: 20px;
+}
 
 .bnrre-teg-container{
     display: flex;
@@ -1566,6 +1586,9 @@ figure img {
     font-size: 18px;
     color: #1b5972;
     cursor: pointer;
+}
+.width250px{
+    width: 250px;
 }
 
 .bnrre-dtn-filter{
@@ -1658,28 +1681,43 @@ figure img {
     background-image: url('../resourses/banners/ban1.jpg');
     background-size: cover;
 }
-.bnr-transparent-fon-dark {
+.bnr-transparent-fon-thin {
     width: 300px;
     height: 300px;
     margin: 50px auto 40px 16px;
     background-color: #FFFB;
     padding: 16px;
 }
+
+.bnr-transparent-fon-wide {
+    width: Calc(100% - 32px);
+    margin: 50px 16px auto 16px;
+    background-color: #fffd;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
 @media(max-width: 800px){
     .bnr-transparent-fon-dark {
         margin: 50px auto   ;
+    }
+
+    .bnr-transparent-fon-wide {
+        margin: 10px auto;
+    }
+}
+
+@media(max-width: 600px) {
+    .bnr-transparent-fon-wide {
+        width: 90%;
+        padding: 16px 8px;
     }
 }
 
 .bnr-color-gold {
     color: #ffd700bd;
 }
-.bnr-transparent-fon-light {
-    width: 80%;
-    margin: auto;
-    background-color: #fffd;
-    padding: 16px;
-}
+
 .bnr-text {
     margin-top: 0.5em;
     font-size: 20px;
@@ -1688,16 +1726,12 @@ figure img {
     color: #1b5972;
 }
 
-@media(max-width: 600px) {
-    .bnr-transparent-fon-light {
-        width: 90%;
-        padding: 16px 8px;
-    }
-}
+
 
 @media(max-width: 750px){
     .bnr-text {
         font-size: 16px;
+        margin-top: 0.2em;
     }
 }
 
@@ -1717,4 +1751,32 @@ figure img {
 }
 .foot-item{
     margin-bottom:16px;
+}
+
+/*  Баннер регистрации 1*/
+.bnr-red {
+    margin-top: 16px;
+    width: 100%;
+    padding: 16px;
+    border-radius: 4px;
+    background-color: #f3c0c0;
+    background: linear-gradient(45deg, #f3c0c0, #C5DDE8);
+}
+.bnrreg1 {
+    margin-top: 16px;
+    width: 100%;
+    padding: 16px;
+    border-radius: 4px;
+    background-color: #e9e9e9;
+    background: linear-gradient(45deg, #caf3e6, #C5DDE8);
+}
+
+.bnrreg1-div1{
+    font-size: 20px;
+    font-weight: bold;
+    color: #0b4962;
+}
+
+.bnrreg1-div2 {
+    font-size: 20px;
 }

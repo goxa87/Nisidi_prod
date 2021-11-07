@@ -13,8 +13,10 @@ export function GetCookieByName(cookieName) {
  * @param {any} newValue
  */
 export function UpdateCookieValue(cookieName, newValue) {
+    var cookie_date = new Date();
+    cookie_date.setYear(cookie_date.getFullYear() + 1);
 
-    document.cookie = cookieName + "=" + newValue;
+    document.cookie = cookieName + "=" + newValue + ";expires=" + cookie_date.toUTCString() + ";path=/";
 }
 
 /**

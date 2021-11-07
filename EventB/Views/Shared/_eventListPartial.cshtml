@@ -1,7 +1,20 @@
-﻿@model List<EventBLib.Models.Event>
+﻿@model EventB.ViewModels.EventsVM.EventSerchResultBatch
+@{ 
+    var counter = 0;
+    foreach(var banner in Model.TemplatesWithPositions.Where(e=>e.Key < 0))
+    {
+        await Html.RenderPartialAsync(banner.Value);
+    }
+}
 
-@foreach(var e in Model)
+@foreach (var e in Model.Events)
 {
-    await Html.RenderPartialAsync("~/Views/Shared/_eventItemPartial.cshtml", e);    
+    await Html.RenderPartialAsync("~/Views/Shared/_eventItemPartial.cshtml", e);
+    counter++;
+    if(Model.TemplatesWithPositions.Any(e=>e.Key == counter))
+    {
+        var template = Model.TemplatesWithPositions.First(e => e.Key == counter);
+        await Html.RenderPartialAsync(template.Value);
+    }
 }
 

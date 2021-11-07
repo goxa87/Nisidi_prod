@@ -12,8 +12,10 @@
 @{await Html.RenderPartialAsync("_EventListSearchForm", Model);}
 @{await Html.RenderPartialAsync("_SearchByRecomendations", Model.UserInterses);}
 
-<div id="event-list">
+<div class="flex-hcc">
+    <div id="event-list"></div>
 </div>
+
 <div id="end-marker">
     <div id="ev-load-more" class="display-none">Загрузить еще</div>
     <div id="noTrespassingOuterBarG">

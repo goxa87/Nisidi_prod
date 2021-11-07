@@ -129,11 +129,35 @@ namespace EventB.Controllers
         [Route("/Events/LoadDynamic")]
         public async Task<IActionResult> LoadDynamic(CostomSelectionArgs args) 
         {
-            var rezult = await eventSelector.GetCostomEventsAsync(args);
-            if (rezult != null && rezult.Any())
-                return PartialView("_eventListPartial", rezult);
+            var events = await eventSelector.GetCostomEventsAsync(args);
+
+            var banners = new Dictionary<int, string>();
+
+            if (args.Skip == 0 && events.Count == 0)
+            {
+                banners.Add(-1, "~/Views/Banner/_EmptySearchResultLeadMagnet.cshtml");
+                Response.StatusCode = 206;
+            } 
+
+            if(events.Count == 0 || events.Count < args.Take) {
+                Response.StatusCode = 206;
+            }
+
+            if (!User.Identity.IsAuthenticated)
+            {
+                banners.Add(6, "~/Views/Banner/_RegisterLeadMagnet.cshtml");
+            }
             else
-                return StatusCode(204);
+            {
+                banners.Add(6, "~/Views/Banner/_AddEventForAuthorizedEventList.cshtml");
+            }
+            
+            var model = new EventSerchResultBatch()
+            {
+                Events = events,
+                TemplatesWithPositions = banners
+            };
+            return PartialView("_eventListPartial", model);
         }
 
         [Route("/Events/SearchEventlist")]

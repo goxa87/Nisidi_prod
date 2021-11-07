@@ -61,6 +61,10 @@ $(document).ready(function ()
                 block = false;
                 $('#noTrespassingOuterBarG').addClass('display-none');
                 $('#ev-load-more').removeClass('display-none');
+            } else if (jqXHR.status == 206) {
+                $('#event-list').append(data);
+                block = false;
+                $('#noTrespassingOuterBarG').addClass('display-none');
             }
             else {
                 dynamicLoadStopper = false
