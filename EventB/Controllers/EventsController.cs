@@ -22,6 +22,7 @@ using EventB.Services.EventServices;
 using EventB.ViewModels.SharedViews;
 using CommonServices.Infrastructure.WebApi;
 using System.Security.Claims;
+using Microsoft.Extensions.Logging;
 
 namespace EventB.Controllers
 {
@@ -35,6 +36,7 @@ namespace EventB.Controllers
         IWebHostEnvironment environment;
         ITegSplitter tegSplitter;
         IEventSelectorService eventSelector;
+        private readonly ILogger<EventsController> _logger;
 
         public EventsController(Context c,
             IEventService _eventService,
@@ -43,7 +45,8 @@ namespace EventB.Controllers
             IUserFindService _userFindService,
             ITegSplitter _tegSplitter,
             IEventSelectorService _eventSelector,
-             UserManager<User> _userManager)
+             UserManager<User> _userManager,
+             ILogger<EventsController> logger)
         {
             context = c;
             eventService = _eventService;
@@ -53,6 +56,7 @@ namespace EventB.Controllers
             userFindService = _userFindService;
             tegSplitter = _tegSplitter;
             eventSelector = _eventSelector;
+            _logger = logger;
         }
         #region Выборки и постраничный вывод
         /// <summary>
@@ -214,6 +218,7 @@ namespace EventB.Controllers
         [Route("Events/Add")]
         public async Task<IActionResult> Add(AddEventViewModel model)
         {
+            _logger.LogError($"Add event {model.Title}");
             if (ModelState.IsValid)
             {
                 var eve = await eventService.AddEvent(model, User.Identity.Name);

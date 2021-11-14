@@ -5,7 +5,6 @@
         <a asp-action="UserInfo" asp-controller="Friends" asp-route-userId="@Model.FriendUserId">
             <div class="friend-list-img">
                 <div class="image-container">
-                    <img src="@Model.UserPhoto" class="image-self-back" alt="user" />
                     <img src="@Model.UserPhoto" class="image-self-front" alt="user" />
                     <div class="fr-image-watersign">
                         @if (!Model.IsConfirmed && !Model.FriendInitiator)
@@ -25,7 +24,6 @@
                 </div>                
             </div>
         </a>
-        <hr>
         <div>
             <input type="hidden" value="@Model.FriendUserId" id="friend-entity-id" />
             <h3 class="min-height-3str central-title">@Model.UserName</h3>
