@@ -33,6 +33,10 @@ namespace EventB
                     });
                     webBuilder.UseUrls("http://localhost:5000");
 
+                }).ConfigureLogging(builder =>
+                {
+                    builder.SetMinimumLevel(LogLevel.Trace);
+                    builder.AddLog4Net("log4net.config");
                 });
     }
 }
