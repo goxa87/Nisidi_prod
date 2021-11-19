@@ -30,7 +30,7 @@
 
     <label class="form-label" asp-for="Title"></label>
     <span asp-validation-for="Title"></span>
-    <input class="form-entry-title" type="text" asp-for="Title" autocomplete="off" /><br>
+    <input class="form-entry-title" type="text" asp-for="Title" autocomplete="off" id="eve-add-title"/><br>
 
     <label class="form-label" asp-for="Body"></label>
     <span asp-validation-for="Body"></span>
@@ -38,7 +38,7 @@
 
     <label class="form-label" asp-for="Tegs"></label>
     <span asp-validation-for="Tegs"></span>
-    <input class="form-entry-title" type="text" asp-for="Tegs"><br>
+    <input class="form-entry-title" type="text" asp-for="Tegs" ><br>
 
     <label class="form-label" asp-for="City"></label>
     <span asp-validation-for="City"></span>
@@ -50,7 +50,7 @@
 
     <label class="form-label" asp-for="Date"></label>
     <span asp-validation-for="Date"></span>
-    <input id="eve-date" class="form-date" type="datetime-local" asp-for="Date" />
+    <input id="eve-add-date" class="form-date" type="datetime-local" asp-for="Date" />
     <br>
 
     <label class="form-label" asp-for="TicketsDesc"></label>
@@ -84,18 +84,18 @@
         </div>
         <div class="eventlist-info ">
             <div>
-                <h3 class="eve-title ">заголовок</h3>
+                <h3 class="eve-title" id="eve-add-title_preview">заголовок</h3>
             </div>
             <div>
                 <div class="flex-hsbc">
                     <div class="flex-hsc">
                         <span class="material-icons eve-icons">calendar_today</span>
-                        <h4 class="eve-time">15 июня</h4>
+                        <h4 class="eve-time" id="eve-add-date_preview">Дата</h4>
                     </div>
 
                     <div class="flex-hsc">
                         <span class="material-icons eve-icons">schedule</span>
-                        <h4 class="eve-time">21:00</h4>
+                        <h4 class="eve-time" id="eve-add-time_preview">00:00</h4>
                     </div>
                 </div>
                 <hr>

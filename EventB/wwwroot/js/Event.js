@@ -394,20 +394,6 @@ $(document).ready(function ()
         $(opps).removeClass('display-none');
     };
 
-    // Превью для картинки
-    $('#eve-add-image').change(function () {
-        var input = $(this)[0];
-
-        if (input.files && input.files[0]) {
-            if (input.files[0].type.match('image.*')) {
-                var reader = new FileReader();
-                reader.onload = function (e) { $('#eve-add-image_preview').attr('src', e.target.result); }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-    });
-
-
     //Беннер рекомендации
     /** Закрыть баннер рекомендации*/
     $('.bnrre-close').click(function () {
@@ -459,6 +445,34 @@ $(document).ready(function ()
         }
     });
 
+    //Добавление
+    // Превью для картинки
+    $('#eve-add-image').change(function () {
+        var input = $(this)[0];
+
+        if (input.files && input.files[0]) {
+            if (input.files[0].type.match('image.*')) {
+                var reader = new FileReader();
+                reader.onload = function (e) { $('#eve-add-image_preview').attr('src', e.target.result); }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    });
+
+    // заголовок
+    $('#eve-add-title').change(function () {
+        $('#eve-add-title_preview').text($(this).val());
+    });
+
+    // Дата
+    $('#eve-add-date').change(function () {
+        let dateTime = $(this).val();
+        let dateDouble = dateTime.split('T');
+        let date = dateDouble[0].split('-')[2] + '.' + dateDouble[0].split('-')[1];
+        $('#eve-add-date_preview').text(date);
+        let time = dateDouble[1];
+        $('#eve-add-time_preview').text(time);
+    });
 });
 
 /**
