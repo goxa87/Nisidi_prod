@@ -31,6 +31,7 @@ namespace EventB
                     {
                         options.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(15);
                     });
+                    webBuilder.UseUrls("http://localhost:5000");
 
                 });
     }

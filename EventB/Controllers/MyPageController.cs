@@ -215,11 +215,10 @@ namespace EventB.Controllers
 
                 // TODO FRIEND
                 // Сдесь всю шляпу получать за раз что нужно менять
-                var user = await context.Users.Include(e => e.Friends)
-                    .Include(e => e.Invites)
+                var user = await context.Users
                     .Include(e => e.Vizits)
                     .FirstOrDefaultAsync(e => e.UserName == HttpContext.User.Identity.Name);
-                List<Friend> inFriends = user.Friends;
+                List<Friend> inFriends;
                 List<Invite> inInvites = await context.Invites.Where(e => e.InviterId == user.Id).ToListAsync();
                 List<Vizit> inVizits = user.Vizits;
                 // Это юзер чаты в которых участвует, но привязвны к другим пользователям (Приватые). 
@@ -240,6 +239,7 @@ namespace EventB.Controllers
                 {
                     user.Name = model.Name;
                     user.NormalizedName = model.Name.ToUpper();
+                    inFriends = await context.Friends.Where(e => e.FriendUserId == user.Id).ToListAsync();
                     foreach (var e in inFriends)
                     {
                         e.UserName = model.Name;

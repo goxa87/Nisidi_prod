@@ -280,11 +280,11 @@ function createPrivateChat(Id, Opponent) {
                 $('#chat-id').val(response.content);
                 SendMessage();
             } else {
-                GetNotification(response.errorMessage, 2, duration = 3)
+                GetNotification(response.errorMessage, 2, 3)
             }
         },
         error: function () {
-            GetNotification('Что-то пошло не так (', 2, duration = 3)
+            GetNotification('Что-то пошло не так (', 2, 3)
         }
     });
 };
@@ -313,7 +313,7 @@ function MessageSender() {
     let opponentId = $('#opponent-id').val();
     if (chatId == '0' || chatId == '') {
         if (opponentId == '0') {
-            GetNotification('Выбирите собеседника', 2, duration = 3)
+            GetNotification('Выбирите собеседника', 2, 3)
             return;
         }
         else {
@@ -358,7 +358,7 @@ function getNewMessageCount() {
             });
         },
         error: () => {
-            GetNotification('Ошибка загрузки', 3, duration = 3)
+            GetNotification('Ошибка загрузки', 3, 3)
         }
     });
 }
