@@ -583,7 +583,7 @@ namespace EventB.Services.EventServices
                     eventTegs.Add(new EventTeg { Teg = teg });
                 }
                 eve.EventTegs = eventTegs;
-                chatMessage += $"<p><span>Новые теги: </span>{("@" + string.Join(" @", eventTegs.Select(e => e.Teg).ToList()))}</p>";
+                chatMessage += $"<p><span>Новые интересы: </span>{("@" + string.Join(" @", eventTegs.Select(e => e.Teg).ToList()))}</p>";
             }
 
             if (model.OldPhone != model.Phone)

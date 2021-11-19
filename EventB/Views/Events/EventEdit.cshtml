@@ -21,27 +21,27 @@ else
     <div asp-validation-summary="ModelOnly" class="form-summary"></div>
 
     <label class="form-label" asp-for="Title"></label>
-    <span asp-validation-for="Title"></span><br>
-    <input class="form-entry-title" type="text" asp-for="Title" value="@Model.Title" /><br>
+    <span asp-validation-for="Title"></span>
+    <input class="form-entry-title" type="text" asp-for="Title" value="@Model.Title" id="eve-add-title" /><br>
     <input type="hidden" asp-for="OldTitle" value="@Model.OldTitle" />
 
     <label class="form-label" asp-for="Body"></label>
-    <span asp-validation-for="Body"></span><br>
-    <textarea class="form-entry-body" type="text" asp-for="Body"></textarea><br>
+    <span asp-validation-for="Body"></span>
+    <textarea class="form-entry-body height300" type="text" asp-for="Body"></textarea><br>
     <input type="hidden" asp-for="OldBody" value="@Model.OldBody" />
 
     <label class="form-label" asp-for="Tegs"></label>
-    <span asp-validation-for="Tegs"></span><br>
+    <span asp-validation-for="Tegs"></span>
     <input class="form-entry-title" type="text" asp-for="Tegs" /><br>
     <input type="hidden" asp-for="OldTegs" value="@Model.OldTegs" />
 
     <label class="form-label" asp-for="City"></label>
-    <span asp-validation-for="City"></span><br>
+    <span asp-validation-for="City"></span>
     <input class="form-entry-title" type="text" asp-for="City" /><br>
     <input type="hidden" asp-for="OldCity" value="@Model.OldCity" />
 
     <label class="form-label" asp-for="Place"></label>
-    <span asp-validation-for="Place"></span><br>
+    <span asp-validation-for="Place"></span>
     <input class="form-entry-title" type="text" asp-for="Place" /><br>
     <input type="hidden" asp-for="OldPlace" value="@Model.OldPlace" />
 
@@ -55,9 +55,9 @@ else
     <input class="form-entry-title" type="text" asp-for="Phone" /><br>
     <input type="hidden" asp-for="OldPhone" value="@Model.OldPhone" />
 
-    <label class="form-label" asp-for="AgeRest"></label>
+    <label class="form-label" asp-for="AgeRest"></label><br />
     <span asp-validation-for="AgeRest"></span>
-    <select asp-for="AgeRest">
+    <select asp-for="AgeRest" class="custom-select width200">
         <option value="0">0+</option>
         <option value="6">6+</option>
         <option value="12">12+</option>
@@ -68,14 +68,42 @@ else
     <label class="form-label" asp-for="Date"></label>
     <span asp-validation-for="Date"></span><br>
 
-    <div class="content">@Model.OldDate.ToString("dd.MM.yyyy HH:mm") изменить на </div>
-    <input type="datetime-local" class="form-date" value="@Model.Date" asp-for="Date" /><br>
+    <div class="content">@Model.OldDate.ToString("dd.MM.yyyy HH:mm")</div> <br />
+    <label class="form-label">изменить на</label> <br />
+    <input type="datetime-local" class="form-date" value="@Model.Date" asp-for="Date" id="eve-add-date" /><br>
     <input type="hidden" asp-for="OldDate" value="@Model.OldDate" />
+    <br />
+    <label class="form-label" asp-for="MainPicture"></label><br />
+    <input class="form-date" type="file" asp-for="NewPicture" id="eve-add-image" /><br>
 
-    <label class="form-label" asp-for="MainPicture"></label>
-    <img class="img-100" src="@($"{Model.MainPicture}?{DateTime.Now.ToString()}")">
-    <div class="content">изменить на</div>
-    <input class="form-date" type="file" asp-for="NewPicture" /><br>
+    <div class="dot16px"></div>
+    <label class="form-label">Предпросмотр</label>
+    <div class="eventlist-container flex-vss transition-1">
+        <div class="eventlist-img">
+            <div class="image-container">
+                <img src="@($"{Model.MainPicture}?{DateTime.Now.ToString()}")" class="image-self-front" alt="event" id="eve-add-image_preview" />
+            </div>
+        </div>
+        <div class="eventlist-info ">
+            <div>
+                <h3 class="eve-title" id="eve-add-title_preview">@Model.OldTitle</h3>
+            </div>
+            <div>
+                <div class="flex-hsbc">
+                    <div class="flex-hsc">
+                        <span class="material-icons eve-icons">calendar_today</span>
+                        <h4 class="eve-time" id="eve-add-date_preview">@Model.OldDate.ToString("dd.MM")</h4>
+                    </div>
+
+                    <div class="flex-hsc">
+                        <span class="material-icons eve-icons">schedule</span>
+                        <h4 class="eve-time" id="eve-add-time_preview">@Model.OldDate.ToString("HH:mm")</h4>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
 
     <input type="hidden" asp-for="EventId">
 

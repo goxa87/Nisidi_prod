@@ -149,7 +149,7 @@ $(document).ready(function ()
                 <label class="form-label">Имя:</label><br>
                 <input id="fr-search-name" class="form-entry-title" type="text" /><br>
 
-                <label class="form-label">Теги (если несколько, то поиск только для первого):</label><br>
+                <label class="form-label">Интересы (1 слово):</label><br>
                 <input id="fr-search-teg" class="form-entry-title" type="text"/><br>
 
                 <label class="form-label">Город (полностью, если не указан, будет поиск для вашего города)</label><br>

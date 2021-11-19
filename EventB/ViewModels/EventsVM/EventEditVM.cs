@@ -18,7 +18,7 @@ namespace EventB.ViewModels.EventsVM
         /// </summary>
         public string OldTitle { get; set; }
 
-        [Display(Name = "Теги тобытия")]
+        [Display(Name = "Интересы")]
         [MaxLength(1000, ErrorMessage = "Длинна этого поля не должна быть больше 1000 символов")]
         public string Tegs { get; set; }
         public string OldTegs { get; set; }
@@ -28,28 +28,28 @@ namespace EventB.ViewModels.EventsVM
         public string Body { get; set; }
         public string OldBody { get; set; }
 
-        [Display(Name = "Дата и время проведения события")]
+        [Display(Name = "Дата и время")]
         public DateTime? Date { get; set; }
         public DateTime OldDate { get; set; }
 
-        [Display(Name = "Город проведения")]
-        [Required(ErrorMessage = "Поле город проведения не заполнено")]
+        [Display(Name = "Город")]
+        [Required(ErrorMessage = "Поле город не заполнено")]
         [MaxLength(100, ErrorMessage = "Длинна этого поля не должна быть больше 100 символов")]
         public string City { get; set; }
         public string OldCity { get; set; }
 
-        [Display(Name = "Место проведения")]
+        [Display(Name = "Место")]
         [Required(ErrorMessage = "Поле Место проведения не заполнено")]
         [MaxLength(1000, ErrorMessage = "Длинна этого поля не должна быть больше 200 символов")]
         public string Place { get; set; }
         public string OldPlace { get; set; }
 
-        [Display(Name = "Билеты")]
+        [Display(Name = "Билеты (необязательно)")]
         [MaxLength(1000, ErrorMessage = "Длинна этого поля не должна быть больше 1000 символов")]
         public string Tickets { get; set; }
         public string OldTickets { get; set; }
 
-        [MaxLength(25), Display(Name = "Телефон для связи (НЕОБЯЗАТЕЛЬНО)")]
+        [MaxLength(25), Display(Name = "Телефон для связи (необязательно)")]
         public string Phone { get; set; }
         public string OldPhone { get; set; }
         [Display(Name ="Возрастные ограничения")]

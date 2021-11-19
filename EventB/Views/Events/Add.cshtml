@@ -10,8 +10,13 @@
 <form asp-action="Add" asp-antiforgery="true" method="post" enctype="multipart/form-data" class="padding16">
     <div asp-validation-summary="ModelOnly" class="form-summary"></div>
 
+    <label class="form-label" asp-for="Type"></label>
     <div class="flex-hsc">
-        <label class="form-label" asp-for="Type"></label>
+        <span asp-validation-for="Type"></span>
+        <select asp-for="Type" class="custom-select width200">
+            <option value="@EventType.Global" selected class="dropdown-item">Публичное</option>
+            <option value="@EventType.Private" class="dropdown-item">Частное</option>
+        </select>
         <div class="help-btn help-btn-dark ">
             <div class="help-content display-none">
                 <div class="help-close"></div>
@@ -21,24 +26,19 @@
                 </p>
             </div>
         </div>
-        <span asp-validation-for="Type"></span>
-        <select asp-for="Type" class="custom-select width200">
-            <option value="@EventType.Global" selected class="dropdown-item">Публичное</option>
-            <option value="@EventType.Private" class="dropdown-item">Частное</option>
-        </select>
     </div>
 
     <label class="form-label" asp-for="Title"></label>
     <span asp-validation-for="Title"></span>
-    <input class="form-entry-title" type="text" asp-for="Title" autocomplete="off" id="eve-add-title"/><br>
+    <input class="form-entry-title" type="text" asp-for="Title" autocomplete="off" id="eve-add-title" /><br>
 
     <label class="form-label" asp-for="Body"></label>
     <span asp-validation-for="Body"></span>
-    <textarea class="form-entry-body" type="text" asp-for="Body" autocomplete="off"></textarea><br>
+    <textarea class="form-entry-body height300" type="text" asp-for="Body" autocomplete="off"></textarea><br>
 
     <label class="form-label" asp-for="Tegs"></label>
     <span asp-validation-for="Tegs"></span>
-    <input class="form-entry-title" type="text" asp-for="Tegs" ><br>
+    <input class="form-entry-title" type="text" asp-for="Tegs"><br>
 
     <label class="form-label" asp-for="City"></label>
     <span asp-validation-for="City"></span>
@@ -48,9 +48,9 @@
     <span asp-validation-for="Place"></span>
     <input class="form-entry-title" type="text" asp-for="Place" /><br>
 
-    <label class="form-label" asp-for="Date"></label>
+    <label class="form-label" asp-for="Date"></label><br />
     <span asp-validation-for="Date"></span>
-    <input id="eve-add-date" class="form-date" type="datetime-local" asp-for="Date" />
+    <input id="eve-add-date" class="form-date marginbotom05em" type="datetime-local" asp-for="Date" />
     <br>
 
     <label class="form-label" asp-for="TicketsDesc"></label>
@@ -59,11 +59,11 @@
 
     <label class="form-label" asp-for="Phone"></label>
     <span asp-validation-for="Phone"></span>
-    <input class="form-entry-title" type="text" asp-for="Phone"/><br>
+    <input class="form-entry-title" type="text" asp-for="Phone" /><br>
 
-    <label class="form-label" asp-for="AgeRestrictions"></label>
+    <label class="form-label" asp-for="AgeRestrictions"></label><br />
     <span asp-validation-for="AgeRestrictions"></span>
-    <select asp-for="AgeRestrictions" class="custom-select width200">
+    <select asp-for="AgeRestrictions" class="custom-select width200 marginbotom05em">
         <option value="0">0+</option>
         <option value="6">6+</option>
         <option value="12">12+</option>
@@ -71,15 +71,15 @@
         <option value="18">18+</option>
     </select><br>
 
-    <label class="form-label" asp-for="MainPicture"></label>
-    <input class="form-date" id="eve-add-image" type="file" asp-for="MainPicture" /><br>
-    
+    <label class="form-label" asp-for="MainPicture"></label><br />
+    <input class="form-date marginbotom05em" id="eve-add-image" type="file" asp-for="MainPicture" /><br>
+
     <div class="dot16px"></div>
     <label class="form-label">Предпросмотр</label>
     <div class="eventlist-container flex-vss transition-1">
         <div class="eventlist-img">
             <div class="image-container">
-                <img src="~/images/defaultevent.jpg" class="image-self-front" alt="event" id="eve-add-image_preview"/>
+                <img src="~/images/defaultevent.jpg" class="image-self-front" alt="event" id="eve-add-image_preview" />
             </div>
         </div>
         <div class="eventlist-info ">

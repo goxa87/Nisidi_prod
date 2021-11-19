@@ -15,7 +15,7 @@ namespace EventB.ViewModels
         [MaxLength(1000, ErrorMessage = "Длинна этого поля не должна быть больше 1000 символов")]
         public string Title { get; set; }
 
-        [Display(Name = "Теги")]
+        [Display(Name = "Интересы")]
         [MaxLength(1000, ErrorMessage = "Длинна этого поля не должна быть больше 1000 символов")]
         public string Tegs { get; set; }
 
@@ -38,13 +38,13 @@ namespace EventB.ViewModels
         public string Place { get; set; }
 
         [MaxLength(1000, ErrorMessage = "Слишком длинное, попробуйте до 1000 символов"),
-            Display(Name = "Билеты. Где и как купить?")]
+            Display(Name = "Билеты (необязательно)")]
         public string TicketsDesc { get; set; }
 
-        [MaxLength(25), Display(Name ="Телефон для связи (Необязательно)")]
+        [MaxLength(25), Display(Name = "Телефон для связи (Необязательно)")]
         public string Phone { get; set; }
 
-        [Display(Name = "Возрастные ограничения мероприятия (Обязательно для публичных мероприятий)")]
+        [Display(Name = "Возрастные ограничения")]
         public int AgeRestrictions { get; set; }
 
         [Display(Name = "Изображение")]
