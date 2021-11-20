@@ -127,7 +127,7 @@ export function getModelWindow(title, okCancel, okCallback, cancelCollback, help
     }
     mainBlock = `<div class="modal-shadow">
                     <div class="modal-content">
-                        <div class="top-page-header flex-hsbc"> <div class="flex-hsc"></span>${title}</span>${helpBlock}</div> <div class="modal-cancel modal-close"></div></div>
+                        <div class="modal-my-header flex-hsbc"><div class="flex-hsc"><span style="padding: 4px 8px 4px 4px; color: #ffcd00;">${title}</span> ${helpBlock}</div> <div class="modal-cancel modal-close"></div></div>
                         <div class="modal-body"></div>
                         <div class="modal-my-footer">`;
 

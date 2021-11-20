@@ -7,28 +7,12 @@ window.onload = function () {
 }
 */
 $(document).ready(function () {
-    // Передвижение меню при скролле.
-    $(window).scroll(function () {       
-        //if ($(window).scrollTop() > $('#title-container').height() + 16) { 
-        let X = $('body').width() > 783 ? ($('#title-container').height() + 16) : 0;
-        if ($(window).scrollTop() > X) {           
-            $('#menu-voider').removeClass('display-none');
-            $('#menu-voider').css('height', $('.main-menu-container').height());
-            $('.main-menu-container').addClass('float-menu');
-        }
-        else {
-                       
-            $('#menu-voider').css('height', '0');
-            $('#menu-voider').addClass('display-none');
-            $('.main-menu-container').removeClass('float-menu'); 
-        }
-    });
-
     GetUpdates();
-
-    // Узкое меню
-    $('#thin-menu').click(function () {
-        $('.thin-menu-items-container').toggleClass('display-none');
+    $('#mm-account-logo').click(function () {
+        $('#mm-menu-container').toggleClass('display-none');
+    });
+    $('#mm-menu-container').mouseleave(function () {
+        $('#mm-menu-container').addClass('display-none');
     });
 
     // Согласиться принять в друзья. моя страница и друзья

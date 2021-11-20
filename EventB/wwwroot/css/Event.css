@@ -16,6 +16,7 @@
     display:flex;
     justify-content: stretch;
     align-items: start;
+    margin-top: 16px;
 }
 .ev-big-img {
     width: 100%;

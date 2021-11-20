@@ -68,8 +68,11 @@ else
                 <label>Телефон:</label>
                 <div>@Model.User.PhoneNumber</div>
             }
-            <label>Пара слов:</label>
-            <div>@Model.User.Description</div>
+            @if (string.IsNullOrWhiteSpace(@Model.User.Description))
+            {
+                <div>@Model.User.Description</div>
+            }
+
 
         </div>
         

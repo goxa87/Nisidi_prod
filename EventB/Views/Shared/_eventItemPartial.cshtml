@@ -2,8 +2,8 @@
 
 @model EventBLib.Models.Event
 
-<a class="event-a" asp-controller="Events" asp-action="Details" asp-route-id="@Model.EventId" target="_blank">
-    <div class="eventlist-container flex-vss transition-1">
+<div class="eventlist-container  transition-1">
+    <a class="event-a flex-vss" asp-controller="Events" asp-action="Details" asp-route-id="@Model.EventId" target="_blank">
         <div class="eventlist-img">
             <div class="image-container">
                 <img src="@Model.Image" class="image-self-front" alt="event" />
@@ -28,5 +28,5 @@
                 <hr>
             </div>
         </div>
-    </div>
-</a>
+    </a>
+</div>
