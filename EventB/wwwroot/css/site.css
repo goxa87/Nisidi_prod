@@ -810,7 +810,7 @@ input[type="checkbox"].input-validation-error {
     color: #000;
     font-weight: 400;
     text-align: start;
-    min-height: 4.25em;
+    min-height: 5.25em;
     padding: 4px;
     word-break: break-word;
     width: 100%;

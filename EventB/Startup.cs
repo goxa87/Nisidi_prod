@@ -66,8 +66,8 @@ namespace EventB
             {
                 options.Cookie.Name = "nisidi_security";
                 options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromDays(7);
-                options.Cookie.MaxAge = TimeSpan.FromDays(8);
+                options.ExpireTimeSpan = TimeSpan.FromDays(360);
+                options.Cookie.MaxAge = TimeSpan.FromDays(360);
                 options.LoginPath = "/Account/Login";
                 options.LogoutPath = "/Account/Logout";
 
