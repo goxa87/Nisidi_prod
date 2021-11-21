@@ -72,6 +72,13 @@ namespace EventB.Controllers
         [Route("Account/Login")]
         public async Task<IActionResult> Login(AccountModel model)
         {
+            if (string.IsNullOrEmpty(model.Login)){
+                ModelState.AddModelError("", "Не указан адрес электронной почты");
+            }
+            if (string.IsNullOrEmpty(model.Login))
+            {
+                ModelState.AddModelError("", "Не указан пароль");
+            }
             model.IsRepeatLoading = true;
             if (ModelState.IsValid)
             {
@@ -134,29 +141,31 @@ namespace EventB.Controllers
 
                     user.MarketKibnet = new MarketKibnet { MarketState = MarketState.common, PaymentAccountBalance = 0, TotalMarcetCompanyCount = 0 };
 
-                    // Изображение
-                    var fileName = Guid.NewGuid().ToString();
-                    string imgSourse = String.Concat("/images/Profileimages/", fileName);
-                    string imgMedium = String.Concat("/images/Profileimages/Medium/", "M" + fileName);
-                    string imgMini = String.Concat("/images/Profileimages/Mini/", "m" + fileName);
-
-                    await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgSourse, 500, IMAGE_SUFFIX);
-                    imgSourse += IMAGE_SUFFIX;
-                    await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgMedium, 360, IMAGE_SUFFIX);
-                    imgMedium += IMAGE_SUFFIX;
-                    await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgMini, 100, IMAGE_SUFFIX);
-                    imgMini += IMAGE_SUFFIX;
-
-                    user.Photo = imgSourse;
-                    user.MediumImage = imgMedium;
-                    user.MiniImage = imgMini;
-
                     // Создание пользователя
 
                     var createResult = await userManager.CreateAsync(user, model.Password);
 
                     if (createResult.Succeeded)
                     {
+                        // Изображение
+                        var fileName = Guid.NewGuid().ToString();
+                        string imgSourse = String.Concat("/images/Profileimages/", fileName);
+                        string imgMedium = String.Concat("/images/Profileimages/Medium/", "M" + fileName);
+                        string imgMini = String.Concat("/images/Profileimages/Mini/", "m" + fileName);
+
+                        await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgSourse, 500, IMAGE_SUFFIX);
+                        imgSourse += IMAGE_SUFFIX;
+                        await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgMedium, 360, IMAGE_SUFFIX);
+                        imgMedium += IMAGE_SUFFIX;
+                        await imageService.SaveResizedImage(environment.WebRootPath + DEFAULT_IMG_PATH, environment.WebRootPath + imgMini, 100, IMAGE_SUFFIX);
+                        imgMini += IMAGE_SUFFIX;
+
+                        user.Photo = imgSourse;
+                        user.MediumImage = imgMedium;
+                        user.MiniImage = imgMini;
+                        context.Users.Update(user);
+                        await context.SaveChangesAsync();
+
                         try
                         {
                             await SendEmailConfirmationAsync(model.Login, model.Password);
@@ -333,19 +342,19 @@ namespace EventB.Controllers
             }
             
             var user = await userManager.FindByNameAsync(email);
-            var userIsConfirmed = await userManager.IsEmailConfirmedAsync(user);
-            if (user==null || !userIsConfirmed)
+            
+            if (user==null)
             {
                 ViewBag.Email = email;
-                if(user == null)
-                {
-                    ModelState.AddModelError("", "Пользователь не найден");
-                }
-                if (!userIsConfirmed)
-                {
-                    ModelState.AddModelError("", "Пользователь не подтвержден. Перейдите по ссылке из письма подтверждения.");
-                }
-                
+                ModelState.AddModelError("", "Пользователь не найден");
+                return View("PasswordRecovery");
+            }
+            var userIsConfirmed = await userManager.IsEmailConfirmedAsync(user);
+            if (!userIsConfirmed)
+            {
+                ViewBag.Email = email;
+                ModelState.AddModelError("", "Пользователь не подтвержден. Перейдите по ссылке из письма подтверждения.");
+
                 return View("PasswordRecovery");
             }
 

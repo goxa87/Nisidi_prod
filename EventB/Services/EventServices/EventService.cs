@@ -216,8 +216,12 @@ namespace EventB.Services.EventServices
                      Include(e => e.EventTegs).
                      Include(e => e.Vizits).
                      FirstOrDefaultAsync(e => e.EventId == id);
-            eve.Views++;
-            await context.SaveChangesAsync();
+            if(eve != null)
+            {
+                eve.Views++;
+                await context.SaveChangesAsync();
+            }
+            
             return eve;
         }
 

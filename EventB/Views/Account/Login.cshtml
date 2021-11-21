@@ -24,10 +24,10 @@
                 <input type="hidden" asp-for="ReturnUrl" />
 
                 <label class="form-label">Электронная почта</label><br>
-                <input class="form-entry-title" type="email" name="Login" value="@Model.Login"><br>
+                <input class="form-entry-title" type="email" name="Login" value="@Model.Login" required><br>
 
                 <label class="form-label">Пароль</label><br>
-                <input class="form-entry-title" type="password" name="Password"><br><br>
+                <input class="form-entry-title" type="password" name="Password" required><br><br>
 
                 <input class="form-submit" type="submit" value="ВОЙТИ"><br>
                 <a asp-action="PasswordRecovery"><h5>Забыли пароль</h5></a>
