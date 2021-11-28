@@ -92,18 +92,20 @@ else
             else
             {
                 <div>Отметки пойду:</div>
-                <div class="element-square-container">
-                    @foreach (var e in Model.WillGoEvents.OrderByDescending( e => e.Event.Date))
-                    {
-                        await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.SmallFigure()
+                <div class="flex-hcc">
+                    <div class="element-square-container">
+                        @foreach (var e in Model.WillGoEvents.OrderByDescending(e => e.Event.Date))
                         {
-                            Title = e.EventTitle,
-                            Link = $"/Events/Details/{e.EventId}",
-                            Image = e.EventPhoto,
-                            Active = e.Event.Date < DateTime.Now ? false : true
-                        });
-                    }
-                </div>
+                            await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.SmallFigure()
+                            {
+                                Title = e.EventTitle,
+                                Link = $"/Events/Details/{e.EventId}",
+                                Image = e.EventPhoto,
+                                Active = e.Event.Date < DateTime.Now ? false : true
+                            });
+                        }
+                    </div>
+                </div>                
             }
         </div>
         <div class="content create-content display-none">
@@ -114,37 +116,42 @@ else
             else
             {
                 <div>Созданные события:</div>
-                <div class="element-square-container">
-                    @foreach (var e in Model.CreatedEvents.OrderByDescending(e =>e.Date))
-                    {
-                        await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.SmallFigure()
+                <div class="flex-hcc">
+                    <div class="element-square-container">
+                        @foreach (var e in Model.CreatedEvents.OrderByDescending(e => e.Date))
                         {
-                            Title = e.Title,
-                            Link = $"/Events/Details/{e.EventId}",
-                            Image = e.MediumImage,
-                            Active = e.Date < DateTime.Now ? false : true  
-                        });
-                    }
-                </div>
+                            await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.SmallFigure()
+                            {
+                                Title = e.Title,
+                                Link = $"/Events/Details/{e.EventId}",
+                                Image = e.MediumImage,
+                                Active = e.Date < DateTime.Now ? false : true
+                            });
+                        }
+                    </div>
+                </div>                
             }
         </div>
         <div class="content friends-content display-none">
             @if (Model.Friends == null || Model.Friends.Count() == 0)
             {
-                <div class="mp-none-content">Друзей пока нет.</div>
+                <div class="mp-none-content">Друзей нет.</div>
             }
             else
             {
-                <div class="flex-hsac flex-wr">
-                    @foreach (var e in Model.Friends)
-                    {
-                        await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.SmallFigure()
+                <div>Друзья:</div>
+                <div class="flex-hcc">
+                    <div class="flex-hsac flex-wr">
+                        @foreach (var e in Model.Friends)
                         {
-                            Title = e.UserName,
-                            Link = $"/Friends/UserInfo/UserInfo?userId={e.UserId}",
-                            Image = e.UserPhoto
-                        });
-                    }
+                            await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.SmallFigure()
+                            {
+                                Title = e.UserName,
+                                Link = $"/Friends/UserInfo/UserInfo?userId={e.UserId}",
+                                Image = e.UserPhoto
+                            });
+                        }
+                    </div>
                 </div>
             }
         </div>

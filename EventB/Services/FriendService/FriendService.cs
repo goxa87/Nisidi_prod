@@ -115,10 +115,9 @@ namespace EventB.Services.FriendService
             return infoVM;
         }
 
-        public async Task<List<SmallFigure>> SearchFriend(string name, string teg, string city, string currentUserAppName)
+        public async Task<FriendsSearchVM> SearchFriend(string name, string teg, string city, string userId)
         {
-            var currentUser = await userManager.FindByNameAsync(currentUserAppName);            
-            var result = context.Users.Include(e => e.Intereses).Where(e => e.Visibility == AccountVisible.Visible && e.Id != currentUser.Id);
+            var result = context.Users.Include(e => e.Intereses).Where(e => e.Visibility == AccountVisible.Visible && e.Id != userId);
 
             if (!string.IsNullOrWhiteSpace(city))
             {
@@ -137,12 +136,23 @@ namespace EventB.Services.FriendService
                 result = result.Where(e => EF.Functions.Like(e.NormalizedName, $"%{name.ToUpper()}%"));
             }
 
-            return result.Select(e=> new SmallFigure()
+            var list = result.Select(e=> new SmallFigure()
             {
                 Image = e.MediumImage,
                 Link = $"/Friends/UserInfo?userId={e.Id}",
                 Title = e.Name
             }).ToList();
+
+            return new FriendsSearchVM()
+            {
+                Friends = list,
+                SearchParam = new FriendSearchParam()
+                {
+                    Name = name,
+                    City = city,
+                    Teg = teg
+                }
+            };
         }
 
         public async Task<int> SubmitFriend(string friendId, string currentUserId)

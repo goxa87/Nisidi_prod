@@ -102,15 +102,15 @@ $(document).ready(function ()
     // Нажатие на кнопку заявки.
     $('.orders').click(function ()
     {
-        if ($(this).text() == 'заявки') {
+        if ($(this).text() == 'Заявки') {
             $('.friend-list-container').slideUp();
-            $(this).text('все');
+            $(this).text('Все');
             $('.agree-friend').parents('.friend-list-container').slideDown();
             clearSearch();
         }
         else {
             $('.friend-list-container').slideDown();
-            $(this).text('заявки');
+            $(this).text('Заявки');
             clearSearch();
         }
         
@@ -142,6 +142,10 @@ $(document).ready(function ()
         }
     });
 
+    $('#fr-seach-request').click(function () {
+        getUsersFriends();
+    });
+    /*
     // Поиск из недрузей глобально (модальное окно)
     $('.fr-search-modal').click(function () {
         let content =`
@@ -161,7 +165,7 @@ $(document).ready(function ()
         $('.modal-body').html(content);
         
     });
-
+    */
     function getUsersFriends() {
         // Собирание данных
         let nameThis = $('#fr-search-name').val();

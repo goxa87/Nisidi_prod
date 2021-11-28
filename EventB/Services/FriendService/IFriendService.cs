@@ -22,7 +22,7 @@ namespace EventB.Services.FriendService
         /// Получит список потенциальных друзей
         /// </summary>
         /// <returns></returns>
-        Task<List<SmallFigure>> SearchFriend(string name, string teg, string city, string currentUserAppName);
+        Task<FriendsSearchVM> SearchFriend(string name, string teg, string city, string userId);
 
         /// <summary>
         /// Добавит пользователя в друзья

@@ -1,0 +1,18 @@
+﻿@model EventB.ViewModels.FriendsVM.FriendSearchParam
+
+<div class="fr-search-form">
+    <div>
+        <label class="form-label">Имя:</label><br>
+        <input id="fr-search-name" class="form-entry-title" type="text" value="@Model.Name"/>
+    </div>
+    <div>
+        <label class="form-label">Интерес:</label><br>
+        <input id="fr-search-teg" class="form-entry-title" type="text" value="@Model.Teg"/>
+    </div>
+    <div>
+        <label class="form-label">Город:</label><br>
+        <input id="fr-search-city" class="form-entry-title" type="text" value="@Model.City"/>
+    </div>
+    
+</div>
+<div id="fr-seach-request" class="calltoaction-prime-btn width250px">Найти</div>

@@ -56,7 +56,12 @@ namespace EventB.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var selection = await context.Friends.Where(e => e.UserId == userId).ToListAsync();
             ViewBag.userId = userId;
-            return View(selection);
+            var model = new FriendsListVM()
+            {
+                Friends = selection,
+                SearchParam = new FriendSearchParam()
+            };
+            return View(model);
         }
 
         /// <summary>
@@ -70,8 +75,9 @@ namespace EventB.Controllers
         [Route("/Friends/SearchFriend")]
         public async Task<ActionResult> SearchFriend(string name, string teg, string city)
         {
-            var usersResult = await friendService.SearchFriend(name, teg, city, User.Identity.Name);
-            return View("SearchFriend", usersResult);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var model = await friendService.SearchFriend(name, teg, city, userId);
+            return View("SearchFriend", model);
         }
 
         /// <summary>

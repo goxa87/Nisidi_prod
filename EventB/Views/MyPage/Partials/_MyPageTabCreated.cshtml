@@ -9,25 +9,28 @@
 
 </div>
 <div>Созданные</div>
-<div class="element-square-container">
-    @if (Model == null || Model.Count == 0)
-    {
-        <div class="mp-none-content">Созданных пока нет</div>
-    }
-    else
-    {
-        @foreach (var e in Model.OrderByDescending(e => e.Date))
+<div class="flex-hcc">
+    <div class="element-square-container">
+        @if (Model == null || Model.Count == 0)
         {
-            <div class="mp-details-figure">
-                @{await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.SmallFigure()
-                    {
-                        Title = e.Title,
-                        Link = $"/Events/Details/{e.EventId}",
-                        Image = e.MediumImage,
-                        Active = e.Date < DateTime.Now ? false : true
-                    });
-                }
-            </div>
+            <div class="mp-none-content">Созданных пока нет</div>
         }
-    }
+        else
+        {
+            @foreach (var e in Model.OrderByDescending(e => e.Date))
+            {
+                <div class="mp-details-figure">
+                    @{await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.SmallFigure()
+                        {
+                            Title = e.Title,
+                            Link = $"/Events/Details/{e.EventId}",
+                            Image = e.MediumImage,
+                            Active = e.Date < DateTime.Now ? false : true
+                        });
+                    }
+                </div>
+
+            }
+        }
+    </div>
 </div>

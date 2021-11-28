@@ -77,7 +77,7 @@ function GetUpdates() {
             if (updates.content.hasNewFriends == true) {
                 $('#mm-li-users').removeClass('display-none')
                 $('#mm-li-users-th').removeClass('display-none')
-                $('#fr-new-star').removeClass('display-none')
+                $('.fr-new-star').removeClass('display-none')
             }
             if (updates.content.hasNewInvites == true) {
                 $('#mm-li-mypage').removeClass('display-none')
