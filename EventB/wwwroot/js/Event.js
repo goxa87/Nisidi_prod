@@ -514,22 +514,20 @@ function onInviteClick() {
 function InitStartLocalData() {
     if ($('#bnrre-user-id').val() == undefined || ($('#bnrre-user-id').val() == '')){
         IsAuthorizedUser = false;
-        var intereses = GetCookieByName(INTERES_COOKIE_NAME);
-        if (intereses) {
-            var interesArray = intereses.split('@');
-            if (interesArray.length > 0) {
-                interesArray.forEach(function (element) {
-                    if (element && element.length > 0) {
-                        RenderTegToBunner(element);
-                    }
-                });
-            }
-        }
     } else {
         IsAuthorizedUser = true;
     }
-
-  
+    var intereses = GetCookieByName(INTERES_COOKIE_NAME);
+    if (intereses) {
+        var interesArray = intereses.split('@');
+        if (interesArray.length > 0) {
+            interesArray.forEach(function (element) {
+                if (element && element.length > 0) {
+                    RenderTegToBunner(element);
+                }
+            });
+        }
+    }
 }
 
 /**
@@ -617,7 +615,7 @@ function AddTegForNotAuthUser(value) {
             cookie += (cookie.length > 0 ? '@' : '') + value;
         }
     });
-    console.log('new Cookie', cookie);
+
     UpdateCookieValue(INTERES_COOKIE_NAME, cookie);
     $('.bnrre-input').val('');
     RenderTegToBunner(value);
