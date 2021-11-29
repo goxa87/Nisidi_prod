@@ -31,12 +31,6 @@ namespace EventB
                     webBuilder.ConfigureKestrel(options =>
                     {
                         options.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(15);
-                        options.Listen(IPAddress.Loopback, 5000);
-                        options.Listen(IPAddress.Loopback, 5001,
-                            listenOptions =>
-                            {
-                                listenOptions.UseHttps("ketrelCert.pfx");
-                            });
                     });
                     webBuilder.UseUrls("http://localhost:5000");
 
