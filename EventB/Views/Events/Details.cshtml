@@ -23,7 +23,7 @@
         </div>
     </div>
     <!--детали системные-->
-    <div class="dot16px"></div>
+    <div class="dot16px">&nbsp;&nbsp;&nbsp;&nbsp;</div>
     <div class="ev-big-desc">
         <h1>@Model.Title</h1>
         <div class="dot16px"></div>
@@ -59,13 +59,13 @@
             await Html.RenderPartialAsync("~/Views/Shared/_tegColoredLink.cshtml", tegData);
         }
     </div>
-    <div class="dot16px"></div>
+    <div class="dot16px">&nbsp;&nbsp;&nbsp;&nbsp;</div>
     @if (Model.AgeRestrictions != 0)
     {
         <p>Возрастные ограничения: @Model.AgeRestString</p>
     }
     <p>Автор: <a href="/Friends/UserInfo?userId=@Model.Creator.Id">@Model.Creator.Name</a></p>
-    <div class="dot16px"></div>
+    <div class="dot16px">&nbsp;&nbsp;&nbsp;&nbsp;</div>
     <div id="come-block">
         @if (Model.Vizits.Where(e => e.UserId == ViewData["UserId"].ToString()).Any())
         {
@@ -85,9 +85,8 @@
 
 <div class="bottom-menu">
     <span class="bottom-menu-item bottom-menu-item-selected" id="btn-changes">Изменения</span>
-    <span class="bottom-menu-item" id="btn-chat">Комментарии</span>
-    <span class="bottom-menu-item" id="btn-vizitors">Участники(@Model.Vizits.Count())</span>
-
+    <span class="bottom-menu-item " id="btn-chat">Комментарии</span>
+    <span class="bottom-menu-item " id="btn-vizitors">Участники(@Model.Vizits.Count())</span>
 </div>
 
 <div class="bottom-body">

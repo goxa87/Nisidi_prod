@@ -126,8 +126,8 @@ $(document).ready(function ()
     $('.fr-selector').click(function ()
     {
         // Селекторы меняем цветами.
-        $('.fr-selector').removeClass('fr-checked');
-        $(this).addClass('fr-checked');
+        $('.fr-selector').removeClass('bottom-menu-item-selected');
+        $(this).addClass('bottom-menu-item-selected');
         $('.content').addClass('display-none');
         let selector = $(this).prop('id');
         // В зависимости от того чт нажали добавляем удаляем класс видимости.
@@ -145,27 +145,7 @@ $(document).ready(function ()
     $('#fr-seach-request').click(function () {
         getUsersFriends();
     });
-    /*
-    // Поиск из недрузей глобально (модальное окно)
-    $('.fr-search-modal').click(function () {
-        let content =`
-            <div>
-                <label class="form-label">Имя:</label><br>
-                <input id="fr-search-name" class="form-entry-title" type="text" /><br>
 
-                <label class="form-label">Интересы (1 слово):</label><br>
-                <input id="fr-search-teg" class="form-entry-title" type="text"/><br>
-
-                <label class="form-label">Город (полностью, если не указан, будет поиск для вашего города)</label><br>
-                <input id="fr-search-city" class="form-entry-title" type="text"/><br>
-            </div>  
-            `
-        ;
-        getModelWindow('Параметры для поиска пользователей', true, getUsersFriends, null, "Поиск среди всех пользователей.");
-        $('.modal-body').html(content);
-        
-    });
-    */
     function getUsersFriends() {
         // Собирание данных
         let nameThis = $('#fr-search-name').val();

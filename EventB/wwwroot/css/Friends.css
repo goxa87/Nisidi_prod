@@ -25,21 +25,17 @@ label {
     margin-top: 16px;
 }
 
-.info-area {
-    padding: 0 16px;
-    
+.info-area {    
 }
 @media(max-width:850px) {
     .ui-info {
         display: flex;
         flex-direction: column;
         align-items:center;
-        padding: 16px 0;
         background-color: #fff;
     }
     .info-area {
-        padding: 0 16px;
-        width: 95%;
+        width: 100%;
         flex-basis: 100px;
     }
 }
@@ -51,8 +47,10 @@ label {
 }
 
 .ui-photo {
-    max-height: 400px;
-    max-width: 400px;
+    height: 260px;
+    width: 320px;
+    margin-bottom: 16px;
+    border-radius: 4px;
 }
 .btn-area{
 }
@@ -60,20 +58,6 @@ label {
     width: 100%;
 }
 
-.ui-bottom-menu{
-    background-color:#1b5972;
-    width:100%;
-    padding:8px;
-}
-
-.fr-selector {
-    color: #dee2e6;
-    padding: 0 16px;
-    cursor: pointer;
-}
-.fr-checked {
-    color: #ffcd00;
-}
 .ui-botom-content{
     background-color: #fff;
 }

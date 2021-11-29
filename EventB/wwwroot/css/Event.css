@@ -119,22 +119,8 @@
     margin: 10px 5px;
 }
 /* нижнее меню деталей*/
-.bottom-menu {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    background-color: #0b4962;
-    padding: 8px 24px;
-}
-.bottom-menu-item{
-    color:#fff;
-    cursor:pointer;
-}
-.bottom-menu-item-selected {
-    color:#ffcd00;
-}
 .bottom-body {
-    padding: 16px 4px;
+    padding: 4px 0;
     background-color: #fff;
 }
 /* Сообщения */
@@ -146,6 +132,7 @@
     border:none;
     background-color:#1b5972;
     color:#ffcd00;
+    border-radius: 4px;
 }
 .ed-message-list {
     width: 100%;
@@ -220,6 +207,7 @@ form label {
     padding: 4px 8px;
     font-size:12px;
     border:1px solid #1b5972;
+    border-radius: 4px;
 }
 .ev-d-invite-text {
     width: 100%;

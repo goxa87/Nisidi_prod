@@ -25,7 +25,7 @@ else
                 <input type="hidden" value="@Model.User.Id" id="friend-entity-id" />
                 @if (Model.Friend != null && (!Model.Friend.IsConfirmed && Model.Friend.FriendInitiator))
                 {
-                    <div class="red-btn-alert width100">Ваша заявка в друзья не подтверждена</div>
+                    <div class="red-btn-alert width100">Заявка не подтверждена</div>
                 }
                 @if (Model.Friend == null)
                 {
@@ -48,6 +48,7 @@ else
 
             </div>
         </div>
+        <div class="dot16px">&nbsp;&nbsp;&nbsp;&nbsp;</div>
         <div class="info-area">
             <label>Город:</label>
             <div>@Model.User.City</div>
@@ -75,12 +76,12 @@ else
 
 
         </div>
-        
+
     </div>
-    <div class="ui-bottom-menu flex-hsac">
-        <span id="will-go" class="fr-selector fr-checked">Отметки пойду</span>
-        <span id="created" class="fr-selector">Созданные</span>
-        <span id="friends" class="fr-selector">Друзья</span>
+    <div class="bottom-menu">
+        <span id="will-go" class="fr-selector bottom-menu-item bottom-menu-item-selected">Отметки пойду</span>
+        <span id="created" class="fr-selector bottom-menu-item">Созданные</span>
+        <span id="friends" class="fr-selector bottom-menu-item">Друзья</span>
     </div>
 
     <div class="ui-botom-content">

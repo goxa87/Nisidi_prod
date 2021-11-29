@@ -5,7 +5,6 @@
     margin-top: 16px;
 }
 .mp-data {
-    padding: 16px;
 }
 .btn-edit {
     color: #444;
@@ -19,12 +18,15 @@
 }
 
 .mp-img {
+    margin-bottom: 16px;
 }
 
     .mp-img img {
         object-fit: fill;
-        max-height:400px;
-        max-width:400px;
+        height:260px;
+        width:320px;
+        object-fit: cover;
+        border-radius: 4px;
     }
 .btn-area {
 }
@@ -188,14 +190,14 @@
 
         background-color: #fff;
     }
-    .mp-img{
-        max-width: 400px;
+    .mp-img {
+        height: 260px;
+        width: 320px;
     }
-        .mp-img img{
+        .mp-img img {
             width: 100%;
         }
     .mp-data {
-        padding: 8px;
         width: 100%;
     }
 }

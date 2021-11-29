@@ -3,9 +3,9 @@ import { GetBanner } from './Banner.js';
 
 $(document).ready(function () {
     // Кнпоки Нижнего меню.
-    $('.mp-my-selector').on('click', function () {
-        $('.selected-label').removeClass('selected-label');
-        $(this).addClass('selected-label');
+    $('.bottom-menu-item').on('click', function () {
+        $('.bottom-menu-item').removeClass('bottom-menu-item-selected');
+        $(this).addClass('bottom-menu-item-selected');
     });
     // Показ Пойду.
     $('#events-willgo').click(function () {
