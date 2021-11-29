@@ -47,6 +47,7 @@ label {
 }
 
 .ui-photo {
+    object-fit: cover;
     height: 260px;
     width: 320px;
     margin-bottom: 16px;

@@ -286,22 +286,19 @@ input[type="checkbox"].input-validation-error {
     justify-content: space-between;
     align-items: center;
     height: 50px;
-    width: Calc(100% - 4px);
-    max-width: 1140px;
+    width: 1136px;
     margin: 0 auto 0 auto;
     border-radius: 0 0 4px 4px;
 }
-.the-container {
-    max-width: 1140px;
-    margin: 0 auto 0 auto;
-}
-@media(max-width: 800px){
-    .the-container{
-        padding: 2px;
-    }
+@media(max-width: 1140px) {
     #title-container {
         width: Calc(100% - 8px);
     }
+}
+.the-container {
+    padding: 2px;
+    max-width: 1140px;
+    margin: 0 auto 0 auto;
 }
 
 .mm-nisidi{
