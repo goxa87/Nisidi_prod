@@ -64,8 +64,10 @@ $(document).ready(function () {
         let params = GetDataForFilter();
         $.ajax({
             method: 'POST',
+            url: "/Events/GetGetEventsTable",
             data: params,
             success: function (data) {
+                console.log('eves', data)
                 $('#evelist-table').html(data);
             },
             error: function () {

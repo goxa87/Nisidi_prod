@@ -1,7 +1,7 @@
 ﻿@model List<EventBLib.Models.Event>
 
 @{
-    Layout = null;
+    Layout = "";
 }
 
 @if (Model.Count > 0)
@@ -18,10 +18,14 @@
         <tbody>
             @foreach (var eve in Model)
             {
+                
                 <tr>
-                    <th scope="row">@eve.EventId</th>
+                    <td><a href="/Events/Details?eventId=@eve.EventId">@eve.EventId</a></td>
                     <td>@eve.Title</td>
-                    <td>@eve.CreationDate.ToLongDateString()</td>
+                    <td class="width150">
+                        <div>Соз: @eve.CreationDate.ToString("dd_MM_yy")</div>
+                        <div>Пров: @eve.Date.ToString("dd_MM_yy")</div>
+                    </td>
                     <td>@eve.Creator.NormalizedUserName</td>
                 </tr>
             }
@@ -30,5 +34,5 @@
 }
 else
 {
-    <div>Событий не найдено</div>
+    <div>События не найдено</div>
 }

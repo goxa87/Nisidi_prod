@@ -1,4 +1,5 @@
 ﻿using Admin.Models.ViewModels.Events;
+using EventBLib.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,12 @@ namespace Admin.Services.EventsService
         /// <param name="param"></param>
         /// <returns></returns>
         Task<EventsListVM> GetEventsList(EventListParam param);
+
+        /// <summary>
+        /// Вернет полное описание события.
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        Task<Event> GetEventDetails(int eventId);
     }
 }

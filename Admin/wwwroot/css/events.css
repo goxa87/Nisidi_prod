@@ -1,1 +1,21 @@
-﻿
+﻿.ev-d-title {
+    margin-top: 8px;
+    padding: 8px;
+    font-weight: 500;
+}
+.ev-d-value {
+    background-color: #f1fafa;
+    padding: 8px;
+}
+.width150{
+    width: 250px;
+}
+.ev-d-image{
+    max-width: 368px;
+    max-height: 320px;
+}
+    .ev-d-image > img {
+        max-width: 368px;
+        max-height: 320px;
+        object-fit: cover;
+    }

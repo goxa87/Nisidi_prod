@@ -35,6 +35,8 @@ namespace Admin
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IConfiguration>(Configuration);
+
             string connection = Configuration.GetConnectionString("EB1");
             services.AddDbContext<Context>(options => {
                 options.UseNpgsql(connection);

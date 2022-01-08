@@ -1,7 +1,9 @@
 ﻿using Admin.AdminDbContext;
 using Admin.Models.ViewModels.Events;
 using EventBLib.DataContext;
+using EventBLib.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,42 +22,57 @@ namespace Admin.Services.EventsService
         /// <summary>
         /// Контекст БД сайта
         /// </summary>
-        private readonly Context context;
+        private readonly Context db;
+
+        /// <summary>
+        /// Конфигурация приложения.
+        /// </summary>
+        private readonly IConfiguration _configuration;
 
         public EventsService(AdminContext _adminDb,
-            Context _context)
+            Context _context,
+            IConfiguration configuration)
         {
             adminDb = _adminDb;
-            context = _context;
+            db = _context;
+            _configuration = configuration;
+        }
+
+        ///<inheritdoc />
+        public async Task<Event> GetEventDetails(int eventId)
+        {
+            var eve = await db.Events.Include(e=>e.EventTegs).Include(e=>e.Creator).Include(e=>e.Vizits).FirstOrDefaultAsync(e=>e.EventId == eventId);
+            eve.Image = _configuration.GetValue<string>("RootHostnisidi") + eve.Image;
+            eve.Image = _configuration.GetValue<string>("RootHostnisidi") + "/images/EventImages/ab69d908-5420-4fe0-a322-b1126b890d23.jpeg";
+            return eve;
         }
 
         ///<inheritdoc />
         public async Task<EventsListVM> GetEventsList(EventListParam param)
         {
-            // filter
-            var query = context.Events.Include(e => e.EventTegs).Include(e=>e.Creator).AsQueryable();
+            var query = db.Events.Include(e => e.EventTegs).Include(e=>e.Creator).AsQueryable();
 
-            if (!param.EventCreateStartDate.HasValue)
+            if (param.EventCreateStartDate.HasValue)
             {
-                param.EventCreateStartDate = DateTime.Now.AddDays(-45);
+                query = query.Where(e => e.CreationDate > param.EventCreateStartDate);
             }
 
-            if (!param.EventCreateEndDate.HasValue)
+            if (param.EventCreateEndDate.HasValue)
             {
-                param.EventCreateEndDate = DateTime.Now;
+                query = query.Where(e => e.CreationDate < param.EventCreateEndDate);
             }
-            query = query.Where(e => e.CreationDate > param.EventCreateStartDate && e.CreationDate < param.EventCreateEndDate);
-
+            var i = await query.ToListAsync();
             if (param.StartDate.HasValue)
             {
-                query.Where(e => e.Date >= param.StartDate);
+                query = query.Where(e => e.Date >= param.StartDate);
             }
+             i = await query.ToListAsync();
 
             if (param.EndDate.HasValue)
             {
-                query.Where(e => e.Date <= param.EndDate);
+                query = query.Where(e => e.Date <= param.EndDate);
             }
-
+            i = await query.ToListAsync();
             if (!string.IsNullOrEmpty(param.EventTitle))
             {
                 query = query.Where(e => EF.Functions.Like(e.Title, $"%{param.EventTitle.Trim()}%"));

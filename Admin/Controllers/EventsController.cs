@@ -3,6 +3,7 @@ using Admin.Services.EventsService;
 using CommonServices.Infrastructure.Paging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +16,13 @@ namespace Admin.Controllers
     {
 
         private readonly IEventsService eventsService;
+        private readonly IConfiguration _configuration;
 
-        public EventsController(IEventsService _eventsService)
+        public EventsController(IEventsService _eventsService,
+            IConfiguration configuration)
         {
             eventsService = _eventsService;
+            _configuration = configuration;
         }
 
         [HttpGet, HttpPost]
@@ -32,11 +36,18 @@ namespace Admin.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Details(int eventId)
+        {
+            var eve = await eventsService.GetEventDetails(eventId);
+            return View("~/views/Events/Details.cshtml", eve);
+        }
+
         [HttpPost]
         public async Task<ActionResult> GetGetEventsTable(EventListParam param)
         {
             var model = await eventsService.GetEventsList(param);
-            return PartialView("_EventsTablePage.cshtml", model.Events);
+            return PartialView("~/views/Events/_EventsTablePage.cshtml", model.Events);
         }
     }
 }
