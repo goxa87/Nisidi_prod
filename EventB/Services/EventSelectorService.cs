@@ -1,5 +1,6 @@
 ﻿
 using EventBLib.DataContext;
+using EventBLib.Enums;
 using EventBLib.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -30,7 +31,7 @@ namespace EventB.Services
             // Фильтр
             // по дате
             var dateStart = args.DateSince;
-            if (dateStart == null)
+            if (dateStart == new DateTime(0))
             {
                 dateStart = DateTime.Now;
             }
@@ -39,11 +40,19 @@ namespace EventB.Services
             {
                 dateEnd = DateTime.Now.AddDays(90);
             }
+
+            var checkStatuses = new List<EventCheckStatus>() { EventCheckStatus.New, EventCheckStatus.Changed, EventCheckStatus.Confirmed };
+
             var selection = context.Events.
-                Include(e=>e.EventTegs).
-                Include(e=>e.Creator).
-                Include(e => e.Vizits).
-                Where(e => e.Date > dateStart && e.Date < dateEnd && e.Type == EventType.Global);
+                Include(e=>e.EventTegs). //?
+                Include(e=>e.Creator). //?
+                Include(e => e.Vizits). // ? надо ли? 
+                Where(e => 
+                    e.Date > dateStart 
+                    && e.Date < dateEnd 
+                    && e.Type == EventType.Global
+                    && checkStatuses.Contains(e.CheckStatus));
+
             // город
             if (!string.IsNullOrWhiteSpace(args.City))
                 selection = selection.Where(e => e.NormalizedCity == args.City.Trim().ToUpper());
