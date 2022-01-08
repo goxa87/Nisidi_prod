@@ -919,6 +919,7 @@ figure img {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    width: 100%;
 }
 
 @media(max-width: 1140px){
@@ -954,7 +955,7 @@ figure img {
 
 @media(max-width: 380px) {
     .eventlist-container {
-        width: 100%;
+        /* width: 100%;*/
     }
 }
 
@@ -975,11 +976,12 @@ figure img {
 .eve-title {
     margin-top: 16px;
     text-align: left;
-    font-size: 18px;
+    font-size: 20px;
+    font-weight: 400;
 }
 
 .eve-time {
-    font-weight: 500;
+    font-weight: 400;
     font-size: 18px;
     margin-bottom: 0px;
 }
@@ -1430,6 +1432,7 @@ figure img {
 */
 
 @media(max-width: 380px) {
+
     .eventlist-container {
         align-self: flex-start;
         background-color: #fff;

@@ -35,9 +35,14 @@
 .lk-event{
     display: flex;
 }
-@media(max-width: 770px)
-{
-    .lk-event{
+@media(max-width: 380px) {
+    .lk-event-container {
+        width: 100%;
+    }
+}
+
+@media(max-width: 770px) {
+    .lk-event {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -45,20 +50,23 @@
 }
 /* модалка блокировка пользователей*/
 
-.lk-block-user-name{
-    font-weight:300;
+.lk-block-user-name {
+    font-weight: 300;
 }
-.lk-block-user-ava{
-    max-height:46px;
-    max-width:46px;
+
+.lk-block-user-ava {
+    max-height: 46px;
+    max-width: 46px;
 }
-.lk-block-user-btn-block{
+
+.lk-block-user-btn-block {
     color: #f25522;
     cursor: pointer;
     padding: 4px 6px;
     background-color: #1b5972;
     border-radius: 4px;
 }
+
 .lk-block-user-btn-unblock {
     color: #00ff90;
     cursor: pointer;
