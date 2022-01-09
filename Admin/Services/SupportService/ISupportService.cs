@@ -9,21 +9,17 @@ namespace Admin.Services.SupportService
 {
     public interface ISupportService
     {
-
+        /// <summary>
+        /// Получить все заявки
+        /// </summary>
+        /// <returns></returns>
         Task<List<SupportTicket>> GetAllTickets();
-        ///// <summary>
-        ///// Получить все чаты, которые не были прочитаны техподдержкой
-        ///// </summary>
-        ///// <returns></returns>
-        //Task<List<SupportChat>> GetUnreadSupportChats();
 
-        ///// <summary>
-        ///// Отправить сообщение в чат техподдержки (с созданием чата если его нет.)
-        ///// </summary>
-        ///// <param name="clientId">id клиента, которому пишем</param>
-        ///// <param name="message">сообщение</param>
-        ///// <param name="supportName">отображаемое имя техподдержки</param>
-        ///// <returns></returns>
-        //Task SendMessageToSupportChat(string clientId, string message, string supportPersonId, string supportName = "NISIDI.RU");
+        /// <summary>
+        /// Сохранит или обновит тикет в ТП
+        /// </summary>
+        /// <param name="ticket"></param>
+        /// <returns></returns>
+        Task<SupportTicket> SaveOrUpdateTicket(SupportTicket ticket);
     }
 }

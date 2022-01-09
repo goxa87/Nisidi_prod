@@ -44,38 +44,20 @@ namespace Admin.Services.SupportService
             return await db.SupportTickets.Where(e => e.Status != EventBLib.Enums.SupportTicketStatus.Deleted).ToListAsync();
         }
 
-        ///// <inheritdoc />
-        //public Task<List<SupportChat>> GetUnreadSupportChats()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        ///// <inheritdoc />
-        //public async Task SendMessageToSupportChat(string clientId, string message, string supportPersonId, string supportName = "NISIDI.RU")
-        //{
-        //    var chat = await db.SupportChats.Include(e=>e.Messages).FirstOrDefaultAsync(e => e.ClientId == clientId);
-        //    if(chat == null)
-        //    {
-        //        chat = new SupportChat()
-        //        {
-        //            ClientId = clientId,
-        //        };
-        //        db.SupportChats.Add(chat);
-        //        await db.SaveChangesAsync();
-        //        chat.Messages = new List<SupportMessage>();
-        //    }
-
-        //    var newMessage = new SupportMessage()
-        //    {
-        //        IsReadClient = false,
-        //        IsReadSupport = true,
-        //        MessageDate = DateTime.Now,
-        //        Text = message,
-        //        SupportPersonId = supportPersonId
-        //    };
-
-        //    chat.Messages.Add(newMessage);
-        //    await db.SaveChangesAsync();
-        //}
+        /// <inheritdoc />
+        public async Task<SupportTicket> SaveOrUpdateTicket(SupportTicket ticket)
+        {
+            if(ticket.SupportTicketId == default || !(await db.SupportTickets.AnyAsync(e=>e.SupportTicketId == ticket.SupportTicketId)))
+            {
+                db.SupportTickets.Add(ticket);
+            }
+            else
+            {
+                db.SupportTickets.Update(ticket);
+            }
+            await db.SaveChangesAsync();
+            
+            return ticket;
+        }
     }
 }

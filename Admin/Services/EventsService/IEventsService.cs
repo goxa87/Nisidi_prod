@@ -39,8 +39,9 @@ namespace Admin.Services.EventsService
         /// </summary>
         /// <param name="eventId"></param>
         /// <param name="messageToUser">Сообщение для пользователя чтобы отправить ему в чат</param>
+        /// <param name="employeeId">Id сотрудника техподдержки</param>
         /// <returns></returns>
-        Task<WebResponce<string>> BanEventByReason(int eventId, string messageToUser);
+        Task<WebResponce<string>> BanEventByReason(int eventId, string messageToUser, string employeeId);
 
         // перевечти в тип частное публичное
 

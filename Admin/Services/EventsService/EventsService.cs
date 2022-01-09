@@ -1,5 +1,6 @@
 ﻿using Admin.AdminDbContext;
 using Admin.Models.ViewModels.Events;
+using Admin.Services.SupportService;
 using CommonServices.Infrastructure.WebApi;
 using EventBLib.DataContext;
 using EventBLib.Enums;
@@ -31,17 +32,24 @@ namespace Admin.Services.EventsService
         /// </summary>
         private readonly IConfiguration _configuration;
 
+        /// <summary>
+        /// Сервис заявкок в поддержку
+        /// </summary>
+        private readonly ISupportService _supportService;
+
         public EventsService(AdminContext _adminDb,
             Context _context,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            ISupportService supportService)
         {
             adminDb = _adminDb;
             db = _context;
             _configuration = configuration;
+            _supportService = supportService;
         }
 
         /// <inheritdoc />
-        public async Task<WebResponce<string>> BanEventByReason(int eventId, string messageToUser)
+        public async Task<WebResponce<string>> BanEventByReason(int eventId, string messageToUser, string employeeId)
         {
             var eve = await db.Events.FirstOrDefaultAsync(e => e.EventId == eventId);
             if (eve == null)
@@ -52,10 +60,22 @@ namespace Admin.Services.EventsService
             }
 
             eve.CheckStatus = EventCheckStatus.Banned;
+            await db.SaveChangesAsync();
 
             // TODO отправка сообщения в чат от имени нисиди с сообщением о том что нужно изменить
-
-            await db.SaveChangesAsync();
+            var newTicket = new SupportTicket()
+            {
+                Theme = "Блокировка события.",
+                Description = $"Событие было заблокировано по причине: {messageToUser}. Оно не будет доступно ля просмотра и не будет отображаться в поиске. Внестие необходимыве изменения в описание события для его разблокировки. ",
+                EventId = eventId,
+                NeedToClose = false,
+                NisidiEmployeeId = _configuration.GetValue<string>("DefaultSupportEmployeeNisidiUserId"),
+                OpenDate = DateTime.Now,
+                Status = SupportTicketStatus.New,
+                SupportEmployeeId = employeeId,
+                UserId = eve.UserId
+            };
+            await _supportService.SaveOrUpdateTicket(newTicket);
 
             return new WebResponce<string>("Событие успешно ззаблокировано.");
         }

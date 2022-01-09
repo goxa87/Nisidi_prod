@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Admin.Controllers
@@ -74,7 +75,7 @@ namespace Admin.Controllers
         /// <returns></returns>
         public async Task<WebResponce<string>> BanEvent(int eventId, string message)
         {
-            return await _eventsService.BanEventByReason(eventId, message);
+            return await _eventsService.BanEventByReason(eventId, message, User.FindFirstValue(ClaimTypes.NameIdentifier));
         }
 
         #endregion

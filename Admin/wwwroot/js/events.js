@@ -134,7 +134,7 @@ function ConfirmEvent(eventId) {
 /** Отправить запрос на одобрение события */
 function BanEvent(eventId, message) {
     $.ajax({
-        url: '/Events/BanEvent?eventId=' + 15500 + '&message=' + message,
+        url: '/Events/BanEvent?eventId=' + eventId + '&message=' + message,
         success: function (resp) {
             if (resp.isSuccess) {
                 DevExpress.ui.notify("Успешно забанено", 'success', 2000);
