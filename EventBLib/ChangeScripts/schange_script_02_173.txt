@@ -1,2 +1,0 @@
-alter table "Events"
-add "CheckStatus" integer NOT NULL default(0);
