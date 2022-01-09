@@ -42,11 +42,14 @@ namespace Admin.Models.ViewModels.Events
         public string UserName { get; set; }
 
         /// <summary>
-        /// Публичные события.
+        /// Публичные события
         /// </summary>
         public bool IsGlobal { get; set; }
 
-
+        /// <summary>
+        /// Показать только те, что требуют проверки
+        /// </summary>
+        public bool OnlyRequereCheck { get; set; }
 
     }
 }

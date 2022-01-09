@@ -73,6 +73,10 @@ body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
 }
+
+.display-none{
+    display: none;
+}
 .display-inline{
     display: inline-block;
 }
@@ -115,5 +119,4 @@ body {
 }
 
 /*****************/
-
 

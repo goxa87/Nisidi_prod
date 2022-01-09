@@ -1,6 +1,8 @@
 ﻿using Admin.AdminDbContext;
 using Admin.Models.ViewModels.Events;
+using CommonServices.Infrastructure.WebApi;
 using EventBLib.DataContext;
+using EventBLib.Enums;
 using EventBLib.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -38,6 +40,43 @@ namespace Admin.Services.EventsService
             _configuration = configuration;
         }
 
+        /// <inheritdoc />
+        public async Task<WebResponce<string>> BanEventByReason(int eventId, string messageToUser)
+        {
+            var eve = await db.Events.FirstOrDefaultAsync(e => e.EventId == eventId);
+            if (eve == null)
+            {
+                var resp = new WebResponce<string>("Событие с указанным id не найдено", false, "Событие с указанным id не найдено");
+                resp.ErrorMessage = "Событие с указанным id не найдено";
+                return resp;
+            }
+
+            eve.CheckStatus = EventCheckStatus.Banned;
+
+            // TODO отправка сообщения в чат от имени нисиди с сообщением о том что нужно изменить
+
+            await db.SaveChangesAsync();
+
+            return new WebResponce<string>("Событие успешно ззаблокировано.");
+        }
+
+        /// <inheritdoc />
+        public async Task<WebResponce<string>> ConfirmEventStatus(int eventId)
+        {
+            var eve = await db.Events.FirstOrDefaultAsync(e => e.EventId == eventId);
+            if(eve == null)
+            {
+                var resp = new WebResponce<string>("Событие с указанным id не найдено", false, "Событие с указанным id не найдено");
+                resp.ErrorMessage = "Событие с указанным id не найдено";
+                return resp;
+            }
+
+            eve.CheckStatus = EventCheckStatus.Confirmed;
+            await db.SaveChangesAsync();
+
+            return new WebResponce<string>("Событие успешно подтверждено.");
+        }
+
         ///<inheritdoc />
         public async Task<Event> GetEventDetails(int eventId)
         {
@@ -51,6 +90,12 @@ namespace Admin.Services.EventsService
         public async Task<EventsListVM> GetEventsList(EventListParam param)
         {
             var query = db.Events.Include(e => e.EventTegs).Include(e=>e.Creator).AsQueryable();
+
+            if (param.OnlyRequereCheck)
+            {
+                var statuses = new List<EventCheckStatus>() { EventCheckStatus.Changed, EventCheckStatus.ChangedAfterBan, EventCheckStatus.New };
+                query = query.Where(e => statuses.Contains(e.CheckStatus));
+            }
 
             if (param.EventCreateStartDate.HasValue)
             {

@@ -2,14 +2,16 @@
 @{ 
     Layout = "_Layout";
     ViewData["Style"] = "events.css";
+    ViewData["Script"] = "events.js";
 }
 <div>
+    <input type="hidden" id="ev-d-eventid" value="@Model.EventId" />
     <div class="ev-d-title">Заголовок</div>
+    <div class="ev-d-value">@Model.Title</div>
 
     <div class="ev-d-title">Выложил</div>
     <div class="ev-d-value">@Model.Creator</div>
 
-    <div class="ev-d-value">@Model.Title</div>
     <div>
         <div class="ev-d-title display-inline">Создан</div>
         <div class="ev-d-value display-inline">@Model.CreationDate</div>
@@ -31,7 +33,7 @@
     <div class="ev-d-value">@Model.Phone</div>
 
     <div class="ev-d-title">Теги</div>
-    <div class="ev-d-value">@String.Join(", ", Model.EventTegs.Select(e=>e.Teg).ToList())</div>
+    <div class="ev-d-value">@String.Join(", ", Model.EventTegs.Select(e => e.Teg).ToList())</div>
 
     <div class="ev-d-title">Заголовок</div>
     <div class="ev-d-value">@Model.Body</div>
@@ -46,10 +48,27 @@
     <div class="ev-d-title cursor-pointer">Пойдут(@Model.Vizits.Count())</div>
     <div>Здесь будет спрятан список посетителей</div>
 
+    <div lass="ev-d-title">
+        <h3>Событие в статусе @Model.CheckStatus.ToString()</h3>
+    </div>
+
     <div class="flex-hss margin-top16">
-        <div class="btn btn-success">Подтвердить</div>
-        <div class="btn btn-danger">Заблокировать</div>
-        <div class="btn btn-info">Сменить статус</div>
+        <div id="ev-d-confirm" class="btn btn-success">Подтвердить</div>
+        <div id="ev-d-ban" class="btn btn-danger">Заблокировать</div>
+        <div class="btn btn-info">Сменить видимость</div>
         <div class="btn btn-outline-danger">Удалить</div>
+    </div>
+
+    <div id="ev-d-message" class="display-none">
+        <div>Введите сообщение для уведомления автора события</div>
+        <select id="ev-d-message-select" class="form-control min-width400" placeholder="Выбрать сообщение">
+            <option value=""></option>
+            <option value="Содержит незаконный контент">Содержит незаконный контент</option>
+            <option value="Содердит описание, противоречащее правилам сайта">Содердит описание, противоречащее правилам сайта</option>
+            <option value="Содержит призывы">Содержит призывы</option>
+            <option value="Некорректное изображение">Некорректное изображение</option>
+        </select><br />
+        <textarea id="ev-d-message-text" class="form-control min-width400"></textarea><br />
+        <div id="ev-d-ban-event" class="btn btn-danger">Отправить</div>
     </div>
 </div>
