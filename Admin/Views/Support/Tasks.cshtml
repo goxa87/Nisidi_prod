@@ -1,4 +1,17 @@
-﻿
+﻿@model List<EventBLib.Models.SupportTicket>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<h3>Заявки в техподдержку</h3>
+<div class="supp-lis-container">
+    @foreach(var task in Model)
+    {
+        <div class="supp-lis-task">
+            <div>@task.Theme</div>
+            <div>@task.OpenDate.ToString("dd-MM-yy hh:mm")</div>
+            <div>@task.Status</div>
+            <hr />
+        </div>
+    }
+</div>

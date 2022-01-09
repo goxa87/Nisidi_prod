@@ -90,6 +90,6 @@ namespace EventBLib.DataContext
         /// <summary>
         /// Задачи техподдержки
         /// </summary>
-        public DbSet<SupportTickets> SupportTickets { get; set; }
+        public DbSet<SupportTicket> SupportTickets { get; set; }
     }
 }

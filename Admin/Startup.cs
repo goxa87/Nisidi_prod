@@ -1,6 +1,7 @@
 using Admin.AdminDbContext;
 using Admin.AdminDbContext.Models;
 using Admin.Services.EventsService;
+using Admin.Services.SupportService;
 using EventBLib.DataContext;
 using EventBLib.Models;
 using Microsoft.AspNetCore.Builder;
@@ -82,6 +83,7 @@ namespace Admin
             services.AddControllersWithViews();
 
             services.AddTransient<IEventsService, EventsService>();
+            services.AddScoped<ISupportService, SupportService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

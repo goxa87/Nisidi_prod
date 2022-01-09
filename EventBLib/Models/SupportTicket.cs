@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EventBLib.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace EventBLib.Models
     /// <summary>
     /// Тикеты техподдержки
     /// </summary>
-    public class SupportTickets
+    public class SupportTicket
     {
 		/// <summary>
 		/// Идентификатор
@@ -34,7 +35,7 @@ namespace EventBLib.Models
         /// <summary>
         /// Статус заявки
         /// </summary>
-        public int Status { get; set; }
+        public SupportTicketStatus Status { get; set; }
 
         /// <summary>
         /// Связанное событие
