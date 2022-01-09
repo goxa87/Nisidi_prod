@@ -62,7 +62,7 @@ namespace EventB.Controllers
             }            
             var message = new SupportMessage
             {
-                Client = user,
+                User = user,
                 ClientName = user.Name,
                 MessageDate = DateTime.Now,
                 Text = text

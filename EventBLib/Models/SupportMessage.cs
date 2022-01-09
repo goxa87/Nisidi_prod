@@ -13,7 +13,6 @@ namespace EventBLib.Models
         public int SupportMessageId { get; set; }
         public string Text { get; set; }        
         public DateTime MessageDate { get; set; }
-        public User Client { get; set; }
 
         /// <summary>
         /// Id Пользователя
