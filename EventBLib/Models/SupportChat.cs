@@ -7,6 +7,7 @@ namespace EventBLib.Models
     /// <summary>
     /// Чат техподдержки который хранит сообщения пользователя
     /// </summary>
+    [Obsolete("Пока решил выпилить это и перейти на систему Заявок")]
     public class SupportChat
     {
         public int SupportChatId { get; set; }
