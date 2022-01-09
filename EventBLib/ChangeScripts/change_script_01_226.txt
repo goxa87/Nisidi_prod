@@ -1,0 +1,2 @@
+alter table "UserChats"
+ 	add "RealtedObjectLink" text null;
