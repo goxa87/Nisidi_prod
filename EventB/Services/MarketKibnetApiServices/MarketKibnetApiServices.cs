@@ -1,10 +1,12 @@
-﻿using EventB.ViewModels.MarketRoom;
+﻿using CommonServices.Infrastructure.WebApi;
+using EventB.ViewModels.MarketRoom;
 using EventBLib.DataContext;
 using EventBLib.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,14 +22,17 @@ namespace EventB.Services.MarketKibnetApiServices
         private readonly Context context;
         private readonly UserManager<User> userManager;
         IWebHostEnvironment environment;
+        private readonly ILogger<MarketKibnetApiServices> _logger;
 
         public MarketKibnetApiServices(Context _context,
             UserManager<User> _userManager,
-             IWebHostEnvironment env)
+             IWebHostEnvironment env,
+             ILogger<MarketKibnetApiServices> logger)
         {
             context = _context;
             userManager = _userManager;
             environment = env;
+            _logger = logger;
         }
 
         /// <summary>
@@ -115,6 +120,21 @@ namespace EventB.Services.MarketKibnetApiServices
                     IsBlocked = e.IsBlockedInChat
                 }).ToList();
             return chatMembers;
+        }
+
+        /// <inheritdoc />
+        public async Task<WebResponce<List<SupportTicket>>> GetUserSupportTickets(string userId)
+        {
+            try
+            {
+                var tickets = await context.SupportTickets.Where(e => e.UserId == userId).OrderByDescending(e => e.OpenDate).ToListAsync();
+                return new WebResponce<List<SupportTicket>>(tickets);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError($"ошибка GetUserSupportTickets. {ex.Message}\n{ex.StackTrace}");
+                return new WebResponce<List<SupportTicket>>(null, false, ex.Message);
+            }
         }
 
         /// <summary>

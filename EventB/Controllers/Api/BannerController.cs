@@ -63,7 +63,7 @@ namespace EventB.Controllers.Api
                 await _db.SaveChangesAsync();
                 return new WebResponce<string>("Запись создана");
             }
-            return new WebResponce<string>("Пользователь не идентифицирован", false);
+            return new WebResponce<string>("Пользователь не идентифицирован", false, "Пользователь не идентифицирован");
         }
     }
 }

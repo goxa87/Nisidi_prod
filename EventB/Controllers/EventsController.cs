@@ -45,8 +45,8 @@ namespace EventB.Controllers
             IUserFindService _userFindService,
             ITegSplitter _tegSplitter,
             IEventSelectorService _eventSelector,
-             UserManager<User> _userManager,
-             ILogger<EventsController> logger)
+            UserManager<User> _userManager,
+            ILogger<EventsController> logger)
         {
             context = c;
             eventService = _eventService;

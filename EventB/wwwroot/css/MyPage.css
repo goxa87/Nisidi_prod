@@ -22,7 +22,6 @@
 }
 
     .mp-img img {
-        object-fit: fill;
         height:260px;
         width:320px;
         object-fit: cover;

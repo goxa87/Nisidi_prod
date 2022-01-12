@@ -1,4 +1,6 @@
-﻿using EventB.ViewModels.MarketRoom;
+﻿using CommonServices.Infrastructure.WebApi;
+using EventB.ViewModels.MarketRoom;
+using EventBLib.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,5 +24,12 @@ namespace EventB.Services.MarketKibnetApiServices
         /// <param name="eventId"></param>
         /// <param name="userId"></param>
         Task<int> SwitchUserChatBlock(int eventId, int userChatId, string curentUserId);
+
+        /// <summary>
+        /// Получить все тикеты пользователя (клиента)
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<WebResponce<List<SupportTicket>>> GetUserSupportTickets(string userId);
     }
 }
