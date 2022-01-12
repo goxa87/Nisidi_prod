@@ -497,6 +497,10 @@ $(document).ready(function ()
         else {
             $(this).addClass('display-none');
 
+            if ($('#noTrespassingOuterBarG').hasClass('display-none')) {
+                $('#noTrespassingOuterBarG').removeClass('display-none');
+            }
+
             if ($('#end-marker').length) {
                 prepareDynamicLoad();
             }
