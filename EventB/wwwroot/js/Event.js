@@ -474,7 +474,7 @@ $(document).ready(function ()
         $('#eve-add-time_preview').text(time);
     });
 
-    // Кнопка "сохранить" пропадает после нажатия по ней,и на её месте появляется загрузка 
+    // Кнопка "сохранить" пропадает после нажатия по ней, и на её месте появляется загрузка 
     // при условии, что поля заполнены верно
     $('#save-btn').click(function () {
         var titleLength = $('#eve-add-title').val().length;
@@ -499,10 +499,6 @@ $(document).ready(function ()
 
             if ($('#noTrespassingOuterBarG').hasClass('display-none')) {
                 $('#noTrespassingOuterBarG').removeClass('display-none');
-            }
-
-            if ($('#end-marker').length) {
-                prepareDynamicLoad();
             }
         }
     });
