@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -24,15 +25,22 @@ namespace EventB.Services.MarketKibnetApiServices
         IWebHostEnvironment environment;
         private readonly ILogger<MarketKibnetApiServices> _logger;
 
+        /// <summary>
+        /// Конфигурация приложения.
+        /// </summary>
+        private readonly IConfiguration _configuration;
+
         public MarketKibnetApiServices(Context _context,
             UserManager<User> _userManager,
              IWebHostEnvironment env,
-             ILogger<MarketKibnetApiServices> logger)
+             ILogger<MarketKibnetApiServices> logger,
+             IConfiguration configuration)
         {
             context = _context;
             userManager = _userManager;
             environment = env;
             _logger = logger;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -160,6 +168,32 @@ namespace EventB.Services.MarketKibnetApiServices
             userChat.IsBlockedInChat = !userChat.IsBlockedInChat;
             await context.SaveChangesAsync();
             return 200;
+        }
+
+        /// <inheritdoc />
+        public async Task<WebResponce<bool>> CreateNewSupportTicket(string message, string userId)
+        {
+            try
+            {
+                var newTicket = new SupportTicket()
+                {
+                    Description = message,
+                    NeedToClose = true,
+                    NisidiEmployeeId = _configuration.GetValue<string>("DefaultSupportEmployeeNisidiUserId"),
+                    OpenDate = DateTime.Now,
+                    Theme = message.Length > 20 ? message.Substring(0,20) : message,
+                    UserId = userId
+                };
+
+                context.SupportTickets.Add(newTicket);
+                await context.SaveChangesAsync();
+                return new WebResponce<bool>(true);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"CreateNewSupportTicket: {ex.Message} {ex.StackTrace}");
+                return new WebResponce<bool>(false, false, "Ошибка создания обращения.");
+            }            
         }
     }
 }

@@ -180,6 +180,35 @@ $(document).ready(function ()
         }
     });
 
+    // Отправить новый тикет
+    $('#mr-t-send-new').click(function () {
+        var data = $('#mr-t-message-text').val();
+
+        if (!data || data.length == 0) {
+            GetNotification('Введите текст вашего вопроса', 1, 2);
+            return;
+        }
+
+        $.ajax({
+            url: '/MarketRoom/CreateNewTicket',
+            method: 'POST',
+            data: { messageText: data},
+            success: function (response) {
+                if (response.isSuccess) {
+                    GetNotification('Обращение отправлено.', 3, 2)
+                    $('#mr-t-message-text').val('');
+                } else {
+                    GetNotification('Что-то пошло не так, попробуйте еще раз.', 1, 2);
+                    console.log('Чтото пошло не так ' + response.errorMessage)
+                }
+            },
+            error: function (jqXHR, status) {
+                GetNotification('Что-то пошло не так, попробуйте еще раз.', 1, 2);
+                console.log('Чтото пошло не так ' + jqXHR.statusText);
+            }
+        });
+    });
+
     // Получить и разместить тикеты пользователя
     GetAndNestTickets();
 });

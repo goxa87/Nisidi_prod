@@ -31,5 +31,13 @@ namespace EventB.Services.MarketKibnetApiServices
         /// <param name="userId"></param>
         /// <returns></returns>
         Task<WebResponce<List<SupportTicket>>> GetUserSupportTickets(string userId);
+
+        /// <summary>
+        /// Создаст новую заявку в ТП.
+        /// </summary>
+        /// <param name="message">Сообщение</param>
+        /// <param name="userId">Идентификатор пользователя - клиента</param>
+        /// <returns></returns>
+        Task<WebResponce<bool>> CreateNewSupportTicket(string message, string userId);
     }
 }

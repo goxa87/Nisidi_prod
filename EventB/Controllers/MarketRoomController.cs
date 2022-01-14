@@ -61,5 +61,16 @@ namespace EventB.Controllers
         {
             return await _marketKibnetApi.GetUserSupportTickets(User.FindFirstValue(ClaimTypes.NameIdentifier));
         }
+
+        /// <summary>
+        /// Создаст новую заявку в ТП.
+        /// </summary>
+        /// <param name="messageText"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<WebResponce<bool>> CreateNewTicket(string messageText)
+        {
+            return (await _marketKibnetApi.CreateNewSupportTicket(messageText, User.FindFirstValue(ClaimTypes.NameIdentifier)));
+        }
     }
 }
