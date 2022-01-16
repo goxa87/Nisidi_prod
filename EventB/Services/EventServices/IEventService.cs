@@ -84,14 +84,5 @@ namespace EventB.Services.EventServices
         /// <param name="model"></param>
         /// <returns></returns>
         Task<Event> EventEdit(string userName, EventEditVM model);
-
-        /// <summary>
-        /// Удалить событие
-        /// </summary>
-        /// <param name="username"></param>
-        /// <param name="eventId"></param>
-        /// <returns></returns>
-        Task<int> DeleteEvent(string username, int eventId);
-
     }
 }

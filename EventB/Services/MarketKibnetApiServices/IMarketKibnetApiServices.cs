@@ -11,7 +11,23 @@ namespace EventB.Services.MarketKibnetApiServices
     public interface IMarketKibnetApiServices
     {
         Task<bool> ChangeEventStatus(int newType, int eventId, string userId);
-        Task<bool> DeleteEvent(int eventId, string userName);
+
+        /// <summary>
+        /// Удаление события владешьцем
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<bool> DeleteEventBYOwner(int eventId, string userId);
+
+        /// <summary>
+        /// Удаление события (администрацией)
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        Task<bool> DeleteEventByAdmin(int eventId, string token);
+
         /// <summary>
         /// Получение участников чата события
         /// </summary>

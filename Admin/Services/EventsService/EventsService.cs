@@ -7,9 +7,11 @@ using EventBLib.Enums;
 using EventBLib.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Admin.Services.EventsService
@@ -37,15 +39,22 @@ namespace Admin.Services.EventsService
         /// </summary>
         private readonly ISupportService _supportService;
 
+        /// <summary>
+        /// логгирование
+        /// </summary>
+        private readonly ILogger<EventsService> _logger;
+
         public EventsService(AdminContext _adminDb,
             Context _context,
             IConfiguration configuration,
-            ISupportService supportService)
+            ISupportService supportService,
+            ILogger<EventsService> logger)
         {
             adminDb = _adminDb;
             db = _context;
             _configuration = configuration;
             _supportService = supportService;
+            _logger = logger;
         }
 
         /// <inheritdoc />
@@ -98,11 +107,34 @@ namespace Admin.Services.EventsService
         }
 
         ///<inheritdoc />
+        public async Task<WebResponce<bool>> DeleteEvent(int eventId, string userId)
+        {
+            var eve = await db.Events.FirstAsync(e=>e.EventId == eventId);
+            _logger.LogInformation($"удаление события:\n{eve.EventId}\nудаляет сотрудник: {userId}\n{eve.Title}\n{eve.Body}\n{eve.City}\n{eve.Place}\n{eve.TicketsDesc}");
+            using (var client = new HttpClient())
+            {
+                var nisidiUrl = _configuration.GetValue<string>("RootHostNisidi");
+                var token = _configuration.GetValue<string>("DeleteEventToken");
+                client.BaseAddress = new Uri(nisidiUrl);
+                var response = await client.SendAsync(new HttpRequestMessage(HttpMethod.Get, $"/api/MarketKibnet/delete-event-admin?eventId={eventId}&token={token}"));
+                if (response.IsSuccessStatusCode)
+                {
+                    return new WebResponce<bool>(true);
+                }
+                else
+                {
+                    var responseText = await response.Content.ReadAsStringAsync();
+                    throw new HttpRequestException($"Ошибка запроса удаления события: {responseText}.", inner: null, statusCode: response.StatusCode);
+                }
+            }
+        }
+
+        ///<inheritdoc />
         public async Task<Event> GetEventDetails(int eventId)
         {
             var eve = await db.Events.Include(e=>e.EventTegs).Include(e=>e.Creator).Include(e=>e.Vizits).FirstOrDefaultAsync(e=>e.EventId == eventId);
-            eve.Image = _configuration.GetValue<string>("RootHostnisidi") + eve.Image;
-            eve.Image = _configuration.GetValue<string>("RootHostnisidi") + "/images/EventImages/ab69d908-5420-4fe0-a322-b1126b890d23.jpeg";
+            eve.Image = _configuration.GetValue<string>("RootHostNisidi") + eve.Image;
+            eve.Image = _configuration.GetValue<string>("RootHostNisidi") + "/images/EventImages/ab69d908-5420-4fe0-a322-b1126b890d23.jpeg";
             return eve;
         }
 

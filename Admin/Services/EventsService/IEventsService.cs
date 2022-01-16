@@ -43,9 +43,12 @@ namespace Admin.Services.EventsService
         /// <returns></returns>
         Task<WebResponce<string>> BanEventByReason(int eventId, string messageToUser, string employeeId);
 
-        // перевечти в тип частное публичное
-
-
-        // удалить 
+        /// <summary>
+        /// Удалить событие безвозвратно.
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<WebResponce<bool>> DeleteEvent(int eventId, string userId);
     }
 }

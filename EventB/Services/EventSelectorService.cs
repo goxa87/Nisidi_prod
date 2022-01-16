@@ -44,9 +44,6 @@ namespace EventB.Services
             var checkStatuses = new List<EventCheckStatus>() { EventCheckStatus.New, EventCheckStatus.Changed, EventCheckStatus.Confirmed };
 
             var selection = context.Events.
-                Include(e=>e.EventTegs). //?
-                Include(e=>e.Creator). //?
-                Include(e => e.Vizits). // ? надо ли? 
                 Where(e => 
                     e.Date > dateStart 
                     && e.Date < dateEnd 

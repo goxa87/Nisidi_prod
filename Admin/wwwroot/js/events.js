@@ -95,6 +95,11 @@ $(document).ready(function () {
     $('body').on('click', '#ev-d-ban-event', function () {
         BanEvent($('#ev-d-eventid').val(), $('#ev-d-message-text').text());
     });
+
+    // Удаление события
+    $('#ev-d-delete').click(function () {
+        ShowDeleteEventPopup($('#ev-d-eventid').val());
+    });
 });
 
 /**Получить параметры для фильтра событий */
@@ -120,6 +125,7 @@ function ConfirmEvent(eventId) {
         success: function (resp) {
             if (resp.isSuccess) {
                 DevExpress.ui.notify("Успешно одобрено", 'success', 2000);
+                $('#ev-d-all-buttons').addClass('display-none')
             } else {
                 DevExpress.ui.notify("Ошибка одобрения. " + resp.errorMessage, 'error', 2000);
                 console.log("Ошибка одобрения. " + resp.errorMessage);
@@ -145,6 +151,65 @@ function BanEvent(eventId, message) {
         },
         error: function () {
             console.log('Бан события. Чтото пошло не так.');
+        }
+    });
+}
+
+/**
+ * Показать попап удаления события
+ * @param {any} eventId 
+ */
+function ShowDeleteEventPopup(eventId) {
+    const deletePopup = $('#ev-d-delete-popup').dxPopup({
+        height: 300,
+        width: 500,
+        showTitle: true,
+        title: "Подтвердите действие УДАЛЕНИЕ",
+        dragEnabled: true,
+        position: "center",
+        closeOnOutsideClick: true,
+        showCloseButton: true,
+        contentTemplate: () => {
+            const content = $('<div >Вы действительно хотите безвозвратно удалить это событие?</div>');
+            return content;
+        },
+        toolbarItems: [{
+            widget: 'dxButton',
+            toolbar: 'bottom',
+            location: 'before',
+            options: {
+                type: 'danger',
+                icon: 'trash',
+                text: 'Подтверждаю',
+                onClick() {
+                    DeleteEvent(eventId);
+                    deletePopup.hide();
+                },
+            },
+        }],
+    }).dxPopup("instance");
+
+    deletePopup.show();
+}
+
+/**
+ * Удаление события
+ * @param {any} eventId идентификатор удаляемого события
+ */
+function DeleteEvent(eventId) {
+    $.ajax({
+        url: '/Events/DeleteEvent?eventId=' + eventId,
+        success: function (resp) {
+            if (resp.isSuccess) {
+                DevExpress.ui.notify("Успешно удалено", 'success', 2000);
+                $('#ev-d-all-buttons').removeClass('flex-hss').addClass('display-none');
+            } else {
+                DevExpress.ui.notify("Ошибка удаления. " + resp.errorMessage, 'error', 2000);
+                console.log("Ошибка удаления. " + resp.errorMessage);
+            }
+        },
+        error: function () {
+            console.log('Удаление события. Чтото пошло не так.');
         }
     });
 }

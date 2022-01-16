@@ -6,6 +6,7 @@
 }
 <div>
     <input type="hidden" id="ev-d-eventid" value="@Model.EventId" />
+    <h3>#@Model.EventId (@Model.CheckStatus.ToString())</h3>
     <div class="ev-d-title">Заголовок</div>
     <div class="ev-d-value">@Model.Title</div>
 
@@ -48,15 +49,11 @@
     <div class="ev-d-title cursor-pointer">Пойдут(@Model.Vizits.Count())</div>
     <div>Здесь будет спрятан список посетителей</div>
 
-    <div lass="ev-d-title">
-        <h3>Событие в статусе @Model.CheckStatus.ToString()</h3>
-    </div>
 
-    <div class="flex-hss margin-top16">
+    <div id="ev-d-all-buttons" class="flex-hss margin-top16">
         <div id="ev-d-confirm" class="btn btn-success">Подтвердить</div>
         <div id="ev-d-ban" class="btn btn-danger">Заблокировать</div>
-        <div class="btn btn-info">Сменить видимость</div>
-        <div class="btn btn-outline-danger">Удалить</div>
+        <div id="ev-d-delete" class="btn btn-outline-danger">Удалить</div>
     </div>
 
     <div id="ev-d-message" class="display-none">
@@ -71,4 +68,6 @@
         <textarea id="ev-d-message-text" class="form-control min-width400"></textarea><br />
         <div id="ev-d-ban-event" class="btn btn-danger">Отправить</div>
     </div>
+
+    <div id="ev-d-delete-popup"></div>
 </div>

@@ -64,58 +64,6 @@ namespace EventB.Services.MarketKibnetApiServices
             return true;
         }
 
-        /// <summary>
-        /// Удаление события.
-        /// </summary>
-        /// <param name="eventId">id события</param>
-        /// <param name="userName">логин пользователя</param>
-        /// <returns></returns>
-        public async Task<bool> DeleteEvent(int eventId, string userName)
-        {
-            if (eventId == default || userName == default)
-                return false;
-
-            var user = await userManager.FindByNameAsync(userName);
-            var eve = await context.Events.Include(e => e.Chat)
-                .Include(e => e.EventTegs)
-                .Include(e => e.Vizits)
-                .FirstOrDefaultAsync(e => e.EventId == eventId);
-
-            if (eve.UserId != user.Id) return false;
-
-            context.UserChats.RemoveRange(await context.UserChats.Where(e => e.ChatId == eve.Chat.ChatId).ToListAsync());
-            context.Messages.RemoveRange(await context.Messages.Where(e => e.ChatId == eve.Chat.ChatId).ToListAsync());
-            context.Chats.Remove(eve.Chat);
-
-            // TODO Удалять все картинки
-            var photoPath = environment.WebRootPath + "/" + eve.Image;
-
-            if (File.Exists(photoPath))
-            {
-                File.Delete(photoPath);
-            }
-
-            photoPath = environment.WebRootPath + "/" + eve.MediumImage;
-
-            if (File.Exists(photoPath))
-            {
-                File.Delete(photoPath);
-            }
-
-            photoPath = environment.WebRootPath + "/" + eve.MiniImage;
-
-            if (File.Exists(photoPath))
-            {
-                File.Delete(photoPath);
-            }
-
-            context.Invites.RemoveRange(context.Invites.Where(e => e.EventId == eventId));
-            context.Remove(eve);
-
-            await context.SaveChangesAsync();
-            return true;
-        }
-
         public async Task<List<EventUserChatMembersVM>> GetEventUserChats(int eventId)
         {
             var eve = await context.Events.Include(e => e.Chat).ThenInclude(e => e.UserChat).ThenInclude(e => e.User).FirstOrDefaultAsync(e => e.EventId == eventId);
@@ -194,6 +142,74 @@ namespace EventB.Services.MarketKibnetApiServices
                 _logger.LogError($"CreateNewSupportTicket: {ex.Message} {ex.StackTrace}");
                 return new WebResponce<bool>(false, false, "Ошибка создания обращения.");
             }            
+        }
+
+        /// <inheritdoc />
+        public async Task<bool> DeleteEventBYOwner(int eventId, string userId)
+        {
+            var eve = await context.Events.Include(e => e.Chat)
+               .Include(e => e.EventTegs)
+               .Include(e => e.Vizits)
+               .FirstOrDefaultAsync(e => e.EventId == eventId);
+            if (eve.UserId != userId) return false;
+            return await DeleteEvent(eve);
+        }
+
+        /// <inheritdoc />
+        public async Task<bool> DeleteEventByAdmin(int eventId, string token)
+        {
+            if (_configuration.GetValue<string>("DeleteEventToken") != token)
+            {
+                return false;
+            }
+
+            var eve = await context.Events.Include(e => e.Chat)
+               .Include(e => e.EventTegs)
+               .Include(e => e.Vizits)
+               .FirstOrDefaultAsync(e => e.EventId == eventId);
+
+            return await DeleteEvent(eve);
+        }
+
+        /// <summary>
+        /// Удаление события.
+        /// </summary>
+        /// <param name="eventId">id события</param>
+        /// <param name="userName">логин пользователя</param>
+        /// <returns></returns>
+        private async Task<bool> DeleteEvent(Event eve)
+        {
+            context.UserChats.RemoveRange(context.UserChats.Where(e => e.ChatId == eve.Chat.ChatId));
+            context.Messages.RemoveRange(context.Messages.Where(e => e.ChatId == eve.Chat.ChatId));
+            context.Chats.Remove(eve.Chat);
+
+            // TODO Удалять все картинки
+            var photoPath = environment.WebRootPath + "/" + eve.Image;
+
+            if (File.Exists(photoPath))
+            {
+                File.Delete(photoPath);
+            }
+
+            photoPath = environment.WebRootPath + "/" + eve.MediumImage;
+
+            if (File.Exists(photoPath))
+            {
+                File.Delete(photoPath);
+            }
+
+            photoPath = environment.WebRootPath + "/" + eve.MiniImage;
+
+            if (File.Exists(photoPath))
+            {
+                File.Delete(photoPath);
+            }
+
+            context.Invites.RemoveRange(context.Invites.Where(e => e.EventId == eve.EventId));
+            context.Remove(eve);
+
+            await context.SaveChangesAsync();
+            return true;
         }
     }
 }

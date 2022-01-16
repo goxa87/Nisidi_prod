@@ -5,6 +5,7 @@ using CommonServices.Infrastructure.WebApi;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,14 +20,22 @@ namespace Admin.Controllers
 
         private readonly IEventsService _eventsService;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<EventsController> _logger;
 
         public EventsController(IEventsService eventsService,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            ILogger<EventsController> logger)
         {
             this._eventsService = eventsService;
             _configuration = configuration;
+            _logger = logger;
         }
 
+        /// <summary>
+        /// При 1й загрузке страницы
+        /// </summary>
+        /// <param name="eventsListParam"></param>
+        /// <returns></returns>
         [HttpGet, HttpPost]
         public async Task<IActionResult> EventList(EventListParam eventsListParam = null)
         {
@@ -48,6 +57,11 @@ namespace Admin.Controllers
             return View("~/views/Events/Details.cshtml", eve);
         }
 
+        /// <summary>
+        /// Загрузка паршиалки фильтром
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> GetEventsTable(EventListParam param)
         {
@@ -78,6 +92,24 @@ namespace Admin.Controllers
             return await _eventsService.BanEventByReason(eventId, message, User.FindFirstValue(ClaimTypes.NameIdentifier));
         }
 
+        /// <summary>
+        /// Удалить событие безвозвратно
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns>
+        public async Task<WebResponce<bool>> DeleteEvent(int eventId)
+        {
+            try
+            {
+                var result = await _eventsService.DeleteEvent(eventId, User.FindFirstValue(ClaimTypes.NameIdentifier));
+                return result;
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, $"Не удалось удалить событие {eventId}.");
+                return new WebResponce<bool>(false, false, ex.Message);
+            }
+        }
         #endregion
     }
 }
