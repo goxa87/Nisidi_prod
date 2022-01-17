@@ -21,6 +21,7 @@ using System.Security.Claims;
 using CommonServices.Infrastructure.Helpers;
 using EventB.Services.AccountService;
 using CommonServices.Infrastructure.WebApi;
+using Microsoft.EntityFrameworkCore;
 
 namespace EventB.Controllers
 {
@@ -101,7 +102,7 @@ namespace EventB.Controllers
                         return Redirect(model.ReturnUrl);
                     }
                     return RedirectToAction("Start", "Events");
-                }                
+                }
             }
             
             ModelState.AddModelError("", "Пользователь не найден или неверный пароль");
@@ -174,6 +175,7 @@ namespace EventB.Controllers
                         {
                             await logger.LogObjectToFile($"RegisterAccount error/ SendMailError ({model.Login} {model.Password})", ex);
                         }
+
                         return View("ConfirmEmail", model.Login);
                     }
                     else

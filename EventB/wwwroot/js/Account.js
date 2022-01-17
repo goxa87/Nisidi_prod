@@ -39,6 +39,9 @@ $(document).ready(function () {
     $('body').on('click', '.acc-generate-password', function () {
         GetAndSetRandomPassword();
     });
+
+    //Получает интересы из куки
+    GetInterestsFromCookie();
 });
 
 /**Устанавливает в поле пароль регистрации рандомный пароль */
@@ -58,4 +61,10 @@ function GetAndSetRandomPassword() {
         }
     })
     
+}
+
+//Сохраняет интересы пользователя в скрытое поле при регистрации
+function GetInterestsFromCookie() {
+    var cookieInterests = document.cookie.replace(/(?:(?:^|.*;\s*)intereses\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+    $("#interestsCookie").val(cookieInterests);
 }

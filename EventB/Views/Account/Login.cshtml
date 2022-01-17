@@ -5,11 +5,12 @@
     Layout = "~/Views/Shared/_LayoutAccount.cshtml";
     ViewData["Title"] = "Авторизация";
 }
-@if (!Model.IsRepeatLoading) {
-<div class="acc-preview">
-    @{ await Html.RenderPartialAsync("_SVGLogo128");}
-    <h1 class="acc-main-name">NISIDI.RU</h1>
-</div>
+@if (!Model.IsRepeatLoading)
+{
+    <div class="acc-preview">
+        @{ await Html.RenderPartialAsync("_SVGLogo128");}
+        <h1 class="acc-main-name">NISIDI.RU</h1>
+    </div>
 }
 
 <div class="acc-form-menu @(Model.IsRepeatLoading ? "flex-vcc" : "")" style="@(!Model.IsRepeatLoading ? "display: none" : "")">
@@ -48,7 +49,7 @@
                         <span class="material-icons">change_circle</span>
                     </div><br>
                 </div>
-               
+
                 <input id="acc-reg-password-input" class="form-entry-title" type="text" name="Password" value="@Model.Password" required><br>
 
                 <label class="form-label">Имя</label><br>
@@ -57,6 +58,9 @@
                 <label class="form-label">Город / Определен автоматически</label><br>
                 <label class="form-label">Система будет выбирать события в этом городе</label><br>
                 <input class="form-entry-title" type="text" name="City" value="@Model.City" required><br><br>
+
+                @*Скрытое поле для хранения интересов незарегистрированного пользователя, взятых из куки*@
+                <input asp-for="Interests" id="interestsCookie" name="Interests" type="hidden"  value="@Model.Interests" /> 
 
                 <label class="form-label">Обязательно</label><br>
                 <label><input type="checkbox" asp-for="AgreePersonalData" id="agree-personal-data"></label>
@@ -69,5 +73,6 @@
     </div>
     <a class="acc-width500" href="/">на главную</a>
 </div>
+
 
 
