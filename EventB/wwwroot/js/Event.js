@@ -546,6 +546,9 @@ function InitStartLocalData() {
     } else {
         IsAuthorizedUser = true;
     }
+
+    if (IsAuthorizedUser) return;
+
     var intereses = GetCookieByName(INTERES_COOKIE_NAME);
     if (intereses) {
         var interesArray = intereses.split('@');

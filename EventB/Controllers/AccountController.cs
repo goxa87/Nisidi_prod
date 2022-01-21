@@ -165,6 +165,13 @@ namespace EventB.Controllers
                         user.MediumImage = imgMedium;
                         user.MiniImage = imgMini;
                         context.Users.Update(user);
+
+                        TegSplitter ts = new TegSplitter();
+                        List<string> interestsFromCookie = ts.GetEnumerable(model.Interests).ToList();
+                        List<Interes> interests = new List<Interes>();
+                        interests = interestsFromCookie.Select(e => new Interes() { Value = e }).ToList();
+                        user.Intereses = interests;
+
                         await context.SaveChangesAsync();
 
                         try
