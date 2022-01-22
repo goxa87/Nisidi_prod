@@ -1,0 +1,24 @@
+﻿@model List<EventBLib.Models.SupportTicket>
+@{
+    ViewData["Style"] = "support.css";
+    ViewData["Script"] = "support.js";
+}
+
+@if (Model == null || Model.Count == 0)
+{
+    <div>Заявок не найдено</div>
+}
+@foreach (var task in Model)
+{
+    <a class="supp-lis-label-link" href="/Support/TicketDetails?ticketId=@task.SupportTicketId">
+        <div class="supp-lis-task">
+            <div><b>#@task.SupportTicketId</b> @task.Theme</div>
+            <div class="flex-hsc">
+                <div class="margin-right20">Создан:@task.OpenDate.ToString("dd-MM-yy hh:mm")</div>
+                <div class="margin-right20">В работе:@(task.InWorkDate.HasValue ? task.InWorkDate.Value.ToString("dd-MM-yy hh:mm") : "-")</div>
+                <div>Закрыт:@(task.CloseDate.HasValue ? task.CloseDate.Value.ToString("dd-MM-yy hh:mm") : "-")</div>
+            </div>
+            <div><b>@task.Status</b></div>
+        </div>
+    </a>
+}

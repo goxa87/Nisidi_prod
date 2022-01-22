@@ -140,6 +140,13 @@ namespace Admin.Controllers
             return View("~/Views/Shared/_AccessDenied.cshtml");
         }
 
+
+        public IActionResult AdminUserDetails(string userId)
+        {
+            //TODO 
+            return View(userId);
+        }
+
         #region PRIVATE
 
         private async Task<bool> CheckAnyUserInDb(LoginVM model)

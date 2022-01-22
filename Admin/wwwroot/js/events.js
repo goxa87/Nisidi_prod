@@ -208,8 +208,8 @@ function DeleteEvent(eventId) {
                 console.log("Ошибка удаления. " + resp.errorMessage);
             }
         },
-        error: function () {
-            console.log('Удаление события. Чтото пошло не так.');
+        error: function (jqXHR) {
+            console.log('Удаление события. Чтото пошло не так.', jqXHR);
         }
     });
 }
