@@ -21,7 +21,6 @@ using System.Security.Claims;
 using CommonServices.Infrastructure.Helpers;
 using EventB.Services.AccountService;
 using CommonServices.Infrastructure.WebApi;
-using Microsoft.EntityFrameworkCore;
 
 namespace EventB.Controllers
 {
@@ -166,8 +165,7 @@ namespace EventB.Controllers
                         user.MiniImage = imgMini;
                         context.Users.Update(user);
 
-                        TegSplitter ts = new TegSplitter();
-                        List<string> interestsFromCookie = ts.GetEnumerable(model.Interests).ToList();
+                        List<string> interestsFromCookie = tegSplitter.GetEnumerable(model.Interests).ToList();
                         List<Interes> interests = new List<Interes>();
                         interests = interestsFromCookie.Select(e => new Interes() { Value = e }).ToList();
                         user.Intereses = interests;

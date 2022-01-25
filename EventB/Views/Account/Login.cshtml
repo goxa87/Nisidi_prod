@@ -59,7 +59,6 @@
                 <label class="form-label">Система будет выбирать события в этом городе</label><br>
                 <input class="form-entry-title" type="text" name="City" value="@Model.City" required><br><br>
 
-                @*Скрытое поле для хранения интересов незарегистрированного пользователя, взятых из куки*@
                 <input asp-for="Interests" id="interestsCookie" name="Interests" type="hidden"  value="@Model.Interests" /> 
 
                 <label class="form-label">Обязательно</label><br>

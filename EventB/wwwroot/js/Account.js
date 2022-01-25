@@ -63,7 +63,7 @@ function GetAndSetRandomPassword() {
     
 }
 
-//Сохраняет интересы пользователя в скрытое поле при регистрации
+/** Сохраняет интересы пользователя в скрытое поле при регистрации */
 function GetInterestsFromCookie() {
     var cookieInterests = document.cookie.replace(/(?:(?:^|.*;\s*)intereses\s*\=\s*([^;]*).*$)|^.*$/, "$1");
     $("#interestsCookie").val(cookieInterests);
