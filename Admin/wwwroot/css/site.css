@@ -90,6 +90,12 @@ body {
 .margin-top16{
     margin-top: 16px;
 }
+.margin-bottom16{
+    margin-bottom: 16px;
+}
+.margin-right20{
+    margin-right: 20px;
+}
 /*****************/
 .flex-hss {
     display: flex;

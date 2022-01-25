@@ -1,4 +1,6 @@
 ﻿using Admin.AdminDbContext;
+using Admin.Models.Enums;
+using Admin.Models.ViewModels.Support;
 using EventBLib.DataContext;
 using EventBLib.Models;
 using Microsoft.EntityFrameworkCore;
@@ -39,9 +41,44 @@ namespace Admin.Services.SupportService
         }
 
         /// <inheritdoc />
-        public async Task<List<SupportTicket>> GetAllTickets()
+        public async Task<List<SupportTicket>> GetTicketTickets(TicketFilterStatus type, string currentUserId)
         {
-            return await db.SupportTickets.Where(e => e.Status != EventBLib.Enums.SupportTicketStatus.Deleted).ToListAsync();
+            var result = db.SupportTickets.Where(e => e.Status != EventBLib.Enums.SupportTicketStatus.Deleted);
+            switch (type)
+            {
+                case TicketFilterStatus.all:
+                    break;
+                case TicketFilterStatus.notNeedToClose:
+                    result = result.Where(e => e.NeedToClose == false);
+                    break;
+                case TicketFilterStatus.theNew:
+                    result = result.Where(e => e.Status == EventBLib.Enums.SupportTicketStatus.New && e.NeedToClose);
+                    break;
+                case TicketFilterStatus.currentUsers:
+                    result = result.Where(e => e.SupportEmployeeId == currentUserId);
+                    break;
+                case TicketFilterStatus.currentUsersInWork:
+                    result = result.Where(e => e.SupportEmployeeId == currentUserId && e.InWorkDate.HasValue && !e.CloseDate.HasValue);
+                    break;
+            }
+            return await result.OrderByDescending(e=>e.SupportTicketId).ToListAsync();
+        }
+
+        /// <inheritdoc />
+        public async Task<TicketDetailsVM> GetSupportTicketDetailsVM(int ticketId)
+        {
+            var nisidiUrl = _configuration.GetValue<string>("RootHostNisidi");
+            var ticket = await db.SupportTickets.FirstAsync(e=>e.SupportTicketId == ticketId);
+            var nisidiUser = await db.Users.FindAsync(ticket.UserId);
+            var adminUser = await adminDb.Users.FirstOrDefaultAsync(e=>e.Id == ticket.SupportEmployeeId);
+
+            return new TicketDetailsVM()
+            {
+                Ticket = ticket,
+                NisidiUserUrl = nisidiUrl + "Friends/UserInfo?userId=" + ticket.UserId,
+                NisidiUser = nisidiUser,
+                AdminUser = adminUser
+            };
         }
 
         /// <inheritdoc />
@@ -58,6 +95,37 @@ namespace Admin.Services.SupportService
             await db.SaveChangesAsync();
             
             return ticket;
+        }
+
+        public async Task<bool> AssengreTicket(string ticketId, string userId)
+        {
+            var id = Int32.Parse(ticketId);
+            var ticket = await db.SupportTickets.FirstAsync(e => e.SupportTicketId == id);
+            ticket.SupportEmployeeId = userId;
+            ticket.InWorkDate = DateTime.Now;
+            ticket.Status = EventBLib.Enums.SupportTicketStatus.InWork;
+            await db.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> SaveTicketDetails(string ticketId, string description, string note, string userId)
+        {
+            var id = Int32.Parse(ticketId);
+            var ticket = await db.SupportTickets.FirstAsync(e => e.SupportTicketId == id);
+            ticket.Description = description;
+            ticket.Note = note;
+            await db.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> CloseTicket(string ticketId, string userId)
+        {
+            var id = Int32.Parse(ticketId);
+            var ticket = await db.SupportTickets.FirstAsync(e => e.SupportTicketId == id);
+            ticket.CloseDate = DateTime.Now;
+            ticket.Status = EventBLib.Enums.SupportTicketStatus.Closed;
+            await db.SaveChangesAsync();
+            return true;
         }
     }
 }

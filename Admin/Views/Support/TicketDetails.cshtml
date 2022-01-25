@@ -1,0 +1,74 @@
+﻿@model Admin.Models.ViewModels.Support.TicketDetailsVM
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Style"] = "support.css";
+    ViewData["Script"] = "support.js";
+}
+@{ 
+    var statusBadgeColor = "bg-secondary";
+    switch (Model.Ticket.Status)
+    {
+        case EventBLib.Enums.SupportTicketStatus.New:
+        {
+            statusBadgeColor = "bg-primary";
+            break;
+        }
+        case EventBLib.Enums.SupportTicketStatus.InWork:
+        {
+            statusBadgeColor = "bg-success";
+            break;
+        }
+    }
+}
+
+<div class="sup-detail-container">
+    <h3>Детали тикета</h3>
+    <div><b>#@Model.Ticket.SupportTicketId</b> @Model.Ticket.Theme</div>
+    <div>
+        <label>Описание</label>
+        <textarea id="sup-detail-description" class="form-control" disabled rows="10">@Model.Ticket.Description</textarea>
+    </div>
+
+    <div>
+        <label>Внутренний комментарий (Это клиент НЕ увидит)</label>
+        <textarea id="sup-detail-note" class="form-control" disabled rows="10">@Model.Ticket.Note</textarea>
+    </div>
+
+    <div>Пользователь: <a href="@Model.NisidiUserUrl">@Model.NisidiUser.Name</a></div>
+    @if (Model.Ticket.EventId != 0)
+    {
+        <div>Привязан к событию: @Model.Ticket.EventId</div>
+    }
+    <div>Статус: <span class="badge @statusBadgeColor">@Model.Ticket.Status.ToString()</span></div>
+    <div>Требует закрытия: @(Model.Ticket.NeedToClose ? "ДА" : "НЕТ")</div>
+    <div class="flex-hsc">
+        <div class="margin-right20">Создан:@Model.Ticket.OpenDate.ToString("dd-MM-yy hh:mm")</div>
+        <div class="margin-right20">В работе:@(Model.Ticket.InWorkDate.HasValue ? Model.Ticket.InWorkDate.Value.ToString("dd-MM-yy hh:mm") : "-")</div>
+        <div>Закрыт:@(Model.Ticket.CloseDate.HasValue ? Model.Ticket.CloseDate.Value.ToString("dd-MM-yy hh:mm") : "-")</div>
+    </div>
+    @if (Model.AdminUser != null)
+    {
+        <div>Ответственный: <a href="/Account/AdminUserDetails?userId=@Model.AdminUser.Id">@Model.AdminUser.UserFio</a></div>
+    }
+    else
+    {
+        <div>Ответственный: НЕ НАЗНАЧЕН</div>
+    }
+    <hr />
+    <input type="hidden" id="ticket-id" value="@Model.Ticket.SupportTicketId" />
+    <div class="flex-hss margin-top16">
+        @if (Model.AdminUser == null)
+        {
+            <div id="sup-detail-assengre" class="btn btn-primary">Назначить себе</div>
+        }
+        <div id="sup-detail-edit" class="btn btn-primary">Редактировать</div>
+        <div id="sup-detail-save-changes" class="display-none btn btn-success">Сохранить</div>
+        <div id="sup-detail-cancel-changes" class="display-none btn btn-success">Отменить</div>
+        @if (Model.Ticket.Status != EventBLib.Enums.SupportTicketStatus.Closed)
+        {
+            <div id="sup-detail-close" class="btn btn-outline-danger">Закрыть</div>
+        }
+    </div>
+</div>
+
+

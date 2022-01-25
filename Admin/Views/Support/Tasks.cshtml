@@ -1,17 +1,20 @@
 ﻿@model List<EventBLib.Models.SupportTicket>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Style"] = "support.css";
+    ViewData["Script"] = "support.js";
 }
 
 <h3>Заявки в техподдержку</h3>
-<div class="supp-lis-container">
-    @foreach(var task in Model)
-    {
-        <div class="supp-lis-task">
-            <div>@task.Theme</div>
-            <div>@task.OpenDate.ToString("dd-MM-yy hh:mm")</div>
-            <div>@task.Status</div>
-            <hr />
-        </div>
-    }
+<div>
+    <select id="sup-list-options" class="form-control min-width400" placeholder="Выбрать сообщение">
+        <option value="0">Все</option>
+        <option value="1" selected>Новые</option>
+        <option value="2">Не требуют закрытия</option>
+        <option value="3">Мои</option>
+        <option value="4">Мои в работе (не закрытые)</option>
+    </select><br />
+</div>
+<div id="supp-lis-container" class="supp-lis-container">
+    @{await Html.RenderPartialAsync("_TasksList", Model);}
 </div>
