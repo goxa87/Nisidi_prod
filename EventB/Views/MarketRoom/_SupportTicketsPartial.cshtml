@@ -1,10 +1,22 @@
-﻿<div>
-    <h3 class="mr-t-header">Завести новое обращение</h3>
-    <div >
+﻿@{ ViewData["Script"] = "MarketRoom.js";}
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<div>
+    <h3 class="mr-t-header" style="display: inline; position: relative; top: -15px">
+        Завести новое обращение
+    </h3>
+    <span id="expand-more-icon" class="material-icons" style="font-size: 45px; cursor: pointer">
+        expand_more
+    </span>
+    <span id="expand-less-icon" class="material-icons" style="font-size: 45px; cursor: pointer; display: none">
+        expand_less
+    </span>
+    <div id="mr-new-request-section">
         <p>Пожалуйста, как можно подробней опишите суть вашего обращения</p>
         <textarea id="mr-t-message-text" class="mr-t-message-text" rows="7"></textarea><br />
         <div id="mr-t-send-new" class="mr-t-btn calltoaction-prime-btn transition-1">Отправить</div>
     </div>
     <h3 class="mr-t-header">Ранее открытые обращения</h3>
+    <p id="mr-no-requests-found-info">Пока не было ни одного обращения</p>
     <div id="mr-tickets-list"></div>
 </div>

@@ -211,6 +211,23 @@ $(document).ready(function ()
 
     // Получить и разместить тикеты пользователя
     GetAndNestTickets();
+
+    // Cпрятаь секцию для ввода письма в тех. поддержку
+    HideNewRequestSection();
+
+    //Показать секцию для ввода письма в тех. поддержку и перевернуть шеврон
+    $('#expand-more-icon').click(function () {
+        $('#expand-more-icon').hide();
+        $('#expand-less-icon').css('display', 'inline-block');
+        ShowNewRequestSection();
+    });
+
+    //Спрятать секцию для ввода письма в тех. поддержку и перевернуть шеврон в исходное положение
+    $('#expand-less-icon').click(function () {
+        $('#expand-more-icon').show();
+        $('#expand-less-icon').css('display', 'none');
+        HideNewRequestSection();
+    });
 });
 
 /** Получить и разместить тикеты пользователя */
@@ -259,4 +276,14 @@ function RenderSupportTicket(item) {
         </div>`;
 
     return markup;
+}
+
+/** Прячет секцию для ввода письма в тех. поддержку */
+function HideNewRequestSection(requestSection = "#mr-new-request-section") {
+    $(requestSection).hide();
+}
+
+/** Показывает секцию для ввода письма в тех. поддержку */
+function ShowNewRequestSection(requestSection = "#mr-new-request-section") {
+    $(requestSection).show();
 }
