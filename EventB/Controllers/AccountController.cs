@@ -136,7 +136,8 @@ namespace EventB.Controllers
                         Name = model.UserName,
                         NormalizedName = model.UserName.ToUpper(),
                         City = model.City.Trim(),
-                        NormalizedCity = model.City.Trim().ToUpper()
+                        NormalizedCity = model.City.Trim().ToUpper(),
+                        RegistrationDate = DateTime.Now
                     };
 
                     user.MarketKibnet = new MarketKibnet { MarketState = MarketState.common, PaymentAccountBalance = 0, TotalMarcetCompanyCount = 0 };

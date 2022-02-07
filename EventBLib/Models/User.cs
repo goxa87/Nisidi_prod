@@ -78,6 +78,11 @@ namespace EventBLib.Models
         [MaxLength(124)]
         public string MiniImage { get; set; }
 
+        /// <summary>
+        /// Дата регистрации
+        /// </summary>
+        public DateTime? RegistrationDate { get; set; }
+
         #endregion
 
         #region Navigation
