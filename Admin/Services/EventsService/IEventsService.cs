@@ -50,5 +50,12 @@ namespace Admin.Services.EventsService
         /// <param name="userId"></param>
         /// <returns></returns>
         Task<WebResponce<bool>> DeleteEvent(int eventId, string userId);
+
+        /// <summary>
+        /// Спиок всех событий пользователя
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns>
+        Task<List<Event>> GetEventListByUserId(string userId, bool noTracking);
     }
 }

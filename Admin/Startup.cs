@@ -1,5 +1,6 @@
 using Admin.AdminDbContext;
 using Admin.AdminDbContext.Models;
+using Admin.Services.CommonUsersService;
 using Admin.Services.EventsService;
 using Admin.Services.SupportService;
 using EventBLib.DataContext;
@@ -84,6 +85,7 @@ namespace Admin
 
             services.AddTransient<IEventsService, EventsService>();
             services.AddScoped<ISupportService, SupportService>();
+            services.AddScoped<ICommonUsersService, CommonUsersService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

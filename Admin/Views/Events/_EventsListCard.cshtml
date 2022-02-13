@@ -1,0 +1,8 @@
+﻿@model List<EventBLib.Models.Event>
+
+<div class="flex-hss flex-wrap">
+    @foreach (var eve in Model)
+    {
+        await Html.RenderPartialAsync("~/Views/Events/_EventSmallCard.cshtml", eve);
+    }
+</div>

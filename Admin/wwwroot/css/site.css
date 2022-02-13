@@ -1,5 +1,12 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
+﻿
+a{
+    color: black;
+}
+a:hover, a:focus{
+    text-decoration: none;
+}
+
+
 @media (min-width: 1450px) {
     .container {
     max-width: 1400px;
@@ -12,9 +19,6 @@ a.navbar-brand {
 }
 
 /* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
-}
 .cursor-pointer{
     cursor: pointer;
 }
@@ -35,10 +39,13 @@ a {
   border-color: #1861ac;
 }
 
+.color-danger{
+    color: red;
+}
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 @media (min-width: 768px) {
   html {
@@ -97,6 +104,9 @@ body {
     margin-right: 20px;
 }
 /*****************/
+.flex-wrap{
+    flex-wrap: wrap;
+}
 .flex-hss {
     display: flex;
     justify-content: start;
@@ -126,3 +136,28 @@ body {
 
 /*****************/
 
+.eve-sm-card-container {
+    width: 360px;
+    margin: 8px;
+    background-color: #C5DDE8;
+}
+.eve-sm-card-img{
+    border-radius: 4px;
+}
+.eve-sm-card-img > img {
+    width: 360px;
+    height: 320px;
+    object-fit: cover;
+}
+
+
+.eve-sm-card-title{
+    font-weight: 500;
+    font-size: 18px;
+    padding: 6px;
+}
+.eve-sm-card-text {
+    font-weight: 300;
+    font-size: 14px;
+    padding: 6px;
+}

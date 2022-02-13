@@ -134,7 +134,6 @@ namespace Admin.Services.EventsService
         {
             var eve = await db.Events.Include(e=>e.EventTegs).Include(e=>e.Creator).Include(e=>e.Vizits).FirstOrDefaultAsync(e=>e.EventId == eventId);
             eve.Image = _configuration.GetValue<string>("RootHostNisidi") + eve.Image;
-            eve.Image = _configuration.GetValue<string>("RootHostNisidi") + "/images/EventImages/ab69d908-5420-4fe0-a322-b1126b890d23.jpeg";
             return eve;
         }
 
@@ -187,6 +186,16 @@ namespace Admin.Services.EventsService
             }
 
             return new EventsListVM() { Events = await query.ToListAsync(), SearchParam = param };
+        }
+
+        ///<inheritdoc />
+        public async Task<List<Event>> GetEventListByUserId(string userId, bool noTracking)
+        {
+            if (noTracking)
+            {
+                return await db.Events.AsNoTracking().Where(e => e.UserId == userId).ToListAsync();
+            }
+            return await db.Events.Where(e => e.UserId == userId).ToListAsync();
         }
     }
 }
