@@ -24,6 +24,7 @@ namespace Admin
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("http://localhost:5002");
                 }).ConfigureLogging(builder =>
                 {
                     builder.SetMinimumLevel(LogLevel.Trace);
