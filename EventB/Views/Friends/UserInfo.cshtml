@@ -79,7 +79,7 @@ else
 
     </div>
     <div class="bottom-menu">
-        <span id="will-go" class="fr-selector bottom-menu-item bottom-menu-item-selected">Отметки пойду</span>
+        <span id="will-go" class="fr-selector bottom-menu-item bottom-menu-item-selected">Отметки "интересно"</span>
         <span id="created" class="fr-selector bottom-menu-item">Созданные</span>
         <span id="friends" class="fr-selector bottom-menu-item">Друзья</span>
     </div>
@@ -92,7 +92,7 @@ else
             }
             else
             {
-                <div>Отметки пойду:</div>
+                <div>Отметки "интересно":</div>
                 <div class="flex-hcc">
                     <div class="element-square-container">
                         @foreach (var e in Model.WillGoEvents.OrderByDescending(e => e.Event.Date))

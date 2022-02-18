@@ -1519,6 +1519,9 @@ figure img {
     border: none;
     background-color: #0000;
     padding: 0;
+    transition: 0.4s;
+    font-size: 24px;
+    line-height: 20px;
 }
 
     .bnrre-close:hover,
@@ -1786,4 +1789,9 @@ figure img {
 
 .bnrreg1-div2 {
     font-size: 20px;
+}
+
+/* общие морформы*/
+.transform-rotate180 {
+    transform: rotate(180deg);
 }

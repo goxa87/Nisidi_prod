@@ -194,17 +194,17 @@ $(document).ready(function ()
 
                         button.removeClass('calltoaction-btn');
                         button.addClass('calltoaction-prime-btn');
-                        button.text('Подтвердить участие');
+                        button.text('Интересно');
                         button.siblings().toggleClass('display-none');
-                        GetNotification('Отметка о визите удалена', 3, 3)
+                        GetNotification('Отмечено, что не интересно', 3, 3)
                         // Отписаться.
                     }
                     else {
                         button.removeClass('calltoaction-prime-btn');
                         button.addClass('calltoaction-btn');
-                        button.text('Отменить участие');
+                        button.text('Не интересно');
                         button.siblings().toggleClass('display-none');
-                        GetNotification('Отметка о визите сохранена', 3, 3)
+                        GetNotification('Отмечено, что интересно', 3, 3)
                         // Подписаться.
                     }
                 } else {
@@ -397,7 +397,12 @@ $(document).ready(function ()
     //Беннер рекомендации
     /** Закрыть баннер рекомендации*/
     $('.bnrre-close').click(function () {
-        $('.bnrre-body').slideUp(400);
+        if ($(this).hasClass('transform-rotate180')) {
+            $('.bnrre-content').slideDown(400);
+        } else {
+            $('.bnrre-content').slideUp(400);
+        }
+        $(this).toggleClass('transform-rotate180');
     });
 
     /** Удалить ТЕГ для регистрированного пользователя */
