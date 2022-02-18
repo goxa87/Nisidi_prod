@@ -20,6 +20,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using EventB.Services;
 
 namespace EventB.Services.EventServices
 {
@@ -42,6 +43,7 @@ namespace EventB.Services.EventServices
 
         private readonly IHubContext<MessagesHub> hubContext;
         private readonly IConfiguration _configuration;
+        private readonly SettingsService _settingsService;
 
         public EventService(Context _context,
             IMessageService _messageService,
@@ -51,7 +53,8 @@ namespace EventB.Services.EventServices
             ILogger _logger,
             IImageService _imageService,
             IHubContext<MessagesHub> _hubContext,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            SettingsService settingsService)
         {
             context = _context;
             messageService = _messageService;
@@ -62,6 +65,7 @@ namespace EventB.Services.EventServices
             imageService = _imageService;
             hubContext = _hubContext;
             _configuration = configuration;
+            _settingsService = settingsService;
         }
         /// <summary>
         /// Добавление нового события.
@@ -659,6 +663,21 @@ namespace EventB.Services.EventServices
 
             return eve;
         }
+
+        #region Всякие Выборки списков событий
+
+        /// <inheritdoc />
+        public async Task<List<Event>> GetUserVizitsEvents(string userId)
+        {
+            return await context.Vizits
+                .Where(e => e.UserId == userId)
+                .OrderByDescending(e => e.Event.Date > DateTime.Now)
+                .ThenBy(e => e.Event.Date)
+                .Select(e => e.Event)
+                .ToListAsync();
+        }
+
+        #endregion
 
         #region private
         /// <summary>

@@ -1,0 +1,7 @@
+﻿@model EventB.ViewModels.Paging.PagingBaseModel
+<div class="paging-container flex-hss flex-wr" >
+    @for(int i = 1; i <= Model.PagesCount; i++)
+    {
+        <div class="paging-badge @(i == Model.CurrentPage ? "paging-selected" : string.Empty) @Model.ClassSelectorName">@i</div>
+    }
+</div>

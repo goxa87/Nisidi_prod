@@ -113,10 +113,16 @@ $(document).ready(function () {
     GetCreatedBlock();
     // Загрузка приглашений
     GetInviteBlock();
+
+    $('body').on('click', '.mp-tab-vizit-paging', function () {
+        $('.mp-tab-vizit-paging').removeClass('paging-selected');
+        $(this).addClass('paging-selected');
+        GetVizitsPage($(this).text())
+    });
     
 });
 
-/**Загрузит блок с визитами */
+/**Загрузит блок с визитами ОСНОВНОЙ*/
 function GetVizitsBlock() {
     $.ajax({
         url: "/MyPage/GetVizits",
@@ -124,6 +130,24 @@ function GetVizitsBlock() {
             $('#events-willgo-body').html(markup);
         },
         error: function () { GetNotification("Что-то пошло не так (", 1, 2); }
+    })
+}
+
+/**
+ * Загрузит выбранную страницу
+ * @param {any} selectedPage
+ */
+function GetVizitsPage(selectedPage) {
+    $('#mp-vizits-tab-container').html("загрузка...");
+    $.ajax({
+        url: `/MyPage/GetVizitsPage?currentPage=${selectedPage}`,
+        success: function (markup) {
+            $('#mp-vizits-tab-container').html(markup);
+        },
+        error: function () {
+            $('#mp-vizits-tab-container').html("Ошибка (");
+            GetNotification("Что-то пошло не так (", 1, 2);
+        }
     })
 }
 

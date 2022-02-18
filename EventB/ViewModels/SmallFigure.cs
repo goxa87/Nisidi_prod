@@ -12,5 +12,7 @@ namespace EventB.ViewModels
         public string Title { get; set; }
         public string Link { get; set; }
         public bool Active { get; set; } = true;
+
+        public string AdditionalLine { get; set; }
     }
 }

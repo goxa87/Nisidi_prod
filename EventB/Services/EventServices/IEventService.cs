@@ -84,5 +84,19 @@ namespace EventB.Services.EventServices
         /// <param name="model"></param>
         /// <returns></returns>
         Task<Event> EventEdit(string userName, EventEditVM model);
+
+        #region Списки событий
+
+        /// <summary>
+        /// Вернет список визитов пользователя с учетом
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="currentPage"></param>
+        /// <param name="filterText"></param>
+        /// <returns></returns>
+        Task<List<Event>> GetUserVizitsEvents(string userId);
+
+
+        #endregion
     }
 }

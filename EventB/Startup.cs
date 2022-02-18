@@ -75,6 +75,7 @@ namespace EventB
             });
 
             services.AddTransient<ILogger>(sp => new Logger($"{hostEnvironment.WebRootPath}/{Configuration.GetSection("LogPath").Value}"));
+            services.AddSingleton<SettingsService>();
             services.AddTransient<ITegSplitter, TegSplitter>();
             services.AddTransient<IUserFindService, UserFindService>();
             services.AddTransient<IMarketKibnetApiServices, MarketKibnetApiServices>();
@@ -85,7 +86,7 @@ namespace EventB
 
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IEventSelectorService, EventSelectorService>();
-
+            
             services.AddSignalR().AddHubOptions<MessagesHub>(options => {
                 options.EnableDetailedErrors = true;
             });

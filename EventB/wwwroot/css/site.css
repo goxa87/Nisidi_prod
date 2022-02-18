@@ -24,6 +24,7 @@ body {
 hr{
     margin:2px 0;
     border-top:1px solid #1b5972;
+    width: 100%;
 }
 p{
    margin: 0;
@@ -1791,6 +1792,25 @@ figure img {
     font-size: 20px;
 }
 
+/*Пагинация */
+.paging-container {
+    background-color: #d4edf9;
+    border-radius: 4px;
+    margin: 4px;
+}
+.paging-badge{
+    color: #1b5972;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 0.8em;
+    padding: 8px;
+    cursor: pointer;
+}
+.paging-selected{
+    color: white;
+    background-color: #1b5972;
+    border-radius: 4px;
+}
 /* общие морформы*/
 .transform-rotate180 {
     transform: rotate(180deg);
