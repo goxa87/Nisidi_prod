@@ -35,5 +35,5 @@
     </div>
 </div>
 <div class="flex-hcc">
-    @{Html.RenderPartialAsync("~/Views/Shared/Components/_PagingBar.cshtml", Model.Paging); }
+    @{await Html.RenderPartialAsync("~/Views/Shared/Components/_PagingBar.cshtml", Model.Paging); }
 </div>

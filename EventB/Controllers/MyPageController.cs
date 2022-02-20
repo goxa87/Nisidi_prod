@@ -108,13 +108,40 @@ namespace EventB.Controllers
         /// Получить разметку для вкладки созданных
         /// </summary>
         /// <returns></returns>
-        [HttpGet, Route("/MyPage/GetCreated")]
+        [HttpGet, Route("/MyPage/GetCreatedTab")]
         public async Task<IActionResult> GetEventsMarkup()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var events = await  context.Events.Where(e=>e.UserId == userId).OrderByDescending(e=>e.Date).Take(300).ToListAsync();
+            var events = await _eventService.GetUserCreatedEvents(userId);
 
-            return PartialView("~/Views/MyPage/Partials/_MyPageTabCreated.cshtml", events);
+            var itemsCount = events.Count;
+            var model = new EventsPagingFilterModel<Event>()
+            {
+                Events = events.Take(_settingsService.DefaultPagingPageSize).ToList(),
+                Paging = new PagingBaseModel(itemsCount, 1, _settingsService.DefaultPagingPageSize, "mp-tab-created-paging")
+            };
+
+            return PartialView("~/Views/MyPage/Partials/_MyPageTabCreated.cshtml", model);
+        }
+
+        /// <summary>
+        /// Получить разметку для вкладки созданных
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet, Route("/MyPage/GetCreatedPage")]
+        public async Task<IActionResult> GetCteatedPage(int currentPage)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var events = await _eventService.GetUserCreatedEvents(userId);
+
+            var itemsCount = events.Count;
+            var model = new EventsPagingFilterModel<Event>()
+            {
+                Events = events.Skip((currentPage - 1) * _settingsService.DefaultPagingPageSize).Take(_settingsService.DefaultPagingPageSize).ToList(),
+                Paging = new PagingBaseModel(itemsCount, currentPage, _settingsService.DefaultPagingPageSize, "mp-tab-created-paging")
+            };
+
+            return PartialView("~/Views/MyPage/Partials/_MyPageVizitsPage.cshtml", model);
         }
 
         /// <summary>

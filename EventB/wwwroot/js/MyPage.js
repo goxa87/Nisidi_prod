@@ -114,12 +114,19 @@ $(document).ready(function () {
     // Загрузка приглашений
     GetInviteBlock();
 
+    // Пагинация в визитах
     $('body').on('click', '.mp-tab-vizit-paging', function () {
         $('.mp-tab-vizit-paging').removeClass('paging-selected');
         $(this).addClass('paging-selected');
         GetVizitsPage($(this).text())
     });
-    
+
+    // пагинация в созданных
+    $('body').on('click', '.mp-tab-created-paging', function () {
+        $('.mp-tab-created-paging').removeClass('paging-selected');
+        $(this).addClass('paging-selected');
+        GetCreatedPage($(this).text())
+    });
 });
 
 /**Загрузит блок с визитами ОСНОВНОЙ*/
@@ -154,11 +161,29 @@ function GetVizitsPage(selectedPage) {
 /**Загрузит блок с созданными */
 function GetCreatedBlock() {
     $.ajax({
-        url: "/MyPage/GetCreated",
+        url: "/MyPage/GetCreatedTab",
         success: function (markup) {
             $('#my-events-body').html(markup);
         },
         error: function () { GetNotification("Что-то пошло не так (", 1, 2); }
+    })
+}
+
+/**
+ * Загрузит выбранную страницу для созданных
+ * @param {any} selectedPage
+ */
+function GetCreatedPage(selectedPage) {
+    $('#mp-created-tab-container').html("загрузка...");
+    $.ajax({
+        url: `/MyPage/GetCreatedPage?currentPage=${selectedPage}`,
+        success: function (markup) {
+            $('#mp-created-tab-container').html(markup);
+        },
+        error: function () {
+            $('#mp-created-tab-container').html("Ошибка (");
+            GetNotification("Что-то пошло не так (", 1, 2);
+        }
     })
 }
 

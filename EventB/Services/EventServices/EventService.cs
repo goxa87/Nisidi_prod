@@ -677,6 +677,16 @@ namespace EventB.Services.EventServices
                 .ToListAsync();
         }
 
+        /// <inheritdoc />
+        public async Task<List<Event>> GetUserCreatedEvents(string userId)
+        {
+            return await context.Events
+                .Where(e => e.UserId == userId)
+                .OrderByDescending(e => e.Date > DateTime.Now)
+                .ThenBy(e => e.Date)
+                .ToListAsync();
+        }
+
         #endregion
 
         #region private
@@ -688,7 +698,7 @@ namespace EventB.Services.EventServices
         private string TrimSuffix(string path)
         {
             return path.Substring(0, path.LastIndexOf('.'));
-        } 
+        }
         #endregion
     }
 }

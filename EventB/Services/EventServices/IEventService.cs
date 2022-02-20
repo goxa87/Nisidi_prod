@@ -96,6 +96,13 @@ namespace EventB.Services.EventServices
         /// <returns></returns>
         Task<List<Event>> GetUserVizitsEvents(string userId);
 
+        /// <summary>
+        /// Созданные пользователем
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<List<Event>> GetUserCreatedEvents(string userId);
+
 
         #endregion
     }
