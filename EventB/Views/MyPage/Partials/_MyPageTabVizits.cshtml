@@ -1,10 +1,16 @@
-﻿@model EventB.ViewModels.Paging.EventsPagingFilterModel<Event>
+﻿@model EventB.ViewModels.Paging.EventsPagingFilterModel<Event, string>
 
 <div class="s-filter-container mb-2">
     <span class="small-label">Фильтр</span>
     <div class="flex-hsbc">
-        <input id="mp-vizits-filter" class="s-filter" autocomplete="off" />
-        <img src="~/resourses/cancel.png" class="s-filter-clear" />
+        <input id="mp-vizits-filter" class="s-filter" autocomplete="off" value="@Model.Filter" />
+        <input type="hidden" id="mp-vizits-filter-applyed" class="s-filter" autocomplete="off" value="@Model.Filter" />
+        <span id="mp-vizits-clear-filter" class="sfilter-clear">
+            <span class="material-icons s-filter-icons">close</span>
+        </span>
+        <span id="mp-vizits-search-filter" class="sfilter-search">
+            <span class="material-icons s-filter-icons">search</span>
+        </span>
     </div>
 
 </div>
@@ -12,11 +18,10 @@
     <div id="mp-vizits-tab-container" class="element-square-container">
         @if (Model.Events == null || Model.Events.Count == 0)
         {
-            <div class="mp-none-content">Отметок пойду пока нет.</div>
+            <div class="mp-none-content">Отметок пойду пока нет</div>
         }
         else
         {
-
             @foreach (var e in Model.Events)
             {
                 <div class="mp-details-figure">

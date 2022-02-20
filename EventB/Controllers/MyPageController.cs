@@ -70,16 +70,17 @@ namespace EventB.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet, Route("/MyPage/GetVizits")]
-        public async Task<IActionResult> GetVizitsMarkup()
+        public async Task<IActionResult> GetVizitsMarkup(string filter)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var events = await _eventService.GetUserVizitsEvents(userId);
+            var events = await _eventService.GetUserVizitsEvents(userId, filter);
 
             var itemsCount = events.Count;
-            var model = new EventsPagingFilterModel<Event>()
+            var model = new EventsPagingFilterModel<Event, string>()
             {
                 Events = events.Take(_settingsService.DefaultPagingPageSize).ToList(),
-                Paging = new PagingBaseModel(itemsCount, 1, _settingsService.DefaultPagingPageSize, "mp-tab-vizit-paging")
+                Paging = new PagingBaseModel(itemsCount, 1, _settingsService.DefaultPagingPageSize, "mp-tab-vizit-paging"),
+                Filter = filter
             };
             return PartialView("~/Views/MyPage/Partials/_MyPageTabVizits.cshtml", model);
         }
@@ -90,16 +91,17 @@ namespace EventB.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet, Route("/MyPage/GetVizitsPage")]
-        public async Task<IActionResult> GetVizitsMarkup(int currentPage)
+        public async Task<IActionResult> GetVizitsMarkup(int currentPage, string filter)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var events = await _eventService.GetUserVizitsEvents(userId);
+            var events = await _eventService.GetUserVizitsEvents(userId, filter);
 
             var itemsCount = events.Count;
-            var model = new EventsPagingFilterModel<Event>()
+            var model = new EventsPagingFilterModel<Event, string>()
             {
                 Events = events.Skip((currentPage-1)*_settingsService.DefaultPagingPageSize).Take(_settingsService.DefaultPagingPageSize).ToList(),
-                Paging = new PagingBaseModel(itemsCount, currentPage, _settingsService.DefaultPagingPageSize, "mp-tab-vizit-paging")
+                Paging = new PagingBaseModel(itemsCount, currentPage, _settingsService.DefaultPagingPageSize, "mp-tab-vizit-paging"),
+                Filter = filter
             };
             return PartialView("~/Views/MyPage/Partials/_MyPageVizitsPage.cshtml", model);
         }
@@ -109,16 +111,17 @@ namespace EventB.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet, Route("/MyPage/GetCreatedTab")]
-        public async Task<IActionResult> GetEventsMarkup()
+        public async Task<IActionResult> GetEventsMarkup(string filter)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var events = await _eventService.GetUserCreatedEvents(userId);
+            var events = await _eventService.GetUserCreatedEvents(userId, filter);
 
             var itemsCount = events.Count;
-            var model = new EventsPagingFilterModel<Event>()
+            var model = new EventsPagingFilterModel<Event, string>()
             {
                 Events = events.Take(_settingsService.DefaultPagingPageSize).ToList(),
-                Paging = new PagingBaseModel(itemsCount, 1, _settingsService.DefaultPagingPageSize, "mp-tab-created-paging")
+                Paging = new PagingBaseModel(itemsCount, 1, _settingsService.DefaultPagingPageSize, "mp-tab-created-paging"),
+                Filter = filter
             };
 
             return PartialView("~/Views/MyPage/Partials/_MyPageTabCreated.cshtml", model);
@@ -129,16 +132,17 @@ namespace EventB.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet, Route("/MyPage/GetCreatedPage")]
-        public async Task<IActionResult> GetCteatedPage(int currentPage)
+        public async Task<IActionResult> GetCteatedPage(int currentPage, string filter)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var events = await _eventService.GetUserCreatedEvents(userId);
+            var events = await _eventService.GetUserCreatedEvents(userId, filter);
 
             var itemsCount = events.Count;
-            var model = new EventsPagingFilterModel<Event>()
+            var model = new EventsPagingFilterModel<Event, string>()
             {
                 Events = events.Skip((currentPage - 1) * _settingsService.DefaultPagingPageSize).Take(_settingsService.DefaultPagingPageSize).ToList(),
-                Paging = new PagingBaseModel(itemsCount, currentPage, _settingsService.DefaultPagingPageSize, "mp-tab-created-paging")
+                Paging = new PagingBaseModel(itemsCount, currentPage, _settingsService.DefaultPagingPageSize, "mp-tab-created-paging"),
+                Filter = filter
             };
 
             return PartialView("~/Views/MyPage/Partials/_MyPageVizitsPage.cshtml", model);

@@ -91,17 +91,15 @@ namespace EventB.Services.EventServices
         /// Вернет список визитов пользователя с учетом
         /// </summary>
         /// <param name="userId"></param>
-        /// <param name="currentPage"></param>
-        /// <param name="filterText"></param>
         /// <returns></returns>
-        Task<List<Event>> GetUserVizitsEvents(string userId);
+        Task<List<Event>> GetUserVizitsEvents(string userId, string filter);
 
         /// <summary>
         /// Созданные пользователем
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task<List<Event>> GetUserCreatedEvents(string userId);
+        Task<List<Event>> GetUserCreatedEvents(string userId, string filter);
 
 
         #endregion

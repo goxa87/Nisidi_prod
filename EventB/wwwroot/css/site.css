@@ -400,6 +400,43 @@ input[type="checkbox"].input-validation-error {
     cursor: pointer;
     display: inline-block;
 }
+
+.sfilter-clear {
+    padding: 4px;
+    border-bottom: 1px solid #1b5972;
+    border-top: 1px solid #1b5972;
+    width: 30px;
+    font-size: 8px;
+    display: flex;
+    align-items: center;
+    height: 31px;
+    cursor: pointer;
+}
+
+.sfilter-search {
+    padding: 4px;
+    border-bottom: 1px solid #1b5972;
+    border-top: 1px solid #1b5972;
+    width: 30px;
+    font-size: 8px;
+    display: flex;
+    align-items: center;
+    height: 31px;
+    cursor: pointer;
+    background-color: #1b5972;
+    border-radius: 0 4px 4px 0;
+}
+
+    .sfilter-search > .s-filter-icons{
+       color: #ffcd00;
+    }
+
+.s-filter-icons {
+    color: #1b5972;
+    padding-top: 1px;
+    padding-right: 2px;
+}
+
 /* ******************** формы*/
 .wide-form{
     padding: 0;

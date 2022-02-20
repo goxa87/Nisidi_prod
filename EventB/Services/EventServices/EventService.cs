@@ -667,10 +667,17 @@ namespace EventB.Services.EventServices
         #region Всякие Выборки списков событий
 
         /// <inheritdoc />
-        public async Task<List<Event>> GetUserVizitsEvents(string userId)
+        public async Task<List<Event>> GetUserVizitsEvents(string userId, string filter)
         {
-            return await context.Vizits
-                .Where(e => e.UserId == userId)
+            var events = context.Vizits.AsQueryable();
+            events = events.Where(e => e.UserId == userId);
+            if (!string.IsNullOrEmpty(filter))
+            {
+                filter = filter.Trim().ToUpper();
+                events = events.Where(e => EF.Functions.Like(e.Event.NormalizedTitle, $"%{filter}%"));
+            }
+
+            return await events
                 .OrderByDescending(e => e.Event.Date > DateTime.Now)
                 .ThenBy(e => e.Event.Date)
                 .Select(e => e.Event)
@@ -678,10 +685,17 @@ namespace EventB.Services.EventServices
         }
 
         /// <inheritdoc />
-        public async Task<List<Event>> GetUserCreatedEvents(string userId)
+        public async Task<List<Event>> GetUserCreatedEvents(string userId, string filter)
         {
-            return await context.Events
-                .Where(e => e.UserId == userId)
+            var events = context.Events.AsQueryable();
+            events = events.Where(e => e.UserId == userId);
+            if (!string.IsNullOrEmpty(filter))
+            {
+                filter = filter.Trim().ToUpper();
+                events = events.Where(e => EF.Functions.Like(e.NormalizedTitle, $"%{filter}%"));
+            }
+
+            return await events
                 .OrderByDescending(e => e.Date > DateTime.Now)
                 .ThenBy(e => e.Date)
                 .ToListAsync();

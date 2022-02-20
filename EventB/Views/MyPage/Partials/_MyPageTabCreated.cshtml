@@ -1,10 +1,16 @@
-﻿@model EventB.ViewModels.Paging.EventsPagingFilterModel<Event>
+﻿@model EventB.ViewModels.Paging.EventsPagingFilterModel<Event, string>
 
 <div class="s-filter-container mb-2">
     <span class="small-label">Фильтр</span>
     <div class="flex-hsbc">
-        <input id="mp-created-ev-filter" class="s-filter" autocomplete="off" />
-        <img src="~/resourses/cancel.png" class="s-filter-clear" />
+        <input id="mp-created-ev-filter" class="s-filter" autocomplete="off" value="@Model.Filter"/>
+        <input id="mp-created-ev-filter-applyed" class="s-filter" type="hidden" autocomplete="off" value="@Model.Filter"/>
+        <span id="mp-created-clear-filter" class="sfilter-clear">
+            <span class="material-icons s-filter-icons">close</span>
+        </span>
+        <span id="mp-created-search-filter" class="sfilter-search">
+            <span class="material-icons s-filter-icons">search</span>
+        </span>
     </div>
 
 </div>
@@ -16,7 +22,7 @@
         }
         else
         {
-            @foreach (var e in Model.Events.OrderByDescending(e => e.Date))
+            @foreach (var e in Model.Events)
             {
                 <div class="mp-details-figure">
                     @{await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.SmallFigure()
