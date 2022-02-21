@@ -83,8 +83,13 @@ namespace EventBLib.DataContext
         public DbSet<MarkListCard> MarkListCards { get; set; }
 
         /// <summary>
-        /// Баннеры пользователей.
+        /// Баннеры пользователей
         /// </summary>
         public DbSet<UserBanner> UserBanners { get; set; }
+
+        /// <summary>
+        /// Задачи техподдержки
+        /// </summary>
+        public DbSet<SupportTicket> SupportTickets { get; set; }
     }
 }

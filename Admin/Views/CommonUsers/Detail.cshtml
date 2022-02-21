@@ -1,0 +1,43 @@
+﻿@model Admin.Models.ViewModels.CommonUsers.UserDetailVM
+@{ 
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Style"] = "common-users.css";
+    ViewData["Script"] = "common-users.js";
+}
+
+<h1>@Model.User.Name</h1>
+<div class="cu-det-content">
+    <div>Город: @Model.User.City</div>
+    <div>Регистрация: @( Model.User.RegistrationDate.HasValue ? Model.User.RegistrationDate.Value.ToString() : "-")</div>
+    <div>@Model.User.Email</div>
+    <div>
+        Email Подтвержден : @Model.User.EmailConfirmed
+        @if (!Model.User.EmailConfirmed)
+        {
+            <span id="cu-det-confirm-email" class="btn btn-primary">Подтвердить</span>
+        }
+    </div>
+
+    <div class="@(Model.User.IsBlockedUser ? "color-danger" : "")">
+        Заблокирован : @Model.User.IsBlockedUser
+        @if (!Model.User.IsBlockedUser)
+        {
+            <span id="cu-det-toggle-block" class="btn btn-danger">Заблокировать</span>
+        }
+        else
+        {
+            <span id="cu-det-toggle-block" class="btn btn-success">Разблокировать</span>
+        }
+    </div>
+    <div>Теги : @string.Join(' ', Model.User.Intereses.Select(e=>e.Value))</div>
+    <div>Описание : @Model.User.Description</div>
+    <img src="@Model.ProfileImageUrl?v=@DateTime.Now.Millisecond" alt="Alternate Text" class="cu-det-image" />
+    <div>Созданные <span id="cu-det-show-created" class="btn btn-outline-primary">Показать</span></div>
+    <div>Открыть чат <span id="cu-det-to-chat" class="btn btn-outline-warning">Перейти</span></div>
+    <input type="hidden" id="cu-det-userid" value="@Model.User.Id"/>
+    <div id="cu-det-events-container" class="display-none">
+        <h3>Созданные события:</h3>
+        <div id="cu-det-events-list"></div>
+    </div>
+</div>
+<div></div>

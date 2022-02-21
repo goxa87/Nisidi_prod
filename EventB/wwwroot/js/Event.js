@@ -6,7 +6,7 @@ var IsAuthorizedUser = true;
 const INTERES_COOKIE_NAME = 'intereses';
 // Начало исполнения
 $(document).ready(function ()
-{    
+{
     // Флаг прекращения загрузки.
     var dynamicLoadStopper = true;
     var block = false;
@@ -194,17 +194,17 @@ $(document).ready(function ()
 
                         button.removeClass('calltoaction-btn');
                         button.addClass('calltoaction-prime-btn');
-                        button.text('Подтвердить участие');
+                        button.text('Интересно');
                         button.siblings().toggleClass('display-none');
-                        GetNotification('Отметка о визите удалена', 3, 3)
+                        GetNotification('Отмечено, что не интересно', 3, 3)
                         // Отписаться.
                     }
                     else {
                         button.removeClass('calltoaction-prime-btn');
                         button.addClass('calltoaction-btn');
-                        button.text('Отменить участие');
+                        button.text('Не интересно');
                         button.siblings().toggleClass('display-none');
-                        GetNotification('Отметка о визите сохранена', 3, 3)
+                        GetNotification('Отмечено, что интересно', 3, 3)
                         // Подписаться.
                     }
                 } else {
@@ -397,7 +397,12 @@ $(document).ready(function ()
     //Беннер рекомендации
     /** Закрыть баннер рекомендации*/
     $('.bnrre-close').click(function () {
-        $('.bnrre-body').slideUp(400);
+        if ($(this).hasClass('transform-rotate180')) {
+            $('.bnrre-content').slideDown(400);
+        } else {
+            $('.bnrre-content').slideUp(400);
+        }
+        $(this).toggleClass('transform-rotate180');
     });
 
     /** Удалить ТЕГ для регистрированного пользователя */
@@ -473,6 +478,35 @@ $(document).ready(function ()
         let time = dateDouble[1];
         $('#eve-add-time_preview').text(time);
     });
+
+    // Кнопка "сохранить" пропадает после нажатия по ней, и на её месте появляется загрузка 
+    // при условии, что поля заполнены верно
+    $('#save-btn').click(function () {
+        var titleLength = $('#eve-add-title').val().length;
+        var bodyLength = $('#eve-add-body').val().length;
+        var tegsLength = $('#eve-add-tegs').val().length;
+        var cityLength = $('#eve-add-city').val().length;
+        var placeLength = $('#eve-add-place').val().length;
+        var dateIsPicked = $('#eve-add-date').val();
+        var ticketsDescLength = $('#eve-add-ticketsDesc').val().length;
+        var phoneLength = $('#eve-add-phone').val().length;
+
+        if (titleLength == 0 || titleLength > 1000) return;
+        if (bodyLength > 4000) return;
+        if (tegsLength > 1000) return;
+        if (cityLength == 0 || cityLength > 100) return;
+        if (placeLength == 0 || placeLength > 200) return;
+        if (!dateIsPicked) return;
+        if (ticketsDescLength > 1000) return;
+        if (phoneLength > 25) return;
+        else {
+            $(this).addClass('display-none');
+
+            if ($('#noTrespassingOuterBarG').hasClass('display-none')) {
+                $('#noTrespassingOuterBarG').removeClass('display-none');
+            }
+        }
+    });
 });
 
 /**
@@ -517,6 +551,9 @@ function InitStartLocalData() {
     } else {
         IsAuthorizedUser = true;
     }
+
+    if (IsAuthorizedUser) return;
+
     var intereses = GetCookieByName(INTERES_COOKIE_NAME);
     if (intereses) {
         var interesArray = intereses.split('@');

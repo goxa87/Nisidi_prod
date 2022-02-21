@@ -42,11 +42,11 @@ namespace CommonServices.Infrastructure.WebApi
         /// <param name="content"></param>
         /// <param name="isSuccess"></param>
         /// <param name="errorMessage"></param>
-        public WebResponce(T content, bool isSuccess = true, string errorMessage = "")
+        public WebResponce(T content, bool isSuccess, string errorMessage)
         {
             Content = content;
             IsSuccess = isSuccess;
-            ErrorMessage = "";
+            ErrorMessage = errorMessage;
         }
     }
 }

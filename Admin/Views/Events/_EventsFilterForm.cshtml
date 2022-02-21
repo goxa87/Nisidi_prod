@@ -1,19 +1,19 @@
 ﻿@model Admin.Models.ViewModels.Events.EventListParam
 
 <div>
-    <div >
+    <div>
         <div class="flex-hss">
             <div>
                 <label class="form-label">Дата создания С:</label><br>
-                <input id="evelist-createstartdate" type="hidden" 
-                       value="@(Model.EventCreateStartDate.HasValue 
+                <input id="evelist-createstartdate" type="hidden"
+                       value="@(Model.EventCreateStartDate.HasValue
                                ? Model.EventCreateStartDate.Value.ToString("yyyy-MM-ddTHH:mm:ss")
                                : "")">
                 <div class="calender-width" id="dateCreateStartDE"></div>
             </div>
             <div>
                 <label class="form-label">Дата создания По:</label><br>
-                <input id="evelist-createenddate" type="hidden" 
+                <input id="evelist-createenddate" type="hidden"
                        value="@(Model.EventCreateEndDate.HasValue
                                ? Model.EventCreateEndDate.Value.ToString("yyyy-MM-ddTHH:mm:ss")
                                : "")">
@@ -44,12 +44,33 @@
         </div>
 
         <div class="form-check">
-            <input asp-for="IsGlobal" class="form-check-input" type="checkbox" value="false" id="flexCheckDefault">
-            <label class="form-check-label" for="flexCheckDefault">
+            @if (Model.IsGlobal)
+            {
+                <input type="checkbox" class="form-check-input" checked id="flexCheckGlobal">
+            }
+            else
+            {
+                <input type="checkbox" class="form-check-input" id="flexCheckGlobal">
+            }
+            <label class="form-check-label" for="flexCheckGlobal">
                 В статусе GLOBAL
             </label>
         </div>
-        <button class="eve-list-filter btn btn-info" >Найти</button>
+        <div class="form-check">
+            @if (Model.OnlyRequereCheck)
+            {
+                <input type="checkbox" class="form-check-input" checked id="flexCheckStatus">
+            }
+            else
+            {
+                <input type="checkbox" class="form-check-input"  id="flexCheckStatus">
+            }
+            
+            <label class="form-check-label" for="flexCheckStatus">
+                Требующие проверки
+            </label>
+        </div>
+        <button class="eve-list-filter btn btn-info">Найти</button>
     </div>
     <hr>
 </div>

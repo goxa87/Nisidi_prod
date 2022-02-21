@@ -25,11 +25,7 @@ namespace Admin.Controllers
             return View();
         }
 
-        public IActionResult FAQ()
-        {
-            return View();
-        }
-
+        [AllowAnonymous]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

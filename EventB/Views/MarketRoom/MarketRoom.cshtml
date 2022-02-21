@@ -7,10 +7,13 @@
     ViewData["Title"] = "личный кабинет";
 }
 
-<div class="top-page-header">ваш личный кабинет</div>
+<div class="bottom-menu">
+    <div id="mr-btn-events" class="bottom-menu-item bottom-menu-item-selected">События</div>
+    <div id="mr-btn-tickets" class="bottom-menu-item">Техподдержка</div>
+</div>
 
 <div class="market-frame">
-    <div class="right-columnn">
+    <div id="mr-main-events-tab" class="right-columnn">
         <div id="lk-event-page" class="lk-page">
             <div class="lk-header">
                 События:
@@ -33,7 +36,7 @@
                 {
                     <div class="lk-eve-item">
                         <div class="lk-event">
-                            <div>
+                            <div class="lk-event-container">
                                 @{await Html.RenderPartialAsync("~/Views/Shared/_eventItemPartial.cshtml", ev);}
                                 <div class="eventlist-bottom-menu">
                                     <div class="eventlist-btn-come-right-col">
@@ -67,6 +70,9 @@
                 <p class="info-p">Cобытий нет.</p>
             }
         </div>
+    </div>
+    <div id="mr-main-tickets-tab" class="right-columnn display-none">
+        @{ await Html.RenderPartialAsync("_SupportTicketsPartial"); }
     </div>
 </div>
 

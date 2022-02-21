@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EventBLib.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -147,10 +148,15 @@ namespace EventBLib.Models
         }
 
         /// <summary>
-        /// Контактный телефон к событию.
+        /// Контактный телефон к событию
         /// </summary>
         [MaxLength(25)]
         public string Phone { get; set; }
+
+        /// <summary>
+        /// Статус проверки администрацией
+        /// </summary>
+        public EventCheckStatus CheckStatus { get; set; }
 
         #endregion
         #region Navigation

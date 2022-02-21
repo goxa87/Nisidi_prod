@@ -45,8 +45,8 @@ namespace EventB.Controllers
             IUserFindService _userFindService,
             ITegSplitter _tegSplitter,
             IEventSelectorService _eventSelector,
-             UserManager<User> _userManager,
-             ILogger<EventsController> logger)
+            UserManager<User> _userManager,
+            ILogger<EventsController> logger)
         {
             context = c;
             eventService = _eventService;
@@ -468,20 +468,6 @@ namespace EventB.Controllers
                 var eve = await eventService.EventEdit(User.Identity.Name, model);
                 return Redirect($"/Events/Details/{eve.EventId}");
             }        
-        }
-
-        /// <summary>
-        /// Удаление события.
-        /// </summary>
-        /// <param name="eventId"></param>
-        /// <returns></returns>
-        [Authorize]
-        [Route("Events/DeleteEvent")]
-        public async Task<IActionResult> DeleteEvent(int eventId)
-        {
-            var result = await eventService.DeleteEvent(User.Identity.Name, eventId);
-            if(result == 200) return RedirectToAction("Index", "MyPage");
-            else return StatusCode(result);
         }
         #endregion
 

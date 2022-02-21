@@ -1,23 +1,28 @@
-﻿@model List<Event>
+﻿@model EventB.ViewModels.Paging.EventsPagingFilterModel<Event, string>
 
-<div class="s-filter-container">
+<div class="s-filter-container mb-2">
     <span class="small-label">Фильтр</span>
     <div class="flex-hsbc">
-        <input id="mp-created-ev-filter" class="s-filter" autocomplete="off" />
-        <img src="~/resourses/cancel.png" class="s-filter-clear" />
+        <input id="mp-created-ev-filter" class="s-filter" autocomplete="off" value="@Model.Filter"/>
+        <input id="mp-created-ev-filter-applyed" class="s-filter" type="hidden" autocomplete="off" value="@Model.Filter"/>
+        <span id="mp-created-clear-filter" class="sfilter-clear">
+            <span class="material-icons s-filter-icons">close</span>
+        </span>
+        <span id="mp-created-search-filter" class="sfilter-search">
+            <span class="material-icons s-filter-icons">search</span>
+        </span>
     </div>
 
 </div>
-<div>Созданные</div>
 <div class="flex-hcc">
-    <div class="element-square-container">
-        @if (Model == null || Model.Count == 0)
+    <div id="mp-created-tab-container" class="element-square-container">
+        @if (Model == null || Model.Events.Count == 0)
         {
             <div class="mp-none-content">Созданных пока нет</div>
         }
         else
         {
-            @foreach (var e in Model.OrderByDescending(e => e.Date))
+            @foreach (var e in Model.Events)
             {
                 <div class="mp-details-figure">
                     @{await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.SmallFigure()
@@ -25,12 +30,15 @@
                             Title = e.Title,
                             Link = $"/Events/Details/{e.EventId}",
                             Image = e.MediumImage,
-                            Active = e.Date < DateTime.Now ? false : true
+                            Active = e.Date < DateTime.Now ? false : true,
+                            AdditionalLine = e.Date.ToString("dd MMM HH:mm")
                         });
                     }
                 </div>
-
             }
         }
     </div>
+</div>
+<div class="flex-hcc">
+    @{await Html.RenderPartialAsync("~/Views/Shared/Components/_PagingBar.cshtml", Model.Paging); }
 </div>

@@ -34,7 +34,7 @@ namespace EventB.ViewModels
 
         [Display(Name = "Место")]
         [Required(ErrorMessage = "Поле Место проведения не заполнено")]
-        [MaxLength(1000, ErrorMessage = "Длинна этого поля не должна быть больше 200 символов")]
+        [MaxLength(200, ErrorMessage = "Длинна этого поля не должна быть больше 200 символов")]
         public string Place { get; set; }
 
         [MaxLength(1000, ErrorMessage = "Слишком длинное, попробуйте до 1000 символов"),

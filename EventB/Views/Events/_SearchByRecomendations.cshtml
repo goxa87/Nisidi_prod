@@ -3,34 +3,37 @@
 <div class="bnrre-body">
     <div class="flex-hsbc">
         <h3 class="bnrre-head">Рекомендации</h3>
-        <button type="button" class="bnrre-close">
-            <span class="material-icons">close</span>
+        <button type="button" class="bnrre-close transform-rotate180">
+            <span class="material-icons">expand_less</span>
         </button>
     </div>
-    
-    <div class="bnrre-maintext">
-        Укажи в этом блоке свои интересы и получи подходящие события.<br/>
-        Введи их в поле ниже и нажми "Добавить". Мы попробуем их запомнить ;)
-    </div>
-    <br />
-    <div class="bnrre-teg-container">
-        @foreach (var interes in Model.Intereses)
-        {
-            <div class="bnrre-teg">                <div class="bnrre-interers-value">@interes</div>&nbsp;                <span class="material-icons bnrre-delete-teg bnrre-delete-teg">close</span>
-            </div>
-        }
-    </div>
-    <div class="flex-hsc flex-wr">
-        <input class="bnrre-input" type="text" value="" placeholder="Введите новый интерес" />
-        <div class="dot16px"></div>
-        <div class="bnrre-btn-add-teg bnrre-add-teg">Добавить</div>
-    </div>
+    <div class="bnrre-content" style="display: none;">
+        <div class="bnrre-maintext">
+            Укажи в этом блоке свои интересы и получи подходящие события.<br />
+            Введи их в поле ниже и нажми "Добавить". Мы попробуем их запомнить ;)
+        </div>
+        <br />
+        <div class="bnrre-teg-container">
+            @foreach (var interes in Model.Intereses)
+            {
+                <div class="bnrre-teg">
+                    <div class="bnrre-interers-value">@interes</div>&nbsp;
+                    <span class="material-icons bnrre-delete-teg bnrre-delete-teg">close</span>
+                </div>
+            }
+        </div>
+        <div class="flex-hsc flex-wr">
+            <input class="bnrre-input" type="text" value="" placeholder="Введите новый интерес" />
+            <div class="dot16px"></div>
+            <div class="bnrre-btn-add-teg bnrre-add-teg">Добавить</div>
+        </div>
 
-    <div class="dot16px">&nbsp;</div>
-    <div>
-        <input type="hidden" id="bnrre-user-id" value="@Model.UserId" />
-        <button class="calltoaction-prime-btn-orange bnrre-btn-filter transition-1 width250px">
-            Поиск
-        </button>
+        <div class="dot16px">&nbsp;</div>
+        <div>
+            <input type="hidden" id="bnrre-user-id" value="@Model.UserId" />
+            <button class="calltoaction-prime-btn-orange bnrre-btn-filter transition-1 width250px">
+                Поиск
+            </button>
+        </div>
     </div>
 </div>

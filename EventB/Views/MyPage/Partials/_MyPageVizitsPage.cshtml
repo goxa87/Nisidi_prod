@@ -1,0 +1,17 @@
+﻿@model EventB.ViewModels.Paging.EventsPagingFilterModel<Event, string>
+
+@foreach (var e in Model.Events)
+{
+    <div class="mp-details-figure">
+        @{await Html.RenderPartialAsync("_smallFigure", new EventB.ViewModels.SmallFigure()
+            {
+                Title = e.Title,
+                Link = $"/Events/Details/{e.EventId}",
+                Image = e.MediumImage,
+                Active = e.Date < DateTime.Now ? false : true,
+                AdditionalLine = e.Date.ToString("dd MMM HH:mm")
+            });
+        }
+    </div>
+}
+        

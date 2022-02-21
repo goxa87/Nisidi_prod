@@ -1,0 +1,17 @@
+﻿.supp-lis-label-link:hover{
+    text-decoration: none;
+}
+.supp-lis-label-link * {
+    color: black;
+    text-decoration: none;
+}
+.supp-lis-task {
+    border-radius: 4px;
+    background-color: #caf3e6;
+    padding: 4px;
+    margin-top: 16px;
+}
+
+.sup-detail-container>*{
+    margin-bottom: 16px;
+}

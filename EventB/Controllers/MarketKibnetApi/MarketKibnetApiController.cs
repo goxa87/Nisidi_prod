@@ -18,11 +18,11 @@ namespace EventB.Controllers.MarketKibnetApi
     [Authorize]
     public class MarketKibnetApiController : ControllerBase
     {
-        private readonly IMarketKibnetApiServices kibnetApiServices;
+        private readonly IMarketKibnetApiServices roomApiServices;
 
         public MarketKibnetApiController(IMarketKibnetApiServices _kibnetApiServices)
         {
-            kibnetApiServices = _kibnetApiServices;
+            roomApiServices = _kibnetApiServices;
         }
         [Route("change-event-type"), HttpGet]
         public async Task<StatusCodeResult> ChangeEventType(int targetType, int eventId)
@@ -33,7 +33,7 @@ namespace EventB.Controllers.MarketKibnetApi
                 return StatusCode(400);
             }
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var result = await kibnetApiServices.ChangeEventStatus(targetType, eventId, userId);
+            var result = await roomApiServices.ChangeEventStatus(targetType, eventId, userId);
             if (result) return Ok();
             else return StatusCode(400);
         }
@@ -46,7 +46,22 @@ namespace EventB.Controllers.MarketKibnetApi
         [Route("delete-event"), HttpGet]
         public async Task<StatusCodeResult> DeleteEvent(int EventId)
         {
-            if (await kibnetApiServices.DeleteEvent(EventId, User.Identity.Name))
+            if (await roomApiServices.DeleteEventBYOwner(EventId, User.FindFirstValue(ClaimTypes.NameIdentifier)))
+                return Ok();
+            else
+                return StatusCode(401);
+        }
+
+        /// <summary>
+        /// Удаление события (администрация).
+        /// </summary>
+        /// <param name="EventId"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [Route("delete-event-admin"), HttpGet]
+        public async Task<StatusCodeResult> DeleteEventAdmin(int eventId, string token)
+        {
+            if (await roomApiServices.DeleteEventByAdmin(eventId, token))
                 return Ok();
             else
                 return StatusCode(401);
@@ -60,7 +75,7 @@ namespace EventB.Controllers.MarketKibnetApi
         [Route("get-event-chat-users"), HttpGet]
         public async Task<List<EventUserChatMembersVM>> GetEventUserChats(int EventId)
         {
-            return await kibnetApiServices.GetEventUserChats(EventId);
+            return await roomApiServices.GetEventUserChats(EventId);
         }
         /// <summary>
         /// блокировка пользователя в чате
@@ -71,7 +86,7 @@ namespace EventB.Controllers.MarketKibnetApi
         public async Task<StatusCodeResult> SwitchUserChatBlock(int EventId, int userChatId)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return StatusCode(await kibnetApiServices.SwitchUserChatBlock(EventId, userChatId, userId));
+            return StatusCode(await roomApiServices.SwitchUserChatBlock(EventId, userChatId, userId));
         }
     }
 }

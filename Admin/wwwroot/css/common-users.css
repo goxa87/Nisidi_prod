@@ -1,0 +1,26 @@
+﻿.page-h1{
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.cu-list-item{
+    border-radius: 4px;
+    margin-top: 16px;
+    padding: 8px;
+}
+
+.cu-list-item>*{
+    margin-bottom: 8px;
+}
+
+.cu-list-unblock {
+   background: linear-gradient(45deg, #caf3e6, #C5DDE8)
+}
+
+.cu-list-block {
+    background: linear-gradient(45deg, #f3c0c0, #C5DDE8);
+}
+
+.cu-det-content>*{
+    margin-bottom: 8px;
+}

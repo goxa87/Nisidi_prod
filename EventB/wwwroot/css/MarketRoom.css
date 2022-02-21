@@ -35,9 +35,14 @@
 .lk-event{
     display: flex;
 }
-@media(max-width: 770px)
-{
-    .lk-event{
+@media(max-width: 380px) {
+    .lk-event-container {
+        width: 100%;
+    }
+}
+
+@media(max-width: 770px) {
+    .lk-event {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -45,24 +50,65 @@
 }
 /* модалка блокировка пользователей*/
 
-.lk-block-user-name{
-    font-weight:300;
+.lk-block-user-name {
+    font-weight: 300;
 }
-.lk-block-user-ava{
-    max-height:46px;
-    max-width:46px;
+
+.lk-block-user-ava {
+    max-height: 46px;
+    max-width: 46px;
 }
-.lk-block-user-btn-block{
+
+.lk-block-user-btn-block {
     color: #f25522;
     cursor: pointer;
     padding: 4px 6px;
     background-color: #1b5972;
     border-radius: 4px;
 }
+
 .lk-block-user-btn-unblock {
     color: #00ff90;
     cursor: pointer;
     padding: 4px 6px;
     background-color: #1b5972;
     border-radius: 4px;
+}
+
+/* Тикеты*/
+.mr-t-header{
+    font-size: 20px;
+    margin-top: 1em;
+}
+.mr-t-message-text{
+    border: 1px solid #1b5972;
+    border-radius: 4px;
+    padding: 4px;
+    margin-top: 1em;
+    width: 100%;
+}
+.mr-t-message-text:focus{
+    outline: none;
+}
+.mr-t-btn{
+    display: inline-block;
+}
+
+.mr-t-container {
+    background-color: #e9e9e9;
+    background: linear-gradient( 45deg, #caf3e6, #C5DDE8);
+    border-radius: 4px;
+    padding: 16px;
+    margin-top: 1em;
+}
+.mr-t-item-header{
+    margin: 0;
+}
+.mr-t-state {
+}
+.mr-t-tochat {
+    color: #1b5972;
+}
+#mr-tickets-list{
+    margin-bottom: 1em;
 }

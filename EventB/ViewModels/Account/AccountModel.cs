@@ -17,7 +17,10 @@ namespace EventB.ViewModels.Account
 
         public string UserName { get; set; }
 
+        public string Interests { get; set; }
+
         public bool AgreePersonalData { get; set; }
+
 
 
         /// <summary>

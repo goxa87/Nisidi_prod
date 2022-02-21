@@ -1,0 +1,34 @@
+﻿@model Admin.Models.ViewModels.CommonUsers.ListFilterParam
+<form asp-action="List" asp-controller="CommonUsers" method="post" asp-antiforgery="true">
+    <div class="row mp-3">
+        <div class="col-md-5 m-3">
+            <label asp-for="@Model.City" class="form-label">Город</label>
+            <input asp-for="@Model.City" class="form-control">
+        </div>
+        <div class="col-md-5 m-3">
+            <label asp-for="@Model.Name" class="form-label">Имя</label>
+            <input asp-for="@Model.Name" class="form-control">
+        </div>
+    </div>
+
+    <div class="row mp-3">
+        <div class="col-md-5 m-3">
+            <label asp-for="@Model.UserId" class="form-label">ID</label>
+            <input asp-for="@Model.UserId" class="form-control">
+        </div>
+        <div class="col-md-5 m-3">
+        </div>
+    </div>
+
+    <div class="row mp-3">
+        <div class="col-md-3 m-3">
+            <label asp-for="@Model.RegistrationDateStart" class="form-label">Дата регистрции ОТ</label>
+            <input asp-for="@Model.RegistrationDateStart" type="date" class="form-control">
+        </div>
+        <div class="col-md-3 m-3">
+            <label asp-for="@Model.RegistrationDateEnd" class="form-label">Дата регистрции ДО</label>
+            <input asp-for="@Model.RegistrationDateEnd" type="date" class="form-control">
+        </div>
+    </div>
+    <input class="btn btn-primary" type="submit" value="Найти" />
+</form>

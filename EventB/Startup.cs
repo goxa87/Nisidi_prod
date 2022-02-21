@@ -75,6 +75,7 @@ namespace EventB
             });
 
             services.AddTransient<ILogger>(sp => new Logger($"{hostEnvironment.WebRootPath}/{Configuration.GetSection("LogPath").Value}"));
+            services.AddSingleton<SettingsService>();
             services.AddTransient<ITegSplitter, TegSplitter>();
             services.AddTransient<IUserFindService, UserFindService>();
             services.AddTransient<IMarketKibnetApiServices, MarketKibnetApiServices>();
@@ -85,7 +86,7 @@ namespace EventB
 
             services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IEventSelectorService, EventSelectorService>();
-
+            
             services.AddSignalR().AddHubOptions<MessagesHub>(options => {
                 options.EnableDetailedErrors = true;
             });
@@ -107,7 +108,7 @@ namespace EventB
 
             app.Use(async (context, next) =>
             {
-                //context.Response.Headers.Add("Content-Security-Policy", "script-src 'self' *.googletagmanager.com *.cct.google *.yandex.ru");
+                context.Response.Headers.Add("Content-Security-Policy", "script-src 'self' *.googletagmanager.com *.cct.google *.yandex.ru");
                 context.Response.Headers.Add("X-Frame-Options", "Deny");
                 await next();
             });

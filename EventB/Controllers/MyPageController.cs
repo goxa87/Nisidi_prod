@@ -5,8 +5,10 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using EventB.Services;
+using EventB.Services.EventServices;
 using EventB.Services.ImageService;
 using EventB.ViewModels.MyPage;
+using EventB.ViewModels.Paging;
 using EventBLib.DataContext;
 using EventBLib.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -30,19 +32,24 @@ namespace EventB.Controllers
         readonly ITegSplitter tegSplitter;
         readonly IWebHostEnvironment environment;
         private readonly IImageService imageService;
-
+        private readonly IEventService _eventService;
+        private readonly SettingsService _settingsService;
 
         public MyPageController(Context _context,
             UserManager<User> _userManager,
             ITegSplitter _tegSplitter,
             IWebHostEnvironment _environment,
-            IImageService _imageService)
+            IImageService _imageService,
+            IEventService eventService,
+            SettingsService settingsService)
         {
             context = _context;
             userManager = _userManager;
             tegSplitter = _tegSplitter;
             environment = _environment;
             imageService = _imageService;
+            _eventService = eventService;
+            _settingsService = settingsService;
         }
         /// <summary>
         /// Страница профиля.
@@ -58,28 +65,87 @@ namespace EventB.Controllers
         }
 
         /// <summary>
-        /// Получить разметку для вкладки пойду
+        /// Получить разметку для вкладки пойду 
+        /// (Рендеринг для первоначальной загрузки. Для подгрузки страниц смотри следующий метод)
         /// </summary>
         /// <returns></returns>
         [HttpGet, Route("/MyPage/GetVizits")]
-        public async Task<IActionResult> GetVizitsMarkup()
+        public async Task<IActionResult> GetVizitsMarkup(string filter)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var events = await context.Vizits.Include(e => e.Event).Where(e => e.UserId == userId).OrderByDescending(e => e.VizitId).Take(300).ToListAsync();
-            return PartialView("~/Views/MyPage/Partials/_MyPageTabVizits.cshtml", events);
+            var events = await _eventService.GetUserVizitsEvents(userId, filter);
+
+            var itemsCount = events.Count;
+            var model = new EventsPagingFilterModel<Event, string>()
+            {
+                Events = events.Take(_settingsService.DefaultPagingPageSize).ToList(),
+                Paging = new PagingBaseModel(itemsCount, 1, _settingsService.DefaultPagingPageSize, "mp-tab-vizit-paging"),
+                Filter = filter
+            };
+            return PartialView("~/Views/MyPage/Partials/_MyPageTabVizits.cshtml", model);
+        }
+
+        /// <summary>
+        /// Получить разметку для страницы пойду 
+        /// (Рендеринг Конкретной страницы с номером)
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet, Route("/MyPage/GetVizitsPage")]
+        public async Task<IActionResult> GetVizitsMarkup(int currentPage, string filter)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var events = await _eventService.GetUserVizitsEvents(userId, filter);
+
+            var itemsCount = events.Count;
+            var model = new EventsPagingFilterModel<Event, string>()
+            {
+                Events = events.Skip((currentPage-1)*_settingsService.DefaultPagingPageSize).Take(_settingsService.DefaultPagingPageSize).ToList(),
+                Paging = new PagingBaseModel(itemsCount, currentPage, _settingsService.DefaultPagingPageSize, "mp-tab-vizit-paging"),
+                Filter = filter
+            };
+            return PartialView("~/Views/MyPage/Partials/_MyPageVizitsPage.cshtml", model);
         }
 
         /// <summary>
         /// Получить разметку для вкладки созданных
         /// </summary>
         /// <returns></returns>
-        [HttpGet, Route("/MyPage/GetCreated")]
-        public async Task<IActionResult> GetEventsMarkup()
+        [HttpGet, Route("/MyPage/GetCreatedTab")]
+        public async Task<IActionResult> GetEventsMarkup(string filter)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var events = await  context.Events.Where(e=>e.UserId == userId).OrderByDescending(e=>e.Date).Take(300).ToListAsync();
+            var events = await _eventService.GetUserCreatedEvents(userId, filter);
 
-            return PartialView("~/Views/MyPage/Partials/_MyPageTabCreated.cshtml", events);
+            var itemsCount = events.Count;
+            var model = new EventsPagingFilterModel<Event, string>()
+            {
+                Events = events.Take(_settingsService.DefaultPagingPageSize).ToList(),
+                Paging = new PagingBaseModel(itemsCount, 1, _settingsService.DefaultPagingPageSize, "mp-tab-created-paging"),
+                Filter = filter
+            };
+
+            return PartialView("~/Views/MyPage/Partials/_MyPageTabCreated.cshtml", model);
+        }
+
+        /// <summary>
+        /// Получить разметку для вкладки созданных
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet, Route("/MyPage/GetCreatedPage")]
+        public async Task<IActionResult> GetCteatedPage(int currentPage, string filter)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var events = await _eventService.GetUserCreatedEvents(userId, filter);
+
+            var itemsCount = events.Count;
+            var model = new EventsPagingFilterModel<Event, string>()
+            {
+                Events = events.Skip((currentPage - 1) * _settingsService.DefaultPagingPageSize).Take(_settingsService.DefaultPagingPageSize).ToList(),
+                Paging = new PagingBaseModel(itemsCount, currentPage, _settingsService.DefaultPagingPageSize, "mp-tab-created-paging"),
+                Filter = filter
+            };
+
+            return PartialView("~/Views/MyPage/Partials/_MyPageVizitsPage.cshtml", model);
         }
 
         /// <summary>

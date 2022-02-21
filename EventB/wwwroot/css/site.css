@@ -24,6 +24,7 @@ body {
 hr{
     margin:2px 0;
     border-top:1px solid #1b5972;
+    width: 100%;
 }
 p{
    margin: 0;
@@ -396,6 +397,43 @@ input[type="checkbox"].input-validation-error {
     cursor: pointer;
     display: inline-block;
 }
+
+.sfilter-clear {
+    padding: 4px;
+    border-bottom: 1px solid #1b5972;
+    border-top: 1px solid #1b5972;
+    width: 30px;
+    font-size: 8px;
+    display: flex;
+    align-items: center;
+    height: 31px;
+    cursor: pointer;
+}
+
+.sfilter-search {
+    padding: 4px;
+    border-bottom: 1px solid #1b5972;
+    border-top: 1px solid #1b5972;
+    width: 30px;
+    font-size: 8px;
+    display: flex;
+    align-items: center;
+    height: 31px;
+    cursor: pointer;
+    background-color: #1b5972;
+    border-radius: 0 4px 4px 0;
+}
+
+    .sfilter-search > .s-filter-icons{
+       color: #ffcd00;
+    }
+
+.s-filter-icons {
+    color: #1b5972;
+    padding-top: 1px;
+    padding-right: 2px;
+}
+
 /* ******************** формы*/
 .wide-form{
     padding: 0;
@@ -916,6 +954,7 @@ figure img {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    width: 100%;
 }
 
 @media(max-width: 1140px){
@@ -951,7 +990,7 @@ figure img {
 
 @media(max-width: 380px) {
     .eventlist-container {
-        width: 100%;
+        /* width: 100%;*/
     }
 }
 
@@ -972,11 +1011,12 @@ figure img {
 .eve-title {
     margin-top: 16px;
     text-align: left;
-    font-size: 18px;
+    font-size: 20px;
+    font-weight: 400;
 }
 
 .eve-time {
-    font-weight: 500;
+    font-weight: 400;
     font-size: 18px;
     margin-bottom: 0px;
 }
@@ -1427,6 +1467,7 @@ figure img {
 */
 
 @media(max-width: 380px) {
+
     .eventlist-container {
         align-self: flex-start;
         background-color: #fff;
@@ -1513,6 +1554,9 @@ figure img {
     border: none;
     background-color: #0000;
     padding: 0;
+    transition: 0.4s;
+    font-size: 24px;
+    line-height: 20px;
 }
 
     .bnrre-close:hover,
@@ -1780,4 +1824,28 @@ figure img {
 
 .bnrreg1-div2 {
     font-size: 20px;
+}
+
+/*Пагинация */
+.paging-container {
+    background-color: #d4edf9;
+    border-radius: 4px;
+    margin: 4px;
+}
+.paging-badge{
+    color: #1b5972;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 0.8em;
+    padding: 8px;
+    cursor: pointer;
+}
+.paging-selected{
+    color: white;
+    background-color: #1b5972;
+    border-radius: 4px;
+}
+/* общие морформы*/
+.transform-rotate180 {
+    transform: rotate(180deg);
 }

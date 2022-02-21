@@ -1,0 +1,13 @@
+﻿@model EventBLib.Models.Event
+<a href="/Events/Details?eventId=@Model.EventId">
+    <div class="eve-sm-card-container">
+        <div class="eve-sm-card-img">
+            <img src="@Model.MediumImage" alt="Alternate Text" />
+        </div>
+        <div class="eve-sm-card-title">
+            @Model.EventId @Model.Title
+        </div>
+        <div class="eve-sm-card-text">создан: @Model.CreationDate.ToString("dd-MM-yyyy hh:mm")</div>
+        <div class="eve-sm-card-text">проведен: @Model.Date.ToString("dd-MM-yyyy hh:mm")</div>
+    </div>
+</a>

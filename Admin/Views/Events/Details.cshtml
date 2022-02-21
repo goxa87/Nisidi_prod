@@ -1,0 +1,73 @@
+﻿@model EventBLib.Models.Event
+@{ 
+    Layout = "_Layout";
+    ViewData["Style"] = "events.css";
+    ViewData["Script"] = "events.js";
+}
+<div>
+    <input type="hidden" id="ev-d-eventid" value="@Model.EventId" />
+    <h3>#@Model.EventId (@Model.CheckStatus.ToString())</h3>
+    <div class="ev-d-title">Заголовок</div>
+    <div class="ev-d-value">@Model.Title</div>
+
+    <div class="ev-d-title">Выложил</div>
+    <div class="ev-d-value">@Model.Creator</div>
+
+    <div>
+        <div class="ev-d-title display-inline">Создан</div>
+        <div class="ev-d-value display-inline">@Model.CreationDate</div>
+        <div class="ev-d-title display-inline">Состоится</div>
+        <div class="ev-d-value display-inline">@Model.Date</div>
+        <div class="ev-d-title display-inline">Тип</div>
+        <div class="ev-d-value display-inline">@Model.Type.ToString()</div>
+        <div class="ev-d-title display-inline">Возраст</div>
+        <div class="ev-d-value display-inline">@Model.AgeRestrictions +</div>
+        <div class="ev-d-title">Просмотры</div>
+        <div class="ev-d-value">@Model.Views</div>
+    </div>
+
+    <div class="ev-d-title">Город</div>
+    <div class="ev-d-value">@Model.City</div>
+    <div class="ev-d-title">Место</div>
+    <div class="ev-d-value">@Model.Place</div>
+    <div class="ev-d-title">Телефон</div>
+    <div class="ev-d-value">@Model.Phone</div>
+
+    <div class="ev-d-title">Теги</div>
+    <div class="ev-d-value">@String.Join(", ", Model.EventTegs.Select(e => e.Teg).ToList())</div>
+
+    <div class="ev-d-title">Заголовок</div>
+    <div class="ev-d-value">@Model.Body</div>
+
+    <div class="ev-d-title">Билеты</div>
+    <div class="ev-d-value">@Model.TicketsDesc</div>
+
+    <div class="ev-d-image">
+        <img src="@Model.Image" alt="Alternate Text" />
+    </div>
+
+    <div class="ev-d-title cursor-pointer">Пойдут(@Model.Vizits.Count())</div>
+    <div>Здесь будет спрятан список посетителей</div>
+
+
+    <div id="ev-d-all-buttons" class="flex-hss margin-top16">
+        <div id="ev-d-confirm" class="btn btn-success">Подтвердить</div>
+        <div id="ev-d-ban" class="btn btn-danger">Заблокировать</div>
+        <div id="ev-d-delete" class="btn btn-outline-danger">Удалить</div>
+    </div>
+
+    <div id="ev-d-message" class="display-none">
+        <div>Введите сообщение для уведомления автора события</div>
+        <select id="ev-d-message-select" class="form-control min-width400" placeholder="Выбрать сообщение">
+            <option value=""></option>
+            <option value="Содержит незаконный контент">Содержит незаконный контент</option>
+            <option value="Содердит описание, противоречащее правилам сайта">Содержит описание, противоречащее правилам сайта</option>
+            <option value="Содержит призывы">Содержит призывы</option>
+            <option value="Некорректное изображение">Некорректное изображение</option>
+        </select><br />
+        <textarea id="ev-d-message-text" class="form-control min-width400"></textarea><br />
+        <div id="ev-d-ban-event" class="btn btn-danger">Отправить</div>
+    </div>
+
+    <div id="ev-d-delete-popup"></div>
+</div>

@@ -1,5 +1,5 @@
 ﻿import { renderMessage, getModelWindow, iensSearchByText, GetNotification } from './Controls.js';
-
+import { DateFromObjectToDateTime } from './Services.js';
 $(document).ready(function ()
 {
     // Кнопка сменить статус.
@@ -164,4 +164,126 @@ $(document).ready(function ()
         $('#lk-eve-filter').val('');
         $('.lk-eve-item').removeClass('display-none');
     }
+
+    // Переключение в меню страницы
+    $('.bottom-menu-item').click(function () {
+        $('.bottom-menu-item').removeClass('bottom-menu-item-selected');
+        $(this).addClass('bottom-menu-item-selected');
+
+        if ($(this).attr('id') == 'mr-btn-events') {
+            $('#mr-main-events-tab').removeClass('display-none');
+            $('#mr-main-tickets-tab').addClass('display-none');
+        }
+        if ($(this).attr('id') == 'mr-btn-tickets') {
+            $('#mr-main-events-tab').addClass('display-none');
+            $('#mr-main-tickets-tab').removeClass('display-none');
+        }
+    });
+
+    // Отправить новый тикет
+    $('#mr-t-send-new').click(function () {
+        var data = $('#mr-t-message-text').val();
+
+        if (!data || data.length == 0) {
+            GetNotification('Введите текст вашего вопроса', 1, 2);
+            return;
+        }
+
+        $.ajax({
+            url: '/MarketRoom/CreateNewTicket',
+            method: 'POST',
+            data: { messageText: data},
+            success: function (response) {
+                if (response.isSuccess) {
+                    GetNotification('Обращение отправлено.', 3, 2)
+                    $('#mr-t-message-text').val('');
+                } else {
+                    GetNotification('Что-то пошло не так, попробуйте еще раз.', 1, 2);
+                    console.log('Чтото пошло не так ' + response.errorMessage)
+                }
+            },
+            error: function (jqXHR, status) {
+                GetNotification('Что-то пошло не так, попробуйте еще раз.', 1, 2);
+                console.log('Чтото пошло не так ' + jqXHR.statusText);
+            }
+        });
+    });
+
+    // Получить и разместить тикеты пользователя
+    GetAndNestTickets();
+
+    // Cпрятаь секцию для ввода письма в тех. поддержку
+    HideNewRequestSection();
+
+    //Показать секцию для ввода письма в тех. поддержку и перевернуть шеврон
+    $('#expand-more-icon').click(function () {
+        $('#expand-more-icon').hide();
+        $('#expand-less-icon').css('display', 'inline-block');
+        ShowNewRequestSection();
+    });
+
+    //Спрятать секцию для ввода письма в тех. поддержку и перевернуть шеврон в исходное положение
+    $('#expand-less-icon').click(function () {
+        $('#expand-more-icon').show();
+        $('#expand-less-icon').css('display', 'none');
+        HideNewRequestSection();
+    });
 });
+
+/** Получить и разместить тикеты пользователя */
+function GetAndNestTickets() {
+    $.ajax({
+        url: '/MarketRoom/GetAllTicketsForUser',
+        success: function (response) {
+            console.log('resp', response);
+            if (response.isSuccess) {
+                response.content.forEach(function (item) {
+                    let markup = RenderSupportTicket(item);
+                    $('#mr-tickets-list').append(markup);
+                });
+            } else {
+                console.log('Чтото пошло не так ' + response.errorMessage)
+            }
+        },
+        error: function (jqXHR, ex) {
+            console.log('Чтото пошло не так ' + jqXHR.statusText);
+        }
+    });
+}
+
+/**
+ * Сгенерирует разметку тикета техподдержки
+ * @param {any} item SupportTicket
+ */
+function RenderSupportTicket(item) {
+    let castStatus = 'неизвестно';
+    if (item.status == 0) { castStatus = 'новая'; }
+    if (item.status == 1) { castStatus = 'в работе'; }
+    if (item.status == 2) { castStatus = 'закрыта'; }
+    if (item.status == 3) { castStatus = 'удалена'; }
+
+    let markup = `<div class="mr-t-container">
+            <h4 class="mr-t-item-header"><span><b># ${item.supportTicketId}</b>&nbsp;&nbsp;</span>${item.theme}</h4>
+            <p class="mr-t-description">${item.description}</p><br />
+            <div>
+                <div class="mr-t-state">Статус: ${castStatus}</div>
+                <div>Открыто: ${DateFromObjectToDateTime(item.openDate)}</div>
+                <div>Закрыто: ${DateFromObjectToDateTime(item.closeDate)}</div>
+            </div>
+            <div class="flex-hec">
+                <a href="/Messages/Index?opponentId=${item.nisidiEmployeeId}" class="mr-t-tochat">Перейти к чату с сотрудником</a>
+            </div>
+        </div>`;
+
+    return markup;
+}
+
+/** Прячет секцию для ввода письма в тех. поддержку */
+function HideNewRequestSection(requestSection = "#mr-new-request-section") {
+    $(requestSection).hide();
+}
+
+/** Показывает секцию для ввода письма в тех. поддержку */
+function ShowNewRequestSection(requestSection = "#mr-new-request-section") {
+    $(requestSection).show();
+}

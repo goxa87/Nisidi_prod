@@ -1,4 +1,27 @@
-﻿
+﻿@using Admin.Models.ViewModels.CommonUsers
+@model ListVM
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Style"] = "common-users.css";
+    ViewData["Script"] = "common-users.js";
 }
+
+<h1 class="page-h1">Пользователи NISIDI</h1>
+<div>
+    <div>
+        @{ await Html.RenderPartialAsync("_ListFilterPartial", Model.FilterParam); }
+    </div>
+    <div>
+        <div>Найдено: @Model.Users.Count</div>
+        @foreach(var user in Model.Users)
+        {
+            <a href="@($"/CommonUsers/Detail?userId={user.Id}")" target="_blank">
+                <div class="cu-list-item @(user.IsBlockedUser ? "cu-list-block" : "cu-list-unblock")">
+                    <div>@user.Name</div>
+                    <div>@user.City</div>
+                    <div>@user.Id</div>
+                </div>
+            </a>
+        }
+    </div>
+</div>

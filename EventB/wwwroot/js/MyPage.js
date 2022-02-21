@@ -63,28 +63,6 @@ $(document).ready(function () {
 
     // Поиски на странице. Филтьруем за раз все 3 поля
     $(document).on('keyup', function () {
-        if ($('#mp-vizits-filter').is(':focus')) {
-            
-            let searchText = $('#mp-vizits-filter').val();
-            $('#mp-created-ev-filter').val(searchText);
-            $('#mp-invites-filter').val(searchText);
-
-            let items = $('.mp-details-figure');
-            iensSearchByText(items, '.small-figure-title', searchText);
-            let invitesItems = $('.total-invite');
-            iensSearchByText(invitesItems, '.mp-invites-title', searchText);
-        }
-        if ($('#mp-created-ev-filter').is(':focus')) {
-            let searchText = $('#mp-created-ev-filter').val();
-
-            $('#mp-vizits-filter').val(searchText);
-            $('#mp-invites-filter').val(searchText);
-
-            let items = $('.mp-details-figure');
-            iensSearchByText(items, '.small-figure-title', searchText);
-            let invitesItems = $('.total-invite');
-            iensSearchByText(invitesItems, '.mp-invites-title', searchText);
-        }
         if ($('#mp-invites-filter').is(':focus')) {
             let searchText = $('#mp-invites-filter').val();
 
@@ -98,28 +76,56 @@ $(document).ready(function () {
         }
     });
 
-    $('body').on('click', '.s-filter-clear', function() {
-        $('#mp-vizits-filter').val('');
-        $('#mp-created-ev-filter').val('');
-        $('#mp-invites-filter').val('');
+    // Загрузит визиты
+    GetVizitsBlock('');
+    // Загрузка созданных событий
+    GetCreatedBlock('');
+    // Загрузка приглашений
+    GetInviteBlock('');
 
-        $('.mp-details-figure').removeClass('display-none');
-        $('.total-invite').removeClass('display-none');
+    // Пагинация в визитах
+    $('body').on('click', '.mp-tab-vizit-paging', function () {
+        $('.mp-tab-vizit-paging').removeClass('paging-selected');
+        $(this).addClass('paging-selected');
+        GetVizitsPage($(this).text())
     });
 
-    // Загрузит визиты
-    GetVizitsBlock();
-    // Загрузка созданных событий
-    GetCreatedBlock();
-    // Загрузка приглашений
-    GetInviteBlock();
-    
+    // пагинация в созданных
+    $('body').on('click', '.mp-tab-created-paging', function () {
+        $('.mp-tab-created-paging').removeClass('paging-selected');
+        $(this).addClass('paging-selected');
+        GetCreatedPage($(this).text())
+    });
+
+    // фильтры
+    $('body').on('click', '#mp-created-clear-filter', function () {
+        $('#my-events-body').html('загрузка...');
+        GetCreatedBlock('')
+    });
+
+    $('body').on('click', '#mp-created-search-filter', function () {
+        var filter = $('#mp-created-ev-filter').val();
+        $('#my-events-body').html('загрузка...');
+        GetCreatedBlock(filter);
+    });
+
+    // фильтры
+    $('body').on('click', '#mp-vizits-clear-filter', function () {
+        $('#events-willgo-body').html('загрузка...');
+        GetVizitsBlock('')
+    });
+
+    $('body').on('click', '#mp-vizits-search-filter', function () {
+        var filter = $('#mp-vizits-filter').val();
+        $('#events-willgo-body').html('загрузка...');
+        GetVizitsBlock(filter);
+    });
 });
 
-/**Загрузит блок с визитами */
-function GetVizitsBlock() {
+/**Загрузит блок с визитами ОСНОВНОЙ*/
+function GetVizitsBlock(filter) {
     $.ajax({
-        url: "/MyPage/GetVizits",
+        url: `/MyPage/GetVizits?filter=${filter}`,
         success: function (markup) {
             $('#events-willgo-body').html(markup);
         },
@@ -127,14 +133,52 @@ function GetVizitsBlock() {
     })
 }
 
-/**Загрузит блок с созданными */
-function GetCreatedBlock() {
+/**
+ * Загрузит выбранную страницу
+ * @param {any} selectedPage
+ */
+function GetVizitsPage(selectedPage) {
+    $('#mp-vizits-tab-container').html("загрузка...");
+    var filter = $('#mp-vizits-filter-applyed').val();
     $.ajax({
-        url: "/MyPage/GetCreated",
+        url: `/MyPage/GetVizitsPage?currentPage=${selectedPage}&filter=${filter}`,
+        success: function (markup) {
+            $('#mp-vizits-tab-container').html(markup);
+        },
+        error: function () {
+            $('#mp-vizits-tab-container').html("Ошибка (");
+            GetNotification("Что-то пошло не так (", 1, 2);
+        }
+    })
+}
+
+/**Загрузит блок с созданными */
+function GetCreatedBlock(filter) {
+    $.ajax({
+        url: `/MyPage/GetCreatedTab?filter=${filter}`,
         success: function (markup) {
             $('#my-events-body').html(markup);
         },
         error: function () { GetNotification("Что-то пошло не так (", 1, 2); }
+    })
+}
+
+/**
+ * Загрузит выбранную страницу для созданных
+ * @param {any} selectedPage
+ */
+function GetCreatedPage(selectedPage) {
+    $('#mp-created-tab-container').html("загрузка...");
+    var filter = $('#mp-created-ev-filter-applyed').val();
+    $.ajax({
+        url: `/MyPage/GetCreatedPage?currentPage=${selectedPage}&filter=${filter}`,
+        success: function (markup) {
+            $('#mp-created-tab-container').html(markup);
+        },
+        error: function () {
+            $('#mp-created-tab-container').html("Ошибка (");
+            GetNotification("Что-то пошло не так (", 1, 2);
+        }
     })
 }
 

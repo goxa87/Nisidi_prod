@@ -101,7 +101,7 @@ namespace EventB.Controllers
                         return Redirect(model.ReturnUrl);
                     }
                     return RedirectToAction("Start", "Events");
-                }                
+                }
             }
             
             ModelState.AddModelError("", "Пользователь не найден или неверный пароль");
@@ -136,7 +136,8 @@ namespace EventB.Controllers
                         Name = model.UserName,
                         NormalizedName = model.UserName.ToUpper(),
                         City = model.City.Trim(),
-                        NormalizedCity = model.City.Trim().ToUpper()
+                        NormalizedCity = model.City.Trim().ToUpper(),
+                        RegistrationDate = DateTime.Now
                     };
 
                     user.MarketKibnet = new MarketKibnet { MarketState = MarketState.common, PaymentAccountBalance = 0, TotalMarcetCompanyCount = 0 };
@@ -164,6 +165,12 @@ namespace EventB.Controllers
                         user.MediumImage = imgMedium;
                         user.MiniImage = imgMini;
                         context.Users.Update(user);
+
+                        List<string> interestsFromCookie = tegSplitter.GetEnumerable(model.Interests).ToList();
+                        List<Interes> interests = new List<Interes>();
+                        interests = interestsFromCookie.Select(e => new Interes() { Value = e }).ToList();
+                        user.Intereses = interests;
+
                         await context.SaveChangesAsync();
 
                         try
@@ -174,6 +181,7 @@ namespace EventB.Controllers
                         {
                             await logger.LogObjectToFile($"RegisterAccount error/ SendMailError ({model.Login} {model.Password})", ex);
                         }
+
                         return View("ConfirmEmail", model.Login);
                     }
                     else

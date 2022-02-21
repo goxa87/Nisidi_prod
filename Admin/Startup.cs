@@ -1,6 +1,8 @@
 using Admin.AdminDbContext;
 using Admin.AdminDbContext.Models;
+using Admin.Services.CommonUsersService;
 using Admin.Services.EventsService;
+using Admin.Services.SupportService;
 using EventBLib.DataContext;
 using EventBLib.Models;
 using Microsoft.AspNetCore.Builder;
@@ -35,6 +37,8 @@ namespace Admin
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IConfiguration>(Configuration);
+
             string connection = Configuration.GetConnectionString("EB1");
             services.AddDbContext<Context>(options => {
                 options.UseNpgsql(connection);
@@ -80,6 +84,8 @@ namespace Admin
             services.AddControllersWithViews();
 
             services.AddTransient<IEventsService, EventsService>();
+            services.AddScoped<ISupportService, SupportService>();
+            services.AddScoped<ICommonUsersService, CommonUsersService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Schema;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using EventB.Services;
 
 namespace EventB.Services.EventServices
 {
@@ -40,6 +42,8 @@ namespace EventB.Services.EventServices
         private readonly IImageService imageService;
 
         private readonly IHubContext<MessagesHub> hubContext;
+        private readonly IConfiguration _configuration;
+        private readonly SettingsService _settingsService;
 
         public EventService(Context _context,
             IMessageService _messageService,
@@ -48,7 +52,9 @@ namespace EventB.Services.EventServices
             UserManager<User> _userManager,
             ILogger _logger,
             IImageService _imageService,
-            IHubContext<MessagesHub> _hubContext)
+            IHubContext<MessagesHub> _hubContext,
+            IConfiguration configuration,
+            SettingsService settingsService)
         {
             context = _context;
             messageService = _messageService;
@@ -58,6 +64,8 @@ namespace EventB.Services.EventServices
             logger = _logger;
             imageService = _imageService;
             hubContext = _hubContext;
+            _configuration = configuration;
+            _settingsService = settingsService;
         }
         /// <summary>
         /// Добавление нового события.
@@ -176,7 +184,8 @@ namespace EventB.Services.EventServices
                     Phone = model.Phone,
                     AgeRestrictions = model.AgeRestrictions,
                     MediumImage = imgMedium,
-                    MiniImage = imgMini
+                    MiniImage = imgMini,
+                    CheckStatus = EventBLib.Enums.EventCheckStatus.New
                 };
 
                 if (!string.IsNullOrWhiteSpace(model.TicketsDesc))
@@ -630,6 +639,8 @@ namespace EventB.Services.EventServices
                     Text = chatMessage
                 });
             }
+            
+            eve.CheckStatus = eve.CheckStatus == EventBLib.Enums.EventCheckStatus.Banned ? EventBLib.Enums.EventCheckStatus.ChangedAfterBan : EventBLib.Enums.EventCheckStatus.Changed;
 
             context.Events.Update(eve);
             await context.SaveChangesAsync();
@@ -653,35 +664,44 @@ namespace EventB.Services.EventServices
             return eve;
         }
 
-        /// <summary>
-        /// Удаление события.
-        /// </summary>
-        /// <param name="username"></param>
-        /// <param name="eventId"></param>
-        /// <returns></returns>
-        public async Task<int> DeleteEvent(string username, int eventId)
-        {
-            var user = await userManager.FindByNameAsync(username);
-            var eve = await context.Events.Include(e => e.Chat).ThenInclude(e => e.UserChat)
-                .Include(e => e.Chat).ThenInclude(e => e.Messages)
-                .Include(e => e.EventTegs)
-                .Include(e => e.Vizits).FirstOrDefaultAsync(e => e.EventId == eventId);
+        #region Всякие Выборки списков событий
 
-            if (user.Id != eve.UserId)
+        /// <inheritdoc />
+        public async Task<List<Event>> GetUserVizitsEvents(string userId, string filter)
+        {
+            var events = context.Vizits.AsQueryable();
+            events = events.Where(e => e.UserId == userId);
+            if (!string.IsNullOrEmpty(filter))
             {
-                return 401;
+                filter = filter.Trim().ToUpper();
+                events = events.Where(e => EF.Functions.Like(e.Event.NormalizedTitle, $"%{filter}%"));
             }
 
-            await imageService.DeleteImage(environment.WebRootPath + eve.Image);
-            await imageService.DeleteImage(environment.WebRootPath + eve.MediumImage);
-            await imageService .DeleteImage(environment.WebRootPath + eve.MiniImage);
-
-            context.Remove(eve);
-
-            await context.SaveChangesAsync();
-            return 200;
-
+            return await events
+                .OrderByDescending(e => e.Event.Date > DateTime.Now)
+                .ThenBy(e => e.Event.Date)
+                .Select(e => e.Event)
+                .ToListAsync();
         }
+
+        /// <inheritdoc />
+        public async Task<List<Event>> GetUserCreatedEvents(string userId, string filter)
+        {
+            var events = context.Events.AsQueryable();
+            events = events.Where(e => e.UserId == userId);
+            if (!string.IsNullOrEmpty(filter))
+            {
+                filter = filter.Trim().ToUpper();
+                events = events.Where(e => EF.Functions.Like(e.NormalizedTitle, $"%{filter}%"));
+            }
+
+            return await events
+                .OrderByDescending(e => e.Date > DateTime.Now)
+                .ThenBy(e => e.Date)
+                .ToListAsync();
+        }
+
+        #endregion
 
         #region private
         /// <summary>
@@ -692,7 +712,7 @@ namespace EventB.Services.EventServices
         private string TrimSuffix(string path)
         {
             return path.Substring(0, path.LastIndexOf('.'));
-        } 
+        }
         #endregion
     }
 }

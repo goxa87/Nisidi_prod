@@ -34,19 +34,19 @@
 
     <label class="form-label" asp-for="Body"></label>
     <span asp-validation-for="Body"></span>
-    <textarea class="form-entry-body height300" type="text" asp-for="Body" autocomplete="off"></textarea><br>
+    <textarea class="form-entry-body height300" type="text" asp-for="Body" autocomplete="off" id="eve-add-body"></textarea><br>
 
     <label class="form-label" asp-for="Tegs"></label>
     <span asp-validation-for="Tegs"></span>
-    <input class="form-entry-title" type="text" asp-for="Tegs"><br>
+    <input class="form-entry-title" type="text" asp-for="Tegs" id="eve-add-tegs"><br>
 
     <label class="form-label" asp-for="City"></label>
     <span asp-validation-for="City"></span>
-    <input class="form-entry-title" type="text" asp-for="City" /><br>
+    <input class="form-entry-title" type="text" asp-for="City" id="eve-add-city" /><br>
 
     <label class="form-label" asp-for="Place"></label>
     <span asp-validation-for="Place"></span>
-    <input class="form-entry-title" type="text" asp-for="Place" /><br>
+    <input class="form-entry-title" type="text" asp-for="Place" id="eve-add-place" /><br>
 
     <label class="form-label" asp-for="Date"></label><br />
     <span asp-validation-for="Date"></span>
@@ -55,11 +55,11 @@
 
     <label class="form-label" asp-for="TicketsDesc"></label>
     <span asp-validation-for="TicketsDesc"></span>
-    <textarea class="form-entry-body" type="text" asp-for="TicketsDesc"></textarea><br>
+    <textarea class="form-entry-body" type="text" asp-for="TicketsDesc" id="eve-add-ticketsDesc"></textarea><br>
 
     <label class="form-label" asp-for="Phone"></label>
     <span asp-validation-for="Phone"></span>
-    <input class="form-entry-title" type="text" asp-for="Phone" /><br>
+    <input class="form-entry-title" type="text" asp-for="Phone" id="eve-add-phone" /><br>
 
     <label class="form-label" asp-for="AgeRestrictions"></label><br />
     <span asp-validation-for="AgeRestrictions"></span>
@@ -104,7 +104,23 @@
     </div>
 
     <br>
-    <input class="form-submit" type="submit" value="Сохранить" />
+    <input id="save-btn" class="form-submit" type="submit" value="Сохранить" />
+
+    @*Загрузчик, который появляется вместо кнопки после её нажатия*@
+    <div id="end-marker" style="position: absolute; left: inherit">
+        <div id="ev-load-more" class="display-none">Загрузить еще</div>
+        <div id="noTrespassingOuterBarG">
+            <div id="noTrespassingFrontBarG" class="noTrespassingAnimationG">
+                <div class="noTrespassingBarLineG"></div>
+                <div class="noTrespassingBarLineG"></div>
+                <div class="noTrespassingBarLineG"></div>
+                <div class="noTrespassingBarLineG"></div>
+                <div class="noTrespassingBarLineG"></div>
+                <div class="noTrespassingBarLineG"></div>
+            </div>
+        </div>
+    </div>
+
     <br />
     <br />
 </form>

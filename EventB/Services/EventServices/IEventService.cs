@@ -85,13 +85,23 @@ namespace EventB.Services.EventServices
         /// <returns></returns>
         Task<Event> EventEdit(string userName, EventEditVM model);
 
-        /// <summary>
-        /// Удалить событие
-        /// </summary>
-        /// <param name="username"></param>
-        /// <param name="eventId"></param>
-        /// <returns></returns>
-        Task<int> DeleteEvent(string username, int eventId);
+        #region Списки событий
 
+        /// <summary>
+        /// Вернет список визитов пользователя с учетом
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<List<Event>> GetUserVizitsEvents(string userId, string filter);
+
+        /// <summary>
+        /// Созданные пользователем
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task<List<Event>> GetUserCreatedEvents(string userId, string filter);
+
+
+        #endregion
     }
 }

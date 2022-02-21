@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/20.1.8/css/dx.common.css">
     <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/20.1.8/css/dx.light.css">
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/@ViewData["Style"]" />
 </head>
@@ -27,13 +26,10 @@
                                 <a class="nav-link text-dark" asp-controller="Home" asp-action="Statistic">Статистика</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Home" asp-action="FAQ">FAQ</a>
-                            </li>
-                            <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Events" asp-action="EventList">События</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="CommonUsers" asp-action="List">Пользователи</a>
+                                <a class="nav-link text-dark" asp-controller="CommonUsers" asp-action="List">Пользователи NISIDI</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Support" asp-action="Tasks">Поддержка</a>
@@ -68,8 +64,8 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="~/js/dx.all.js"></script>
     <script type="text/javascript" src="~/js/dx.messages.ru.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/@ViewData["Script"]" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true" type="module"></script>
+    <script src="~/js/@ViewData["Script"]" asp-append-version="true" type="module"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

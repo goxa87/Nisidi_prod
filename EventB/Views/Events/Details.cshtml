@@ -18,7 +18,6 @@
 <div class="detail-main-line">
     <div class="ev-big-img">
         <div class="image-container">
-            <img src="@($"{Model.Image}?{DateTime.Now.Millisecond.ToString()}")" class="image-self-back" />
             <img src="@($"{Model.Image}?{DateTime.Now.Millisecond.ToString()}")" class="image-self-front" />
         </div>
     </div>
@@ -69,24 +68,24 @@
     <div id="come-block">
         @if (Model.Vizits.Where(e => e.UserId == ViewData["UserId"].ToString()).Any())
         {
-            <div class="bold-label">Вы пойдете</div>
-            <div id="btn-come" class="calltoaction-btn transition-1 width250px">Отменить участие</div>
+            <div class="bold-label">Интересно</div>
+            <div id="btn-come" class="calltoaction-btn transition-1 width250px">Не интересно</div>
         }
         else
         {
-            <div class="bold-label display-none">Вы пойдете</div>
-            <div id="btn-come" class="calltoaction-prime-btn width250px">Подтвердить участие</div>
+            <div class="bold-label display-none">Интересно</div>
+            <div id="btn-come" class="calltoaction-prime-btn width250px">Интересно</div>
         }
     </div>
 
-    <div id="btn-invite" class="calltoaction-prime-btn transition-1 width250px">Пригласить</div>
+    <div id="btn-invite" class="calltoaction-prime-btn transition-1 width250px">Поделиться</div>
     <div id="btn-details-send-link" class="calltoaction-prime-btn transition-1 width250px">Отправить в чат</div>
 </div>
 
 <div class="bottom-menu">
     <span class="bottom-menu-item bottom-menu-item-selected" id="btn-changes">Изменения</span>
     <span class="bottom-menu-item " id="btn-chat">Комментарии</span>
-    <span class="bottom-menu-item " id="btn-vizitors">Участники(@Model.Vizits.Count())</span>
+    <span class="bottom-menu-item " id="btn-vizitors">Отметки "интересно"(@Model.Vizits.Count())</span>
 </div>
 
 <div class="bottom-body">
