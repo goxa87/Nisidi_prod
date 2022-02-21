@@ -108,7 +108,7 @@ namespace EventB
 
             app.Use(async (context, next) =>
             {
-                //context.Response.Headers.Add("Content-Security-Policy", "script-src 'self' *.googletagmanager.com *.cct.google *.yandex.ru");
+                context.Response.Headers.Add("Content-Security-Policy", "script-src 'self' *.googletagmanager.com *.cct.google *.yandex.ru");
                 context.Response.Headers.Add("X-Frame-Options", "Deny");
                 await next();
             });
