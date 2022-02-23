@@ -23,8 +23,11 @@ p{
 
 .left-column {
     min-width: 300px;
-    padding: 16px 0 8px 8px;
-    background-color: #1b5972;
+    padding: 16px 8px 8px 8px;
+    background-color: #e9e9e9;
+    background: linear-gradient(45deg, #caf3e6, #C5DDE8);
+    margin: 8px 0 0 0;
+    border-radius: 4px;
 }
 
 .right-columnn {
@@ -33,7 +36,7 @@ p{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: #dee2e688;
+    margin-left: 8px;
 }
 
 .search {
@@ -41,25 +44,23 @@ p{
 }
 
     .search > input {
-        background-color: #fff6;
-        color:#000;
         width: calc(100% - 30px);
         margin-bottom: 8px;
         padding: 3px;
         border: none;
+        background-color: white;
+        border-radius: 4px 0 0 4px;
     }
         .search > input:focus{
             outline:none;
         }
 
     .search > button {
-        background-color: #1b5972;
+        background-color: white;
         width: 30px;
         margin-bottom: 8px;
         border: none;
-        background-image: url('/resourses/cancel.png');
-        background-size: 30px 30px;
-        background-repeat: no-repeat;
+        border-radius:  0 4px 4px 0;
         outline: none;
     }
 
@@ -81,72 +82,94 @@ p{
         cursor:pointer;
     }
 
-.opponent-name-value{
-    color: #ffcd00;
-    font-weight: bold;
+.opponent-name-value {
+    color: #1b5972;
+    font-size: 16px;
     word-break: break-word;
     max-width: 270px;
 }
 .opponent-name {
-    color: #ffcd00;
-    font-weight: bold;
+    color: #1b5972;
+    font-weight: 400;
     margin-left: 16px;
+    font-size: 16px;
 }
 .new-message-flag {
-    background-color: #fff4;
-    border-radius: 6px;
+    background-color: #1b5972;
+    border-radius: 4px;
     padding: 0 5px;
-    color: #fff;
-    font-size: 14px;
+    color: #ffcd00;
+    font-size: 16px;
+
+
 }
 
 .selected-opponent{
     background-color:#fff9;
 }
 
-.message-header{
-    background-color:#1b5972;    
-    border-bottom: 1px solid #ffcd00;
+.message-header {
+    padding: 8px 8px 8px 8px;
+    background-color: #e9e9e9;
+    background: linear-gradient(45deg, #caf3e6, #C5DDE8);
+    margin: 8px 0 0 0 ;
+    border-radius: 4px;
+    position: relative;
 }
 
 .opponent-photo{
     width:60px;
-    height:60px;
+    height:50px;
     border-radius:30px;
-    margin: 4px 16px; 
+    margin: 0px 8px 0 0; 
 }
     .opponent-photo>img{
-        max-width:100%;
-        max-height:100%;
-        object-fit:contain;
+        width:100%;
+        height:100%;
+        object-fit:cover;
     }
 .mes-remove-chat {
-    color: #ffcd00;
-    padding: 4px 24px;
-    height: 31px;
+    color: #1b5972;
     cursor: pointer;
-    background-image: url('../resourses/cancel.png');
-    background-position: -2px -1px;
     background-repeat: no-repeat;
     align-self:flex-start;
+
 }
+.mes-show-chat-menu {
+    font-size: 16px;
+    height: 1em;
+}
+.mes-chat-menu{
+    position: absolute;
+    top: 100%;
+    right: 0;
+    padding: 8px;
+    background-color: #C5DDE8;
+    border-radius: 4px;
+}
+
 .message-list {
     overflow-y: auto;
-    padding: 8px;
+    padding: 8px 8px 8px 0;
     flex-basis: 2000px;
     background-color: #fff;
 }
 
-
+.mes-right-bottom{
+    background-color: #C5DDE8;
+    padding: 4px;
+    border-radius: 4px;
+}
 .form-send {
     display: flex;
-    border: 1px solid #1b5972; 
     border-left: none;
+    background-color: #C5DDE8;
 }
     .form-send > input, textarea {
-        width: calc(100% - 30px);
-        padding: 3px;
+        flex-basis: 1000px;
+        padding: 4px;
         border: none;
+        border-radius: 4px;
     }
         .form-send > input, textarea:focus{
             outline:none;
@@ -156,10 +179,11 @@ p{
         background-color: #1b5972;
         width: 30px;
         border: none;
-        background-image: url('/resourses/yellowarrowright.png');
-        background-size: 40px 40px;
-        background-repeat: no-repeat;
-        background-position: -5px -8px;
+        border-radius: 4px;
+        padding: 0 !important;
+    }
+    .form-send > button > span {
+        color: #ffcd00;
     }
     .form-send > button:disabled{
         background-color: #fff6;
@@ -183,7 +207,10 @@ textarea {
 @media(min-width: 800px) {
     #ch-small-menu-btn{
        display:none;
-    }    
+    }
+    .mes-return-back {
+        display: none;
+    }
 }
 @media(max-width: 800px){
     .chat-frame {
@@ -191,14 +218,18 @@ textarea {
         position: relative;
         height: calc(100vh - 65px);
     }
+    .right-columnn {
+       margin-left: 0;
+    }
 
     .left-column {
-        height: calc(100vh - 100px);
+        height: calc(100vh - 70px);
         position: absolute;
         top: 0;
         left: 0;
         visibility: hidden;
         z-index: 50;
+        width: 100%;
     }
     .ch-hide-menu{
         visibility: visible;
@@ -218,6 +249,15 @@ textarea {
     .opponent-photo > img{
         display:none;
     }
+    .mes-return-back {
+        margin-right: 16px;
+    }
+    .opponent-name {
+        max-width: 230px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 
 #mes-load-history{
@@ -231,8 +271,8 @@ textarea {
    margin-bottom: 4px;
    cursor: pointer;
 }
-.arrow-up{
-    background-image: url(../resourses/arrow-up.png);
+.arrow-up {
+    /*background-image: url(../resourses/arrow-up.png);*/
     width: 16px;
-    height:16px;
+    height: 16px;
 }

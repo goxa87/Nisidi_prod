@@ -1,10 +1,11 @@
-﻿@model EventB.ViewModels.Paging.EventsPagingFilterModel<Event, string>
+﻿@using CommonServices.Infrastructure.Helpers
+@model EventB.ViewModels.Paging.EventsPagingFilterModel<Event, string>
 
 <div class="s-filter-container mb-2">
     <span class="small-label">Фильтр</span>
     <div class="flex-hsbc">
-        <input id="mp-created-ev-filter" class="s-filter" autocomplete="off" value="@Model.Filter"/>
-        <input id="mp-created-ev-filter-applyed" class="s-filter" type="hidden" autocomplete="off" value="@Model.Filter"/>
+        <input id="mp-created-ev-filter" class="s-filter" autocomplete="off" value="@Model.Filter" />
+        <input id="mp-created-ev-filter-applyed" class="s-filter" type="hidden" autocomplete="off" value="@Model.Filter" />
         <span id="mp-created-clear-filter" class="sfilter-clear">
             <span class="material-icons s-filter-icons">close</span>
         </span>
@@ -31,7 +32,7 @@
                             Link = $"/Events/Details/{e.EventId}",
                             Image = e.MediumImage,
                             Active = e.Date < DateTime.Now ? false : true,
-                            AdditionalLine = e.Date.ToString("dd MMM HH:mm")
+                            AdditionalLine = e.Date.ToDateStringmonth(false, " ", false)
                         });
                     }
                 </div>

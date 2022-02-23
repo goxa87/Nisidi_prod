@@ -108,7 +108,7 @@ $(document).ready(function () {
         $('#chat-id').val(newChat);
         $('#opponent-id').val(newOppId);
 
-        $('.mes-remove-chat').removeClass('display-none');
+        $('.mes-show-chat-menu').removeClass('display-none');
 
         // загрузить сообщения для этого чата
         $.ajax({
@@ -145,9 +145,14 @@ $(document).ready(function () {
         }
     });
 
+    // Меню чата 
+    $('body').on('click', '.mes-show-chat-menu', function () {
+        $('.mes-chat-menu').toggleClass('display-none');
+    });
+
     // Удаление чата
     // /messages/delete-user-chat
-    $('.mes-remove-chat').click(() => {
+    $('body').on('click', '.mes-remove-chat', function () {
         let chatId = $('#chat-id').val();
         $.ajax({
             url: '/messages/delete-user-chat',
@@ -162,6 +167,9 @@ $(document).ready(function () {
                 $('.message-list').html('');
                 $('#chat-id').val('0');
                 GetNotification("Вы покинули этот чат", 2, 3);
+                $('.left-column').toggleClass('ch-hide-menu');
+                $('.mes-chat-menu').toggleClass('display-none');
+                $('.mes-show-chat-menu').addClass('display-none');
             },
             error: () => {
                 GetNotification("Удаление не удалось", 2, 10);
@@ -170,7 +178,7 @@ $(document).ready(function () {
     });
 
     // узкое меню
-    $('body').on('click', '#ch-small-menu-btn', function () {
+    $('body').on('click', '.mes-return-back', function () {
         $('.left-column').toggleClass('ch-hide-menu');
     });
 
