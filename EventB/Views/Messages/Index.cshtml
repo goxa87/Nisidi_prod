@@ -43,7 +43,7 @@
                         <input class="opponent-id" type="hidden" value="@opponent.OpponentId" />
                         <div class="new-message-flag"></div>
                     </div>
-                </div>            
+                </div>
             }
         </div>
     </div>
@@ -80,7 +80,7 @@
         <div class="message-list" id="message-list">
         </div>
 
-        <div >
+        <div>
             <sub>Сообщение</sub><br>
             <form class="form-send">
                 <input id="user-id" type="hidden" value="@Model.CurrentUserId" />
@@ -89,14 +89,16 @@
                 {
                     <input id="opponent-id" type="hidden" value="@Model.Opponent.Id" />
                 }
-                else 
+                else
                 {
-                    <input id="opponent-id" type="hidden" value="0"/> 
+                    <input id="opponent-id" type="hidden" value="0" />
                 }
-                <textarea id="message" ></textarea>
+                <textarea id="message"></textarea>
                 <button id="btn-send"></button>
             </form>
         </div>
 
     </div>
 </div>
+
+<script src="~/js/signalr/dist/browser/signalr.min.js"></script>
