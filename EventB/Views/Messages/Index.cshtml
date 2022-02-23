@@ -13,7 +13,9 @@
         <div >
             <form class="search">
                 <input id="txt-search" type="text" autocomplete="off">
-                <button id="btn-search"></button>
+                <button id="btn-search" class="flex-hcc">
+                    <span class="material-icons">close</span>
+                </button>
             </form>
         </div>
         <div class="opponents-list">
@@ -49,38 +51,71 @@
     </div>
 
     <div class="right-columnn">
-        <div class="message-header flex-hsbc">
+        <div class="message-header flex-hsbs">
 
             @if (Model.Opponent != null)
             {
-                <a class="related-link" href="/Friends/UserInfo?userId=@Model.Opponent.Id">
-                    <div class="flex-hsc">
-                        <div class="flex-hcc opponent-photo">
-                            <img src="@Model.Opponent.MiniImage" />
+
+                <div class="flex-hsc">
+                    <span class="material-icons mes-return-back">
+                        arrow_back
+                    </span>
+                    <a class="related-link" href="/Friends/UserInfo?userId=@Model.Opponent.Id">
+                        <div class="flex-hss">
+                            <div class="flex-hcc opponent-photo">
+                                <img src="@Model.Opponent.MiniImage" />
+                            </div>
+                            <div class="opponent-name" id="header-name">@Model.Opponent.Name</div>
                         </div>
-                        <div class="opponent-name" id="header-name">@Model.Opponent.Name</div>
+                    </a>
+                </div>
+                <div class="mes-show-chat-menu">
+                    <span class="material-icons">
+                        more_vert
+                    </span>
+
+                </div>
+                <div class="mes-chat-menu display-none">
+                    <div class="mes-remove-chat flex-hcc">
+                        <span class="material-icons">close</span>
+                        <span>Удалить&nbsp;чат</span>
                     </div>
-                </a>
-                <div class="mes-remove-chat">Удалить чат</div>
+                </div>
+
             }
             else
             {
-                <a class="related-link" href="">
-                    <div class="flex-hsc">
-                        <div class="opponent-photo flex-hcc">
-                            <img />
+                <div class="flex-hsc">
+                    <span class="material-icons mes-return-back">
+                        arrow_back
+                    </span>
+                    <a class="related-link" href="">
+                        <div class="flex-hss">
+                            <div class="flex-hcc opponent-photo">
+                                <img src="" />
+                            </div>
+                            <div class="opponent-name" id="header-name"></div>
                         </div>
-                        <div class="opponent-name" id="header-name"></div>
+                    </a>
+                </div>
+                <div class="mes-show-chat-menu display-none">
+                    <span class="material-icons">
+                        more_vert
+                    </span>
+                </div>
+                <div class="mes-chat-menu display-none">
+                    <div class="mes-remove-chat flex-hcc">
+                        <span class="material-icons">close</span>
+                        <span>Удалить&nbsp;чат</span>
                     </div>
-                </a>
-                <div class="mes-remove-chat display-none">Удалить чат</div>
+                </div>
             }
         </div>
 
         <div class="message-list" id="message-list">
         </div>
 
-        <div>
+        <div class="mes-right-bottom">
             <sub>Сообщение</sub><br>
             <form class="form-send">
                 <input id="user-id" type="hidden" value="@Model.CurrentUserId" />
@@ -94,7 +129,9 @@
                     <input id="opponent-id" type="hidden" value="0" />
                 }
                 <textarea id="message"></textarea>
-                <button id="btn-send"></button>
+                <button id="btn-send">
+                    <span class="material-icons">expand_less</span>
+                </button>
             </form>
         </div>
 

@@ -165,15 +165,14 @@ ul{
 }
 
 ::-webkit-scrollbar-track {
-    background-color: #dee2e6;
-    box-shadow: 0px 0px 3px #000 inset;
+    background-color: #dee2e655;
     border-radius: 0px;
 }
 
 ::-webkit-scrollbar-thumb {
     -webkit-border-radius: 0px;
     border-radius: 0px;
-    background-color: #1b5972;
+    background-color: #585f6677;
     background-image: url('https://yraaa.ru/_pu/24/59610063.png');
     background-position: center;
     background-repeat: no-repeat;
@@ -202,18 +201,18 @@ ul{
     bottom: 0;
     border-radius: 0 4px 0 0;
     font-size: 16px;
-    z-index: 10;
+    z-index: 100;
 }
 .s-fixed-notification-red {
     background-color: #e60026;
     color: white;
 }
 .s-fixed-notification-yellow {
-    background-color: yellow;
+    background-color: #ffc107;
     color: black;
 }
 .s-fixed-notification-green {
-    background-color: forestgreen;
+    background-color: #198754;
     color: white;
 }
 
@@ -303,10 +302,13 @@ input[type="checkbox"].input-validation-error {
     margin: 0 auto 0 auto;
 }
 
-.mm-nisidi{
-    color:#ffcd00;
+.mm-nisidi {
+    color: #ffcd00;
     font-size: 20px;
     margin: 0;
+    text-transform: lowercase !important;
+    text-align: left !important;
+    font-weight: 500 !important;
 }
 .title-container-article {
     font-size: 12px;
@@ -1520,6 +1522,7 @@ figure img {
 .btn-close-white {
     color: #FFF;
     margin: 0 !important;
+    padding: 6px;
 }
 
     .btn-close-white:hover {
