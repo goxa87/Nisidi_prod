@@ -138,6 +138,7 @@ p{
 .mes-show-chat-menu {
     font-size: 16px;
     height: 1em;
+    cursor: pointer;
 }
 .mes-chat-menu{
     position: absolute;

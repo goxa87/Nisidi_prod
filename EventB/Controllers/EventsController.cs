@@ -107,7 +107,7 @@ namespace EventB.Controllers
                     DateSince = DateTime.Now,
                     DateDue = DateTime.Now.AddDays(90),
                     Title = "",
-                    City = "СТАВРОПОЛЬ",
+                    City = "МОСКВА",
                     Tegs = "",  
                     IsTegsFromProfile = false,
                     Skip = 0,
@@ -191,7 +191,7 @@ namespace EventB.Controllers
             args.DateDue = args.DateDue.AddDays(1).AddMinutes(-1);
             args.Title = args.Title ?? "";
 
-            args.City = args.City != null ? args.City.ToUpper() : (user!=null ? user.NormalizedCity : "СТАВРОПОЛЬ");
+            args.City = args.City != null ? args.City.ToUpper() : (user!=null ? user.NormalizedCity : "МОСКВА");
             args.Tegs = args.Tegs ?? "";
             
             var VM = new EventListVM
